@@ -29,7 +29,6 @@
 					<th class="w50">{lang key='store::store.id'}</th>
 				    <th class="w100">{lang key='store::store.store_title'}</th>
 				    <th class="w200">{lang key='store::store.store_cat'}</th>
-				    <th class="w250">{lang key='store::store.sort_order'}</th>
 			  	</tr>
 			</thead>
 			<tbody>
@@ -44,7 +43,6 @@
 					     </div>
 					</td>
 					<td>{$list.cat_name}</td>
-				    <td>{$list.sort_order}</td>
 				</tr>
 				<!-- {foreachelse} -->
 				   <tr><td class="no-records" colspan="10">{lang key='system::system.no_records'}</td></tr>

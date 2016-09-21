@@ -86,6 +86,13 @@
 				</div>
 				
 				<div class="control-group formSep">
+					<label class="control-label">{lang key='store::store.bank_branch_name_lable'}</label>
+					<div class="controls l_h30">
+						{$store.bank_branch_name}
+					</div>
+				</div>
+				
+				<div class="control-group formSep">
 					<label class="control-label">{lang key='store::store.bank_name_lable'}</label>
 					<div class="controls l_h30">
 						{$store.bank_name}
@@ -173,8 +180,8 @@
 				<div class="control-group formSep">
 					<label class="control-label">{lang key='store::store.check_lable'}</label>
 				 	<div class="controls">
-						<input type="radio"  name="check" value="1" {if $store.check eq 1}checked{/if}><span>{lang key='store::store.check_no'}</span>
-						<input type="radio"  name="check" value="2" {if $store.check eq 2}checked{/if}><span>{lang key='store::store.check_yes'}</span>
+						<input type="radio"  name="check_status" value="1" {if $store.check_status eq 1}checked{/if}><span>{lang key='store::store.check_no'}</span>
+						<input type="radio"  name="check_status" value="2" {if $store.check_status eq 2}checked{/if}><span>{lang key='store::store.check_yes'}</span>
 					</div>
 				</div>
 				

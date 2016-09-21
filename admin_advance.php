@@ -87,6 +87,7 @@ class admin_advance extends ecjia_admin {
 			'business_licence'  => !empty($_POST['business_licence']) 	? $_POST['business_licence'] : '',
 			'business_licence_pic' => !empty($_POST['business_licence_pic']) 	? $_POST['business_licence_pic'] : '',
 			'bank_name'      	   => !empty($_POST['bank_name']) 				? $_POST['bank_name'] : '',
+			'bank_branch_name'     => !empty($_POST['bank_branch_name']) 				? $_POST['bank_branch_name'] : '',
 			'bank_account_number'  => !empty($_POST['bank_account_number'])		? $_POST['bank_account_number'] : '',
 			'bank_address'         => !empty($_POST['bank_address']) 			? $_POST['bank_address'] : '',
 		);
@@ -132,7 +133,7 @@ class admin_advance extends ecjia_admin {
 			'time'			=>	RC_Time::gmtime(),
 		);
 		RC_DB::table('check_log')->insertGetId($check_log);
-		if($_POST['check'] == 2) {//通过
+		if($_POST['check_status'] == 2) {//通过
 			$store = RC_DB::table('store_advance')->where('store_id', $store_id)->first();
 			$data =array(
 					'store_id' 		=> $store_id,
@@ -153,6 +154,7 @@ class admin_advance extends ecjia_admin {
 					'business_licence'		=>$store['business_licence'],
 					'business_licence_pic'	=>$store['business_licence_pic'],
 					'bank_name'				=>$store['bank_name'],
+					'bank_branch_name'		=>$store['bank_branch_name'],
 					'bank_account_number'	=>$store['bank_account_number'],
 					'bank_address'			=>$store['bank_address'],
 					'longitude'				=>$store['longitude'],

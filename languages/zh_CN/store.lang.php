@@ -62,6 +62,7 @@ return array(
 	'identity_pic_back_lable'		=>	'证件反面：',
 	'business_licence_lable'		=>	'营业执照注册号：',
 	'business_licence_pic_lable'	=>	'营业执照电子版：',
+	'bank_branch_name_lable'		=>	'收款银行：',
 	'bank_name_lable'				=>	'开户银行支行名称：',
 	'bank_account_number_lable'		=>	'银行账号：',
 	'bank_address_lable'			=>	'开户银行支行地址：',

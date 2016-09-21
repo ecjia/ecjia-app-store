@@ -177,6 +177,13 @@
 				</div>
 				
 				<div class="control-group formSep">
+					<label class="control-label">{lang key='store::store.bank_branch_name_lable'}</label>
+					<div class="controls">
+						<input class="span6" name="bank_branch_name" type="text" value="{$store.bank_branch_name}" />
+					</div>
+				</div>
+				
+				<div class="control-group formSep">
 					<label class="control-label">{lang key='store::store.bank_account_number_lable'}</label>
 					<div class="controls">
 						<input class="span6" name="bank_account_number" type="text" value="{$store.bank_account_number}" />
