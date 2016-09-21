@@ -15,9 +15,9 @@ class adsense_admin_purview_api extends Component_Event_Api {
         	array('action_name' => RC_Lang::get('store::store.store_lock'), 'action_code' => 'store_affiliate_lock', 	'relevance' => ''),
         		
         	//待审核入驻商权限
-        	array('action_name' => RC_Lang::get('store::store.store_advance'), 'action_code' => 'store_advance_manage', 	'relevance' => ''),
-        	array('action_name' => RC_Lang::get('store::store.store_update'), 'action_code' => 'store_advance_update', 	'relevance' => ''),
-        	array('action_name' => RC_Lang::get('store::store.store_check'), 'action_code' => 'store_advance_check', 	'relevance' => ''),
+        	array('action_name' => RC_Lang::get('store::store.store_preaudit'), 'action_code' => 'store_preaudit_manage', 	'relevance' => ''),
+        	array('action_name' => RC_Lang::get('store::store.store_update'), 'action_code' => 'store_preaudit_update', 	'relevance' => ''),
+        	array('action_name' => RC_Lang::get('store::store.store_check'), 'action_code' => 'store_preaudit_check', 	'relevance' => ''),
         	
         );
         

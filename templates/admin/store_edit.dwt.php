@@ -37,98 +37,11 @@
 				<div class="control-group formSep" >
 					<label class="control-label">{lang key='store::store.identity_type_lable'}</label>
 					<div class="controls">
-						<select name="store_cat">
-							<option value="0">{lang key='store::store.select_plz'}</option>
-							<!-- {$cat_select} -->
+						<select name="identity_type">
+							<option value=''  {if $store.identity_type eq '' } selected="true" {/if}>{lang key='store::store.select_plz'}</option>
+							<option value='1' {if $store.identity_type eq 1} selected="true" {/if}>{lang key='store::store.personal'}</option>
+							<option value='2' {if $store.identity_type eq 2} selected="true" {/if}>{lang key='store::store.company'}</option>
 						</select>
-					</div>
-				</div>
-				
-				<div class="control-group formSep">
-					<label class="control-label">{lang key='store::store.identity_number_lable'}</label>
-					<div class="controls">
-						<input class="span6" name="identity_number" type="text" value="{$store.identity_number}" />
-					</div>
-				</div>
-				
-				<div class="control-group formSep">
-					{if $store.business_licence_pic eq ''}
-						<label class="control-label">{lang key='store::store.identity_pic_front_lable'}</label>
-						<div class="controls">
-							<div class="fileupload fileupload-new" data-provides="fileupload">
-								<input type="hidden" name="{$var.code}" />
-								<div class="fileupload-preview fileupload-exists thumbnail" style="width: 50px; height: 50px; line-height: 50px;"></div>
-								<span class="btn btn-file">
-									<span class="fileupload-new">{lang key='store::store.browse'}</span>
-									<span class="fileupload-exists">{lang key='store::store.modify'}</span>
-									<input type='file' name='img_file_src' size="35" />
-								</span>
-								<a class="btn fileupload-exists" data-dismiss="fileupload" href="#">{lang key='system::system.drop'}</a>
-							</div>
-						</div>
-					{else}
-						<label class="control-label">{lang key='store::store.identity_pic_front_lable'}</label>
-						<div class="controls">
-							<div class="fileupload fileupload-new" data-provides="fileupload">
-								<img class="w120 h120"  class="img-polaroid" src="{RC_Upload::upload_url()}/{$store.identity_pic_front}"><br><br>
-								{lang key='store::store.file_address'}{$store.identity_pic_front}<br><br>
-								<input type="hidden" name="{$var.code}" />
-								<div class="fileupload-preview fileupload-exists thumbnail" style="width: 50px; height: 50px; line-height: 50px;"></div>
-								<span class="btn btn-file">
-									<span class="fileupload-new">{lang key='store::store.change_image'}</span>
-									<span class="fileupload-exists">{lang key='store::store.modify'}</span>
-									<input type='file' name='img_file_src' size="35" />
-								</span>
-								<a class="btn fileupload-exists" data-dismiss="fileupload" href="#">{lang key='system::system.drop'}</a>
-								<input type="hidden" name="{$var.code}" />
-								<input type="hidden" name="{$store.identity_pic_front}" />
-								<input name="identity_pic_front" value="{$store.identity_pic_front}" class="hide">
-							</div>
-						</div>
-					{/if}
-				</div>
-				
-				<div class="control-group formSep">
-					{if $store.business_licence_pic eq ''}
-						<label class="control-label">{lang key='store::store.identity_pic_back_lable'}</label>
-						<div class="controls">
-							<div class="fileupload fileupload-new" data-provides="fileupload">
-								<input type="hidden" name="{$var.code}" />
-								<div class="fileupload-preview fileupload-exists thumbnail" style="width: 50px; height: 50px; line-height: 50px;"></div>
-								<span class="btn btn-file">
-									<span class="fileupload-new">{lang key='store::store.browse'}</span>
-									<span class="fileupload-exists">{lang key='store::store.modify'}</span>
-									<input type='file' name='img_file_src' size="35" />
-								</span>
-								<a class="btn fileupload-exists" data-dismiss="fileupload" href="#">{lang key='system::system.drop'}</a>
-							</div>
-						</div>
-					{else}
-						<label class="control-label">{lang key='store::store.identity_pic_back_lable'}</label>
-						<div class="controls">
-							<div class="fileupload fileupload-new" data-provides="fileupload">
-								<img class="w120 h120"  class="img-polaroid" src="{RC_Upload::upload_url()}/{$store.identity_pic_back}"><br><br>
-								{lang key='store::store.file_address'}{$store.identity_pic_back}<br><br>
-								<input type="hidden" name="{$var.code}" />
-								<div class="fileupload-preview fileupload-exists thumbnail" style="width: 50px; height: 50px; line-height: 50px;"></div>
-								<span class="btn btn-file">
-									<span class="fileupload-new">{lang key='store::store.change_image'}</span>
-									<span class="fileupload-exists">{lang key='store::store.modify'}</span>
-									<input type='file' name='img_file_src' size="35" />
-								</span>
-								<a class="btn fileupload-exists" data-dismiss="fileupload" href="#">{lang key='system::system.drop'}</a>
-								<input type="hidden" name="{$var.code}" />
-								<input type="hidden" name="{$store.identity_pic_back}" />
-								<input name="identity_pic_back" value="{$store.identity_pic_back}" class="hide">
-							</div>
-						</div>
-					{/if}
-				</div>
-				
-				<div class="control-group formSep">
-					<label class="control-label">{lang key='store::store.business_licence_lable'}</label>
-					<div class="controls">
-						<input class="span6" name="business_licence" type="text" value="{$store.business_licence}" />
 					</div>
 				</div>
 				
@@ -170,6 +83,94 @@
 				</div>
 				
 				<div class="control-group formSep">
+					<label class="control-label">{lang key='store::store.business_licence_lable'}</label>
+					<div class="controls">
+						<input class="span6" name="business_licence" type="text" value="{$store.business_licence}" />
+					</div>
+				</div>
+				
+				<div class="control-group formSep">
+					{if $store.identity_pic_front eq ''}
+						<label class="control-label">{lang key='store::store.identity_pic_front_lable'}</label>
+						<div class="controls">
+							<div class="fileupload fileupload-new" data-provides="fileupload">
+								<input type="hidden" name="{$var.code}" />
+								<div class="fileupload-preview fileupload-exists thumbnail" style="width: 50px; height: 50px; line-height: 50px;"></div>
+								<span class="btn btn-file">
+									<span class="fileupload-new">{lang key='store::store.browse'}</span>
+									<span class="fileupload-exists">{lang key='store::store.modify'}</span>
+									<input type='file' name='img_file_src' size="35" />
+								</span>
+								<a class="btn fileupload-exists" data-dismiss="fileupload" href="#">{lang key='system::system.drop'}</a>
+							</div>
+						</div>
+					{else}
+						<label class="control-label">{lang key='store::store.identity_pic_front_lable'}</label>
+						<div class="controls">
+							<div class="fileupload fileupload-new" data-provides="fileupload">
+								<img class="w120 h120"  class="img-polaroid" src="{RC_Upload::upload_url()}/{$store.identity_pic_front}"><br><br>
+								{lang key='store::store.file_address'}{$store.identity_pic_front}<br><br>
+								<input type="hidden" name="{$var.code}" />
+								<div class="fileupload-preview fileupload-exists thumbnail" style="width: 50px; height: 50px; line-height: 50px;"></div>
+								<span class="btn btn-file">
+									<span class="fileupload-new">{lang key='store::store.change_image'}</span>
+									<span class="fileupload-exists">{lang key='store::store.modify'}</span>
+									<input type='file' name='img_file_src' size="35" />
+								</span>
+								<a class="btn fileupload-exists" data-dismiss="fileupload" href="#">{lang key='system::system.drop'}</a>
+								<input type="hidden" name="{$var.code}" />
+								<input type="hidden" name="{$store.identity_pic_front}" />
+								<input name="identity_pic_front" value="{$store.identity_pic_front}" class="hide">
+							</div>
+						</div>
+					{/if}
+				</div>
+				
+				<div class="control-group formSep">
+					{if $store.identity_pic_back eq ''}
+						<label class="control-label">{lang key='store::store.identity_pic_back_lable'}</label>
+						<div class="controls">
+							<div class="fileupload fileupload-new" data-provides="fileupload">
+								<input type="hidden" name="{$var.code}" />
+								<div class="fileupload-preview fileupload-exists thumbnail" style="width: 50px; height: 50px; line-height: 50px;"></div>
+								<span class="btn btn-file">
+									<span class="fileupload-new">{lang key='store::store.browse'}</span>
+									<span class="fileupload-exists">{lang key='store::store.modify'}</span>
+									<input type='file' name='img_file_src' size="35" />
+								</span>
+								<a class="btn fileupload-exists" data-dismiss="fileupload" href="#">{lang key='system::system.drop'}</a>
+							</div>
+						</div>
+					{else}
+						<label class="control-label">{lang key='store::store.identity_pic_back_lable'}</label>
+						<div class="controls">
+							<div class="fileupload fileupload-new" data-provides="fileupload">
+								<img class="w120 h120"  class="img-polaroid" src="{RC_Upload::upload_url()}/{$store.identity_pic_back}"><br><br>
+								{lang key='store::store.file_address'}{$store.identity_pic_back}<br><br>
+								<input type="hidden" name="{$var.code}" />
+								<div class="fileupload-preview fileupload-exists thumbnail" style="width: 50px; height: 50px; line-height: 50px;"></div>
+								<span class="btn btn-file">
+									<span class="fileupload-new">{lang key='store::store.change_image'}</span>
+									<span class="fileupload-exists">{lang key='store::store.modify'}</span>
+									<input type='file' name='img_file_src' size="35" />
+								</span>
+								<a class="btn fileupload-exists" data-dismiss="fileupload" href="#">{lang key='system::system.drop'}</a>
+								<input type="hidden" name="{$var.code}" />
+								<input type="hidden" name="{$store.identity_pic_back}" />
+								<input name="identity_pic_back" value="{$store.identity_pic_back}" class="hide">
+							</div>
+						</div>
+					{/if}
+				</div>
+				
+				<div class="control-group formSep">
+					<label class="control-label">{lang key='store::store.identity_number_lable'}</label>
+					<div class="controls">
+						<input class="span6" name="identity_number" type="text" value="{$store.identity_number}" />
+					</div>
+				</div>
+				
+				<div class="control-group formSep">
 					<label class="control-label">{lang key='store::store.bank_name_lable'}</label>
 					<div class="controls">
 						<input class="span6" name="bank_name" type="text" value="{$store.bank_name}" />
@@ -182,7 +183,7 @@
 						<input class="span6" name="bank_branch_name" type="text" value="{$store.bank_branch_name}" />
 					</div>
 				</div>
-				
+					
 				<div class="control-group formSep">
 					<label class="control-label">{lang key='store::store.bank_account_number_lable'}</label>
 					<div class="controls">
@@ -224,7 +225,7 @@
 					<div class="controls">
 						<select name="store_cat">
 							<option value="0">{lang key='store::store.select_plz'}</option>
-							<!-- {$cat_select} -->
+							<!-- {html_options options=$cat_list selected=$store.cat_id} -->
 						</select>
 					</div>
 				</div>

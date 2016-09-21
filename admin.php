@@ -55,72 +55,53 @@ class admin extends ecjia_admin {
 	 * 编辑入驻商
 	 */
 	public function edit() {
-		$this->admin_priv('store_advance_update', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('store_affiliate_update', ecjia::MSGTYPE_JSON);
 		
 		$this->assign('ur_here',RC_Lang::get('store::store.store_update'));
-		$this->assign('action_link',array('href' => RC_Uri::url('store/admin_advance/init'),'text' => RC_Lang::get('store::store.store_advance')));
+		$this->assign('action_link',array('href' => RC_Uri::url('store/admin_preaudit/init'),'text' => RC_Lang::get('store::store.store_preaudit')));
 		
 		$store_id = intval($_GET['store_id']);
-		$store = RC_DB::table('store_advance')->where('store_id', $store_id)->first();
+		$store = RC_DB::table('store_preaudit')->where('store_id', $store_id)->first();
 		$store['apply_time']	= RC_Time::local_date(ecjia::config('time_format'), $store['apply_time']);
 		$this->assign('store', $store);
+		$cat_list = $this->get_cat_select_list();
+		$this->assign('cat_list', $cat_list);
 		
-		$this->assign('form_action',RC_Uri::url('store/admin_advance/update'));
+		$this->assign('form_action',RC_Uri::url('store/admin_preaudit/update'));
 
-		$this->display('store_advance_edit.dwt');
+		$this->display('store_edit.dwt');
 	}
 	
 	/**
 	 * 编辑入驻商数据更新
 	 */
 	public function update() {
-		$this->admin_priv('store_advance_update', ecjia::MSGTYPE_JSON);
-		
-		$store_id    = intval($_POST['store_id']);
-		$remark 	=!empty($_POST['remark']) ? $_POST['remark'] : '';
-		$original 	=!empty($_POST['original']) ? $_POST['original'] : '';
-		$check_log =array(
-			'store_id' 		=> 	$store_id,
-			'original' 		=> 	$original,
-			'info'			=>	$remark,
-			'time'			=>	RC_Time::gmtime(),
+		$this->admin_priv('store_affiliate_update', ecjia::MSGTYPE_JSON);
+		$store_id = intval($_POST['store_id']);
+		$data = array(
+			'cat_id'   	   		=> !empty($_POST['store_cat']) 		? $_POST['store_cat'] : '',
+			'merchants_name'   	=> !empty($_POST['merchants_name']) ? $_POST['merchants_name'] : '',
+			'shop_keyword'      => !empty($_POST['shop_keyword']) 	? $_POST['shop_keyword'] : '',
+			'responsible_person'=> !empty($_POST['responsible_person']) ? $_POST['responsible_person'] : '',
+			'company_name'      => !empty($_POST['company_name']) 		? $_POST['company_name'] : '',
+			'email'      		=> !empty($_POST['email']) 				? $_POST['email'] : '',
+			'contact_mobile'    => !empty($_POST['contact_mobile']) 	? $_POST['contact_mobile'] : '',
+			'address'      		=> !empty($_POST['address']) 			? $_POST['address'] : '',
+			'identity_type'     => !empty($_POST['identity_type']) 		? $_POST['identity_type'] : '',
+			'identity_number'   => !empty($_POST['identity_number']) 	? $_POST['identity_number'] : '',
+			'identity_pic_front'=> !empty($_POST['identity_pic_front']) ? $_POST['identity_pic_front'] : '',
+			'identity_pic_back' => !empty($_POST['identity_pic_back']) 	? $_POST['identity_pic_back'] : '',
+			'business_licence'  => !empty($_POST['business_licence']) 	? $_POST['business_licence'] : '',
+			'business_licence_pic' => !empty($_POST['business_licence_pic']) 	? $_POST['business_licence_pic'] : '',
+			'bank_name'      	   => !empty($_POST['bank_name']) 				? $_POST['bank_name'] : '',
+			'bank_branch_name'     => !empty($_POST['bank_branch_name']) 				? $_POST['bank_branch_name'] : '',
+			'bank_account_number'  => !empty($_POST['bank_account_number'])		? $_POST['bank_account_number'] : '',
+			'bank_address'         => !empty($_POST['bank_address']) 			? $_POST['bank_address'] : '',
 		);
-		RC_DB::table('check_log')->insertGetId($check_log);
-		if($_POST['check'] == 2) {//通过
-			$store = RC_DB::table('store_advance')->where('store_id', $store_id)->first();
-			$data =array(
-					'store_id' 		=> $store_id,
-					'cat_id' 		=> $store['cat_id'],
-					'merchants_name'=>$store['merchants_name'],
-					'shop_keyword'	=>$store['shop_keyword'],
-					'responsible_person'	=>$store['responsible_person'],
-					'company_name'			=>$store['company_name'],
-					'email'					=>$store['email'],
-					'contact_mobile'		=>$store['contact_mobile'],
-					'apply_time'			=>$store['apply_time'],
-					'confirm_time'			=>RC_Time::gmtime(),
-					'address'				=>$store['address'],
-					'identity_type'			=>$store['identity_type'],
-					'identity_number'		=>$store['identity_number'],
-					'identity_pic_front'	=>$store['identity_pic_front'],
-					'identity_pic_back'		=>$store['identity_pic_back'],
-					'business_licence'		=>$store['business_licence'],
-					'business_licence_pic'	=>$store['business_licence_pic'],
-					'bank_name'				=>$store['bank_name'],
-					'bank_account_number'	=>$store['bank_account_number'],
-					'bank_address'			=>$store['bank_address'],
-					'longitude'				=>$store['longitude'],
-					'latitude'				=>$store['latitude'],
-					'sort_order' 			=> 50,
-					'remark'				=>$remark,
-			);
-			RC_DB::table('store_franchisee')->insert($data);
-			RC_DB::table('store_advance')->where('store_id', $store_id)->delete();
-			$this->showmessage(RC_Lang::get('store::store.check_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin_advance/init', array('store_id' => $store_id))));
-		}else {
-			RC_DB::table('store_advance')->where('store_id', $store_id)->update(array('remark'=>$remark));
-			$this->showmessage(RC_Lang::get('store::store.deal_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin_advance/check', array('store_id' => $store_id))));
-		}
+	
+		RC_DB::table('store_preaudit')->where('store_id', $store_id)->update($data);
+
+		$this->showmessage(RC_Lang::get('store::store.edit_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin_preaudit/edit', array('store_id' => $store_id))));
 	}
 	
 	//获取入驻商列表信息

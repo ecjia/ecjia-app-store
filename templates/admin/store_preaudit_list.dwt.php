@@ -38,8 +38,8 @@
 				    <td class="hide-edit-area">
 				    	<span>{$list.merchants_name}</span>
 				    	<div class="edit-list">
-				    		<a class="data-pjax" href='{RC_Uri::url("store/admin_advance/edit", "store_id={$list.store_id}")}' title="{lang key='system::system.edit'}">{lang key='system::system.edit'}</a>&nbsp;|&nbsp;
-					      	<a class="data-pjax" href='{RC_Uri::url("store/admin_advance/check", "store_id={$list.store_id}")}' title="{lang key='store::store.lock'}">{lang key='store::store.check'}</a>
+				    		<a class="data-pjax" href='{RC_Uri::url("store/admin_preaudit/edit", "store_id={$list.store_id}")}' title="{lang key='system::system.edit'}">{lang key='system::system.edit'}</a>&nbsp;|&nbsp;
+					      	<a class="data-pjax" href='{RC_Uri::url("store/admin_preaudit/check", "store_id={$list.store_id}")}' title="{lang key='store::store.lock'}">{lang key='store::store.check'}</a>
 					     </div>
 					</td>
 					<td>{$list.cat_name}</td>

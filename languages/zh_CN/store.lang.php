@@ -13,7 +13,7 @@ return array(
 	
 	//子菜单	
 	'store_affiliate'=> '入驻商家',
-	'advance' 		=> '待审核商家',
+	'preaudit' 		=> '待审核商家',
 	'category' 		=> '店铺分类',
 	'commission' 	=> '佣金结算',
 	'percent' 		=> '佣金比例',
@@ -26,7 +26,7 @@ return array(
 	'id'			=>	'编号',
 	'store_update'	=>	'编辑入驻商',
 	'store_title'	=>	'店铺名称',
-	'store_cat'		=>	'店铺类型',
+	'store_cat'		=>	'店铺分类',
 	'sort_order'	=>	'排序',
 	'view'			=>	'查看详情',
 	'lock'			=>	'锁定',
@@ -35,8 +35,8 @@ return array(
 		
 		
 	//待审核商家入驻列表	
-	'store_advance'			=>	'待审核入驻商',
-	'store_advance_list'	=>	'待审核入驻商列表',
+	'store_preaudit'			=>	'待审核入驻商',
+	'store_preaudit_list'	=>	'待审核入驻商列表',
 	'check'					=>	'审核',
 	'check_view'		    =>	'审核商家',
 		
@@ -44,7 +44,7 @@ return array(
 	'sub_update' =>'更新',
 	'sub_check'	 =>'处理',
 	'store_title_lable' 	=>	'店铺名称：',
-	'store_cat_lable' 		=>	'店铺类型：',
+	'store_cat_lable' 		=>	'店铺分类：',
 	'store_keywords_lable' 	=>	'店铺关键词：',
 	'lock_lable' 			=>	'是否锁定店铺：',
 	'check_lable' 			=>	'审核：',
@@ -62,8 +62,8 @@ return array(
 	'identity_pic_back_lable'		=>	'证件反面：',
 	'business_licence_lable'		=>	'营业执照注册号：',
 	'business_licence_pic_lable'	=>	'营业执照电子版：',
-	'bank_branch_name_lable'		=>	'收款银行：',
-	'bank_name_lable'				=>	'开户银行支行名称：',
+	'bank_branch_name_lable'		=>	'开户银行支行名称：',
+	'bank_name_lable'				=>	'收款银行：',
 	'bank_account_number_lable'		=>	'银行账号：',
 	'bank_address_lable'			=>	'开户银行支行地址：',
 	'remark_lable'		=>	'备注信息：',
@@ -81,6 +81,9 @@ return array(
 	
 	'open'	 	=>	'开启',
 	'close'	 	=>	'关闭',
+	
+	'personal'	=>	'个人',
+	'company'	=>	'企业',
 	
 );
 
