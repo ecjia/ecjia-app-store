@@ -8,7 +8,7 @@
 defined('IN_ECJIA') or exit('No permission resources.');
 
 return array(
-	'identifier' 	=> 'ecjia.package',
+	'identifier' 	=> 'ecjia.store',
 	'directory' 	=> 'store',
 	'name'			=> 'store',
 	'description' 	=> 'store_desc',			/* 描述对应的语言项 */
