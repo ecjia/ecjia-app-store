@@ -42,28 +42,17 @@
 				</div>
 				
 				<div class="control-group formSep">
-					<label class="control-label">{lang key='store::store.identity_number_lable'}</label>
-					<div class="controls l_h30">
-						{$store.identity_number}
-					</div>
-				</div>
-				
-				<div class="control-group formSep">
-					<label class="control-label">{lang key='store::store.identity_pic_front_lable'}</label>
+					<label class="control-label">{lang key='store::store.business_licence_pic_lable'}</label>
 					<div class="controls">
 						<div class="fileupload fileupload-new" data-provides="fileupload">
-							<img class="w120 h120"  class="img-polaroid" src="{RC_Upload::upload_url()}/{$store.identity_pic_front}"><br><br>
-							{lang key='store::store.file_address'}{$store.identity_pic_front}<br><br>
-						</div>
-					</div>
-				</div>
-				
-				<div class="control-group formSep">
-					<label class="control-label">{lang key='store::store.identity_pic_back_lable'}</label>
-					<div class="controls">
-						<div class="fileupload fileupload-new" data-provides="fileupload">
-							<img class="w120 h120"  class="img-polaroid" src="{RC_Upload::upload_url()}/{$store.identity_pic_back}"><br><br>
-							{lang key='store::store.file_address'}{$store.identity_pic_back}<br><br>
+							{if $store.business_licence_pic neq ''}
+								<img class="w120 h120"  class="img-polaroid" src="{RC_Upload::upload_url()}/{$store.business_licence_pic}"><br>
+								{lang key='store::store.file_address'}{$store.business_licence_pic}<br>
+							{else}
+								<div class="l_h30">
+									{lang key='store::store.no_upload'}
+								</div>
+							{/if}
 						</div>
 					</div>
 				</div>
@@ -74,21 +63,43 @@
 						{$store.business_licence}
 					</div>
 				</div>
-				
+		
 				<div class="control-group formSep">
-					<label class="control-label">{lang key='store::store.business_licence_pic_lable'}</label>
+					<label class="control-label">{lang key='store::store.identity_pic_front_lable'}</label>
 					<div class="controls">
 						<div class="fileupload fileupload-new" data-provides="fileupload">
-							<img class="w120 h120"  class="img-polaroid" src="{RC_Upload::upload_url()}/{$store.business_licence_pic}"><br><br>
-							{lang key='store::store.file_address'}{$store.business_licence_pic}<br><br>
+							{if $store.business_licence_pic neq ''}
+								<img class="w120 h120"  class="img-polaroid" src="{RC_Upload::upload_url()}/{$store.identity_pic_front}"><br>
+								{lang key='store::store.file_address'}{$store.identity_pic_front}<br>
+							{else}
+								<div class="l_h30">
+									{lang key='store::store.no_upload'}
+								</div>
+							{/if}
 						</div>
 					</div>
 				</div>
 				
 				<div class="control-group formSep">
-					<label class="control-label">{lang key='store::store.bank_branch_name_lable'}</label>
+					<label class="control-label">{lang key='store::store.identity_pic_back_lable'}</label>
+					<div class="controls">
+						<div class="fileupload fileupload-new" data-provides="fileupload">
+							{if $store.business_licence_pic neq ''}
+								<img class="w120 h120"  class="img-polaroid" src="{RC_Upload::upload_url()}/{$store.identity_pic_back}"><br>
+								{lang key='store::store.file_address'}{$store.identity_pic_back}<br>
+							{else}
+								<div class="l_h30">
+									{lang key='store::store.no_upload'}
+								</div>
+							{/if}
+						</div>
+					</div>
+				</div>
+				
+				<div class="control-group formSep">
+					<label class="control-label">{lang key='store::store.identity_number_lable'}</label>
 					<div class="controls l_h30">
-						{$store.bank_branch_name}
+						{$store.identity_number}
 					</div>
 				</div>
 				
@@ -96,6 +107,13 @@
 					<label class="control-label">{lang key='store::store.bank_name_lable'}</label>
 					<div class="controls l_h30">
 						{$store.bank_name}
+					</div>
+				</div>
+				
+				<div class="control-group formSep">
+					<label class="control-label">{lang key='store::store.bank_branch_name_lable'}</label>
+					<div class="controls l_h30">
+						{$store.bank_branch_name}
 					</div>
 				</div>
 				

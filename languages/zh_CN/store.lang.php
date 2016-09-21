@@ -85,6 +85,8 @@ return array(
 	'personal'	=>	'个人',
 	'company'	=>	'企业',
 	
+	'no_upload' =>  '还未上传'
+	
 );
 
 //end
