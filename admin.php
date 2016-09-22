@@ -74,27 +74,84 @@ class admin extends ecjia_admin {
 		$this->admin_priv('store_affiliate_update', ecjia::MSGTYPE_JSON);
 		
 		$store_id = intval($_POST['store_id']);
+		
+		$pic_url = RC_DB::table('store_preaudit')->where('store_id', $store_id)->first();
+		
+		if (!empty($_FILES['one']['name'])) {
+			$upload = RC_Upload::uploader('image', array('save_path' => 'data/store', 'auto_sub_dirs' => false));
+			$info = $upload->upload($_FILES['one']);
+			if (!empty($info)) {
+				$business_licence_pic = $upload->get_position($info);
+				$upload->remove($pic_url['business_licence_pic']);
+			} else {
+				$this->showmessage($upload->error(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			}
+		}else {
+			$business_licence_pic = $pic_url['business_licence_pic'];
+		}
+		
+		if (!empty($_FILES['two']['name'])) {
+			$upload = RC_Upload::uploader('image', array('save_path' => 'data/store', 'auto_sub_dirs' => false));
+			$info = $upload->upload($_FILES['two']);
+			if (!empty($info)) {
+				$identity_pic_front = $upload->get_position($info);
+				$upload->remove($pic_url['identity_pic_front']);
+			} else {
+				$this->showmessage($upload->error(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			}
+		}else {
+			$identity_pic_front = $pic_url['identity_pic_front'];
+		}
+		
+		if (!empty($_FILES['three']['name'])) {
+			$upload = RC_Upload::uploader('image', array('save_path' => 'data/store', 'auto_sub_dirs' => false));
+			$info = $upload->upload($_FILES['three']);
+			if (!empty($info)) {
+				$identity_pic_back = $upload->get_position($info);
+				$upload->remove($pic_url['identity_pic_back']);
+			} else {
+				$this->showmessage($upload->error(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			}
+		}else {
+			$identity_pic_back = $pic_url['identity_pic_back'];
+		}
+		
+		if (!empty($_FILES['four']['name'])) {
+			$upload = RC_Upload::uploader('image', array('save_path' => 'data/store', 'auto_sub_dirs' => false));
+			$info = $upload->upload($_FILES['four']);
+			if (!empty($info)) {
+				$personhand_identity_pic = $upload->get_position($info);
+				$upload->remove($pic_url['personhand_identity_pic']);
+			} else {
+				$this->showmessage($upload->error(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			}
+		}else {
+			$personhand_identity_pic = $pic_url['personhand_identity_pic'];
+		}
+		
+		
 		$data = array(
-			'cat_id'   	   		=> !empty($_POST['store_cat']) 		? $_POST['store_cat'] : '',
-			'merchants_name'   	=> !empty($_POST['merchants_name']) ? $_POST['merchants_name'] : '',
-			'shop_keyword'      => !empty($_POST['shop_keyword']) 	? $_POST['shop_keyword'] : '',
-			'responsible_person'=> !empty($_POST['responsible_person']) ? $_POST['responsible_person'] : '',
-			'company_name'      => !empty($_POST['company_name']) 		? $_POST['company_name'] : '',
-			'email'      		=> !empty($_POST['email']) 				? $_POST['email'] : '',
-			'contact_mobile'    => !empty($_POST['contact_mobile']) 	? $_POST['contact_mobile'] : '',
-			'address'      		=> !empty($_POST['address']) 			? $_POST['address'] : '',
-			'identity_type'     => !empty($_POST['identity_type']) 		? $_POST['identity_type'] : '',
-			'identity_number'   => !empty($_POST['identity_number']) 	? $_POST['identity_number'] : '',
-			'identity_pic_front'=> !empty($_POST['identity_pic_front']) ? $_POST['identity_pic_front'] : '',
-			'identity_pic_back' => !empty($_POST['identity_pic_back']) 	? $_POST['identity_pic_back'] : '',
-			'business_licence'  => !empty($_POST['business_licence']) 	? $_POST['business_licence'] : '',
-			'business_licence_pic' => !empty($_POST['business_licence_pic']) 	? $_POST['business_licence_pic'] : '',
-			'bank_name'      	   => !empty($_POST['bank_name']) 				? $_POST['bank_name'] : '',
-			'bank_branch_name'     => !empty($_POST['bank_branch_name']) 				? $_POST['bank_branch_name'] : '',
-			'bank_account_number'  => !empty($_POST['bank_account_number'])		? $_POST['bank_account_number'] : '',
-			'bank_address'         => !empty($_POST['bank_address']) 			? $_POST['bank_address'] : '',
+			'cat_id'   	   				=> !empty($_POST['store_cat']) 		? $_POST['store_cat'] : '',
+			'merchants_name'   			=> !empty($_POST['merchants_name']) ? $_POST['merchants_name'] : '',
+			'shop_keyword'      		=> !empty($_POST['shop_keyword']) 	? $_POST['shop_keyword'] : '',
+			'responsible_person'		=> !empty($_POST['responsible_person']) ? $_POST['responsible_person'] : '',
+			'company_name'      		=> !empty($_POST['company_name']) 		? $_POST['company_name'] : '',
+			'email'      				=> !empty($_POST['email']) 				? $_POST['email'] : '',
+			'contact_mobile'    		=> !empty($_POST['contact_mobile']) 	? $_POST['contact_mobile'] : '',
+			'address'      				=> !empty($_POST['address']) 			? $_POST['address'] : '',
+			'identity_type'     		=> !empty($_POST['identity_type']) 		? $_POST['identity_type'] : '',
+			'identity_number'   		=> !empty($_POST['identity_number']) 	? $_POST['identity_number'] : '',
+			'identity_pic_front'		=> $identity_pic_front,
+			'identity_pic_back' 		=> $identity_pic_back,
+			'personhand_identity_pic' 	=> $personhand_identity_pic,
+			'business_licence'  		=> !empty($_POST['business_licence']) 	? $_POST['business_licence'] : '',
+			'business_licence_pic' 		=> $business_licence_pic,
+			'bank_name'      	  	 	=> !empty($_POST['bank_name']) 				? $_POST['bank_name'] : '',
+			'bank_branch_name'     		=> !empty($_POST['bank_branch_name']) 				? $_POST['bank_branch_name'] : '',
+			'bank_account_number'  		=> !empty($_POST['bank_account_number'])		? $_POST['bank_account_number'] : '',
+			'bank_address'         		=> !empty($_POST['bank_address']) 			? $_POST['bank_address'] : '',
 		);
-	
+		
 		RC_DB::table('store_franchisee')->where('store_id', $store_id)->update($data);
 
 		$this->showmessage(RC_Lang::get('store::store.edit_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin/edit', array('store_id' => $store_id))));
