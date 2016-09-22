@@ -39,16 +39,16 @@
 			</td>
 			<td>{$cat.store_num}</td>
 			<td>
-				<span  class="cursor_pointer" data-trigger="editable" data-url="{url path='seller/admin_store_category/edit_sort_order'}" data-name="sort_order" data-pk="{$cat.cat_id}" data-title="编辑排序"> 
+				<span  class="cursor_pointer" data-trigger="editable" data-url="{url path='store/admin_store_category/edit_sort_order'}" data-name="sort_order" data-pk="{$cat.cat_id}" data-title="编辑排序"> 
 					<!-- {$cat.sort_order} -->
 				</span>
 			</td>
 			<td>
-				<i class="{if $cat.is_show eq '1'}fontello-icon-ok cursor_pointer{else}fontello-icon-cancel cursor_pointer{/if}" data-trigger="toggleState" data-url="{url path='seller/admin_store_category/toggle_is_show'}" data-id="{$cat.cat_id}"></i>
+				<i class="{if $cat.is_show eq '1'}fontello-icon-ok cursor_pointer{else}fontello-icon-cancel cursor_pointer{/if}" data-trigger="toggleState" data-url="{url path='store/admin_store_category/toggle_is_show'}" data-id="{$cat.cat_id}"></i>
 			</td>
 			<td>
-				<a class="data-pjax no-underline" href='{url path="seller/admin_store_category/edit" args="cat_id={$cat.cat_id}"}' title="编辑"><i class="fontello-icon-edit"></i></a>
-				<a class="ajaxremove no-underline" data-toggle="ajaxremove" data-msg="您确定删除该分类吗？" href='{url path="seller/admin_store_category/remove" args="id={$cat.cat_id}"}'><i class="fontello-icon-trash"></i></a>
+				<a class="data-pjax no-underline" href='{url path="store/admin_store_category/edit" args="cat_id={$cat.cat_id}"}' title="编辑"><i class="fontello-icon-edit"></i></a>
+				<a class="ajaxremove no-underline" data-toggle="ajaxremove" data-msg="您确定删除该分类吗？" href='{url path="store/admin_store_category/remove" args="id={$cat.cat_id}"}'><i class="fontello-icon-trash"></i></a>
 			</td>
 		</tr>
 		<!-- {foreachelse}-->

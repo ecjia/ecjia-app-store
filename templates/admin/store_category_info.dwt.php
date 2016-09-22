@@ -50,6 +50,22 @@
 			            </div>
 					</div>
 				</div>
+				<div class="control-group formSep">
+					<label class="control-label">{t}分类图片：{/t}</label>
+					<div class="controls">
+						<div class="fileupload {if $cat_info.cat_image}fileupload-exists{else}fileupload-new{/if}" data-provides="fileupload">
+							<div class="fileupload-preview thumbnail fileupload-exists" style="width: 50px; height: 50px; line-height: 50px;">
+								<img src="{$cat_info.cat_image}" alt="{t}暂无图片{/t}" />
+							</div>
+							<span class="btn btn-file">
+							<span class="fileupload-new">{t}浏览{/t}</span>
+							<span class="fileupload-exists">{t}修改{/t}</span>
+							<input type="file" name="cat_image"/>
+							</span>
+							<a class="btn fileupload-exists" data-toggle="removefile" data-msg="{t}您确定要删除此文件吗？{/t}" data-href="{RC_Uri::url('store/admin_store_category/del','code=mobile_app_icon')}" {if $cat_info.cat_image}data-removefile="true"{/if}>{lang key='system::system.drop'}</a>
+						</div>
+					</div>
+				</div>
 				<div class="control-group formSep" >
 					<label class="control-label">关键字：</label>
 					<div class="controls">

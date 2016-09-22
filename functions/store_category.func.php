@@ -12,8 +12,8 @@ defined('IN_ECJIA') or exit('No permission resources.');
  */
 function cat_exists($cat_name, $parent_cat, $exclude = 0) {
 
-	$db = RC_Loader::load_app_model ( 'seller_category_model', 'seller' );
-	return ($db->where(array('parent_id' => $parent_cat, 'cat_name' => $cat_name, 'cat_id' => array('neq' => $exclude)))->count() > 0) ? true : false;
+	$db = RC_DB::table('store_category');
+	return ($db->where('parent_id', $parent_cat)->where('cat_name', $cat_name)->where('cat_id', '<>', $exclude)->count() > 0) ? true : false;
 }
 
 
@@ -25,8 +25,8 @@ function cat_exists($cat_name, $parent_cat, $exclude = 0) {
  * @return  mix
  */
 function get_cat_info($cat_id) {
-	$db = RC_Loader::load_app_model('seller_category_model', 'seller');
-	return $db->find(array('cat_id' => $cat_id));
+	$db = RC_DB::table('store_category');
+	return $db->where('cat_id', $cat_id)->first();
 }
 
 /**
@@ -38,12 +38,12 @@ function get_cat_info($cat_id) {
  * @return  mix
  */
 function cat_update($cat_id, $args) {
-	$db = RC_Loader::load_app_model('seller_category_model', 'seller');
+	$db = RC_DB::table('store_category');   
 	if (empty($args) || empty($cat_id)) {
 		return false;
 	}
 
-	return $db->where(array('cat_id' => $cat_id))->update($args);
+	return $db->where('cat_id', $cat_id)->update($args);
 }
 
 
@@ -65,21 +65,28 @@ function cat_update($cat_id, $args) {
  */
 function cat_list($cat_id = 0, $selected = 0, $re_type = true, $level = 0, $is_show_all = true) {
 	// 加载方法
-// 	RC_Loader::load_app_func('common', 'goods');
-// 	$db_goods = RC_Loader::load_app_model('goods_model', 'goods');
-// 	$db_category = RC_Loader::load_app_model('sys_category_viewmodel', 'goods');
-// 	$db_goods_cat = RC_Loader::load_app_model('goods_cat_viewmodel', 'goods');
-	
-	$db_shopinfo = RC_Loader::load_app_model('seller_shopinfo_model', 'seller');
-	$db_category = RC_Loader::load_app_model('seller_category_viewmodel', 'seller');
+	//$db_shopinfo = RC_Loader::load_app_model('seller_shopinfo_model', 'seller');
+	//$db_category = RC_Loader::load_app_model('seller_category_viewmodel', 'seller');
+	$db_store_franchisee = RC_DB::table('store_franchisee');
+	$db_store_category = RC_DB::table('store_category as c')
+						->leftJoin('store_category as s', RC_DB::raw('s.parent_id'), '=', RC_DB::raw('c.cat_id'));
 	static $res = NULL;
 
 	if ($res === NULL) {
 		$data = false;
 		if ($data === false) {
-			$res = $db_category->join('seller_category')->group('c.cat_id')->order(array('c.parent_id' => 'asc', 'c.sort_order' => 'asc'))->select();
-			$res2 = $db_shopinfo->field ( 'cat_id, COUNT(*)|store_num' )->group ('cat_id asc')->select();
-			
+			//$res = $db_category->join('seller_category')->group('c.cat_id')->order(array('c.parent_id' => 'asc', 'c.sort_order' => 'asc'))->select();
+			//$res2 = $db_shopinfo->field ( 'cat_id, COUNT(*)|store_num' )->group ('cat_id asc')->select();
+			$res = $db_store_category
+					->selectRaw('c.cat_id, c.cat_name, c.parent_id, c.is_show, c.sort_order, COUNT(s.cat_id) AS has_children')
+					->groupBy(RC_DB::raw('c.cat_id'))
+					->orderBy(RC_DB::raw('c.parent_id'), 'asc')
+					->orderBy(RC_DB::raw('c.sort_order', 'asc'))
+					->get();
+			$res2 = $db_store_franchisee
+					 ->select(RC_DB::raw('cat_id'), RC_DB::raw('COUNT(*) as store_num'))
+					 ->groupBy(RC_DB::raw('cat_id'))
+					 ->get();
 			//$res3 = $db_goods_cat->join('goods')->where(array('g.is_delete' => 0, 'g.is_on_sale' => 1))->group ('gc.cat_id')->select();
 			$newres = array ();
 			if (!empty($res2)) {
