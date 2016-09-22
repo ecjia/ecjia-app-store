@@ -78,15 +78,15 @@ return array(
 	'edit_success' 		=> 	'编辑成功',
 	'deal_success'	 	=>	'处理成功',
 	'check_success'	 	=>	'审核成功',
-	
 	'open'	 	=>	'开启',
 	'close'	 	=>	'关闭',
-	
 	'personal'	=>	'个人',
 	'company'	=>	'企业',
-	
-	'no_upload' =>  '还未上传'
-	
+	'no_upload' =>  '还未上传',
+	'apply_time'=>	'申请时间',	
+	'person'    =>	'法定代表人',
+	'companyname'	=>	'公司名称',
+	'confirm_time'=>'审核通过时间'
 );
 
 //end

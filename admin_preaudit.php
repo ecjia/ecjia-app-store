@@ -9,21 +9,17 @@ class admin_preaudit extends ecjia_admin {
 	public function __construct() {
 		parent::__construct();
 		
-		RC_Script::enqueue_script('jquery-validate');
-		RC_Script::enqueue_script('jquery-uniform');
-		RC_Script::enqueue_script('jquery-chosen');
-		RC_Style::enqueue_style('uniform-aristo');
-		RC_Style::enqueue_style('chosen');
-
-		RC_Script::enqueue_script('jquery-form');
-		RC_Script::enqueue_script('jquery-validate');
+		//全局JS和CSS
 		RC_Script::enqueue_script('smoke');
-
-		RC_Script::enqueue_script('jquery.toggle.buttons', RC_Uri::admin_url('statics/lib/toggle_buttons/jquery.toggle.buttons.js'));
-		RC_Style::enqueue_style('bootstrap-toggle-buttons', RC_Uri::admin_url('statics/lib/toggle_buttons/bootstrap-toggle-buttons.css'));
-		RC_Script::enqueue_script('bootstrap-editable.min', RC_Uri::admin_url('statics/lib/x-editable/bootstrap-editable/js/bootstrap-editable.min.js'));
-		RC_Style::enqueue_style('bootstrap-editable', RC_Uri::admin_url('statics/lib/x-editable/bootstrap-editable/css/bootstrap-editable.css'));
 		RC_Script::enqueue_script('bootstrap-placeholder');
+		RC_Script::enqueue_script('jquery-validate');
+		RC_Script::enqueue_script('jquery-form');
+		RC_Script::enqueue_script('bootstrap-editable.min',RC_Uri::admin_url('statics/lib/x-editable/bootstrap-editable/js/bootstrap-editable.min.js'));
+		RC_Style::enqueue_style('bootstrap-editable', RC_Uri::admin_url('statics/lib/x-editable/bootstrap-editable/css/bootstrap-editable.css'));
+		RC_Script::enqueue_script('jquery-uniform');
+		RC_Style::enqueue_style('uniform-aristo');
+		RC_Script::enqueue_script('jquery-chosen');
+		RC_Style::enqueue_style('chosen');
 		
 		RC_Script::enqueue_script('store', RC_App::apps_url('statics/js/store.js', __FILE__));
 		
@@ -221,7 +217,7 @@ class admin_preaudit extends ecjia_admin {
 	
 	//获取入驻商列表信息
 	private function store_preaudit_list() {
-		$db_store_franchisee = RC_DB::table('store_preaudit as sa');
+		$db_store_franchisee = RC_DB::table('store_preaudit as sp');
 		
 		$filter['keywords'] = empty($_GET['keywords']) ? '' : trim($_GET['keywords']);
 		if ($filter['keywords']) {
@@ -231,16 +227,15 @@ class admin_preaudit extends ecjia_admin {
 		$count = $db_store_franchisee->count();
 		$page = new ecjia_page($count, 10, 5);
 		$data = $db_store_franchisee
-		->leftJoin('store_category as sc', RC_DB::raw('sa.cat_id'), '=', RC_DB::raw('sc.cat_id'))
-		->selectRaw('sa.store_id,sa.merchants_name,sc.cat_name')
+		->leftJoin('store_category as sc', RC_DB::raw('sp.cat_id'), '=', RC_DB::raw('sc.cat_id'))
+		->selectRaw('sp.store_id,sp.merchants_name,sp.merchants_name,sp.responsible_person,sp.apply_time,sp.company_name,sc.cat_name')
 		->orderby('store_id', 'asc')
 		->take(10)
 		->get();
 		$res = array();
 		if (!empty($data)) {
 			foreach ($data as $row) {
-				$row['start_time'] = RC_Time::local_date(ecjia::config('time_format'), $row['start_time']);
-				$row['end_time']   = RC_Time::local_date(ecjia::config('time_format'), $row['end_time']);
+				$row['apply_time'] = RC_Time::local_date(ecjia::config('time_format'), $row['apply_time']);
 				$res[] = $row;
 			}
 		}

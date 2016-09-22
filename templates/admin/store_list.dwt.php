@@ -25,11 +25,14 @@
 	<div class="span12">
 		<table class="table table-striped smpl_tbl table-hide-edit">
 			<thead>
-				<tr>
+			  	<tr>
 					<th class="w50">{lang key='store::store.id'}</th>
 				    <th class="w100">{lang key='store::store.store_title'}</th>
-				    <th class="w200">{lang key='store::store.store_cat'}</th>
-				    <th class="w250">{lang key='store::store.sort_order'}</th>
+				    <th class="w100">{lang key='store::store.store_cat'}</th>
+				    <th class="w100">{lang key='store::store.person'}</th>
+				    <th class="w200">{lang key='store::store.companyname'}</th>
+				    <th class="w150">{lang key='store::store.confirm_time'}</th>
+				    <th class="w50">{lang key='store::store.sort_order'}</th>
 			  	</tr>
 			</thead>
 			<tbody>
@@ -39,13 +42,16 @@
 				    <td class="hide-edit-area">
 				    	<span>{$list.merchants_name}</span>
 				    	<div class="edit-list">
-				    		<a class="data-pjax" href='{RC_Uri::url("store/admin/edit", "id={$list.store_id}")}' title="{lang key='system::system.edit'}">{lang key='system::system.edit'}</a>&nbsp;|&nbsp;
-					      	<a class="data-pjax" href='{RC_Uri::url("store/admin/lock", "id={$list.store_id}")}' title="{lang key='store::store.lock'}">{lang key='store::store.lock'}</a>&nbsp;|&nbsp; 
-					     	<a class="data-pjax" href='{RC_Uri::url("store/admin/commission", "id={$list.store_id}")}' title="{lang key='store::store.commission'}">{lang key='store::store.commission'}</a>&nbsp;|&nbsp;  
-					     	<a class="data-pjax" href='{RC_Uri::url("store/admin/preview", "id={$list.store_id}")}' title="{lang key='store::store.view'}">{lang key='store::store.view'}</a>
+				    		<a class="data-pjax" href='{RC_Uri::url("store/admin/edit", "store_id={$list.store_id}")}' title="{lang key='system::system.edit'}">{lang key='system::system.edit'}</a>&nbsp;|&nbsp;
+					      	<a class="data-pjax" href='{RC_Uri::url("store/admin/lock", "store_id={$list.store_id}")}' title="{lang key='store::store.lock'}">{lang key='store::store.lock'}</a>&nbsp;|&nbsp; 
+					     	<a class="data-pjax" href='{RC_Uri::url("store/admin/commission", "store_id={$list.store_id}")}' title="{lang key='store::store.commission'}">{lang key='store::store.commission'}</a>&nbsp;|&nbsp;  
+					     	<a class="data-pjax" href='{RC_Uri::url("store/admin/preview", "store_id={$list.store_id}")}' title="{lang key='store::store.view'}">{lang key='store::store.view'}</a>
 					     </div>
 					</td>
 					<td>{$list.cat_name}</td>
+					<td>{$list.responsible_person}</td>
+					<td>{$list.company_name}</td>
+					<td>{$list.confirm_time}</td>
 				    <td>{$list.sort_order}</td>
 				</tr>
 				<!-- {foreachelse} -->

@@ -28,7 +28,10 @@
 				<tr>
 					<th class="w50">{lang key='store::store.id'}</th>
 				    <th class="w100">{lang key='store::store.store_title'}</th>
-				    <th class="w200">{lang key='store::store.store_cat'}</th>
+				    <th class="w100">{lang key='store::store.store_cat'}</th>
+				    <th class="w100">{lang key='store::store.person'}</th>
+				    <th class="w200">{lang key='store::store.companyname'}</th>
+				    <th class="w150">{lang key='store::store.apply_time'}</th>
 			  	</tr>
 			</thead>
 			<tbody>
@@ -43,6 +46,9 @@
 					     </div>
 					</td>
 					<td>{$list.cat_name}</td>
+					<td>{$list.responsible_person}</td>
+					<td>{$list.company_name}</td>
+					<td>{$list.apply_time}</td>
 				</tr>
 				<!-- {foreachelse} -->
 				   <tr><td class="no-records" colspan="10">{lang key='system::system.no_records'}</td></tr>
