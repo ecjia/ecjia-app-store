@@ -6,14 +6,12 @@ defined('IN_ECJIA') or exit('No permission resources.');
 
 class admin extends ecjia_admin {
 	
-	
 	public function __construct() {
 		parent::__construct();
 		
 		RC_Loader::load_app_func('global');
 		assign_adminlog_content();
 		
-
 		//全局JS和CSS
 		RC_Script::enqueue_script('smoke');
 		RC_Script::enqueue_script('bootstrap-placeholder');
@@ -25,10 +23,6 @@ class admin extends ecjia_admin {
 		RC_Style::enqueue_style('uniform-aristo');
 		RC_Script::enqueue_script('jquery-chosen');
 		RC_Style::enqueue_style('chosen');
-		
-		//时间控件
-		RC_Style::enqueue_style('datepicker',RC_Uri::admin_url('statics/lib/datepicker/datepicker.css'));
-		RC_Script::enqueue_script('bootstrap-datepicker',RC_Uri::admin_url('statics/lib/datepicker/bootstrap-datepicker.min.js'));
 		
 		RC_Script::enqueue_script('store', RC_App::apps_url('statics/js/store.js', __FILE__));
 		
@@ -58,7 +52,7 @@ class admin extends ecjia_admin {
 		$this->admin_priv('store_affiliate_update', ecjia::MSGTYPE_JSON);
 		
 		$this->assign('ur_here',RC_Lang::get('store::store.store_update'));
-		$this->assign('action_link',array('href' => RC_Uri::url('store/admin/init'),'text' => RC_Lang::get('store::store.store_preaudit')));
+		$this->assign('action_link',array('href' => RC_Uri::url('store/admin/init'),'text' => RC_Lang::get('store::store.store_list')));
 		
 		$store_id = intval($_GET['store_id']);
 		$store = RC_DB::table('store_franchisee')->where('store_id', $store_id)->first();
@@ -112,8 +106,8 @@ class admin extends ecjia_admin {
 	public function preview() {
 		$this->admin_priv('store_affiliate_manage', ecjia::MSGTYPE_JSON);
 	
-		$this->assign('ur_here',RC_Lang::get('store::store.check_view'));
-		$this->assign('action_link',array('href' => RC_Uri::url('store/admin/init'),'text' => RC_Lang::get('store::store.store_preaudit')));
+		$this->assign('ur_here',RC_Lang::get('store::store.view'));
+		$this->assign('action_link',array('href' => RC_Uri::url('store/admin/init'),'text' => RC_Lang::get('store::store.store_list')));
 	
 		$store_id = intval($_GET['store_id']);
 		$store = RC_DB::table('store_franchisee')->where('store_id', $store_id)->first();

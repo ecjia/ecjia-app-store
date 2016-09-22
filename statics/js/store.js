@@ -12,41 +12,7 @@
     };
  
     app.store_edit = {
-        init: function () {
-            $("form[name='theForm']").validate({
-                onkeyup: false,
-                errorPlacement: function (error, element) {
-                    error.appendTo(element.closest("div.controls"));
-                },
-                highlight: function (element) {
-                    $(element).closest("div.control-group").addClass("error f_error");
-                    var thisStep = $(element).closest('form').prev('ul').find('.current-step');
-                    thisStep.addClass('error-image');
-                },
-                unhighlight: function (element) {
-                    $(element).closest("div.control-group").removeClass("error f_error");
-                    if (!$(element).closest('form').find('div.error').length) {
-                        var thisStep = $(element).closest('form').prev('ul').find('.current-step');
-                        thisStep.removeClass('error-image');
-                    };
-                },
-                submitHandler: function () {
-                    $("form[name='theForm']").ajaxSubmit({
-                        dataType: "json",
-                        success: function (data) {
-                            ecjia.admin.showmessage(data);
-                        }
-                    });
-                }
-            });
- 
-            $('#info-toggle-button').toggleButtons({
-                style: {
-                    enabled: "info",
-                    disabled: "success"
-                }
-            });
-        }
+        init: function () {}
     }
 })(ecjia.admin, jQuery);
  
