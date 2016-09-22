@@ -280,6 +280,24 @@ class admin_store_category extends ecjia_admin {
 			$this->showmessage('', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 	}
+	
+	/**
+	 * 删除上传文件
+	 */
+	public function del() {
+		$this->admin_priv('store_category_drop', ecjia::MSGTYPE_JSON);	
+		$cat_id     = trim($_GET['cat_id']);
+	
+		$cat_image = RC_DB::table('store_category')->where('cat_id', $cat_id)->select('cat_image')->first();
+		$disk = RC_Filesystem::disk();
+		if (!empty($cat_image['cat_image'])) {
+			$disk->delete(RC_Upload::upload_path() . $cat_image['cat_image']);
+		}
+		
+		ecjia_admin::admin_log('', 'remove', 'store_category');
+		RC_DB::table('store_category')->where('cat_id', $cat_id)->update(array('cat_image' => ''));
+		$this->showmessage(RC_Lang::get('store::store.del_store_cat_img_ok') , ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
+	}
 }
 
 //end

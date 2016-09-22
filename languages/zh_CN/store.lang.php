@@ -60,6 +60,7 @@ return array(
 	'identity_number_lable'			=>	'证件号码：',
 	'identity_pic_front_lable'		=>	'证件正面：',
 	'identity_pic_back_lable'		=>	'证件反面：',
+	'personhand_identity_pic_lable'	=>	'手持证件：',
 	'business_licence_lable'		=>	'营业执照注册号：',
 	'business_licence_pic_lable'	=>	'营业执照电子版：',
 	'bank_branch_name_lable'		=>	'开户银行支行名称：',
@@ -86,7 +87,8 @@ return array(
 	'apply_time'=>	'申请时间',	
 	'person'    =>	'法定代表人',
 	'companyname'	=>	'公司名称',
-	'confirm_time'=>'审核通过时间'
+	'confirm_time'=>'审核通过时间',
+	'del_store_cat_img_ok' =>'删除店铺分类图片成功！',
 );
 
 //end

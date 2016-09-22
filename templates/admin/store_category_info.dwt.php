@@ -62,7 +62,7 @@
 							<span class="fileupload-exists">{t}修改{/t}</span>
 							<input type="file" name="cat_image"/>
 							</span>
-							<a class="btn fileupload-exists" data-toggle="removefile" data-msg="{t}您确定要删除此文件吗？{/t}" data-href="{RC_Uri::url('store/admin_store_category/del','code=mobile_app_icon')}" {if $cat_info.cat_image}data-removefile="true"{/if}>{lang key='system::system.drop'}</a>
+							<a class="btn fileupload-exists" data-toggle="removefile" data-msg="{t}您确定要删除此文件吗？{/t}" data-href='{RC_Uri::url("store/admin_store_category/del","cat_id={$cat_info.cat_id}")}' {if $cat_info.cat_image}data-removefile="true"{/if}>{lang key='system::system.drop'}</a>
 						</div>
 					</div>
 				</div>
