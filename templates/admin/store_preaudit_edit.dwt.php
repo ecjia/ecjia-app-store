@@ -162,7 +162,42 @@
 						</div>
 					{/if}
 				</div>
-				
+				<div class="control-group formSep">
+					{if $store.personhand_identity_pic eq ''}
+						<label class="control-label">{lang key='store::store.personhand_identity_pic_lable'}</label>
+						<div class="controls">
+							<div class="fileupload fileupload-new" data-provides="fileupload">
+								<input type="hidden" name="{$var.code}" />
+								<div class="fileupload-preview fileupload-exists thumbnail" style="width: 50px; height: 50px; line-height: 50px;"></div>
+								<span class="btn btn-file">
+									<span class="fileupload-new">{lang key='store::store.browse'}</span>
+									<span class="fileupload-exists">{lang key='store::store.modify'}</span>
+									<input type='file' name='four' size="35" />
+								</span>
+								<a class="btn fileupload-exists" data-dismiss="fileupload" href="#">{lang key='system::system.drop'}</a>
+							</div>
+						</div>
+					{else}
+						<label class="control-label">{lang key='store::store.personhand_identity_pic_lable'}</label>
+						<div class="controls">
+							<div class="fileupload fileupload-new" data-provides="fileupload">
+								<img class="w120 h120"  class="img-polaroid" src="{RC_Upload::upload_url()}/{$store.personhand_identity_pic}"><br><br>
+								{lang key='store::store.file_address'}{$store.personhand_identity_pic}<br><br>
+								<input type="hidden" name="{$var.code}" />
+								<div class="fileupload-preview fileupload-exists thumbnail" style="width: 50px; height: 50px; line-height: 50px;"></div>
+								<span class="btn btn-file">
+									<span class="fileupload-new">{lang key='store::store.change_image'}</span>
+									<span class="fileupload-exists">{lang key='store::store.modify'}</span>
+									<input type='file' name='four' size="35" />
+								</span>
+								<a class="btn fileupload-exists" data-dismiss="fileupload" href="#">{lang key='system::system.drop'}</a>
+								<input type="hidden" name="{$var.code}" />
+								<input type="hidden" name="{$store.personhand_identity_pic}" />
+								<input name="personhand_identity_pic" value="{$store.personhand_identity_pic}" class="hide">
+							</div>
+						</div>
+					{/if}
+				</div>
 				<div class="control-group formSep">
 					<label class="control-label">{lang key='store::store.identity_number_lable'}</label>
 					<div class="controls">

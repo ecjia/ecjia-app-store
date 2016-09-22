@@ -86,7 +86,6 @@ class admin_preaudit extends ecjia_admin {
 			$business_licence_pic = $pic_url['business_licence_pic'];
 		}
 		
-
 		if (!empty($_FILES['two']['name'])) {
 			$upload = RC_Upload::uploader('image', array('save_path' => 'data/store', 'auto_sub_dirs' => false));
 			$info = $upload->upload($_FILES['two']);
@@ -113,25 +112,39 @@ class admin_preaudit extends ecjia_admin {
 			$identity_pic_back = $pic_url['identity_pic_back'];
 		}
 		
+		if (!empty($_FILES['four']['name'])) {
+			$upload = RC_Upload::uploader('image', array('save_path' => 'data/store', 'auto_sub_dirs' => false));
+			$info = $upload->upload($_FILES['four']);
+			if (!empty($info)) {
+				$personhand_identity_pic = $upload->get_position($info);
+				$upload->remove($pic_url['personhand_identity_pic']);
+			} else {
+				$this->showmessage($upload->error(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			}
+		}else {
+			$personhand_identity_pic = $pic_url['personhand_identity_pic'];
+		}
+		
 		$data = array(
-			'cat_id'   	   		=> !empty($_POST['store_cat']) 		? $_POST['store_cat'] : '',
-			'merchants_name'   	=> !empty($_POST['merchants_name']) ? $_POST['merchants_name'] : '',
-			'shop_keyword'      => !empty($_POST['shop_keyword']) 	? $_POST['shop_keyword'] : '',
-			'responsible_person'=> !empty($_POST['responsible_person']) ? $_POST['responsible_person'] : '',
-			'company_name'      => !empty($_POST['company_name']) 		? $_POST['company_name'] : '',
-			'email'      		=> !empty($_POST['email']) 				? $_POST['email'] : '',
-			'contact_mobile'    => !empty($_POST['contact_mobile']) 	? $_POST['contact_mobile'] : '',
-			'address'      		=> !empty($_POST['address']) 			? $_POST['address'] : '',
-			'identity_type'     => !empty($_POST['identity_type']) 		? $_POST['identity_type'] : '',
-			'identity_number'   => !empty($_POST['identity_number']) 	? $_POST['identity_number'] : '',
-			'identity_pic_front'=> $identity_pic_front,
-			'identity_pic_back' => $identity_pic_back,
-			'business_licence'  => !empty($_POST['business_licence']) 	? $_POST['business_licence'] : '',
-			'business_licence_pic' => $business_licence_pic,
-			'bank_name'      	   => !empty($_POST['bank_name']) 				? $_POST['bank_name'] : '',
-			'bank_branch_name'     => !empty($_POST['bank_branch_name']) 		? $_POST['bank_branch_name'] : '',
-			'bank_account_number'  => !empty($_POST['bank_account_number'])		? $_POST['bank_account_number'] : '',
-			'bank_address'         => !empty($_POST['bank_address']) 			? $_POST['bank_address'] : '',
+			'cat_id'   	   				=> !empty($_POST['store_cat']) 		? $_POST['store_cat'] : '',
+			'merchants_name'   			=> !empty($_POST['merchants_name']) ? $_POST['merchants_name'] : '',
+			'shop_keyword'      		=> !empty($_POST['shop_keyword']) 	? $_POST['shop_keyword'] : '',
+			'responsible_person'		=> !empty($_POST['responsible_person']) ? $_POST['responsible_person'] : '',
+			'company_name'      		=> !empty($_POST['company_name']) 		? $_POST['company_name'] : '',
+			'email'      				=> !empty($_POST['email']) 				? $_POST['email'] : '',
+			'contact_mobile'    		=> !empty($_POST['contact_mobile']) 	? $_POST['contact_mobile'] : '',
+			'address'      				=> !empty($_POST['address']) 			? $_POST['address'] : '',
+			'identity_type'     		=> !empty($_POST['identity_type']) 		? $_POST['identity_type'] : '',
+			'identity_number'   		=> !empty($_POST['identity_number']) 	? $_POST['identity_number'] : '',
+			'identity_pic_front'		=> $identity_pic_front,
+			'identity_pic_back' 		=> $identity_pic_back,
+			'personhand_identity_pic'	=>$personhand_identity_pic,
+			'business_licence'  		=> !empty($_POST['business_licence']) 	? $_POST['business_licence'] : '',
+			'business_licence_pic' 		=> $business_licence_pic,
+			'bank_name'      	   		=> !empty($_POST['bank_name']) 				? $_POST['bank_name'] : '',
+			'bank_branch_name'     		=> !empty($_POST['bank_branch_name']) 		? $_POST['bank_branch_name'] : '',
+			'bank_account_number' 	 	=> !empty($_POST['bank_account_number'])		? $_POST['bank_account_number'] : '',
+			'bank_address'         		=> !empty($_POST['bank_address']) 			? $_POST['bank_address'] : '',
 		);
 	
 		RC_DB::table('store_preaudit')->where('store_id', $store_id)->update($data);
@@ -184,27 +197,28 @@ class admin_preaudit extends ecjia_admin {
 				'merchants_name'=> $store['merchants_name'],
 				'shop_keyword'	=> $store['shop_keyword'],
 				'status'		=> 1,
-				'responsible_person'	=>$store['responsible_person'],
-				'company_name'			=>$store['company_name'],
-				'email'					=>$store['email'],
-				'contact_mobile'		=>$store['contact_mobile'],
-				'apply_time'			=>$store['apply_time'],
-				'confirm_time'			=>RC_Time::gmtime(),
-				'address'				=>$store['address'],
-				'identity_type'			=>$store['identity_type'],
-				'identity_number'		=>$store['identity_number'],
-				'identity_pic_front'	=>$store['identity_pic_front'],
-				'identity_pic_back'		=>$store['identity_pic_back'],
-				'business_licence'		=>$store['business_licence'],
-				'business_licence_pic'	=>$store['business_licence_pic'],
-				'bank_name'				=>$store['bank_name'],
-				'bank_branch_name'		=>$store['bank_branch_name'],
-				'bank_account_number'	=>$store['bank_account_number'],
-				'bank_address'			=>$store['bank_address'],
-				'remark'				=>$remark,
-				'longitude'				=>$store['longitude'],
-				'latitude'				=>$store['latitude'],
-				'sort_order' 			=> 50,
+				'responsible_person'		=>$store['responsible_person'],
+				'company_name'				=>$store['company_name'],
+				'email'						=>$store['email'],
+				'contact_mobile'			=>$store['contact_mobile'],
+				'apply_time'				=>$store['apply_time'],
+				'confirm_time'				=>RC_Time::gmtime(),
+				'address'					=>$store['address'],
+				'identity_type'				=>$store['identity_type'],
+				'identity_number'			=>$store['identity_number'],
+				'identity_pic_front'		=>$store['identity_pic_front'],
+				'identity_pic_back'			=>$store['identity_pic_back'],
+				'personhand_identity_pic'	=>$store['personhand_identity_pic'],
+				'business_licence'			=>$store['business_licence'],
+				'business_licence_pic'		=>$store['business_licence_pic'],
+				'bank_name'					=>$store['bank_name'],
+				'bank_branch_name'			=>$store['bank_branch_name'],
+				'bank_account_number'		=>$store['bank_account_number'],
+				'bank_address'				=>$store['bank_address'],
+				'remark'					=>$remark,
+				'longitude'					=>$store['longitude'],
+				'latitude'					=>$store['latitude'],
+				'sort_order' 				=> 50,
 			);
 			RC_DB::table('store_franchisee')->insert($data);
 			RC_DB::table('store_preaudit')->where('store_id', $store_id)->delete();
