@@ -58,16 +58,17 @@ class admin extends ecjia_admin {
 		$this->admin_priv('store_affiliate_update', ecjia::MSGTYPE_JSON);
 		
 		$this->assign('ur_here',RC_Lang::get('store::store.store_update'));
-		$this->assign('action_link',array('href' => RC_Uri::url('store/admin_preaudit/init'),'text' => RC_Lang::get('store::store.store_preaudit')));
+		$this->assign('action_link',array('href' => RC_Uri::url('store/admin/init'),'text' => RC_Lang::get('store::store.store_preaudit')));
 		
 		$store_id = intval($_GET['store_id']);
-		$store = RC_DB::table('store_preaudit')->where('store_id', $store_id)->first();
+		$store = RC_DB::table('store_franchisee')->where('store_id', $store_id)->first();
 		$store['apply_time']	= RC_Time::local_date(ecjia::config('time_format'), $store['apply_time']);
+		$store['confirm_time']	= RC_Time::local_date(ecjia::config('time_format'), $store['confirm_time']);
 		$this->assign('store', $store);
 		$cat_list = $this->get_cat_select_list();
 		$this->assign('cat_list', $cat_list);
 		
-		$this->assign('form_action',RC_Uri::url('store/admin_preaudit/update'));
+		$this->assign('form_action',RC_Uri::url('store/admin/update'));
 
 		$this->display('store_edit.dwt');
 	}
@@ -77,6 +78,7 @@ class admin extends ecjia_admin {
 	 */
 	public function update() {
 		$this->admin_priv('store_affiliate_update', ecjia::MSGTYPE_JSON);
+		
 		$store_id = intval($_POST['store_id']);
 		$data = array(
 			'cat_id'   	   		=> !empty($_POST['store_cat']) 		? $_POST['store_cat'] : '',
@@ -99,9 +101,38 @@ class admin extends ecjia_admin {
 			'bank_address'         => !empty($_POST['bank_address']) 			? $_POST['bank_address'] : '',
 		);
 	
-		RC_DB::table('store_preaudit')->where('store_id', $store_id)->update($data);
+		RC_DB::table('store_franchisee')->where('store_id', $store_id)->update($data);
 
-		$this->showmessage(RC_Lang::get('store::store.edit_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin_preaudit/edit', array('store_id' => $store_id))));
+		$this->showmessage(RC_Lang::get('store::store.edit_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin/edit', array('store_id' => $store_id))));
+	}
+	
+	/**
+	 * 查看商家详细信息
+	 */
+	public function preview() {
+		$this->admin_priv('store_affiliate_manage', ecjia::MSGTYPE_JSON);
+	
+		$this->assign('ur_here',RC_Lang::get('store::store.check_view'));
+		$this->assign('action_link',array('href' => RC_Uri::url('store/admin/init'),'text' => RC_Lang::get('store::store.store_preaudit')));
+	
+		$store_id = intval($_GET['store_id']);
+		$store = RC_DB::table('store_franchisee')->where('store_id', $store_id)->first();
+		$store['apply_time']	= RC_Time::local_date(ecjia::config('time_format'), $store['apply_time']);
+		$store['confirm_time']	= RC_Time::local_date(ecjia::config('time_format'), $store['confirm_time']);
+		$this->assign('store', $store);
+		
+		$this->display('store_preview.dwt');
+	}
+	
+	/**
+	 * 锁定商家
+	 */
+	public function lock() {
+		$this->admin_priv('store_affiliate_lock', ecjia::MSGTYPE_JSON);
+		
+
+
+		$this->display('store_lock.dwt');
 	}
 	
 	//获取入驻商列表信息
@@ -118,20 +149,36 @@ class admin extends ecjia_admin {
 		
 		$data = $db_store_franchisee
 		->leftJoin('store_category as sc', RC_DB::raw('sf.cat_id'), '=', RC_DB::raw('sc.cat_id'))
-		->selectRaw('sf.store_id,sf.merchants_name,sf.sort_order,sc.cat_name')
-		->orderby('store_id', 'desc')
+		->selectRaw('sf.store_id,sf.merchants_name,sf.merchants_name,sf.responsible_person,sf.confirm_time,sf.company_name,sf.sort_order,sc.cat_name')
+		->orderby('store_id', 'asc')
 		->take(10)
 		->skip($page->start_id-1)
 		->get();
 		$res = array();
 		if (!empty($data)) {
 			foreach ($data as $row) {
-				$row['start_time'] = RC_Time::local_date(ecjia::config('time_format'), $row['start_time']);
-				$row['end_time']   = RC_Time::local_date(ecjia::config('time_format'), $row['end_time']);
+				$row['confirm_time'] = RC_Time::local_date(ecjia::config('time_format'), $row['confirm_time']);
 				$res[] = $row;
 			}
 		}
 		return array('store_list' => $res, 'filter' => $filter, 'page' => $page->show(5), 'desc' => $page->page_desc());
+	}
+	
+	/**
+	 * 获取店铺分类表
+	 */
+	private function get_cat_select_list() {
+		$data = RC_DB::table('store_category')
+		->select('cat_id', 'cat_name')
+		->orderBy('cat_id', 'desc')
+		->get();
+		$cat_list = array();
+		if (!empty($data)) {
+			foreach ($data as $row ) {
+				$cat_list[$row['cat_id']] = $row['cat_name'];
+			}
+		}
+		return $cat_list;
 	}
 }
 

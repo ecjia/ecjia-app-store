@@ -221,7 +221,7 @@ class admin_preaudit extends ecjia_admin {
 	
 	//获取入驻商列表信息
 	private function store_preaudit_list() {
-		$db_store_franchisee = RC_DB::table('store_preaudit as sa');
+		$db_store_franchisee = RC_DB::table('store_preaudit as sp');
 		
 		$filter['keywords'] = empty($_GET['keywords']) ? '' : trim($_GET['keywords']);
 		if ($filter['keywords']) {
@@ -231,16 +231,15 @@ class admin_preaudit extends ecjia_admin {
 		$count = $db_store_franchisee->count();
 		$page = new ecjia_page($count, 10, 5);
 		$data = $db_store_franchisee
-		->leftJoin('store_category as sc', RC_DB::raw('sa.cat_id'), '=', RC_DB::raw('sc.cat_id'))
-		->selectRaw('sa.store_id,sa.merchants_name,sc.cat_name')
+		->leftJoin('store_category as sc', RC_DB::raw('sp.cat_id'), '=', RC_DB::raw('sc.cat_id'))
+		->selectRaw('sp.store_id,sp.merchants_name,sp.merchants_name,sp.responsible_person,sp.apply_time,sp.company_name,sc.cat_name')
 		->orderby('store_id', 'asc')
 		->take(10)
 		->get();
 		$res = array();
 		if (!empty($data)) {
 			foreach ($data as $row) {
-				$row['start_time'] = RC_Time::local_date(ecjia::config('time_format'), $row['start_time']);
-				$row['end_time']   = RC_Time::local_date(ecjia::config('time_format'), $row['end_time']);
+				$row['apply_time'] = RC_Time::local_date(ecjia::config('time_format'), $row['apply_time']);
 				$res[] = $row;
 			}
 		}
