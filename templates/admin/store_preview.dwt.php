@@ -97,6 +97,22 @@
 				</div>
 				
 				<div class="control-group formSep">
+					<label class="control-label">{lang key='store::store.personhand_identity_pic_lable'}</label>
+					<div class="controls">
+						<div class="fileupload fileupload-new" data-provides="fileupload">
+							{if $store.business_licence_pic neq ''}
+								<img class="w120 h120"  class="img-polaroid" src="{RC_Upload::upload_url()}/{$store.personhand_identity_pic}"><br>
+								{lang key='store::store.file_address'}{$store.personhand_identity_pic}<br>
+							{else}
+								<div class="l_h30">
+									{lang key='store::store.no_upload'}
+								</div>
+							{/if}
+						</div>
+					</div>
+				</div>
+				
+				<div class="control-group formSep">
 					<label class="control-label">{lang key='store::store.identity_number_lable'}</label>
 					<div class="controls l_h30">
 						{$store.identity_number}
