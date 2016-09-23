@@ -5,7 +5,7 @@ defined('IN_ECJIA') or exit('No permission resources.');
  * @author 
  *
  */
-class seller_neighbors_seller_api extends Component_Event_Api {
+class store_neighbors_store_id_api extends Component_Event_Api {
 	/**
 	 * 
 	 * @param array $options
