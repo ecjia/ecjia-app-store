@@ -28,6 +28,9 @@ class adsense_admin_purview_api extends Component_Event_Api {
         	array('action_name' => __('佣金比例添加'), 'action_code' => 'store_percent_add', 'relevance'   => ''),
         	array('action_name' => __('佣金比例更新'), 'action_code' => 'store_percent_update', 'relevance'   => ''),
         	array('action_name' => __('佣金比例删除'), 'action_code' => 'store_percent_delete', 'relevance'   => ''),
+        		
+        	array('action_name' => __('后台设置'), 'action_code' => 'store_config_manage', 'relevance'   => ''),
+        	array('action_name' => __('移动应用设置'), 'action_code' => 'store_mobileconfig_manage', 'relevance'   => ''),
         	
         );
         
