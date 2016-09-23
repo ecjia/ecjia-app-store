@@ -5,7 +5,7 @@ defined('IN_ECJIA') or exit('No permission resources.');
  * @author songqian
  *
  */
-class adsense_admin_purview_api extends Component_Event_Api {
+class store_admin_purview_api extends Component_Event_Api {
     
     public function call(&$options) {
         $purviews = array(
