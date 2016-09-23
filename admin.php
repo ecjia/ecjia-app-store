@@ -63,6 +63,7 @@ class admin extends ecjia_admin {
 		$this->assign('cat_list', $cat_list);
 		
 		$this->assign('form_action',RC_Uri::url('store/admin/update'));
+		$this->assign('longitudeForm_action',RC_Uri::url('store/admin/get_longitude'));
 
 		$this->display('store_edit.dwt');
 	}
@@ -180,11 +181,67 @@ class admin extends ecjia_admin {
 	 */
 	public function lock() {
 		$this->admin_priv('store_affiliate_lock', ecjia::MSGTYPE_JSON);
-		
-
-
+		$store_id = $_GET['store_id'];
+		$status = $_GET['status'];
+		$this->assign('form_action',RC_Uri::url('store/admin/lockupdate', array('store_id' => $store_id, 'status' => $status)));
+		$this->assign('store_id', $store_id);	
+		$this->assign('status', $status);		
 		$this->display('store_lock.dwt');
 	}
+	
+	
+	/**
+	 * 解锁商家
+	 */
+	public function unlock() {
+		$this->admin_priv('store_affiliate_lock', ecjia::MSGTYPE_JSON);
+		$store_id = $_GET['store_id'];
+		$status = $_GET['status'];
+		$this->assign('form_action',RC_Uri::url('store/admin/lockupdate', array('store_id' => $store_id, 'status' => $status)));
+		$this->assign('store_id', $store_id);
+		$this->assign('status', $status);
+		$this->display('store_lock.dwt');
+	}
+	
+	/**
+	 * 锁定解锁商家操作
+	 */
+	public function lockupdate() {
+		$this->admin_priv('store_affiliate_lock', ecjia::MSGTYPE_JSON);
+		
+		$store_id = $_POST['store_id'];
+		$status = $_POST['status'];
+		if ($status == 1) {
+			$status_new = '2';
+		} elseif ($status == 2) {
+			$status_new = '1';
+		}
+		
+		RC_DB::table('store_franchisee')->where('store_id', $store_id)->update(array('status' => $status_new));
+		$this->showmessage('操作成功！', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin/init')));
+	}
+	
+	/**
+	 * 获取商家店铺经纬度
+	 */
+	public function get_longitude() {
+		$detail_address = $_POST['detail_address'];
+		$store_id = $_GET['store_id'];
+		$store_point = file_get_contents("http://api.map.baidu.com/geocoder/v2/?address='".$detail_address."'&output=json&ak=E70324b6f5f4222eb1798c8db58a017b");
+		$store_point = (array)json_decode($store_point);
+		$store_point['result'] = (array)$store_point['result'];
+		$location = (array)$store_point['result']['location'];
+		$longitude = $location['lng'];
+		$latitude = $location['lat'];
+		//获取geohash值
+		$geohash = RC_Loader::load_app_class('geohash', 'store');
+		$geohash_code = $geohash->encode($location['lat'] , $location['lng']);
+		$geohash_code = substr($geohash_code, 0, 10);
+		RC_DB::table('store_franchisee')->where('store_id', $store_id)->update(array('longitude' => $longitude, 'latitude' => $latitude, 'geohash' => $geohash_code));
+		$data = array('longitude' => $longitude, 'latitude' => $latitude, 'geohash' => $geohash_code);
+		$this->showmessage('', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('content' => $data));
+	}
+	
 	
 	//获取入驻商列表信息
 	private function store_list() {
@@ -200,7 +257,7 @@ class admin extends ecjia_admin {
 		
 		$data = $db_store_franchisee
 		->leftJoin('store_category as sc', RC_DB::raw('sf.cat_id'), '=', RC_DB::raw('sc.cat_id'))
-		->selectRaw('sf.store_id,sf.merchants_name,sf.merchants_name,sf.responsible_person,sf.confirm_time,sf.company_name,sf.sort_order,sc.cat_name')
+		->selectRaw('sf.store_id,sf.merchants_name,sf.merchants_name,sf.responsible_person,sf.confirm_time,sf.company_name,sf.sort_order,sc.cat_name,sf.status')
 		->orderby('store_id', 'asc')
 		->take(10)
 		->skip($page->start_id-1)

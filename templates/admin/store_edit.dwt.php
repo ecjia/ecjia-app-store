@@ -280,18 +280,33 @@
 						<input class="span6" name="shop_keyword" type="text" value="{$store.shop_keyword}" />
 					</div>
 				</div>
+
+				<div class="control-group formSep">
+					<label class="control-label">{t}获取经纬度：{/t}</label>
+					<div class="controls">
+						<input class="span6" name="detail_address" placeholder="填写店铺详细地址获取店铺经纬度" type="text" value="" />&nbsp;&nbsp;
+						<input type="button" class="btn btn-gebo longitude" value="{t}点击获取{/t}" data-url='{url path="store/admin/get_longitude&store_id={$store.store_id}"}'  title="{lang key='system::system.edit'}"/>
+					</div>
+				</div>
 				
 				<div class="control-group formSep">
 					<label class="control-label">{lang key='store::store.longitude_lable'}</label>
-				 	<div class="controls l_h30">
-						{$store.longitude}
+				 	<div class="controls l_h30 long">
+						
 					</div>
 				</div>
 				
 				<div class="control-group formSep">
 					<label class="control-label">{lang key='store::store.latitude_lable'}</label>
-				 	<div class="controls l_h30">
-						{$store.latitude}
+				 	<div class="controls l_h30 latd">
+						
+					</div>
+				</div>
+				
+				<div class="control-group formSep">
+					<label class="control-label">{t}geohash_code：{/t}</label>
+				 	<div class="controls l_h30 geo">
+						
 					</div>
 				</div>
 				

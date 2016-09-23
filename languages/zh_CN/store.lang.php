@@ -30,6 +30,7 @@ return array(
 	'sort_order'	=>	'排序',
 	'view'			=>	'查看详情',
 	'lock'			=>	'锁定',
+	'unlock'		=> '解锁',
 	'pls_name'		=>	'请输入店铺名称',
 	'serach'		=>	'搜索',
 		
