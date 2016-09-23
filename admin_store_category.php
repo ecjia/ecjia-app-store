@@ -189,21 +189,21 @@ class admin_store_category extends ecjia_admin {
 		$this->admin_priv('store_category_drop', ecjia::MSGTYPE_JSON);
 		/* 初始化分类ID并取得分类名称 */
 		$cat_id   = intval($_GET['id']);
-		$cat_name = $this->seller_category_db->where(array('cat_id' => $cat_id))->get_field('cat_name');
+
+		$cat_name = RC_DB::table('store_category')->where('cat_id', $cat_id)->pluck('cat_name');
+
 		/* 当前分类下是否有子分类 */
-		$cat_count = $this->seller_category_db->where(array('parent_id' => $cat_id))->count();
+		$cat_count = RC_DB::table('store_category')->where('parent_id', $cat_id)->count();
 		/* 当前分类下是否存在店铺 */
-		$shop_count = $this->seller_shopinfo_db->where(array('cat_id' => $cat_id))->count();
+		$franchisee_count = RC_DB::table('store_franchisee')->where('cat_id', $cat_id)->count();
+		$preaudit_count = RC_DB::table('store_preaudit')->where('cat_id', $cat_id)->count();
 		/* 如果不存在下级子分类和商品，则删除之 */
-	
-		if ($cat_count == 0 && $shop_count == 0) {
+		if ($cat_count == 0 && $franchisee_count == 0 && $preaudit_count) {
 			/* 删除分类 */
-			$query = $this->seller_category_db->where(array('cat_id' => $cat_id))->delete();
-			if ($query) {
-				//记录log
-				ecjia_admin::admin_log($cat_name, 'remove', 'store_category');
-				$this->showmessage(_('删除店铺分类成功！'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
-			}
+			RC_DB::table('store_category')->where('cat_id', $cat_id)->delete();
+			//记录log
+			ecjia_admin::admin_log($cat_name, 'remove', 'store_category');
+			$this->showmessage(_('删除店铺分类成功！'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
 		} else {
 			$this->showmessage($cat_name .' '. '不是末级分类或者此分类下还存在有店铺，您不能删除!', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
@@ -217,7 +217,8 @@ class admin_store_category extends ecjia_admin {
 	
 		$id = intval($_POST['id']);
 		$val = intval($_POST['val']);
-		$cat_name = $this->seller_category_db->where(array('cat_id' => $id))->get_field('cat_name');
+		
+		$cat_name = RC_DB::table('store_category')->where('cat_id', $id)->pluck('cat_name');
 		if (cat_update($id, array('is_show' => $val))) {
 			//记录log
 			ecjia_admin::admin_log($cat_name, 'edit', 'store_category');
@@ -235,11 +236,11 @@ class admin_store_category extends ecjia_admin {
 	
 		$id = intval($_POST['pk']);
 		$val = intval($_POST['value']);
-		$cat_name = $this->seller_category_db->where(array('cat_id' => $id))->get_field('cat_name');
+		$cat_name = RC_DB::table('store_category')->where('cat_id', $id)->pluck('cat_name');
 		if (cat_update($id, array('sort_order' => $val))) {
 			//记录log
 			ecjia_admin::admin_log($cat_name, 'edit', 'store_category');
-			$this->showmessage('', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('seller/admin_store_category/init')));
+			$this->showmessage('', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin_store_category/init')));
 		} else {
 			$this->showmessage('', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
