@@ -44,17 +44,6 @@ class admin_store_category extends ecjia_admin {
 		
 	    ecjia_screen::get_current_screen()->remove_last_nav_here();
 	    ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('店铺分类')));
-// 	    ecjia_screen::get_current_screen()->add_help_tab( array(
-// 	    'id'		=> 'overview',
-// 	    'title'		=> __('概述'),
-// 	    'content'	=>
-// 	    '<p>' . __('欢迎访问ECJia智能后台入驻商列表页面，系统中所有的入驻商家都会显示在此列表中。') . '</p>'
-// 	    ) );
-	    
-// 	    ecjia_screen::get_current_screen()->set_help_sidebar(
-// 	    '<p><strong>' . __('更多信息:') . '</strong></p>' .
-// 	    '<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia智能后台:入驻商家" target="_blank">关于入驻商列表帮助文档</a>') . '</p>'
-// 	    );
 	   
 	    $cat_list = cat_list(0, 0, false);
 	    $this->assign('cat_info', $cat_list);
@@ -74,18 +63,6 @@ class admin_store_category extends ecjia_admin {
 		
 		$this->assign('cat_select', cat_list(0, 0, true));
 		$this->assign('form_action', RC_Uri::url('store/admin_store_category/insert'));
-
-// 		ecjia_screen::get_current_screen()->add_help_tab(array(
-// 			'id'		=> 'overview',
-// 			'title'		=> __('概述'),
-// 			'content'	=>
-// 			'<p>' . __('欢迎访问ECJia智能后台添加商品分类页面，可以在此页面添加分类信息。') . '</p>'
-// 		));
-
-// 		ecjia_screen::get_current_screen()->set_help_sidebar(
-// 			'<p><strong>' . __('更多信息:') . '</strong></p>' .
-// 			'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia智能后台:商品分类#.E6.B7.BB.E5.8A.A0.E5.95.86.E5.93.81.E5.88.86.E7.B1.BB" target="_blank">关于添加商品分类文档</a>') . '</p>'
-// 		);
 
 		$this->display('store_category_info.dwt');
 	}
@@ -153,18 +130,6 @@ class admin_store_category extends ecjia_admin {
 		$this->assign('cat_select', cat_list(0, $cat_info['parent_id'], true));
 		
 		$this->assign('form_action', RC_Uri::url('store/admin_store_category/update'));
-	
-// 		ecjia_screen::get_current_screen()->add_help_tab(array(
-// 		'id'		=> 'overview',
-// 		'title'		=> __('概述'),
-// 		'content'	=>
-// 		'<p>' . __('欢迎访问ECJia智能后台编辑商品分类页面，可以在此对相应的商品分类进行编辑。') . '</p>'
-// 				));
-	
-// 		ecjia_screen::get_current_screen()->set_help_sidebar(
-// 		'<p><strong>' . __('更多信息:') . '</strong></p>' .
-// 		'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia智能后台:商品分类#.E7.BC.96.E8.BE.91.E5.95.86.E5.93.81.E5.88.86.E7.B1.BB" target="_blank">关于编辑商品分类文档</a>') . '</p>'
-// 				);
 
 		$this->display('store_category_info.dwt');
 	}
@@ -208,7 +173,6 @@ class admin_store_category extends ecjia_admin {
 			}
 			$cat['cat_image'] = $upload->get_position($image_info);
 		}
-		//$update_id = $this->seller_category_db->where(array('cat_id' => $cat_id))->update($cat);
 		RC_DB::table('store_category')
 						->where('cat_id', $cat_id)
 						->update($cat);

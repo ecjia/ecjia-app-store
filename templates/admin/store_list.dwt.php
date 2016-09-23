@@ -44,7 +44,7 @@
 				    	<div class="edit-list">
 				    		<a class="data-pjax" href='{RC_Uri::url("store/admin/edit", "store_id={$list.store_id}")}' title="{lang key='system::system.edit'}">{lang key='system::system.edit'}</a>&nbsp;|&nbsp;
 					      	<a class="data-pjax" href='{RC_Uri::url("store/admin/lock", "store_id={$list.store_id}")}' title="{lang key='store::store.lock'}">{lang key='store::store.lock'}</a>&nbsp;|&nbsp; 
-					     	<a class="data-pjax" href='{RC_Uri::url("store/admin/commission", "store_id={$list.store_id}")}' title="{lang key='store::store.commission'}">{lang key='store::store.commission'}</a>&nbsp;|&nbsp;  
+					     	<a class="data-pjax" href='{RC_Uri::url("store/admin/commission", "store_id={$list.store_id}")}' title="{lang key='store::store.commission'}">{lang key='store::store.set_commission'}</a>&nbsp;|&nbsp;  
 					     	<a class="data-pjax" href='{RC_Uri::url("store/admin/preview", "store_id={$list.store_id}")}' title="{lang key='store::store.view'}">{lang key='store::store.view'}</a>
 					     </div>
 					</td>

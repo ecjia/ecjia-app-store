@@ -16,7 +16,7 @@ function assign_adminlog_content() {
 	
 	ecjia_admin_log::instance()->add_object('config', '配置');
 	
-	ecjia_admin_log::instance()->add_object('merchants_percent', '佣金比例');
+	ecjia_admin_log::instance()->add_object('store_percent', '佣金比例');
 	
 	ecjia_admin_log::instance()->add_object('seller_mobileconfig', '店铺街配置');
 }
