@@ -210,23 +210,26 @@ function get_order_amount_field($alias = '')
  *$date 传值数组方式
  *$sqlType 获取数据方式 0:取一维数组数据, 1:取二维数组数据 2:取单字段数据集
  */
-function get_table_date($table = '', $where = 1, $date = array(), $sqlType = 0) {
+function get_table_date($table = '', $where = array(), $date = array(), $sqlType = 0) {
 	$data = implode(',', $date);
-	
 	if (!empty($data)) {
 		if ($table == 'admin_user') {
 			$db = RC_Model::model('admin_user_model');
 		} else {
-			$db = RC_Loader::load_app_model($table.'_model','seller');
+			//$db = RC_Loader::load_app_model($table.'_model','seller');
+			$db = RC_DB::table($table);
 		}
 		
 		
 		if ($sqlType == 1) {
-			return $db->field($data)->where($where)->select();
+			//return $db->field($data)->where($where)->select();
+			return $db->select(RC_DB::raw($data))->where($where)->get();
 		} elseif ($sqlType == 2) {
-			return $db->where($where)->get_field($data);
+			//return $db->where($where)->get_field($data);
+			return $db->where($where)->pluck(RC_DB::raw($data));
 		} else {
-			return $db->field($data)->where($where)->find();
+			//return $db->field($data)->where($where)->find();
+			return $db->where($where)->select(RC_DB::raw($data))->first();
 		}
 	}	
 }

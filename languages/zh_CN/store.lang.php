@@ -90,6 +90,7 @@ return array(
 	'companyname'	=>	'公司名称',
 	'confirm_time'=>'审核通过时间',
 	'del_store_cat_img_ok' =>'删除店铺分类图片成功！',
+	'anonymous'	 => '匿名用户',
 );
 
 //end

@@ -5,31 +5,11 @@
 defined('IN_ECJIA') or exit('No permission resources.');
 
 class admin_commission extends ecjia_admin {
-	private $admin_user_db; 
-	private $msdb;
-	private $mspdb;
-	private $oi_viewdb;
-	private $goods_db;
-	private $oidb;
-	private $ms_viewdb;
-	private $user_db;
-	private $mpdb;
 	
 	public function __construct() {
 		parent::__construct();
 		RC_Loader::load_app_func('global');
 		assign_adminlog_content();
-		
-		//$this->admin_user_db = RC_Loader::load_model('admin_user_model');
-		$this->admin_user_db = RC_Model::model('admin_user_model');
-		$this->msdb = RC_Loader::load_app_model('merchants_server_model','seller');
-		$this->oi_viewdb = RC_Loader::load_app_model('order_info_viewmodel','seller');
-		$this->goods_db = RC_Loader::load_app_model('goods_model','seller');
-		$this->oidb = RC_Loader::load_app_model('order_info_model','seller'); 
-		$this->mspdb = RC_Loader::load_app_model('merchants_steps_process_model','seller');
-		$this->ms_viewdb = RC_Loader::load_app_model('merchants_server_viewmodel','seller');
-		$this->user_db = RC_Loader::load_app_model('users_model','seller');
-		$this->mpdb = RC_Loader::load_app_model('merchants_percent_model','seller');
 		
 		/* 加载全局 js/css */		
 		RC_Style::enqueue_style('chosen');
@@ -45,11 +25,10 @@ class admin_commission extends ecjia_admin {
 		RC_Script::enqueue_script('bootstrap-editable.min',RC_Uri::admin_url('statics/lib/x-editable/bootstrap-editable/js/bootstrap-editable.min.js'));
 		
 		RC_Script::enqueue_script('media-editor',RC_Uri::vendor_url('tinymce/tinymce.min.js'));
-		RC_Script::enqueue_script('seller_commission',RC_App::apps_url('statics/js/seller_commission.js' , __FILE__));
+		RC_Script::enqueue_script('commission_info',RC_App::apps_url('statics/js/commission_info.js' , __FILE__));
 		
-		RC_Loader::load_app_func('ecmoban', 'seller');
-		RC_Loader::load_app_func('order', 'seller');
-		RC_Lang::load('merchants_commission');
+		RC_Loader::load_app_func('ecmoban', 'store');
+		RC_Loader::load_app_func('order', 'store');
 		
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('佣金结算'),RC_Uri::url('seller/admin_commission/init')));
 	}
@@ -58,36 +37,24 @@ class admin_commission extends ecjia_admin {
 	 * 订单佣金结算页面
 	 */
 	public function init() {
-		$this->admin_priv('merchants_commission_manage',ecjia::MSGTYPE_JSON);
+		$this->admin_priv('store_commission_manage',ecjia::MSGTYPE_JSON);
 		
 		ecjia_screen::get_current_screen()->remove_last_nav_here();
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('佣金结算')));		
-		ecjia_screen::get_current_screen()->add_help_tab(array(
-			'id'		=> 'overview',
-			'title'		=> __('概述'),
-			'content'	=>
-			'<p>' . __('欢迎访问ECJia智能后台佣金结算页面，系统中所有的佣金结算都会显示在此列表中。') . '</p>'
-		));
-		
-		ecjia_screen::get_current_screen()->set_help_sidebar(
-			'<p><strong>' . __('更多信息:') . '</strong></p>' .
-			'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia智能后台:佣金结算" target="_blank">关于佣金结算帮助文档</a>') . '</p>'
-		);
 		
 		$this->assign('ur_here', __('佣金结算')); 
 
-		$commission_list = $this->merchants_commission_list();
+		$commission_list = $this->store_commission_list();
 		$this->assign('commission_list',$commission_list);
 		
-		$this->assign_lang();
-		$this->display('merchants_commission_list.dwt');
+		$this->display('store_commission_list.dwt');
 	}
 	
 	/**
 	 * 设置佣金
 	 */
 	public function add() {
-		$this->admin_priv('merchants_commission_add',ecjia::MSGTYPE_JSON);
+		$this->admin_priv('store_commission_add',ecjia::MSGTYPE_JSON);
 	
 		ecjia_screen::get_current_screen()->remove_last_nav_here();
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here( __('设置商家佣金')));
@@ -118,7 +85,7 @@ class admin_commission extends ecjia_admin {
 	}
 	
 	public function insert() {
-		$this->admin_priv('merchants_commission_add',ecjia::MSGTYPE_JSON);
+		$this->admin_priv('store_commission_add',ecjia::MSGTYPE_JSON);
 	
 		$user_id			= isset($_POST['user_id']) 		? intval($_POST['user_id']) 		: 0;
 		$suppliers_percent	= isset($_POST['suppliers_percent']) 	? intval($_POST['suppliers_percent']) 	: 0;
@@ -138,7 +105,7 @@ class admin_commission extends ecjia_admin {
 		if ($server_id) {
 			$user_name = $this->user_db->where(array('user_id' => $user_id))->get_field('user_name');
 			$percent = $this->mpdb->where(array('percent_id' => $suppliers_percent))->get_field('percent_value');
-			ecjia_admin::admin_log('商家名是 '.$user_name.'，'.'佣金比例是 '.$percent.'%', 'add', 'merchants_commission');
+			ecjia_admin::admin_log('商家名是 '.$user_name.'，'.'佣金比例是 '.$percent.'%', 'add', 'store_commission');
 			
 			$this->showmessage('设置商家佣金成功！',ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl'=>RC_Uri::url('seller/admin_commission/edit',array('id'=>$server_id, 'user_id'=>$user_id))));
 		} else {
@@ -150,92 +117,70 @@ class admin_commission extends ecjia_admin {
 	 * 订单佣金结算页面
 	 */
 	public function edit()	{
-		$this->admin_priv('merchants_commission_update',ecjia::MSGTYPE_JSON);
+		$this->admin_priv('store_commission_update',ecjia::MSGTYPE_JSON);
 	
-// 		ecjia_screen::get_current_screen()->remove_last_nav_here();
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here( __('编辑商家佣金')));
-		ecjia_screen::get_current_screen()->add_help_tab(array(
-			'id'		=> 'overview',
-			'title'		=> __('概述'),
-			'content'	=>
-			'<p>' . __('欢迎访问ECJia智能后台编辑商家佣金页面，可以在此页面编辑相应的商家佣金。') . '</p>'
-		));
-		
-		ecjia_screen::get_current_screen()->set_help_sidebar(
-			'<p><strong>' . __('更多信息:') . '</strong></p>' .
-			'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia智能后台:佣金结算#.E7.BC.96.E8.BE.91.E4.BD.A3.E9.87.91.E7.BB.93.E7.AE.97" target="_blank">关于编辑商家佣金帮助文档</a>') . '</p>'
-		);
-		
 		$this->assign('ur_here', __('编辑商家佣金'));
-		$this->assign('action_link', array('href' =>RC_Uri::url('seller/admin_commission/init'), 'text' => __('佣金结算')));
-		$this->assign('form_action', RC_Uri::url('seller/admin_commission/update'));
+		$this->assign('action_link', array('href' =>RC_Uri::url('store/admin_commission/init'), 'text' => __('佣金结算')));
+		$this->assign('form_action', RC_Uri::url('store/admin_commission/update'));
 		
-		$server_id = $_GET['id'];
-		$this->assign('server_id',$server_id);
+		$id = $_GET['id'];
+		$this->assign('id',$id);
 		
-		$server = $this->msdb->where(array('server_id' => $server_id))->find();
-		$this->assign('server',$server);
-		$this->assign('user_id',$server['user_id']);
+		//$store_commission = $this->msdb->where(array('server_id' => $server_id))->find();
+		$store_commission = RC_DB::table('store_commission')->where(RC_DB::raw('id'), '=', $id)->first();
+		$this->assign('store_commission',$store_commission);
 		
-		$user_name = $this->user_db->where(array('user_id'=>$server['user_id']))->get_field('user_name');
-		$this->assign('user_name',$user_name);
+		//$merchants_name = $this->user_db->where(array('user_id'=>$server['user_id']))->get_field('user_name');
+		$merchants_name = RC_DB::table('store_franchisee')->where(RC_DB::raw('store_id'), '=', $store_commission['store_id'])->pluck('merchants_name');
+		$this->assign('merchants_name',$merchants_name);
+		$this->assign('store_id', $store_commission['store_id']);
 		
-		$date = array('shoprz_brandName, shopNameSuffix');
-		$user = get_table_date('merchants_shop_information', "user_id = '$_GET[user_id]'", $date);
-		if (empty($user['shoprz_brandName'])) {
-			$user['shoprz_brandName'] = '';
-		}
-		if (empty($user['shopNameSuffix'])) {
-			$user['shopNameSuffix'] = '';
-		}
+		$store_percent = $this->get_suppliers_percent(); //管理员获取佣金百分比
 		
-		$this->assign('user',$user);	//店铺名称
+		$this->assign('store_percent', $store_percent);
 		
-		$suppliers_percent = $this->get_suppliers_percent(); //管理员获取佣金百分比
-		$this->assign('suppliers_percent', $suppliers_percent);
-		
-		$this->assign_lang();
-		$this->display('merchants_commission_info.dwt');
+		$this->display('store_commission_info.dwt');
 	}
 	
 	/**
 	 * 订单佣金结算页面
 	 */
 	public function update() {
-		$this->admin_priv('merchants_commission_update',ecjia::MSGTYPE_JSON);
+		$this->admin_priv('store_commission_update',ecjia::MSGTYPE_JSON);
 		
-		$server_id = $_POST['server_id'];
-		$user_id = $_POST['user_id'];
+		$id = $_POST['id'];
+		$store_id = $_POST['store_id'];
 		
 		$data = array (
-			'user_id'   		=> intval($_POST['user_id']),
-			'suppliers_percent' => intval($_POST['suppliers_percent']),
-			'suppliers_desc'   	=> trim($_POST['suppliers_desc'])
+			'percent_id' => intval($_POST['percent_id']),
+			'description'   	=> trim($_POST['description'])
 		);
 		
-		if (empty($_POST['suppliers_percent'])) {
+		if (empty($_POST['percent_id'])) {
 			$this->showmessage('请选择佣金比例！',ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
-		
-		$server_update = $this->msdb->where(array('server_id' => $server_id))->update($data);
 
-		if ($server_update) {
-			$user_name = $this->user_db->where(array('user_id' => $user_id))->get_field('user_name');
-			$percent = $this->mpdb->where(array('percent_id' => intval($_POST['suppliers_percent'])))->get_field('percent_value');
-			ecjia_admin::admin_log('商家名是 '.$user_name.'，'.'佣金比例是 '.$percent.'%', 'edit', 'merchants_commission');
+		RC_DB::table('store_commission')
+				->where(RC_DB::raw('id'), '=', $id)
+				->where(RC_DB::raw('store_id'), '=', $store_id)->update($data);
+
+			$merchants_name = RC_DB::table('store_franchisee')
+								->where(RC_DB::raw('store_id'), '=', $store_id)->pluck('merchants_name');
+
+			$percent = RC_DB::table('store_percent')->where(RC_DB::raw('percent_id'), '=', $_POST['percent_id'])->pluck('percent_value');
+			ecjia_admin::admin_log('商家名是 '.$merchants_name.'，'.'佣金比例是 '.$percent.'%', 'edit', 'store_commission');
 			
-			$this->showmessage('编辑成功！', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS , array('pjaxurl' => RC_Uri::url('seller/admin_commission/edit',array('id' => $server_id, 'user_id' => $user_id))));
-		} else {
-			$this->showmessage('编辑失败！', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-		}
+			$this->showmessage('编辑成功！', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS , array('pjaxurl' => RC_Uri::url('store/admin_commission/edit',array('id' => $id, 'store_id' => $store_id))));
 	}
 
 	public function remove(){
-		$this->admin_priv('merchants_commission_delete',ecjia::MSGTYPE_JSON);
+		$this->admin_priv('store_commission_delete',ecjia::MSGTYPE_JSON);
 	
-		$id = $_GET['id'];
-		
-		$info = $this->msdb->where(array('server_id'=>$id))->find();
+		$id = $_GET['id'];		
+		//$info = $this->msdb->where(array('server_id'=>$id))->find();
+		$info = RC_DB::table('store_commission')->where(RC_DB::raw('id'), '=', $id)->first();
+		$srore_id = $info['store_id'];
 		if ($info) {
 			//判断是否存在订单
 // 			$order_list = $this->merchants_order_list($info['user_id']);
@@ -251,10 +196,15 @@ class admin_commission extends ecjia_admin {
 // 				$value->where(array('server_id'=>$id))->delete();
 // 			}
 			
-			$user_name = $this->user_db->where(array('user_id' => $info['user_id']))->get_field('user_name');
-			$percent = $this->mpdb->where(array('percent_id' => intval($info['suppliers_percent'])))->get_field('percent_value');
-			$this->msdb->where(array('server_id' => $id))->delete();
-			ecjia_admin::admin_log('商家名是 '.$user_name.'，'.'佣金比例是 '.$percent.'%', 'remove', 'merchants_commission');
+			//$user_name = $this->user_db->where(array('user_id' => $info['user_id']))->get_field('user_name');
+			//$percent = $this->mpdb->where(array('percent_id' => intval($info['suppliers_percent'])))->get_field('percent_value');
+			//$this->msdb->where(array('server_id' => $id))->delete();
+			$merchants_name = RC_DB::table('store_franchisee')->where(RC_DB::raw('store_id'), $srore_id)->pluck('merchants_name');
+			$percent = RC_DB::table('store_percent')->where(RC_DB::raw('percent_id'), '=', intval($info['percent_id']))->pluck('percent_value');
+			
+			RC_DB::table('store_commission')->where(RC_DB::raw('id'), $id)->delete();
+			
+			ecjia_admin::admin_log('商家名是 '.$merchants_name.'，'.'佣金比例是 '.$percent.'%', 'remove', 'store_commission');
 			
 			$this->showmessage('删除成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
 		} else {
@@ -266,60 +216,70 @@ class admin_commission extends ecjia_admin {
 	 * 批量操作
 	 */
 	public function batch() {
-		$this->admin_priv('merchants_commission_delete',ecjia::MSGTYPE_JSON);
+		$this->admin_priv('store_commission_delete',ecjia::MSGTYPE_JSON);
 		
 		$id = $_POST['id'];
+		$id_new = explode(',', $id);
 		
-		$info = $this->ms_viewdb->join(array('users','merchants_percent'))->in(array('server_id' => $id))->field('u.user_name,mp.percent_value')->select();
+		//$info = $this->ms_viewdb->join(array('users','merchants_percent'))->in(array('server_id' => $id))->field('u.user_name,mp.percent_value')->select();
+		$info = RC_DB::table('store_commission as sc')
+				 ->leftJoin('store_franchisee as sf', RC_DB::raw('sc.store_id'), '=', RC_DB::raw('sf.store_id'))
+				 ->leftJoin('store_percent as sp', RC_DB::raw('sc.percent_id'), '=', RC_DB::raw('sp.percent_id'))
+				 ->selectRaw('sf.merchants_name, sp.percent_value')->get();
+		//$server_delete = $this->msdb->in(array('server_id' => $id))->delete();
 		
-		$server_delete = $this->msdb->in(array('server_id' => $id))->delete();
+		$server_delete = RC_DB::table('store_commission')->whereIn(RC_DB::raw('id'), $id_new)->delete();
 		
 		if ($server_delete) {
-			foreach ($info as $v) {
-				ecjia_admin::admin_log('商家名是 '.$v['user_name'].'，'.'佣金比例是 '.$v['percent_value'].'%', 'batch_remove', 'merchants_commission');
+			foreach ($info as $k => $v) {
+				ecjia_admin::admin_log('商家名是 '.$v['merchants_name'].'，'.'佣金比例是 '.$v['percent_value'].'%', 'batch_remove', 'store_commission');
 			}
 			
-			$this->showmessage('批量删除成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('seller/admin_commission/init')));
+			$this->showmessage('批量删除成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin_commission/init')));
 		} else {
 			$this->showmessage('批量删除失败', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 	}
 	
 	public function order_list() {
-		$this->admin_priv('merchants_order_manage',ecjia::MSGTYPE_JSON);
+		$this->admin_priv('store_order_manage',ecjia::MSGTYPE_JSON);
 		
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('商家订单列表')));
-		ecjia_screen::get_current_screen()->add_help_tab(array(
-			'id'		=> 'overview',
-			'title'		=> __('概述'),
-			'content'	=>
-			'<p>' . __('欢迎访问ECJia智能后台商家订单列表页面，可以在此页面查看相信商家的所有佣金结算订单。') . '</p>'
-		));
+// 		ecjia_screen::get_current_screen()->add_help_tab(array(
+// 			'id'		=> 'overview',
+// 			'title'		=> __('概述'),
+// 			'content'	=>
+// 			'<p>' . __('欢迎访问ECJia智能后台商家订单列表页面，可以在此页面查看相信商家的所有佣金结算订单。') . '</p>'
+// 		));
 		
-		ecjia_screen::get_current_screen()->set_help_sidebar(
-			'<p><strong>' . __('更多信息:') . '</strong></p>' .
-			'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia智能后台:佣金结算#.E8.AE.A2.E5.8D.95.E5.88.97.E8.A1.A8" target="_blank">关于商家订单列表帮助文档</a>') . '</p>'
-		);
+// 		ecjia_screen::get_current_screen()->set_help_sidebar(
+// 			'<p><strong>' . __('更多信息:') . '</strong></p>' .
+// 			'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia智能后台:佣金结算#.E8.AE.A2.E5.8D.95.E5.88.97.E8.A1.A8" target="_blank">关于商家订单列表帮助文档</a>') . '</p>'
+// 		);
 		
 		$this->assign('ur_here', __('商家订单列表'));
-		$this->assign('action_link',array('href' => RC_Uri::url('seller/admin_commission/init'), 'text' =>  __('佣金结算')));
-		$this->assign('search_action',RC_Uri::url('seller/admin_commission/order_list',array('id' => $_GET['id'])));
+		$this->assign('action_link',array('href' => RC_Uri::url('store/admin_commission/init'), 'text' =>  __('佣金结算')));
+		$this->assign('search_action',RC_Uri::url('store/admin_commission/order_list',array('store_id' => $_GET['store_id'])));
 		
-		$user_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
-		$_SESSION['order_userId'] = $user_id;
-
-		$date = array('suppliers_percent');
-		$percent_id = get_table_date('merchants_server', "user_id = '$user_id' ", $date, $sqlType = 2);
-
-		$date = array('percent_value');
-		$percent_value = get_table_date('merchants_percent', "percent_id = '$percent_id'", $date, $sqlType = 2) . '%';
+		$store_id = isset($_GET['store_id']) ? intval($_GET['store_id']) : 0;
+		//$_SESSION['order_userId'] = $user_id;
+		//$date = array('percent_id');
+		//$percent_id = get_table_date('store_commission', "store_id = '$store_id' ", $date, $sqlType = 2);
+		//$date = array('percent_value');
+		//$percent_value = get_table_date('store_commission', "percent_id = '$percent_id'", $date, $sqlType = 2) . '%';
+		$percent_id = RC_DB::table('store_commission')
+						->where(RC_DB::raw('store_id'), $store_id)
+						->pluck(RC_DB::raw('percent_id'));
+		$percent_value = RC_DB::table('store_percent')
+						   ->where(RC_DB::raw('percent_id'), $percent_id)
+						   ->pluck(RC_DB::raw('percent_value'));
+		$percent_value = $percent_value.'%';
 		$this->assign('percent_value',$percent_value);
 		
-		$order_list = $this->merchants_order_list($user_id);
+		$order_list = $this->store_order_list($store_id);
 		$this->assign('order_list',$order_list);
-		
-		$this->assign_lang();
-		$this->display('merchants_order_list.dwt');
+	
+		$this->display('store_order_list.dwt');
 	}
 	
 	/**
@@ -331,19 +291,20 @@ class admin_commission extends ecjia_admin {
 		$order_sn       = $_GET['order_sn'];
 		$arr['is_settlement'] = intval($_POST['val']);
 		
-		$update = $this->oidb->where(array('order_id'=>$order_id))->update($arr);
-		if ($update) {
-			$user_name = $this->user_db->where(array('user_id' => $_GET['id']))->get_field('user_name');
-			
+		//$update = $this->oidb->where(array('order_id'=>$order_id))->update($arr);
+		RC_DB::table('order_info')->where(RC_DB::raw('order_id'), $order_id)->update($arr);
+// 		if ($update) {
+			//$user_name = $this->user_db->where(array('user_id' => $_GET['id']))->get_field('user_name');
+			$merchants_name = RC_DB::table('store_franchisee')->where(RC_DB::raw('store_id'), $_GET['id'])->pluck(RC_DB::raw('merchants_name'));
 			if ($arr['is_settlement'] == 1) {
-				ecjia_admin::admin_log('商家名是 '.$user_name.'，'.'订单编号是 '.$order_sn.'，'.'已结算', 'setup', 'merchants_commission_stats');
+				ecjia_admin::admin_log('商家名是 '.$merchants_name.'，'.'订单编号是 '.$order_sn.'，'.'已结算', 'setup', 'store_commission_status');
 			} else {
-				ecjia_admin::admin_log('商家名是 '.$user_name.'，'.'订单编号是 '.$order_sn.'，'.'未结算', 'setup', 'merchants_commission_stats');
+				ecjia_admin::admin_log('商家名是 '.$merchants_name.'，'.'订单编号是 '.$order_sn.'，'.'未结算', 'setup', 'store_commission_status');
 			}
-			$this->showmessage('结算状态修改成功！',ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('seller/admin_commission/order_list',array('id' => $_GET['id']))));
-		} else {
-			$this->showmessage('结算状态修改失败！',ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-		}
+			$this->showmessage('结算状态修改成功！',ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin_commission/order_list',array('id' => $_GET['id']))));
+// 		} else {
+// 			$this->showmessage('结算状态修改失败！',ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+// 		}
 	}
 	
 	public function get_shop_name() {
@@ -370,29 +331,36 @@ class admin_commission extends ecjia_admin {
 	/**
 	 *  获取商家佣金列表
 	 */
-	private function merchants_commission_list() {
-		$filter['sort_by'] = empty($_GET['sort_by']) ? 's.server_id' : trim($_GET['sort_by']);
+	private function store_commission_list() {
+		$filter['sort_by'] = empty($_GET['sort_by']) ?  RC_DB::raw('sc.id') : trim($_GET['sort_by']);
 		$filter['sort_order'] = empty($_GET['sort_order']) ? 'ASC' : trim($_GET['sort_order']);
 	
-		$count = $this->msdb->count();
+		//$count = $this->msdb->count();
+		$count = RC_DB::table('store_commission')->count();
 		$page = new ecjia_page($count,10,5);
 		
-		$data = $this->ms_viewdb->join(array('merchants_shop_information','users','merchants_steps_fields'))->field('u.user_name, mis.*, msf.*, s.server_id, s.user_id, s.suppliers_desc, s.suppliers_percent')->order(array($filter['sort_by'] => $filter['sort_order']))->group(array('s.user_id'))->limit($page->limit())->select();
-
+		//$data = $this->ms_viewdb->join(array('merchants_shop_information','users','merchants_steps_fields'))
+		//->field('u.user_name, mis.*, msf.*, s.server_id, s.user_id, s.suppliers_desc, s.suppliers_percent')
+		//->order(array($filter['sort_by'] => $filter['sort_order']))->group(array('s.user_id'))->limit($page->limit())->select();
+		
+		$dbview = RC_DB::table('store_commission as sc')
+				 ->leftJoin('store_franchisee as sf', RC_DB::raw('sc.store_id'), '=', RC_DB::raw('sf.store_id'))
+				 ->leftJoin('store_percent as sp', RC_DB::raw('sc.percent_id'), '=', RC_DB::raw('sp.percent_id'));
+		
+		$data =  $dbview
+				 ->selectRaw('sf.merchants_name, sf.contact_mobile, sf.store_id, sc.percent_id, sp.percent_value, sc.id')
+				 ->orderBy($filter['sort_by'], $filter['sort_order'])
+				 ->groupBy(RC_DB::raw('sc.store_id'))->take(10)->skip($page->start_id-1)->get();
+	
 		if (!empty($data)) {
 			foreach ($data as $key => $val) {
-				if (empty($data[$key]['shoprz_brandName'])) {
-					$data[$key]['shoprz_brandName'] = '';
-				}
-				if (empty($data[$key]['shopNameSuffix'])) {
-					$data[$key]['shopNameSuffix'] = '';
-				}
-// 				$valid = $this->get_nerchants_order_valid_refund($val['user_id']); //订单有效总额
+				//$valid = $this->get_nerchants_order_valid_refund($val['user_id']); //订单有效总额
+				//$valid = $this->get_nerchants_order_valid_refund($val['store_id']);//订单有效总额
 				$data[$key]['order_valid_total'] = price_format($valid['total_fee']);
 					
-				$data[$key]['percent_value'] = $this->mpdb->where(array('percent_id'=>$val['suppliers_percent']))->get_field('percent_value');
+				//$data[$key]['percent_value'] = $this->mpdb->where(array('percent_id'=>$val['suppliers_percent']))->get_field('percent_value');
 					
-// 				$refund = $this->get_nerchants_order_valid_refund($val['user_id'], 1); //订单退款总额
+				//$refund = $this->get_nerchants_order_valid_refund($val['user_id'], 1); //订单退款总额
 				$data[$key]['order_refund_total'] = price_format($refund['total_fee']);
 			}
 		}
@@ -403,8 +371,10 @@ class admin_commission extends ecjia_admin {
 	
 	//佣金百分比
 	private function get_suppliers_percent() {
-		$mpdb = RC_Loader::load_app_model('merchants_percent_model','seller');
-		$res = $mpdb->field('percent_id, percent_value')->order(array('sort_order' => 'asc'))->select();
+		$res = RC_DB::table('store_percent')
+				 ->select(RC_DB::raw('percent_id'), RC_DB::raw('percent_value'))
+				 ->orderBy('sort_order', 'asc')->get();
+		
 		return $res;
 	}
 	//获取列表商家
@@ -424,25 +394,30 @@ class admin_commission extends ecjia_admin {
 	}	
 	
 	//商家订单有效金额和退款金额
-	private function get_nerchants_order_valid_refund($ru_id, $type = 0) {
+	private function get_nerchants_order_valid_refund($store_id, $type = 0) {
 		
 		$where =array();
 		if ($type == 1) {
-			$where = array(
-				'o.order_status'		=> OS_RETURNED,
-				'o.shipping_status'		=> SS_UNSHIPPED,
-				'o.pay_status'			=> PS_UNPAYED
-			);
+			//$where = array(
+			//	'o.order_status'		=> OS_RETURNED,
+			//	'o.shipping_status'		=> SS_UNSHIPPED,
+			//	'o.pay_status'			=> PS_UNPAYED
+			//);
+			$where = '';
+			$where = "o.order_status = ".OS_RETURNED."" ."and o.shipping_status = ".SS_UNSHIPPED."" ."o.pay_status = ".PS_UNPAYED."";
 		} else {
-			$order_query = RC_Loader::load_app_class('order_query', 'seller');
+			$order_query = RC_Loader::load_app_class('order_query', 'store');
 			$where = $order_query->order_finished('o.');
 		}
-		$total_fee = "SUM(" . order_amount_field('o.', $ru_id) . ") AS total_fee ";
-		$order_info = RC_Loader::load_app_model('order_info_viewmodel', 'seller');
-
-		$where = array_merge($where, array('ru_id' => $ru_id, 'oi2.main_order_id is null'));
-	
-		$res = $order_info->join(array('order_goods', 'order_info'))->field($total_fee)->where($where)->group('o.order_id')->find();
+		$total_fee = "SUM(" . order_amount_field('o.', $store_id) . ") AS total_fee ";
+		//$order_info = RC_Loader::load_app_model('order_info_viewmodel', 'seller');
+		$order_info = RC_DB::table('order_info as o')
+						->leftJoin('order_goods as og', RC_DB::raw('o.order_id'), '=', RC_DB::table('og.order_id'));
+		//$where = array_merge($where, array('ru_id' => $ru_id, 'oi2.main_order_id is null'));
+		//$res = $order_info->join(array('order_goods', 'order_info'))->field($total_fee)->where($where)->group('o.order_id')->find();
+		
+		//$res = $order_info->selectRaw($total_fee)->where($where)->groupBy(RC_DB::raw('o.order_id'))->first();
+// 		_dump($order_info->toSql(), 1);
 		return $res;
 	}
 	
@@ -535,21 +510,24 @@ class admin_commission extends ecjia_admin {
 	/**
 	 *  获取商家订单列表
 	 */
-	private function merchants_order_list($user_id = 0) {
+	private function store_order_list($store_id = 0) {
 		
-		$filter['sort_by'] = empty($_GET['sort_by']) ? 'o.order_id' : trim($_GET['sort_by']);
+		$filter['sort_by'] = empty($_GET['sort_by']) ? RC_DB::raw('o.order_id') : trim($_GET['sort_by']);
 		$filter['sort_order'] = empty($_GET['sort_order']) ? 'DESC' : trim($_GET['sort_order']);
 		
 		$filter['start_time'] = empty($_GET['start_time']) ? '' : RC_Time::local_strtotime(trim($_GET['start_time']));
 		$filter['end_time'] = empty($_GET['end_time']) ? '' : RC_Time::local_strtotime(trim($_GET['end_time']));
 		
 		$where = '1';
-		$count = $this->oidb->field('count(*)')->select();
-		$string = $this->oidb->last_sql();
+		//$count = $this->oidb->field('count(*)')->select();
+		//$string = $this->oidb->last_sql();
+		$count = RC_DB::table('order_info')->select(RC_DB::raw('count(*)'))->get();
+		$string = RC_DB::table('order_info')->toSql();
 		
-		$where .= " AND ($string as oi2 where oi2.main_order_id = o.order_id) = 0 ";
-		$where .= " AND o.is_delete = 0 AND og.ru_id = '$user_id' group by o.order_id ";
-
+		//$where .= " AND ($string as oi2 where oi2.main_order_id = o.order_id) = 0 ";
+		//$where .= " AND o.is_delete = 0 AND o.store_id = '$store_id' group by o.order_id ";
+		
+		$where .= " AND o.is_delete = 0 AND o.store_id = '$store_id' ";
 		if (!empty($filter['start_time'])) {
 			$where .= " AND o.add_time > '" .$filter['start_time'] . "'";
 		}
@@ -557,18 +535,38 @@ class admin_commission extends ecjia_admin {
 			$where .= " AND o.add_time < '" .$filter['end_time']. "'";
 		}
 		
-		$res = $this->oi_viewdb->join(array('users','order_goods','goods'))->field('o.order_id')->where($where)->select();
+		//$res = $this->oi_viewdb->join(array('users','order_goods','goods'))->field('o.order_id')->where($where)->select();
+		$dbview = RC_DB::table('order_info as o')
+				->leftJoin('users as u', RC_DB::raw('u.user_id'), '=', RC_DB::raw('o.user_id'))
+				->leftJoin('order_goods as og', RC_DB::raw('o.order_id'), '=', RC_DB::raw('og.order_id'))
+				->leftJoin('goods as g', RC_DB::raw('g.goods_id'), '=', RC_DB::raw('og.goods_id'));
+		
+		$res	=  $dbview->selectRaw('o.order_id')->whereRaw($where)->groupBy(RC_DB::raw('o.order_id'))->get();
 		
 		$count = count($res);
 		
 		$page = new ecjia_page($count,10,5);
 		
-		$field = "og.ru_id, o.order_id, o.main_order_id, o.order_sn, o.add_time, o.order_status, o.shipping_status, o.order_amount, o.money_paid, o.is_delete, o.is_settlement," . 
-				 "o.shipping_time, o.auto_delivery_time, o.pay_status, o.consignee, o.address, o.email, o.tel, o.extension_code, o.extension_id, " .
-				 "(" . get_order_amount_field('o.') . ") AS total_fee, " .
-				 "IFNULL(u.user_name, '" .RC_Lang::lang('anonymous'). "') AS buyer ";
+		//$field = "o.store_id, o.order_id, o.order_sn, o.add_time, o.order_status, o.shipping_status, o.order_amount, o.money_paid, o.is_delete, o.is_settlement," . 
+		//		 "o.shipping_time, o.auto_delivery_time, o.pay_status, o.consignee, o.address, o.email, o.tel, o.extension_code, o.extension_id, " .
+		//		 "(" . get_order_amount_field('o.') . ") AS total_fee, " .
+		//		 "IFNULL(u.user_name, '" . RC_Lang::get('store::store.anonymous'). "') AS buyer ";
 		
-		$row = $this->oi_viewdb->join(array('users','order_goods','goods'))->field($field)->where($where)->order(array($filter['sort_by'] => $filter['sort_order']))->limit($page->limit())->select();
+		$field1 = "o.store_id, o.order_id, o.order_sn, o.add_time, o.order_status, o.shipping_status, o.order_amount, o.money_paid, o.is_delete, o.is_settlement";
+		$field2 = "o.shipping_time, o.auto_delivery_time, o.pay_status, o.consignee, o.address, o.email, o.tel, o.extension_code, o.extension_id";
+		$field3 = "(". get_order_amount_field('o.') .") AS buyer ";
+		$field4 = " IFNULL(u.user_name, '" . RC_Lang::get('store::store.anonymous'). "') AS buyer ";
+		
+		//$row = $this->oi_viewdb->join(array('users','order_goods','goods'))->field($field)->where($where)->order(array($filter['sort_by'] => $filter['sort_order']))->limit($page->limit())->select();
+
+		$row = $dbview
+				 ->select(RC_DB::raw($field1), RC_DB::raw($field2), RC_DB::raw($field3), RC_DB::raw($field4))
+				 ->whereRaw($where)
+				 ->orderBy($filter['sort_by'], $filter['sort_order'])
+				 ->groupBy(RC_DB::raw('o.order_id'))
+				 ->take(10)
+				 ->skip($page->start_id-1)
+				 ->get();
 		
 		$data_count = count($row);
 		
@@ -578,11 +576,15 @@ class admin_commission extends ecjia_admin {
 			$row[$i]['formated_total_fee'] 		= price_format($row[$i]['total_fee']);
 			$row[$i]['short_order_time'] 		= RC_Time::local_date('Y-m-d H:i', $row[$i]['add_time']);
 			
-			$date = array('suppliers_percent');
-			$percent_id = get_table_date('merchants_server', "user_id = '" .$row[$i]['ru_id']. "' ", $date, $sqlType = 2);
+			//$date = array('suppliers_percent');
+			//$percent_id = get_table_date('merchants_server', "user_id = '" .$row[$i]['ru_id']. "' ", $date, $sqlType = 2);
+			//$date = array('percent_value');
+			//$percent_value = get_table_date('merchants_percent', "percent_id = '$percent_id'", $date, $sqlType = 2);
 			
-			$date = array('percent_value');
-			$percent_value = get_table_date('merchants_percent', "percent_id = '$percent_id'", $date, $sqlType = 2);
+			$percent_id = RC_DB::table('store_commission')
+							->where(RC_DB::raw('store_id'), $row[$i]['store_id'])->pluck(RC_DB::raw('percent_id'));
+			$percent_value = RC_DB::table('store_percent')
+							   ->where(RC_DB::raw('percent_id'), $percent_id)->pluck(RC_DB::raw('percent_value'));
 			
 			if ($percent_value == 0) {
 				$percent_value = 1;

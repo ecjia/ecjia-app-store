@@ -3,8 +3,8 @@
 * 添加管理员记录日志操作对象
 */
 function assign_adminlog_content() {
-	ecjia_admin_log::instance()->add_object('merchants_commission','佣金结算');
-	ecjia_admin_log::instance()->add_object('merchants_commission_stats','佣金结算状态');
+	ecjia_admin_log::instance()->add_object('store_commission','佣金结算');
+	ecjia_admin_log::instance()->add_object('store_commission_status','佣金结算状态');
 	
 	ecjia_admin_log::instance()->add_object('merchants_step', '申请流程');
 	ecjia_admin_log::instance()->add_object('merchants_step_title', '申请流程信息');
