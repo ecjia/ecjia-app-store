@@ -1,11 +1,11 @@
 // JavaScript Document
 ;(function(app, $) {
-	app.commission_info = {
+	app.commission = {
 		init : function() {
-			app.commission_info.theForm();
-			app.commission_info.percent_form();
-			app.commission_info.get_shop_name();
-			app.commission_info.search();
+			app.commission.theForm();
+			app.commission.percent_form();
+			app.commission.get_shop_name();
+			app.commission.search();
 		},
 		
 		theForm : function() {

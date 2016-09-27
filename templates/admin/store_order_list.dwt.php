@@ -2,7 +2,7 @@
 <!-- {extends file="ecjia.dwt.php"} -->
 <!-- {block name="footer"} -->
 <script type="text/javascript">
-	ecjia.admin.commission_info.init();
+	ecjia.admin.commission.init();
 </script>
 <!-- {/block} -->
 <!-- {block name="main_content"} -->

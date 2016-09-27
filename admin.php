@@ -25,6 +25,7 @@ class admin extends ecjia_admin {
 		RC_Style::enqueue_style('chosen');
 		
 		RC_Script::enqueue_script('store', RC_App::apps_url('statics/js/store.js', __FILE__));
+		RC_Script::enqueue_script('commission_info',RC_App::apps_url('statics/js/commission.js' , __FILE__));
 		
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('store::store.store'), RC_Uri::url('store/admin/init')));
 	}
@@ -257,7 +258,8 @@ class admin extends ecjia_admin {
 		
 		$data = $db_store_franchisee
 		->leftJoin('store_category as sc', RC_DB::raw('sf.cat_id'), '=', RC_DB::raw('sc.cat_id'))
-		->selectRaw('sf.store_id,sf.merchants_name,sf.merchants_name,sf.responsible_person,sf.confirm_time,sf.company_name,sf.sort_order,sc.cat_name,sf.status')
+		->leftJoin('store_commission as sp', RC_DB::raw('sp.store_id'), '=', RC_DB::raw('sf.store_id'))
+		->selectRaw('sf.store_id,sf.merchants_name,sf.merchants_name,sf.responsible_person,sf.confirm_time,sf.company_name,sf.sort_order,sc.cat_name,sf.status,sp.id')
 		->orderby('store_id', 'asc')
 		->take(10)
 		->skip($page->start_id-1)

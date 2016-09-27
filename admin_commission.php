@@ -25,12 +25,12 @@ class admin_commission extends ecjia_admin {
 		RC_Script::enqueue_script('bootstrap-editable.min',RC_Uri::admin_url('statics/lib/x-editable/bootstrap-editable/js/bootstrap-editable.min.js'));
 		
 		RC_Script::enqueue_script('media-editor',RC_Uri::vendor_url('tinymce/tinymce.min.js'));
-		RC_Script::enqueue_script('commission_info',RC_App::apps_url('statics/js/commission_info.js' , __FILE__));
+		RC_Script::enqueue_script('commission',RC_App::apps_url('statics/js/commission.js' , __FILE__));
 		
 		RC_Loader::load_app_func('ecmoban', 'store');
 		RC_Loader::load_app_func('order', 'store');
 		
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('佣金结算'),RC_Uri::url('seller/admin_commission/init')));
+		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('佣金结算'),RC_Uri::url('store/admin_commission/init')));
 	}
 	
 	/**
