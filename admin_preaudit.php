@@ -220,25 +220,6 @@ class admin_preaudit extends ecjia_admin {
 				'sort_order' 				=> 50,
 			);
 			$merchant_config = array(
-// 	            'shop_kf_mobile',         // 客服手机号码
-// 	            'shop_kf_email' ,         // 客服邮件地址
-// 	            'shop_kf_qq'    ,         // 客服QQ号码
-// 	            'shop_kf_ww'    ,         // 客服淘宝旺旺
-// 	            'shop_kf_online_ident',   // 在线客服账号
-// 	            'shop_kf_appkey',         // 在线客服appkey
-// 	            'shop_kf_secretkey',      // 在线客服secretkey
-// 	            'shop_kf_welcomeMsg',     // 在线客服欢迎信息
-// 	            'shop_kf_type',           // 客服样式
-// 	            'shop_trade_time',        // 营业时间
-// 	            'shop_description',       // 店铺描述
-// 	            'shop_notice',            // 店铺公告
-// 	            'shop_logo',              // 默认店铺页头部LOGO
-// 	            'shop_kf_logo',           // 在线客服头像LOGO
-// 	            'shop_thumb_logo',        // Logo缩略图
-// 	            'shop_banner_pic',		  // banner图
-// 	            'shop_qrcode_logo',       // 二维码中间Logo
-// 	            'shop_front_logo',		  //店铺封面图
-	            
 				'shop_title' ,                // 店铺标题
 				'shop_kf_mobile' ,            // 客服手机号码
 				'shop_kf_email' ,             // 客服邮件地址
