@@ -9,23 +9,16 @@ RC_Loader::load_app_class('order','store', false);
 
 class order_query extends order {
 	
-	//private $where = array();//where条件数组
-	private $where = '';
+	private $where = array();//where条件数组
 	public function __construct() {
 		parent::__construct();
 	}
 	
 	/* 已完成订单 */
 	public function order_finished($alias = '') {
-    	//$this->where[$alias.'order_status'] = array(OS_CONFIRMED, OS_SPLITED);
-		//$this->where[$alias.'shipping_status'] = array(SS_SHIPPED, SS_RECEIVED);
-		//$this->where[$alias.'pay_status'] = array(PS_PAYED, PS_PAYING);
-		
-		$this->where = "$alias'order_status' = '".OS_CONFIRMED." OR ".OS_SPLITED."'";
-		$this->where .= " and $alias'shipping_status' = '".SS_SHIPPED." OR ".SS_RECEIVED."'";
-		$this->where .= " and $alias'pay_status' = '".PS_PAYED." OR ".PS_PAYING."'";
-		
-// 		_dump($this->where, 1);
+    	$this->where[$alias.'order_status'] = array(OS_CONFIRMED, OS_SPLITED);
+		$this->where[$alias.'shipping_status'] = array(SS_SHIPPED, SS_RECEIVED);
+		$this->where[$alias.'pay_status'] = array(PS_PAYED, PS_PAYING);
 		return $this->where;
 	}
 	

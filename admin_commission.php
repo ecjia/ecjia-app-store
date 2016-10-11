@@ -355,12 +355,12 @@ class admin_commission extends ecjia_admin {
 		if (!empty($data)) {
 			foreach ($data as $key => $val) {
 				//$valid = $this->get_nerchants_order_valid_refund($val['user_id']); //订单有效总额
-				//$valid = $this->get_nerchants_order_valid_refund($val['store_id']);//订单有效总额
+				$valid = $this->get_nerchants_order_valid_refund($val['store_id']);//订单有效总额
 				$data[$key]['order_valid_total'] = price_format($valid['total_fee']);
 					
 				//$data[$key]['percent_value'] = $this->mpdb->where(array('percent_id'=>$val['suppliers_percent']))->get_field('percent_value');
 					
-				//$refund = $this->get_nerchants_order_valid_refund($val['user_id'], 1); //订单退款总额
+				$refund = $this->get_nerchants_order_valid_refund($val['store_id'], 1); //订单退款总额
 				$data[$key]['order_refund_total'] = price_format($refund['total_fee']);
 			}
 		}
@@ -392,32 +392,28 @@ class admin_commission extends ecjia_admin {
 		}
 		return $arr;
 	}	
+		
 	
 	//商家订单有效金额和退款金额
 	private function get_nerchants_order_valid_refund($store_id, $type = 0) {
-		
+	
 		$where =array();
 		if ($type == 1) {
-			//$where = array(
-			//	'o.order_status'		=> OS_RETURNED,
-			//	'o.shipping_status'		=> SS_UNSHIPPED,
-			//	'o.pay_status'			=> PS_UNPAYED
-			//);
-			$where = '';
-			$where = "o.order_status = ".OS_RETURNED."" ."and o.shipping_status = ".SS_UNSHIPPED."" ."o.pay_status = ".PS_UNPAYED."";
+			$where = array(
+					'o.order_status'		=> OS_RETURNED,
+					'o.shipping_status'		=> SS_UNSHIPPED,
+					'o.pay_status'			=> PS_UNPAYED
+			);
 		} else {
 			$order_query = RC_Loader::load_app_class('order_query', 'store');
 			$where = $order_query->order_finished('o.');
 		}
 		$total_fee = "SUM(" . order_amount_field('o.', $store_id) . ") AS total_fee ";
-		//$order_info = RC_Loader::load_app_model('order_info_viewmodel', 'seller');
-		$order_info = RC_DB::table('order_info as o')
-						->leftJoin('order_goods as og', RC_DB::raw('o.order_id'), '=', RC_DB::table('og.order_id'));
-		//$where = array_merge($where, array('ru_id' => $ru_id, 'oi2.main_order_id is null'));
-		//$res = $order_info->join(array('order_goods', 'order_info'))->field($total_fee)->where($where)->group('o.order_id')->find();
-		
-		//$res = $order_info->selectRaw($total_fee)->where($where)->groupBy(RC_DB::raw('o.order_id'))->first();
-// 		_dump($order_info->toSql(), 1);
+		$order_info = RC_Loader::load_app_model('order_info_viewmodel', 'store');
+	
+		$where = array_merge($where, array('store_id' => $store_id));
+	
+		$res = $order_info->join(array('order_goods', 'order_info'))->field($total_fee)->where($where)->group('o.order_id')->find();
 		return $res;
 	}
 	

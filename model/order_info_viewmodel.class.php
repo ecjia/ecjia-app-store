@@ -25,11 +25,11 @@ class order_info_viewmodel extends Component_Model_View {
 					'alias' => 'g',
 					'on'    => 'og.goods_id=g.goods_id'
 			),
-			'order_info' => array(
-					'type'  => Component_Model_View::TYPE_LEFT_JOIN,
-					'alias' => 'oi2',
-					'on'    => 'oi2.main_order_id = o.order_id'
-			)
+// 			'order_info' => array(
+// 					'type'  => Component_Model_View::TYPE_LEFT_JOIN,
+// 					'alias' => 'oi2',
+// 					'on'    => 'oi2.main_order_id = o.order_id'
+// 			)
 		);
 		
 		parent::__construct();
