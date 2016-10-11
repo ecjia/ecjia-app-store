@@ -273,7 +273,7 @@ class admin_preaudit extends ecjia_admin {
 				'store_id' 		=> $store_id,
 				'name' 			=> $store['responsible_person'],
 				'nick_name' 	=> '',
-				'user_ident' 	=> '',
+				'user_ident' 	=> 'SC001',
 				'email' 		=> $store['email'],
 				'password' 		=> md5(md5('123456') . $salt),
 				'salt'			=> $salt,
