@@ -220,24 +220,39 @@ class admin_preaudit extends ecjia_admin {
 				'sort_order' 				=> 50,
 			);
 			$merchant_config = array(
-	            'shop_kf_mobile',         // 客服手机号码
-	            'shop_kf_email' ,         // 客服邮件地址
-	            'shop_kf_qq'    ,         // 客服QQ号码
-	            'shop_kf_ww'    ,         // 客服淘宝旺旺
-	            'shop_kf_online_ident',   // 在线客服账号
-	            'shop_kf_appkey',         // 在线客服appkey
-	            'shop_kf_secretkey',      // 在线客服secretkey
-	            'shop_kf_welcomeMsg',     // 在线客服欢迎信息
-	            'shop_kf_type',           // 客服样式
-	            'shop_trade_time',        // 营业时间
-	            'shop_description',       // 店铺描述
-	            'shop_notice',            // 店铺公告
-	            'shop_logo',              // 默认店铺页头部LOGO
-	            'shop_kf_logo',           // 在线客服头像LOGO
-	            'shop_thumb_logo',        // Logo缩略图
-	            'shop_banner_pic',		  // banner图
-	            'shop_qrcode_logo',       // 二维码中间Logo
-	            'shop_front_logo',		  //店铺封面图
+// 	            'shop_kf_mobile',         // 客服手机号码
+// 	            'shop_kf_email' ,         // 客服邮件地址
+// 	            'shop_kf_qq'    ,         // 客服QQ号码
+// 	            'shop_kf_ww'    ,         // 客服淘宝旺旺
+// 	            'shop_kf_online_ident',   // 在线客服账号
+// 	            'shop_kf_appkey',         // 在线客服appkey
+// 	            'shop_kf_secretkey',      // 在线客服secretkey
+// 	            'shop_kf_welcomeMsg',     // 在线客服欢迎信息
+// 	            'shop_kf_type',           // 客服样式
+// 	            'shop_trade_time',        // 营业时间
+// 	            'shop_description',       // 店铺描述
+// 	            'shop_notice',            // 店铺公告
+// 	            'shop_logo',              // 默认店铺页头部LOGO
+// 	            'shop_kf_logo',           // 在线客服头像LOGO
+// 	            'shop_thumb_logo',        // Logo缩略图
+// 	            'shop_banner_pic',		  // banner图
+// 	            'shop_qrcode_logo',       // 二维码中间Logo
+// 	            'shop_front_logo',		  //店铺封面图
+	            
+				'shop_title' ,                // 店铺标题
+				'shop_kf_mobile' ,            // 客服手机号码
+				'shop_kf_email' ,             // 客服邮件地址
+				'shop_kf_type' ,              // 客服样式
+				'shop_kf_qq'  ,               // 客服QQ号码
+				'shop_kf_ww' ,                // 客服淘宝旺旺
+				'shop_logo' ,                 // 默认店铺页头部LOGO
+				'shop_front_logo',            // 店铺封面图
+				'shop_thumb_logo' ,           // Logo缩略图
+				'shop_banner_pic' ,           // banner图
+				'shop_qrcode_logo' ,          // 二维码中间Logo
+				'shop_trade_time' ,           // 营业时间
+				'shop_description' ,          // 店铺描述
+				'shop_notice'   ,             // 店铺公告
        		 );
 			$merchants_config = RC_DB::table('merchants_config');
 			foreach ($merchant_config as $val) {
@@ -248,7 +263,32 @@ class admin_preaudit extends ecjia_admin {
 			}
 			RC_DB::table('store_franchisee')->insertGetId($data);
 			RC_DB::table('store_preaudit')->where('store_id', $store_id)->delete();
+
+			
+			$salt = rand(1, 9999);
+			//审核通过产生一个主员工的资料
+			$data = array(
+				'mobile' 		=> $store['contact_mobile'],
+				'store_id' 		=> $store_id,
+				'name' 			=> $store['responsible_person'],
+				'nick_name' 	=> '',
+				'user_ident' 	=> 'SC001',
+				'email' 		=> $store['email'],
+				'password' 		=> md5(md5('123456') . $salt),
+				'salt'			=> $salt,
+				'add_time' 		=> RC_Time::gmtime(),
+				'last_login' 	=> '',
+				'last_ip' 		=> '',
+				'action_list' 	=> '',
+				'todolist' 		=> '',
+				'group_id' 		=> '',
+				'parent_id' 	=> 0,
+				'avatar' 		=> '',
+			);
+			RC_DB::table('staff_user')->insertGetId($data);
+			
 			$this->showmessage(RC_Lang::get('store::store.check_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin_preaudit/init', array('store_id' => $store_id))));
+
 		}else {
 			RC_DB::table('store_preaudit')->where('store_id', $store_id)->update(array('remark'=>$remark));
 			$this->showmessage(RC_Lang::get('store::store.deal_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin_preaudit/check', array('store_id' => $store_id))));
