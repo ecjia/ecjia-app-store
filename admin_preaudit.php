@@ -242,11 +242,9 @@ class admin_preaudit extends ecjia_admin {
        		 );
 			$merchants_config = RC_DB::table('merchants_config');
 			foreach ($merchant_config as $val) {
-				if (!empty($val)) {
-					$count = $merchants_config->where(RC_DB::raw('store_id'), $store_id)->where(RC_DB::raw('code'), $val)->count();
-					if(empty($count)){
-						$merchants_config->insert(array('store_id' => $store_id, 'code' => $val));
-					}
+				$count = $merchants_config->where(RC_DB::raw('store_id'), $store_id)->where(RC_DB::raw('code'), $val)->count();
+				if(empty($count)){
+					$merchants_config->insert(array('store_id' => $store_id, 'code' => $val));
 				}
 			}
 			RC_DB::table('store_franchisee')->insert($data);
