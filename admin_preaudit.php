@@ -192,7 +192,6 @@ class admin_preaudit extends ecjia_admin {
 		if($_POST['check_status'] == 2) {//通过
 			$store = RC_DB::table('store_preaudit')->where('store_id', $store_id)->first();
 			$data =array(
-				'store_id' 		=> $store_id,
 				'cat_id' 		=> $store['cat_id'],
 				'merchants_name'=> $store['merchants_name'],
 				'shop_keyword'	=> $store['shop_keyword'],
@@ -242,12 +241,12 @@ class admin_preaudit extends ecjia_admin {
        		 );
 			$merchants_config = RC_DB::table('merchants_config');
 			foreach ($merchant_config as $val) {
-				$count = $merchants_config->where(RC_DB::raw('store_id'), $store_id)->where(RC_DB::raw('code'), $val)->count();
-				if(empty($count)){
+				$count= $merchants_config->where(RC_DB::raw('store_id'), $store_id)->where(RC_DB::raw('code'), $val)->count();
+				if($count == 0){
 					$merchants_config->insert(array('store_id' => $store_id, 'code' => $val));
 				}
 			}
-			RC_DB::table('store_franchisee')->insert($data);
+			RC_DB::table('store_franchisee')->insertGetId($data);
 			RC_DB::table('store_preaudit')->where('store_id', $store_id)->delete();
 			$this->showmessage(RC_Lang::get('store::store.check_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin_preaudit/init', array('store_id' => $store_id))));
 		}else {
