@@ -183,8 +183,6 @@ class admin_preaudit extends ecjia_admin {
 		$original 	=!empty($_POST['original']) ? $_POST['original'] : '';
 		$check_log =array(
 			'store_id' 		=> 	$store_id,
-// 			'original' 		=> 	$original,
-// 			'new' 			=> 	$new,
 			'info'			=>	$remark,
 			'time'			=>	RC_Time::gmtime(),
 		);
@@ -265,6 +263,7 @@ class admin_preaudit extends ecjia_admin {
 				'group_id' 		=> '',
 				'parent_id' 	=> 0,
 				'avatar' 		=> '',
+				'introduction' 	=> '',
 			);
 			RC_DB::table('staff_user')->insertGetId($data);
 			
