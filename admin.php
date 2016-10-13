@@ -77,7 +77,7 @@ class admin extends ecjia_admin {
 		
 		$store_id = intval($_POST['store_id']);
 		
-		$pic_url = RC_DB::table('store_preaudit')->where('store_id', $store_id)->first();
+		$pic_url = RC_DB::table('store_franchisee')->where('store_id', $store_id)->first();
 		
 		if (!empty($_FILES['one']['name'])) {
 			$upload = RC_Upload::uploader('image', array('save_path' => 'data/store', 'auto_sub_dirs' => false));
@@ -153,7 +153,6 @@ class admin extends ecjia_admin {
 			'bank_account_number'  		=> !empty($_POST['bank_account_number'])		? $_POST['bank_account_number'] : '',
 			'bank_address'         		=> !empty($_POST['bank_address']) 			? $_POST['bank_address'] : '',
 		);
-		
 		RC_DB::table('store_franchisee')->where('store_id', $store_id)->update($data);
 
 		$this->showmessage(RC_Lang::get('store::store.edit_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin/edit', array('store_id' => $store_id))));
