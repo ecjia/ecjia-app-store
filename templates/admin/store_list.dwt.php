@@ -28,9 +28,8 @@
 			<thead>
 			  	<tr>
 					<th class="w50">{lang key='store::store.id'}</th>
-				    <th class="w100">{lang key='store::store.store_title'}</th>
+				    <th class="w200">{lang key='store::store.store_title'}</th>
 				    <th class="w100">{lang key='store::store.store_cat'}</th>
-				    <th class="w100">{lang key='store::store.person'}</th>
 				    <th class="w200">{lang key='store::store.companyname'}</th>
 				    <th class="w150">{lang key='store::store.lable_contact_lable'}</th>
 				    <th class="w150">{lang key='store::store.confirm_time'}</th>
@@ -51,7 +50,6 @@
 					     </div>
 					</td>
 					<td>{$list.cat_name}</td>
-					<td>{$list.responsible_person}</td>
 					<td>{$list.company_name}</td>
 					<td>{$list.contact_mobile}</td>
 					<td>{$list.confirm_time}</td>

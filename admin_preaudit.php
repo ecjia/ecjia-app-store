@@ -217,6 +217,11 @@ class admin_preaudit extends ecjia_admin {
 				'latitude'					=>$store['latitude'],
 				'sort_order' 				=> 50,
 			);
+			
+			RC_DB::table('store_preaudit')->where('store_id', $store_id)->delete();
+			$store_id = RC_DB::table('store_franchisee')->insertGetId($data);
+			
+			//审核通过产生店铺中的code
 			$merchant_config = array(
 				'shop_title' ,                // 店铺标题
 				'shop_kf_mobile' ,            // 客服手机号码
@@ -232,7 +237,7 @@ class admin_preaudit extends ecjia_admin {
 				'shop_trade_time' ,           // 营业时间
 				'shop_description' ,          // 店铺描述
 				'shop_notice'   ,             // 店铺公告
-       		 );
+			);
 			$merchants_config = RC_DB::table('merchants_config');
 			foreach ($merchant_config as $val) {
 				$count= $merchants_config->where(RC_DB::raw('store_id'), $store_id)->where(RC_DB::raw('code'), $val)->count();
@@ -240,11 +245,9 @@ class admin_preaudit extends ecjia_admin {
 					$merchants_config->insert(array('store_id' => $store_id, 'code' => $val));
 				}
 			}
-			RC_DB::table('store_preaudit')->where('store_id', $store_id)->delete();
-			$store_id = RC_DB::table('store_franchisee')->insertGetId($data);
 			
-			$salt = rand(1, 9999);
 			//审核通过产生一个主员工的资料
+			$salt = rand(1, 9999);
 			$data = array(
 				'mobile' 		=> $store['contact_mobile'],
 				'store_id' 		=> $store_id,
@@ -267,7 +270,6 @@ class admin_preaudit extends ecjia_admin {
 			RC_DB::table('staff_user')->insertGetId($data);
 			
 			$this->showmessage(RC_Lang::get('store::store.check_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin_preaudit/init', array('store_id' => $store_id))));
-
 		}else {
 			RC_DB::table('store_preaudit')->where('store_id', $store_id)->update(array('remark'=>$remark));
 			$this->showmessage(RC_Lang::get('store::store.deal_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin_preaudit/check', array('store_id' => $store_id))));
