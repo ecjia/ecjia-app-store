@@ -56,6 +56,7 @@ return array(
 	'person_lable'			=>	'法定代表人：',
 	'email_lable'			=>	'电子邮箱：',
 	'contact_lable'			=>	'联系方式：',
+	'lable_contact_lable'	=>	'联系方式',
 	'address_lable'			=>	'通讯地址：',
 	'identity_type_lable'			=>	'证件类型：',
 	'identity_number_lable'			=>	'证件号码：',
