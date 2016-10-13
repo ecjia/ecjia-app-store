@@ -240,9 +240,8 @@ class admin_preaudit extends ecjia_admin {
 					$merchants_config->insert(array('store_id' => $store_id, 'code' => $val));
 				}
 			}
-			RC_DB::table('store_franchisee')->insertGetId($data);
 			RC_DB::table('store_preaudit')->where('store_id', $store_id)->delete();
-
+			$store_id = RC_DB::table('store_franchisee')->insertGetId($data);
 			
 			$salt = rand(1, 9999);
 			//审核通过产生一个主员工的资料
