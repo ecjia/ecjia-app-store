@@ -266,32 +266,35 @@ class admin_preaudit extends ecjia_admin {
 				$this->showmessage(RC_Lang::get('store::store.check_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin_preaudit/init', array('id' => $id))));
 			} else {
 				//再次审核
-				$store = RC_DB::table('store_preaudit')->where('id', $id)->first();
+				$store = RC_DB::table('store_preaudit')->where('store_id', $store_id)->first();
 				$data =array(
 					'cat_id' 					=> $store['cat_id'],
 					'shop_keyword'				=> $store['shop_keyword'],
-					'responsible_person'		=>$store['responsible_person'],
-					'email'						=>$store['email'],
-					'contact_mobile'			=>$store['contact_mobile'],
-					'apply_time'				=>$store['apply_time'],
-					'confirm_time'				=>RC_Time::gmtime(),
-					'address'					=>$store['address'],
-					'identity_type'				=>$store['identity_type'],
-					'identity_number'			=>$store['identity_number'],
-					'identity_pic_front'		=>$store['identity_pic_front'],
-					'identity_pic_back'			=>$store['identity_pic_back'],
-					'personhand_identity_pic'	=>$store['personhand_identity_pic'],
-					'business_licence'			=>$store['business_licence'],
-					'business_licence_pic'		=>$store['business_licence_pic'],
+					'responsible_person'		=> $store['responsible_person'],
+					'email'						=> $store['email'],
+					'contact_mobile'			=> $store['contact_mobile'],
+					'apply_time'				=> $store['apply_time'],
+					'confirm_time'				=> RC_Time::gmtime(),
+					'address'					=> $store['address'],
+					'identity_type'				=> $store['identity_type'],
+					'identity_number'			=> $store['identity_number'],
+					'identity_pic_front'		=> $store['identity_pic_front'],
+					'identity_pic_back'			=> $store['identity_pic_back'],
+					'personhand_identity_pic'	=> $store['personhand_identity_pic'],
+					'business_licence'			=> $store['business_licence'],
+					'business_licence_pic'		=> $store['business_licence_pic'],
 				);
 				RC_DB::table('store_franchisee')->where('store_id', $store_id)->update($data);
 				
-				$check_log =array(
-					'store_id' => $store_id,
-					'info'	   => $remark,
-					'time'	   => RC_Time::gmtime(),
-				);
-				RC_DB::table('store_check_log')->insertGetId($check_log);
+				RC_DB::table('store_preaudit')->where('store_id', $store_id)->delete();
+				
+// 				$check_log =array(
+// 					'store_id' => $store_id,
+// 					'info'	   => $remark,
+// 					'time'	   => RC_Time::gmtime(),
+// 				);
+// 				RC_DB::table('store_check_log')->insertGetId($check_log);
+				$this->showmessage('再次审核成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin_preaudit/init', array('id' => $id))));
 			}
 		}else {
 			RC_DB::table('store_preaudit')->where('id', $id)->update(array('remark'=>$remark));
