@@ -229,6 +229,7 @@
 				
 				<div class="control-group">
 					<div class="controls">
+						<input type="hidden"  name="id" value="{$store.id}" />
 						<input type="hidden"  name="store_id" value="{$store.store_id}" />
 						<button class="btn btn-gebo" type="submit">{lang key='store::store.sub_check'}</button>
 					</div>

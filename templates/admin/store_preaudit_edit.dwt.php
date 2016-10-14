@@ -302,7 +302,7 @@
 				
 				<div class="control-group">
 					<div class="controls">
-						<input type="hidden"  name="store_id" value="{$store.store_id}" />
+						<input type="hidden"  name="id" value="{$store.id}" />
 						<button class="btn btn-gebo" type="submit">{lang key='store::store.sub_update'}</button>
 					</div>
 				</div>
