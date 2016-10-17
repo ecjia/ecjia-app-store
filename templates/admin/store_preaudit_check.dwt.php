@@ -18,35 +18,95 @@
 
 <div class="row-fluid">
 	<div class="span12">
+		<div class="foldable-list move-mod-group" id="goods_info_sort_submit">
+			<div class="accordion-group">
+				<div class="accordion-heading">
+					<a class="accordion-toggle collapsed move-mod-head" data-toggle="collapse" data-target="#goods_info_area_submit">
+						<strong>商家信息</strong>
+					</a>
+				</div>
+				<div class="accordion-body in collapse" id="goods_info_area_submit">
+					<table class="table table-oddtd m_b0">
+						<tbody class="first-td-no-leftbd">
+							<tr>
+								<td><div align="right"><strong>{lang key='store::store.store_title_lable'}</strong></div></td>
+								<td>{$store.merchants_name}</td>
+								<td><div align="right"><strong>{lang key='store::store.store_keywords_lable'}</strong></div></td>
+								<td>{$store.shop_keyword}</td>
+							</tr>
+						
+							<tr>
+								<td><div align="right"><strong>{lang key='store::store.store_cat_lable'}</strong></div></td>
+								<td>{$store.cat_name}</td>
+								<td><div align="right"><strong>{lang key='store::store.apply_time_lable'}</strong></div></td>
+								<td>{$store.apply_time}</td>
+							</tr>
+							
+							<tr>
+								<td><div align="right"><strong>{lang key='store::store.companyname_lable'}</strong></div></td>
+								<td colspan="3">{$store.company_name}</td>
+							</tr>
+							
+							<tr>
+								<td><div align="right"><strong>{lang key='store::store.identity_type_lable'}</strong></div></td>
+								<td>{if $store.identity_type eq 1}个人{else}企业{/if}</td>
+								<td><div align="right"><strong>{lang key='store::store.person_lable'}</strong></div></td>
+								<td>{$store.responsible_person}</td>
+							</tr>
+							
+							<tr>
+								<td><div align="right"><strong>{lang key='store::store.business_licence_lable'}</strong></div></td>
+								<td>{$store.business_licence}</td>
+								<td><div align="right"><strong>{lang key='store::store.identity_number_lable'}</strong></div></td>
+								<td>{$store.identity_number}</td>
+							</tr>
+							
+							<tr>
+								<td><div align="right"><strong>{lang key='store::store.bank_name_lable'}</strong></div></td>
+								<td>{$store.bank_name}</td>
+								<td><div align="right"><strong>{lang key='store::store.bank_branch_name_lable'}</strong></div></td>
+								<td>{$store.bank_branch_name}</td>
+							</tr>
+							
+							<tr>
+								<td><div align="right"><strong>{lang key='store::store.bank_account_number_lable'}</strong></div></td>
+								<td>{$store.bank_account_number}</td>
+								<td><div align="right"><strong>{lang key='store::store.bank_address_lable'}</strong></div></td>
+								<td>{$store.bank_address}</td>
+							</tr>
+							
+							<tr>
+								<td><div align="right"><strong>{lang key='store::store.email_lable'}</strong></div></td>
+								<td>{$store.email}</td>
+								<td><div align="right"><strong>{lang key='store::store.contact_lable'}</strong></div></td>
+								<td>{$store.contact_mobile}</td>
+							</tr>
+							
+							<tr>
+								<td><div align="right"><strong>{lang key='store::store.longitude_lable'}</strong></div></td>
+								<td>{$store.longitude}</td>
+								<td><div align="right"><strong>{lang key='store::store.latitude_lable'}</strong></div></td>
+								<td>{$store.latitude}</td>
+							</tr>
+							
+							<tr>
+								<td><div align="right"><strong>{lang key='store::store.address_lable'}</strong></div></td>
+								<td colspan="3">{$store.address}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		
 		<form class="form-horizontal" id="form-privilege" name="theForm" action="{$form_action}" method="post" enctype="multipart/form-data" >
 			<fieldset>
-				<div class="control-group formSep">
-					<label class="control-label">{lang key='store::store.companyname_lable'}</label>
-					<div class="controls l_h30">
-						{$store.company_name}
-					</div>
-				</div>
-				
-				<div class="control-group formSep">
-					<label class="control-label">{lang key='store::store.person_lable'}</label>
-					<div class="controls l_h30">
-						{$store.responsible_person}
-					</div>
-				</div>
-			
-				<div class="control-group formSep" >
-					<label class="control-label">{lang key='store::store.identity_type_lable'}</label>
-					<div class="controls l_h30">
-						{$store.identity_type}
-					</div>
-				</div>
-				
 				<div class="control-group formSep">
 					<label class="control-label">{lang key='store::store.business_licence_pic_lable'}</label>
 					<div class="controls">
 						<div class="fileupload fileupload-new" data-provides="fileupload">
 							{if $store.business_licence_pic neq ''}
-								<img class="w120 h120"  class="img-polaroid" src="{RC_Upload::upload_url()}/{$store.business_licence_pic}"><br>
+								<img class="w120 h120 thumbnail"  class="img-polaroid" src="{RC_Upload::upload_url()}/{$store.business_licence_pic}"><br>
 								{lang key='store::store.file_address'}{$store.business_licence_pic}<br>
 							{else}
 								<div class="l_h30">
@@ -58,18 +118,11 @@
 				</div>
 				
 				<div class="control-group formSep">
-					<label class="control-label">{lang key='store::store.business_licence_lable'}</label>
-					<div class="controls l_h30">
-						{$store.business_licence}
-					</div>
-				</div>
-		
-				<div class="control-group formSep">
 					<label class="control-label">{lang key='store::store.identity_pic_front_lable'}</label>
 					<div class="controls">
 						<div class="fileupload fileupload-new" data-provides="fileupload">
-							{if $store.business_licence_pic neq ''}
-								<img class="w120 h120"  class="img-polaroid" src="{RC_Upload::upload_url()}/{$store.identity_pic_front}"><br>
+							{if $store.identity_pic_front neq ''}
+								<img class="w120 h120 thumbnail"  class="img-polaroid" src="{RC_Upload::upload_url()}/{$store.identity_pic_front}"><br>
 								{lang key='store::store.file_address'}{$store.identity_pic_front}<br>
 							{else}
 								<div class="l_h30">
@@ -84,8 +137,8 @@
 					<label class="control-label">{lang key='store::store.identity_pic_back_lable'}</label>
 					<div class="controls">
 						<div class="fileupload fileupload-new" data-provides="fileupload">
-							{if $store.business_licence_pic neq ''}
-								<img class="w120 h120"  class="img-polaroid" src="{RC_Upload::upload_url()}/{$store.identity_pic_back}"><br>
+							{if $store.identity_pic_back neq ''}
+								<img class="w120 h120 thumbnail"  class="img-polaroid" src="{RC_Upload::upload_url()}/{$store.identity_pic_back}"><br>
 								{lang key='store::store.file_address'}{$store.identity_pic_back}<br>
 							{else}
 								<div class="l_h30">
@@ -100,8 +153,8 @@
 					<label class="control-label">{lang key='store::store.personhand_identity_pic_lable'}</label>
 					<div class="controls">
 						<div class="fileupload fileupload-new" data-provides="fileupload">
-							{if $store.business_licence_pic neq ''}
-								<img class="w120 h120"  class="img-polaroid" src="{RC_Upload::upload_url()}/{$store.personhand_identity_pic}"><br>
+							{if $store.personhand_identity_pic neq ''}
+								<img class="w120 h120 thumbnail"  class="img-polaroid" src="{RC_Upload::upload_url()}/{$store.personhand_identity_pic}"><br>
 								{lang key='store::store.file_address'}{$store.personhand_identity_pic}<br>
 							{else}
 								<div class="l_h30">
@@ -111,115 +164,8 @@
 						</div>
 					</div>
 				</div>
-				
-				<div class="control-group formSep">
-					<label class="control-label">{lang key='store::store.identity_number_lable'}</label>
-					<div class="controls l_h30">
-						{$store.identity_number}
-					</div>
-				</div>
-				
-				<div class="control-group formSep">
-					<label class="control-label">{lang key='store::store.bank_name_lable'}</label>
-					<div class="controls l_h30">
-						{$store.bank_name}
-					</div>
-				</div>
-				
-				<div class="control-group formSep">
-					<label class="control-label">{lang key='store::store.bank_branch_name_lable'}</label>
-					<div class="controls l_h30">
-						{$store.bank_branch_name}
-					</div>
-				</div>
-				
-				<div class="control-group formSep">
-					<label class="control-label">{lang key='store::store.bank_account_number_lable'}</label>
-					<div class="controls l_h30">
-						{$store.bank_account_number}
-					</div>
-				</div>
-				
-				<div class="control-group formSep">
-					<label class="control-label">{lang key='store::store.bank_address_lable'}</label>
-					<div class="controls l_h30">
-						{$store.bank_address}
-					</div>
-				</div>
-				
-				
-				<div class="control-group formSep">
-					<label class="control-label">{lang key='store::store.email_lable'}</label>
-					<div class="controls l_h30">
-						{$store.email}
-					</div>
-				</div>
-				
-				<div class="control-group formSep">
-					<label class="control-label">{lang key='store::store.contact_lable'}</label>
-					<div class="controls l_h30">
-						{$store.contact_mobile}
-					</div>
-				</div>
-				
-				<div class="control-group formSep">
-					<label class="control-label">{lang key='store::store.address_lable'}</label>
-					<div class="controls l_h30">
-						{$store.address}
-					</div>
-				</div>
 			
-				<div class="control-group formSep" >
-					<label class="control-label">{lang key='store::store.store_cat_lable'}</label>
-					<div class="controls l_h30">
-						{$store.store_cat}
-					</div>
-				</div>
-				
-				<div class="control-group formSep">
-					<label class="control-label">{lang key='store::store.store_title_lable'}</label>
-					<div class="controls l_h30">
-						{$store.merchants_name}
-					</div>
-				</div>
-				
-				<div class="control-group formSep">
-					<label class="control-label">{lang key='store::store.store_keywords_lable'}</label>
-					<div class="controls l_h30">
-						{$store.shop_keyword}
-					</div>
-				</div>
-				
-				<div class="control-group formSep">
-					<label class="control-label">{lang key='store::store.longitude_lable'}</label>
-				 	<div class="controls l_h30">
-						{$store.longitude}
-					</div>
-				</div>
-				
-				<div class="control-group formSep">
-					<label class="control-label">{lang key='store::store.latitude_lable'}</label>
-				 	<div class="controls l_h30">
-						{$store.latitude}
-					</div>
-				</div>
-				
-				<div class="control-group formSep">
-					<label class="control-label">{lang key='store::store.apply_time_lable'}</label>
-				 	<div class="controls l_h30">
-						{$store.apply_time}
-					</div>
-				</div>
-				
-				<div class="control-group formSep">
-					<label class="control-label">{lang key='store::store.check_lable'}</label>
-				 	<div class="controls">
-						<input type="radio"  name="check_status" value="1" {if $store.check_status eq 1}checked{/if}><span>{lang key='store::store.check_no'}</span>
-						<input type="radio"  name="check_status" value="2" {if $store.check_status eq 2}checked{/if}><span>{lang key='store::store.check_yes'}</span>
-					</div>
-				</div>
-				
-				<div class="control-group formSep" >
+				<div class="control formSep" >
 					<label class="control-label">{lang key='store::store.remark_lable'}</label>
 					<div class="controls">
 						<textarea class="span6" name="remark" cols="40" rows="3">{$store.remark}</textarea>
@@ -227,12 +173,18 @@
 					</div>
 				</div>
 				
-				<div class="control-group">
-					<div class="controls">
-						<input type="hidden"  name="id" value="{$store.id}" />
-						<input type="hidden"  name="store_id" value="{$store.store_id}" />
-						<button class="btn btn-gebo" type="submit">{lang key='store::store.sub_check'}</button>
+				<div class="control formSep">
+					<label class="control-label">{lang key='store::store.check_lable'}</label>
+				 	<div class="controls">
+						<input type="radio"  name="check_status" value="1" {if $store.check_status eq 1}checked{/if}><span>{lang key='store::store.check_no'}</span>
+						<input type="radio"  name="check_status" value="2" {if $store.check_status eq 2}checked{/if}><span>{lang key='store::store.check_yes'}</span>
 					</div>
+				</div>
+				
+				<div class="controls">
+					<input type="hidden"  name="id" value="{$store.id}" />
+					<input type="hidden"  name="store_id" value="{$store.store_id}" />
+					<button class="btn btn-gebo" type="submit">{lang key='store::store.sub_check'}</button>
 				</div>
 			</fieldset>
 		</form>
