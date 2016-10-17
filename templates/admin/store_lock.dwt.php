@@ -8,7 +8,6 @@
 <!-- {/block} -->
 
 <!-- {block name="main_content"} -->
-
 <style>
 	.unlock{
 		background:#62c462 -moz-linear-gradient(center bottom , #62c462, #51a351) repeat scroll 0 0;
@@ -23,31 +22,37 @@
 		{/if}
 	</h3>
 </div>
-
-<form class="form-horizontal"  name="theForm" action="{$form_action}" method="post"  enctype="multipart/form-data">
-	<fieldset>
-	{if $status eq 1}
-	<div class="errorpage alert alert-danger">
-		<strong>温馨提示：</strong>{t}锁定入驻商家后，该商家将不能进行以下操作{/t}
-		<p>1、</p>
-		<p>2、</p>
-		<p>3、</p>
-		<input type="hidden" name="store_id" value="{$store_id}"/>
-		<input type="hidden" name="status" value="{$status}"/>
-		<input type="submit" value="！锁定" class="btn"/>
-	</div>	
-	{/if}
-	{if $status eq 2}
-	 <div class="alert alert-info ">
-		<strong>温馨提示：</strong>{t}解锁入驻商家后，该商家可以进行以下操作{/t}
-		<p>1、</p>
-		<p>2、</p>
-		<p>3、</p>
-		<input type="hidden" name="store_id" value="{$store_id}"/>
-		<input type="hidden" name="status" value="{$status}"/>
-		<input type="submit" value="！解锁" class="btn"/>
-	</div>	 
-	{/if}
-	</fieldset>
-</form>   
+<div class="row-fluid">
+    <div class="span6">
+	    <form class="form-horizontal"  name="theForm" action="{$form_action}" method="post" >
+	    	{if $status eq 1}
+	    	 <div class="alert alert-block alert-error fade in">
+	            <h4 class="alert-heading">温馨提示!</h4>
+	            <ul>
+	                <li>锁定店铺后，商家后台无法进行登录</li>
+	                <li>所有商品即可下架</li>
+	                <li>所有订单即可无效</li>
+	                <li>所有员工有关及资金进行冻结</li>
+	                <li>所有权限都暂无权限</li>
+	            </ul>
+	            <br>
+	            <button type="submit" class="btn"><i class="splashy-lock_small_locked"></i>锁定</button>
+	        </div>
+	    	{else}
+	    	 <div class="alert alert-block alert-success fade in">
+	            <h4 class="alert-heading">温馨提示!</h4>
+	            <ul>
+	                <li>锁定解锁后，商家后台可进行登录</li>
+	               	<li>锁定解锁后，商家后台可进行登录</li>
+	                <li>锁定解锁后，商家后台可进行登录</li>
+	                <li>锁定解锁后，商家后台可进行登录</li>
+	                <li>锁定解锁后，商家后台可进行登录</li>
+	            </ul>
+	            <br>
+	            <button type="submit" class="btn"><i class="splashy-lock_small_unlocked"></i>解锁</button>
+	        </div>
+	    	{/if}
+	    </form>
+    </div>
+</div>  
 <!-- {/block} -->

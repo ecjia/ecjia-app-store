@@ -24,6 +24,8 @@ class admin extends ecjia_admin {
 		RC_Script::enqueue_script('jquery-chosen');
 		RC_Style::enqueue_style('chosen');
 		
+		RC_Style::enqueue_style('splashy');
+		
 		RC_Script::enqueue_script('store', RC_App::apps_url('statics/js/store.js', __FILE__));
 		RC_Script::enqueue_script('commission_info',RC_App::apps_url('statics/js/commission.js' , __FILE__));
 		
@@ -36,6 +38,9 @@ class admin extends ecjia_admin {
 	public function init() {
 	    $this->admin_priv('store_affiliate_manage',ecjia::MSGTYPE_JSON);
 		
+	    ecjia_screen::get_current_screen()->remove_last_nav_here();
+	    ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('入驻商'));
+	    
 	    $this->assign('ur_here', RC_Lang::get('store::store.store_list'));
 	    
 	    $store_list = $this->store_list();
@@ -54,6 +59,7 @@ class admin extends ecjia_admin {
 		
 		$this->assign('ur_here',RC_Lang::get('store::store.store_update'));
 		$this->assign('action_link',array('href' => RC_Uri::url('store/admin/init'),'text' => RC_Lang::get('store::store.store_list')));
+		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('编辑入驻商'));
 		
 		$store_id = intval($_GET['store_id']);
 		$store = RC_DB::table('store_franchisee')->where('store_id', $store_id)->first();
@@ -166,11 +172,13 @@ class admin extends ecjia_admin {
 	
 		$this->assign('ur_here',RC_Lang::get('store::store.view'));
 		$this->assign('action_link',array('href' => RC_Uri::url('store/admin/init'),'text' => RC_Lang::get('store::store.store_list')));
-	
+		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('store::store.view')));
+		
 		$store_id = intval($_GET['store_id']);
 		$store = RC_DB::table('store_franchisee')->where('store_id', $store_id)->first();
 		$store['apply_time']	= RC_Time::local_date(ecjia::config('time_format'), $store['apply_time']);
 		$store['confirm_time']	= RC_Time::local_date(ecjia::config('time_format'), $store['confirm_time']);
+		
 		$this->assign('store', $store);
 		
 		$this->display('store_preview.dwt');
@@ -179,45 +187,44 @@ class admin extends ecjia_admin {
 	/**
 	 * 锁定商家
 	 */
-	public function lock() {
+	public function status() {
 		$this->admin_priv('store_affiliate_lock', ecjia::MSGTYPE_JSON);
+		
+		$this->assign('action_link',array('href' => RC_Uri::url('store/admin/init'),'text' => RC_Lang::get('store::store.store_list')));
+		
 		$store_id = $_GET['store_id'];
-		$status = $_GET['status'];
-		$this->assign('form_action',RC_Uri::url('store/admin/lockupdate', array('store_id' => $store_id, 'status' => $status)));
-		$this->assign('store_id', $store_id);	
-		$this->assign('status', $status);		
+		$status   = $_GET['status'];
+		if($status ==1){
+			$this->assign('ur_here','锁定店铺');
+			ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('锁定店铺'));
+			$this->assign('status',$status);
+		}else{
+			$this->assign('ur_here','店铺解锁');
+			ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('店铺解锁'));
+		}
+
+		$this->assign('form_action',RC_Uri::url('store/admin/status_update', array('store_id' => $store_id, 'status'=>$status)));
+			
 		$this->display('store_lock.dwt');
 	}
-	
-	
-	/**
-	 * 解锁商家
-	 */
-	public function unlock() {
-		$this->admin_priv('store_affiliate_lock', ecjia::MSGTYPE_JSON);
-		$store_id = $_GET['store_id'];
-		$status = $_GET['status'];
-		$this->assign('form_action',RC_Uri::url('store/admin/lockupdate', array('store_id' => $store_id, 'status' => $status)));
-		$this->assign('store_id', $store_id);
-		$this->assign('status', $status);
-		$this->display('store_lock.dwt');
-	}
-	
+
 	/**
 	 * 锁定解锁商家操作
 	 */
-	public function lockupdate() {
+	public function status_update() {
 		$this->admin_priv('store_affiliate_lock', ecjia::MSGTYPE_JSON);
 		
-		$store_id = $_POST['store_id'];
-		$status = $_POST['status'];
+		$store_id = $_GET['store_id'];
+		$status   = $_GET['status'];
+
 		if ($status == 1) {
-			$status_new = '2';
+			$status_new = 2;
 		} elseif ($status == 2) {
-			$status_new = '1';
+			$status_new = 1;
 		}
 		
 		RC_DB::table('store_franchisee')->where('store_id', $store_id)->update(array('status' => $status_new));
+		
 		$this->showmessage('操作成功！', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin/init')));
 	}
 	

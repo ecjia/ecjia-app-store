@@ -44,8 +44,12 @@
 				    	<span>{$list.merchants_name}</span>
 				    	<div class="edit-list">
 				    		<a class="data-pjax" href='{RC_Uri::url("store/admin/edit", "store_id={$list.store_id}")}' title="{lang key='system::system.edit'}">{lang key='system::system.edit'}</a>&nbsp;|&nbsp;
-					      	<a class="data-pjax" href='{if $list.status eq 1}{RC_Uri::url("store/admin/lock", "store_id={$list.store_id}&status={$list.status}")} {else} {RC_Uri::url("store/admin/unlock", "store_id={$list.store_id}&status={$list.status}")} {/if}' title="{if $list.status eq 1}{lang key='store::store.lock'}{else}{lang key='store::store.unlock'}{/if}">{if $list.status eq 1}{lang key='store::store.lock'}{else}{lang key='store::store.unlock'}{/if}</a>&nbsp;|&nbsp; 
-					     	<a class="data-pjax" href='{RC_Uri::url("store/admin_commission/edit", "store_id={$list.store_id}&id={$list.id}")}' title="{lang key='store::store.set_commission'}">{lang key='store::store.set_commission'}</a>&nbsp;|&nbsp;  
+				    		{if $list.status eq 1}
+				    		<a class="data-pjax ecjiafc-red" href='{RC_Uri::url("store/admin/status", "store_id={$list.store_id}&status={$list.status}")}' title="{lang key='store::store.lock'}">{lang key='store::store.lock'}</a>&nbsp;|&nbsp; 
+				    		{else}
+					      	<a class="data-pjax" href='{RC_Uri::url("store/admin/status", "store_id={$list.store_id}&status={$list.status}")}' title="{lang key='store::store.unlock'}">{lang key='store::store.unlock'}</a>&nbsp;|&nbsp; 
+					      	{/if}
+					     	<a class="data-pjax " href='{RC_Uri::url("store/admin_commission/edit", "store_id={$list.store_id}&id={$list.id}")}' title="{lang key='store::store.set_commission'}">{lang key='store::store.set_commission'}</a>&nbsp;|&nbsp;  
 					     	<a class="data-pjax" href='{RC_Uri::url("store/admin/preview", "store_id={$list.store_id}")}' title="{lang key='store::store.view'}">{lang key='store::store.view'}</a>
 					     </div>
 					</td>
