@@ -1,15 +1,15 @@
 <?php
 defined('IN_ECJIA') or exit('No permission resources.');
 
-class seller_shopinfo_viewmodel extends Component_Model_View {
+class store_franchisee_viewmodel extends Component_Model_View {
 	public $table_name = '';
 	public $view = array();
 	public function __construct() {
-		$this->table_name = 'seller_shopinfo';
+		$this->table_name = 'store_franchisee';
 		$this->table_alias_name = 'ssi';
 		
 		$this->view =array(
-				'seller_category' => array(
+				'store_category' => array(
 						'type'  => Component_Model_View::TYPE_LEFT_JOIN,
 						'alias' => 'sc',
 						'on'    => 'ssi.cat_id = sc.cat_id',
@@ -17,12 +17,12 @@ class seller_shopinfo_viewmodel extends Component_Model_View {
 				'collect_store' => array(
 						'type'  => Component_Model_View::TYPE_LEFT_JOIN,
 						'alias' => 'cs',
-						'on'    => 'ssi.id = cs.seller_id',
+						'on'    => 'ssi.store_id = cs.store_id',
 				),
 				'term_relationship' => array(
 						'type'  => Component_Model_View::TYPE_LEFT_JOIN,
 						'alias' => 'tr',
-						'on'    => 'tr.object_id = ssi.id and object_type="ecjia.merchant" and item_key1="merchant_adsense"',
+						'on'    => 'tr.object_id = ssi.store_id and object_type="ecjia.merchant" and item_key1="merchant_adsense"',
 				),
 		);
 		
