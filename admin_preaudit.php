@@ -256,7 +256,7 @@ class admin_preaudit extends ecjia_admin {
 					'add_time' 		=> RC_Time::gmtime(),
 					'last_login' 	=> '',
 					'last_ip' 		=> '',
-					'action_list' 	=> '',
+					'action_list' 	=> 'all',
 					'todolist' 		=> '',
 					'group_id' 		=> '',
 					'parent_id' 	=> 0,
