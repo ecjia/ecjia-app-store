@@ -33,15 +33,12 @@ return array(
 	'unlock'		=> '解锁',
 	'pls_name'		=>	'请输入店铺名称',
 	'serach'		=>	'搜索',
-	'filter'		=> '筛选',
-	'preaudit_list'	=>	'全部',
 		
 		
 	//待审核商家入驻列表	
 	'store_preaudit'			=>	'待审核入驻商',
 	'store_preaudit_list'	=>	'待审核入驻商列表',
 	'check'					=>	'审核',
-	'not_check' 			=>	'未审核',
 	'check_view'		    =>	'审核商家',
 		
 	//通用
