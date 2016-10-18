@@ -98,8 +98,8 @@ class store_store_list_api extends Component_Event_Api {
 //
 // 		$seller_list = array();
 
-        $field = 'sf.*, count(cs.stor_id) as follower, SUM(IF(cs.user_id = '.$user_id.',1,0)) as is_follower';
-        $result = $db_store_franchisee->field($field)->where($where)->limit($limit)->group('sf.store_id')->order($order_by)->select();
+        $field = 'ssi.*, count(cs.stor_id) as follower, SUM(IF(cs.user_id = '.$user_id.',1,0)) as is_follower';
+        $result = $db_store_franchisee->field($field)->where($where)->limit($limit)->group('ssi.store_id')->order($order_by)->select();
         $store_config = array(
             'shop_title'                => '', // 店铺标题
             'shop_kf_mobile'            => '', // 客服手机号码
