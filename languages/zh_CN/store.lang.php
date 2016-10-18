@@ -94,6 +94,8 @@ return array(
 	'del_store_cat_img_ok' =>'删除店铺分类图片成功！',
 	'anonymous'	 => '匿名用户',
 	'set_commission' 	=> '设置佣金',
+    
+    'preaudit_list'     => '全部',
 );
 
 //end

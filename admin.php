@@ -45,7 +45,8 @@ class admin extends ecjia_admin {
 	    
 	    $store_list = $this->store_list();
 	    $this->assign('store_list', $store_list);
-	    
+	    $this->assign('filter', $store_list['filter']);
+	  
 	    $this->assign('search_action',RC_Uri::url('store/admin/init'));
 
 	    $this->display('store_list.dwt');
@@ -255,13 +256,28 @@ class admin extends ecjia_admin {
 		$db_store_franchisee = RC_DB::table('store_franchisee as sf');
 		
 		$filter['keywords'] = empty($_GET['keywords']) ? '' : trim($_GET['keywords']);
+		$filter['type'] = empty($_GET['type']) ? '' : trim($_GET['type']);
+		
 		if ($filter['keywords']) {
-			$db_store_franchisee->where('merchants_name', 'like', '%'.mysql_like_quote($filter['keywords']).'%');
+		    $db_store_franchisee->where('merchants_name', 'like', '%'.mysql_like_quote($filter['keywords']).'%');
+		}
+		
+		$filter_type = $db_store_franchisee
+		->select(RC_DB::raw('count(*) as count_goods_num'),
+		    RC_DB::raw('SUM(status = 1) as count_Unlock'),
+		    RC_DB::raw('SUM(status = 2) as count_locking'))
+		    ->first();
+
+		$filter['count_goods_num'] = $filter_type['count_goods_num'];
+		$filter['count_Unlock'] = $filter_type['count_Unlock'];
+		$filter['count_locking'] = $filter_type['count_locking'];
+		if (!empty($filter['type'])) {
+		    $db_store_franchisee->where('status', $filter['type']);
 		}
 		
 		$count = $db_store_franchisee->count();
 		$page = new ecjia_page($count, 10, 5);
-		
+
 		$data = $db_store_franchisee
 		->leftJoin('store_category as sc', RC_DB::raw('sf.cat_id'), '=', RC_DB::raw('sc.cat_id'))
 		->selectRaw('sf.store_id,sf.merchants_name,sf.contact_mobile,sf.responsible_person,sf.confirm_time,sf.company_name,sf.sort_order,sc.cat_name,sf.status')
@@ -269,6 +285,7 @@ class admin extends ecjia_admin {
 		->take(10)
 		->skip($page->start_id-1)
 		->get();
+
 		$res = array();
 		if (!empty($data)) {
 			foreach ($data as $row) {
@@ -276,7 +293,7 @@ class admin extends ecjia_admin {
 				$res[] = $row;
 			}
 		}
-		
+	
 		return array('store_list' => $res, 'filter' => $filter, 'page' => $page->show(5), 'desc' => $page->page_desc());
 	}
 	

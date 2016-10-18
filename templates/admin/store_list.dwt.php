@@ -13,15 +13,30 @@
 	</h3>
 </div>
 	
-<div class="row-fluid" >
-	<div class="choose_list">
-		<form class="f_r form-inline" action="{$search_action}" name="searchForm" method="post">
-			<input type="text" name="keywords" placeholder="{lang key='store::store.pls_name'}" value="{$store_list.filter.keywords}"/>
-			<input class="btn search_store" type="submit" value="{lang key='store::store.serach'}"/>
-	  	</form>
-  	</div>
-</div>
+<div class="nav nav-pills">
+	<li class="{if !$smarty.get.type}active{/if}">
+		<a class="data-pjax" href="{RC_Uri::url('store/admin/init')}{if $store_list.status}&merchant_keywords={$store_list.status}{/if}{if $filter.keywords}&keywords={$filter.keywords}{/if}">{lang key='store::store.preaudit_list'} 
+			<span class="badge badge-info">{$filter.count_goods_num}</span>
+		</a>
+	</li>
 	
+	<li class="{if $smarty.get.type eq 1}active{/if}">
+		<a class="data-pjax" href='{RC_Uri::url("store/admin/init", "type=1{if $store_list.status}&merchant_keywords={$store_list.status}{/if}{if $filter.keywords}&keywords={$filter.keywords}{/if}")}'>{lang key='store::store.unlock'}
+			<span class="badge badge-info use-plugins-num">{$filter.count_Unlock}</span>
+		</a>
+	</li>
+	
+	<li class="{if $smarty.get.type eq 2}active{/if}">	
+		<a class="data-pjax" href='{RC_Uri::url("store/admin/init", "type=2{if $store_list.status}&merchant_keywords={$store_list.status}{/if}{if $filter.keywords}&keywords={$filter.keywords}{/if}")}'>{lang key='store::store.lock'}
+			<span class="badge badge-info unuse-plugins-num">{$filter.count_locking}</span>
+		</a>
+	</li>
+	<form class="f_r form-inline" action="{$search_action}{if $smarty.get.type}&type={$smarty.get.type}{/if}" name="searchForm" method="post">
+		<input type="text" name="keywords" placeholder="{lang key='store::store.pls_name'}" value="{$store_list.filter.keywords}"/>
+		<input class="btn search_store" type="submit" value="{lang key='store::store.serach'}"/>
+  	</form>
+</div>	
+
 <div class="row-fluid">
 	<div class="span12">
 		<table class="table table-striped smpl_tbl table-hide-edit">
