@@ -260,7 +260,7 @@ class admin extends ecjia_admin {
 		}
 		
 		$count = $db_store_franchisee->count();
-		$page = new ecjia_page($count, 5, 5);
+		$page = new ecjia_page($count, 10, 5);
 		
 		$data = $db_store_franchisee
 		->leftJoin('store_category as sc', RC_DB::raw('sf.cat_id'), '=', RC_DB::raw('sc.cat_id'))
@@ -276,6 +276,7 @@ class admin extends ecjia_admin {
 				$res[] = $row;
 			}
 		}
+		
 		return array('store_list' => $res, 'filter' => $filter, 'page' => $page->show(5), 'desc' => $page->page_desc());
 	}
 	
