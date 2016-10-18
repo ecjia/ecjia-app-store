@@ -287,6 +287,24 @@
 				</div>
 				
 				<div class="control-group formSep">
+					<label class="control-label">{lang key='store::store.label_area'}</label>
+					<div class="controls choose_list not-line-height m_l130">
+						<select class="controls" name="province" data-toggle="regionSummary" data-type="1" data-target="region-summary-cities">
+							<option value="">{lang key='system::system.select_please'}</option>
+							<!--{foreach from=$province_list item=province} -->
+							<option value="{$province.region_id}" {if $order.province eq $province.region_id}selected{/if}>{$province.region_name}</option>
+							<!-- {/foreach} -->
+						</select>
+						<select class="controls" name="city" data-toggle="regionSummary" data-type="2" data-target="region-summary-districts">
+							<option value="">{lang key='system::system.select_please'}</option>
+							<!-- {foreach from=$city_list item=city} -->
+							<option value="{$city.region_id}" {if $order.city eq $city.region_id}selected{/if}>{$city.region_name}</option>
+							<!-- {/foreach} -->
+						</select>
+					</div>
+				</div>
+				
+				<div class="control-group formSep">
 					<label class="control-label">{lang key='store::store.longitude_lable'}</label>
 				 	<div class="controls l_h30">
 						{$store.longitude}
