@@ -23,13 +23,6 @@ class store_admin_purview_api extends Component_Event_Api {
         	array('action_name' => __('店铺分类管理'), 'action_code' => 'store_category_manage', 'relevance'   => ''),
         	array('action_name' => __('店铺分类删除'), 'action_code' => 'store_category_drop', 'relevance'   => ''),
 
-        	//佣金结算权限
-        	array('action_name' => __('佣金结算'), 'action_code' => 'store_commission_manage', 'relevance'   => ''),
-        	array('action_name' => __('佣金添加'), 'action_code' => 'store_commission_add', 'relevance'   => ''),
-        	array('action_name' => __('佣金更新'), 'action_code' => 'store_commission_update', 'relevance'   => ''),
-        	array('action_name' => __('佣金删除'), 'action_code' => 'store_commission_delete', 'relevance'   => ''),
-        	array('action_name' => __('商家订单管理'), 'action_code' => 'store_order_manage', 'relevance'   => ''),
-        		
         	//佣金比例权限
         	array('action_name' => __('佣金比例管理'), 'action_code' => 'store_percent_manage', 'relevance'   => ''),
         	array('action_name' => __('佣金比例添加'), 'action_code' => 'store_percent_add', 'relevance'   => ''),
