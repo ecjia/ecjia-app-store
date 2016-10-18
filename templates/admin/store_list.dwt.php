@@ -49,7 +49,8 @@
 				    		{else}
 					      	<a class="data-pjax" href='{RC_Uri::url("store/admin/status", "store_id={$list.store_id}&status={$list.status}")}' title="{lang key='store::store.unlock'}">{lang key='store::store.unlock'}</a>&nbsp;|&nbsp; 
 					      	{/if}
-					     	<a class="data-pjax " href='{RC_Uri::url("store/admin_commission/edit", "store_id={$list.store_id}&id={$list.id}")}' title="{lang key='store::store.set_commission'}">{lang key='store::store.set_commission'}</a>&nbsp;|&nbsp;  
+					     	<a class="data-pjax " href='{RC_Uri::url("store/admin_commission/edit", "store_id={$list.store_id}&id={$list.id}")}' title="{lang key='store::store.set_commission'}">{lang key='store::store.set_commission'}</a>&nbsp;|&nbsp;
+					     	<a class="data-pjax " href='{RC_Uri::url("commission/admin/init", "store_id={$list.store_id}")}' title="结算账单">结算账单</a>&nbsp;|&nbsp;  
 					     	<a class="data-pjax" href='{RC_Uri::url("store/admin/preview", "store_id={$list.store_id}")}' title="{lang key='store::store.view'}">{lang key='store::store.view'}</a>
 					     </div>
 					</td>
