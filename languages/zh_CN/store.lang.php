@@ -68,6 +68,7 @@ return array(
 	'bank_branch_name_lable'		=>	'开户银行支行名称：',
 	'bank_name_lable'				=>	'收款银行：',
 	'bank_account_number_lable'		=>	'银行账号：',
+	'bank_account_name_label'		=>	'账户名称： ',
 	'bank_address_lable'			=>	'开户银行支行地址：',
 	'remark_lable'		=>	'备注信息：',
 	'longitude_lable'	=>	'经度：',
@@ -93,6 +94,8 @@ return array(
 	'del_store_cat_img_ok' =>'删除店铺分类图片成功！',
 	'anonymous'	 => '匿名用户',
 	'set_commission' 	=> '设置佣金',
+    
+    'preaudit_list'     => '全部',
 );
 
 //end
