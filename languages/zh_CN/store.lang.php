@@ -68,6 +68,7 @@ return array(
 	'bank_branch_name_lable'		=>	'开户银行支行名称：',
 	'bank_name_lable'				=>	'收款银行：',
 	'bank_account_number_lable'		=>	'银行账号：',
+	'bank_account_name_label'		=>	'账户名称： ',
 	'bank_address_lable'			=>	'开户银行支行地址：',
 	'remark_lable'		=>	'备注信息：',
 	'longitude_lable'	=>	'经度：',
