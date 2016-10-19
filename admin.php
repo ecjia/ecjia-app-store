@@ -163,7 +163,7 @@ class admin extends ecjia_admin {
 			'business_licence_pic' 		=> $business_licence_pic,
 			'business_licence'      	=> !empty($_POST['business_licence']) 				? $_POST['business_licence'] : '',
 			'bank_name'      	  	 	=> !empty($_POST['bank_name']) 				? $_POST['bank_name'] : '',
-			'bank_name'      	  	 	=> !empty($_POST['bank_name']) 				? $_POST['bank_name'] : '',
+			'cat_id'      	  	 		=> !empty($_POST['store_cat']) 				? $_POST['store_cat'] : '',
 			'bank_branch_name'     		=> !empty($_POST['bank_branch_name']) 				? $_POST['bank_branch_name'] : '',
 			'bank_account_number'  		=> !empty($_POST['bank_account_number'])		? $_POST['bank_account_number'] : '',
 			'province'					=> !empty($_POST['province'])				? $_POST['province'] : '',
@@ -196,6 +196,7 @@ class admin extends ecjia_admin {
 		$store['city'] = RC_DB::table('region')->where('region_id', $store['city'])
 												->select('region_name')
 												->pluck();
+		$store['cat_name'] = RC_DB::table('store_category')->where('cat_id', $store['cat_id'])->select('cat_name')->pluck();
 
 		$this->assign('store', $store);
 		$this->display('store_preview.dwt');
