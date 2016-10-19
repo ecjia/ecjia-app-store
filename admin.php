@@ -143,8 +143,7 @@ class admin extends ecjia_admin {
 		}else {
 			$personhand_identity_pic = $pic_url['personhand_identity_pic'];
 		}
-
-
+		
 		$data = array(
 			'cat_id'   	   				=> !empty($_POST['store_cat']) 		? $_POST['store_cat'] : '',
 			'merchants_name'   			=> !empty($_POST['merchants_name']) ? $_POST['merchants_name'] : '',
@@ -159,8 +158,9 @@ class admin extends ecjia_admin {
 			'identity_pic_front'		=> $identity_pic_front,
 			'identity_pic_back' 		=> $identity_pic_back,
 			'personhand_identity_pic' 	=> $personhand_identity_pic,
-			'business_licence'  		=> !empty($_POST['business_licence']) 	? $_POST['business_licence'] : '',
+			'bank_account_name'  		=> !empty($_POST['bank_account_name']) 	? $_POST['bank_account_name'] : '',
 			'business_licence_pic' 		=> $business_licence_pic,
+			'bank_name'      	  	 	=> !empty($_POST['bank_name']) 				? $_POST['bank_name'] : '',
 			'bank_name'      	  	 	=> !empty($_POST['bank_name']) 				? $_POST['bank_name'] : '',
 			'bank_branch_name'     		=> !empty($_POST['bank_branch_name']) 				? $_POST['bank_branch_name'] : '',
 			'bank_account_number'  		=> !empty($_POST['bank_account_number'])		? $_POST['bank_account_number'] : '',
@@ -188,8 +188,14 @@ class admin extends ecjia_admin {
 		$store['apply_time']	= RC_Time::local_date(ecjia::config('time_format'), $store['apply_time']);
 		$store['confirm_time']	= RC_Time::local_date(ecjia::config('time_format'), $store['confirm_time']);
 
-		$this->assign('store', $store);
+		$store['province'] = RC_DB::table('region')->where('region_id', $store['province'])
+													->select('region_name')
+													->pluck();
+		$store['city'] = RC_DB::table('region')->where('region_id', $store['city'])
+												->select('region_name')
+												->pluck();
 
+		$this->assign('store', $store);
 		$this->display('store_preview.dwt');
 	}
 

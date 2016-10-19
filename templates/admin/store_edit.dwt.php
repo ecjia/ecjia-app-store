@@ -227,7 +227,14 @@
 						<input class="span6" name="bank_account_number" type="text" value="{$store.bank_account_number}" />
 					</div>
 				</div>
-				
+
+				<div class="control-group formSep">
+					<label class="control-label">{lang key='store::store.bank_account_name_label'}</label>
+					<div class="controls">
+						<input class="span6" name="bank_account_name" type="text" value="{$store.bank_account_name}" />
+					</div>
+				</div>
+
 				<div class="control-group formSep">
 					<label class="control-label">{lang key='store::store.bank_address_lable'}</label>
 					<div class="controls">
@@ -292,7 +299,6 @@
 						</select>
 					</div>
 				</div>
-
 				<div class="control-group formSep">
 					<label class="control-label">{lang key='store::store.label_city'}</label>
 					<div class="controls">
@@ -323,7 +329,6 @@
 				<div class="control-group formSep">
 					<label class="control-label">{lang key='store::store.latitude_lable'}</label>
 				 	<div class="controls l_h30 latd">
-						
 					</div>
 				</div>
 				
