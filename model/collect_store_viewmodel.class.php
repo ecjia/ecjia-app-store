@@ -7,7 +7,7 @@ class collect_store_viewmodel extends Component_Model_View {
 	public function __construct() {
 		$this->table_name = 'collect_store';
 		$this->table_alias_name = 'cs';
-		
+
 		$this->view = array(
 // 				'merchants_shop_information' => array(
 // 						'type' 	=> Component_Model_View::TYPE_LEFT_JOIN,
@@ -24,7 +24,7 @@ class collect_store_viewmodel extends Component_Model_View {
 						'alias' => 'sc',
 						'on'    => 'ssi.cat_id = sc.cat_id ',
 				),
-				
+
 		);
 		parent::__construct();
 	}

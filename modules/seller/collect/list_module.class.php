@@ -6,18 +6,21 @@ defined('IN_ECJIA') or exit('No permission resources.');
  *
  */
 class list_module extends api_front implements api_interface {
-    public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {	
-    	
+    public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {
+
     	$this->authSession();
 		$user_id = $_SESSION['user_id'];
-		$cs_dbview = RC_Model::model('seller/collect_store_viewmodel');
-		
+		$cs_dbview = RC_Model::model('store/collect_store_viewmodel');
+
 		$where = array();
-		$where['ssi.status'] = 1;
+		// $where['ssi.status'] = 1;
 // 		$where['msi.merchants_audit'] = 1;
-		$where['cs.user_id'] = $user_id;
-		$count = $cs_dbview->join(array('seller_shopinfo'))->where($where)->count();
-		
+		// $where['cs.user_id'] = $user_id;
+		// $count = $cs_dbview->join(array('seller_shopinfo'))->where($where)->count();
+		$count = RC_DB::table('collect_store as cs')
+        ->leftJoin('store_franchisee as sf', RC_DB::raw('cs.store_id'), '=', RC_DB::raw('sf.store_id'))
+        ->where('status', '1')->where('user_id', $user_id)->count();
+
 		/* 查询总数为0时直接返回  */
 		if ($count == 0) {
 			$pager = array(
@@ -27,24 +30,35 @@ class list_module extends api_front implements api_interface {
 			);
 			return array('data' => array(), 'pager' => $pager);
     	}
-		
+
 		/* 获取留言的数量 */
 		$size = $this->requestData('pagination.count', 15);
 		$page = $this->requestData('pagination.page', 1);
-		
+
 		//加载分页类
 		RC_Loader::load_sys_class('ecjia_page', false);
 		//实例化分页
 		$page_row = new ecjia_page($count, $size, 6, '', $page);
-		
-		$field ='rec_id, cs.seller_id, ssi.shop_name as seller_name, sc.cat_name, ssi.shop_logo, count(cs.seller_id) as follower';
-		$result = $cs_dbview->join(array('seller_shopinfo', 'seller_category'))
-						->field($field)
-						->where($where)
-						->limit($page_row->limit())
-						->group('ssi.id')
-						->select();
-		
+		// $field ='rec_id, cs.seller_id, ssi.shop_name as seller_name, sc.cat_name, ssi.shop_logo, count(cs.seller_id) as follower';
+		// $result = $cs_dbview->join(array('seller_shopinfo', 'seller_category'))
+		// 				->field($field)
+		// 				->where($where)
+		// 				->limit($page_row->limit())
+		// 				->group('ssi.id')
+		// 				->select();
+        $field = 'rec_id, sf.store_id, sf.merchants_name as seller_name, sc.cat_name, count(cs.store_id) as follower';
+        $result = RC_DB::table('collect_store as cs')->leftJoin('store_franchisee as sf', RC_DB::raw('cs.store_id'), '=', RC_DB::raw('sf.store_id'))
+        ->leftjoin('store_category as sc', RC_DB::raw('cs.store_id'), '=', RC_DB::raw('sf.store_id'))
+        ->selectRaw($field)
+        ->where('status', '1')->where('user_id', $user_id)
+        ->take(10)
+        ->skip($page->start_id-1)
+        ->groupBy(RC_DB::raw('sf.store_id'))
+        ->get();
+        foreach($result as $key => $val){
+            $result[$key]['shop_log'] =RC_DB::table('merchants_config')->selectRaw('value')
+            ->where('store_id', $val['store_id'])->pluck();
+        }
 		$list = array();
 		if ( !empty ($result)) {
 			$mobilebuy_db = RC_Model::model('goods/goods_activity_model');
@@ -55,7 +69,7 @@ class list_module extends api_front implements api_interface {
 						'page'		=> 1,
 						'size'		=> 3,
 				);
-				
+
 				$result = RC_Api::api('goods', 'goods_list', $options);
 				$goods_list = array();
 				if (!empty($result['list'])) {
@@ -68,7 +82,7 @@ class list_module extends api_front implements api_interface {
 						$activity_type = ($val['unformatted_shop_price'] > $val['unformatted_promote_price'] && $val['unformatted_promote_price'] > 0) ? 'PROMOTE_GOODS' : 'GENERAL_GOODS';
 						/* 计算节约价格*/
 						$saving_price = ($val['unformatted_shop_price'] > $val['unformatted_promote_price'] && $val['unformatted_promote_price'] > 0) ? $val['unformatted_shop_price'] - $val['unformatted_promote_price'] : (($val['unformatted_market_price'] > 0 && $val['unformatted_market_price'] > $val['unformatted_shop_price']) ? $val['unformatted_market_price'] - $val['unformatted_shop_price'] : 0);
-							
+
 						$mobilebuy_price = $object_id = 0;
 						if (!is_ecjia_error($result_mobilebuy) && $is_active) {
 							$mobilebuy = $mobilebuy_db->find(array(
@@ -88,7 +102,7 @@ class list_module extends api_front implements api_interface {
 								}
 							}
 						}
-							
+
 						$goods_list[] = array(
 								'id'			=> $val['goods_id'],
 								'name'			=> $val['name'],
@@ -107,11 +121,11 @@ class list_module extends api_front implements api_interface {
 						);
 					}
 				}
-				
+
 				if(substr($row['shop_logo'], 0, 1) == '.') {
 					$row['shop_logo'] = str_replace('../', '/', $row['shop_logo']);
 				}
-				
+
 				$list[] = array(
 						'rec_id'			=> $row['rec_id'],
 						'id'				=> $row['seller_id'],
@@ -124,15 +138,15 @@ class list_module extends api_front implements api_interface {
 				);
 			}
 		}
-		
+
 		$pager = array(
 				"total" => $page_row->total_records,
 				"count" => $page_row->total_records,
 				"more"	=> $page_row->total_pages <= $page ? 0 : 1,
 		);
-		
+
 		return array('data' => $list, 'pager' => $pager);
-		
-	}	
+
+	}
 }
 // end

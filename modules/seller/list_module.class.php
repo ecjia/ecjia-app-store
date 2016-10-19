@@ -101,7 +101,7 @@ class list_module extends api_front implements api_interface {
 					}
 				}
 
-				$goods_options = array('page' => 1, 'size' => 3, 'seller_id' => $row['id']);
+				$goods_options = array('page' => 1, 'size' => 3, 'store_id' => $row['id']);
 				if (!empty($goods_category)) {
 					$goods_options['cat_id'] = $goods_category;
 				}
