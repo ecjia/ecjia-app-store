@@ -6,8 +6,8 @@ defined('IN_ECJIA') or exit('No permission resources.');
  *
  */
 class search_module extends api_front implements api_interface {
-    public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {	
-    	
+    public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {
+
     	$this->authSession();
 		$seller_categroy = $this->requestData('category_id');
 		$goods_category = $this->requestData('goods_category');
@@ -26,7 +26,7 @@ class search_module extends api_front implements api_interface {
 		/* 获取数量 */
 		$size = $this->requestData('pagination.count', 15);
 		$page = $this->requestData('pagination.page', 1);
-	
+
 		$options = array(
 				'location'		=> $location,
 				'category_id'	=> $seller_categroy,
@@ -35,12 +35,12 @@ class search_module extends api_front implements api_interface {
 				'size'			=> $size,
 				'page'			=> $page,
 		);
-	
-		$result = RC_Api::api('seller', 'seller_list', $options);
-	
+
+		$result = RC_Api::api('store', 'store_list', $options);
+
 		$seller_list = array();
 		if (!empty($result['seller_list'])) {
-			$db_goods_view = RC_Model::model('comment/comment_viewmodel');
+			$db_goods_view = RC_Model::model('goods/comment_viewmodel');
 			$max_goods = 0;
 			$mobilebuy_db = RC_Model::model('goods/goods_activity_model');
 			/* 手机专享*/
@@ -49,9 +49,9 @@ class search_module extends api_front implements api_interface {
 			foreach ($result['seller_list'] as $row) {
 				$field = 'count(*) as count, SUM(comment_rank) as comment_rank';
 				$comment = $db_goods_view->join(null)->field($field)->where(array('c.seller_id' => $row['id'], 'comment_type' => 0, 'parent_id' => 0, 'status' => 1))->find();
-	
+
 				$db_favourable = RC_Model::model('favourable/favourable_activity_model');
-				$favourable_result = $db_favourable->where(array('seller_id' => $row['id'], 'start_time' => array('elt' => RC_Time::gmtime()), 'end_time' => array('egt' => RC_Time::gmtime()), 'act_type' => array('neq' => 0)))->select();
+				$favourable_result = $db_favourable->where(array('store_id' => $row['id'], 'start_time' => array('elt' => RC_Time::gmtime()), 'end_time' => array('egt' => RC_Time::gmtime()), 'act_type' => array('neq' => 0)))->select();
 				$favourable_list = array();
 				if (empty($rec_type)) {
 					if (!empty($favourable_result)) {
@@ -96,12 +96,12 @@ class search_module extends api_front implements api_interface {
 										break;
 								}
 							}
-	
+
 						}
 					}
 				}
-	
-	
+
+
 				$goods_options = array('page' => 1, 'size' => 3, 'seller_id' => $row['id']);
 				if (!empty($goods_category)) {
 					$goods_options['cat_id'] = $goods_category;
@@ -115,7 +115,7 @@ class search_module extends api_front implements api_interface {
 						$activity_type = ($val['unformatted_shop_price'] > $val['unformatted_promote_price'] && $val['unformatted_promote_price'] > 0) ? 'PROMOTE_GOODS' : 'GENERAL_GOODS';
 						/* 计算节约价格*/
 						$saving_price = ($val['unformatted_shop_price'] > $val['unformatted_promote_price'] && $val['unformatted_promote_price'] > 0) ? $val['unformatted_shop_price'] - $val['unformatted_promote_price'] : (($val['unformatted_market_price'] > 0 && $val['unformatted_market_price'] > $val['unformatted_shop_price']) ? $val['unformatted_market_price'] - $val['unformatted_shop_price'] : 0);
-							
+
 						$mobilebuy_price = $object_id = 0;
 						if (!is_ecjia_error($result_mobilebuy) && $is_active) {
 							$mobilebuy = $mobilebuy_db->find(array(
@@ -135,7 +135,7 @@ class search_module extends api_front implements api_interface {
 								}
 							}
 						}
-	
+
 						$goods_list[] = array(
 								'goods_id'		=> $val['goods_id'],
 								'name'			=> $val['name'],
@@ -157,9 +157,9 @@ class search_module extends api_front implements api_interface {
 				if ($goods_result['page']->total_records >= $max_goods) {
 					array_unshift($seller_list, array(
 					'id'				=> $row['id'],
-					'seller_name'		=> $row['seller_name'],
-					'seller_category'	=> $row['seller_category'],
-					'seller_logo'		=> $row['seller_logo'],
+					'seller_name'		=> $row['merchants_name'],
+					'seller_category'	=> $row['shop_cat_name'],
+					'seller_logo'		=> $row['shop_logo'],
 					'seller_goods'		=> $goods_list,
 					'follower'			=> $row['follower'],
 					'is_follower'		=> $row['is_follower'],
@@ -188,7 +188,7 @@ class search_module extends api_front implements api_interface {
 				'count'	=> $result['page']->total_records,
 				'more'	=> $result['page']->total_pages <= $page ? 0 : 1,
 		);
-	
+
 		return array('data' => $seller_list, 'pager' => $page);
 	}
 }

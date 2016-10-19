@@ -62,7 +62,7 @@ class store_store_list_api extends Component_Event_Api {
 		$where['ssi.status'] = 1;
 
 		if (!empty($filter['keywords'])) {
-			$where['merchant_name'] = array('like' => "%".$filter['keywords']."%");
+			$where['merchants_name'] = array('like' => "%".$filter['keywords']."%");
 		}
 
 		// /* 店铺分类*/
