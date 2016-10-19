@@ -57,8 +57,8 @@ return array(
 	'email_lable'			=>	'电子邮箱：',
 	'contact_lable'			=>	'联系方式：',
 	'lable_contact_lable'	=>	'联系方式',
-	'label_province'		=>	'所有省份： ',
-	'label_city'			=>	'所有城市： ',
+	'label_province'		=>	'所在省份： ',
+	'label_city'			=>	'所在城市： ',
 	
 	'address_lable'			=>	'通讯地址：',
 	'identity_type_lable'			=>	'证件类型：',

@@ -5,10 +5,11 @@
 defined('IN_ECJIA') or exit('No permission resources.');
 
 class admin extends ecjia_admin {
-
+	private $db_region;
 	public function __construct() {
 		parent::__construct();
 
+		$this->db_region = RC_Model::model('store/region_model');
 		RC_Loader::load_app_func('global');
 		assign_adminlog_content();
 
@@ -28,6 +29,7 @@ class admin extends ecjia_admin {
 
 		RC_Script::enqueue_script('store', RC_App::apps_url('statics/js/store.js', __FILE__));
 		RC_Script::enqueue_script('commission_info',RC_App::apps_url('statics/js/commission.js' , __FILE__));
+		RC_Script::enqueue_script('region',RC_Uri::admin_url('statics/lib/ecjia-js/ecjia.region.js'));
 
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('store::store.store'), RC_Uri::url('store/admin/init')));
 	}
@@ -70,7 +72,11 @@ class admin extends ecjia_admin {
 		$cat_list = $this->get_cat_select_list();
 		$this->assign('cat_list', $cat_list);
 
+		$province   = $this->db_region->get_regions(1, 1);
+		$city       = $this->db_region->get_regions(2, $store['province']);
 		$this->assign('form_action',RC_Uri::url('store/admin/update'));
+		$this->assign('province', $province);
+		$this->assign('city', $city);
 		$this->assign('longitudeForm_action',RC_Uri::url('store/admin/get_longitude'));
 
 		$this->display('store_edit.dwt');
@@ -137,8 +143,7 @@ class admin extends ecjia_admin {
 		}else {
 			$personhand_identity_pic = $pic_url['personhand_identity_pic'];
 		}
-
-
+		
 		$data = array(
 			'cat_id'   	   				=> !empty($_POST['store_cat']) 		? $_POST['store_cat'] : '',
 			'merchants_name'   			=> !empty($_POST['merchants_name']) ? $_POST['merchants_name'] : '',
@@ -153,11 +158,14 @@ class admin extends ecjia_admin {
 			'identity_pic_front'		=> $identity_pic_front,
 			'identity_pic_back' 		=> $identity_pic_back,
 			'personhand_identity_pic' 	=> $personhand_identity_pic,
-			'business_licence'  		=> !empty($_POST['business_licence']) 	? $_POST['business_licence'] : '',
+			'bank_account_name'  		=> !empty($_POST['bank_account_name']) 	? $_POST['bank_account_name'] : '',
 			'business_licence_pic' 		=> $business_licence_pic,
+			'bank_name'      	  	 	=> !empty($_POST['bank_name']) 				? $_POST['bank_name'] : '',
 			'bank_name'      	  	 	=> !empty($_POST['bank_name']) 				? $_POST['bank_name'] : '',
 			'bank_branch_name'     		=> !empty($_POST['bank_branch_name']) 				? $_POST['bank_branch_name'] : '',
 			'bank_account_number'  		=> !empty($_POST['bank_account_number'])		? $_POST['bank_account_number'] : '',
+			'province'					=> !empty($_POST['province'])				? $_POST['province'] : '',
+			'city'						=> !empty($_POST['city'])					? $_POST['city'] : '',
 			'bank_address'         		=> !empty($_POST['bank_address']) 			? $_POST['bank_address'] : '',
 		);
 		RC_DB::table('store_franchisee')->where('store_id', $store_id)->update($data);
@@ -180,8 +188,14 @@ class admin extends ecjia_admin {
 		$store['apply_time']	= RC_Time::local_date(ecjia::config('time_format'), $store['apply_time']);
 		$store['confirm_time']	= RC_Time::local_date(ecjia::config('time_format'), $store['confirm_time']);
 
-		$this->assign('store', $store);
+		$store['province'] = RC_DB::table('region')->where('region_id', $store['province'])
+													->select('region_name')
+													->pluck();
+		$store['city'] = RC_DB::table('region')->where('region_id', $store['city'])
+												->select('region_name')
+												->pluck();
 
+		$this->assign('store', $store);
 		$this->display('store_preview.dwt');
 	}
 
@@ -312,6 +326,19 @@ class admin extends ecjia_admin {
 			}
 		}
 		return $cat_list;
+	}
+
+	/**
+	 * 获取指定地区的子级地区
+	 */
+	public function get_region(){
+		$type      = !empty($_GET['type'])   ? intval($_GET['type'])   : 0;
+		$parent        = !empty($_GET['parent']) ? intval($_GET['parent']) : 0;
+		$arr['regions'] = $this->db_region->get_regions($type, $parent);
+		$arr['type']    = $type;
+		$arr['target']  = !empty($_GET['target']) ? stripslashes(trim($_GET['target'])) : '';
+		$arr['target']  = htmlspecialchars($arr['target']);
+		echo json_encode($arr);
 	}
 }
 

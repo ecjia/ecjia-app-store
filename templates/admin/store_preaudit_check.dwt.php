@@ -71,8 +71,8 @@
 							<tr>
 								<td><div align="right"><strong>{lang key='store::store.bank_account_number_lable'}</strong></div></td>
 								<td>{$store.bank_account_number}</td>
-								<td><div align="right"><strong>{lang key='store::store.bank_address_lable'}</strong></div></td>
-								<td>{$store.bank_address}</td>
+								<td><div align="right"><strong>{lang key='store::store.bank_account_name_label'}</strong></div></td>
+								<td>{$store.bank_account_name}</td>
 							</tr>
 							
 							<tr>
@@ -83,10 +83,22 @@
 							</tr>
 							
 							<tr>
+								<td><div align="right"><strong>{lang key='store::store.label_province'}</strong></div></td>
+								<td>{$store.province}</td>
+								<td><div align="right"><strong>{lang key='store::store.label_city'}</strong></div></td>
+								<td>{$store.city}</td>
+							</tr>
+							
+							<tr>
 								<td><div align="right"><strong>{lang key='store::store.longitude_lable'}</strong></div></td>
 								<td>{$store.longitude}</td>
 								<td><div align="right"><strong>{lang key='store::store.latitude_lable'}</strong></div></td>
 								<td>{$store.latitude}</td>
+							</tr>
+							
+							<tr>
+								<td><div align="right"><strong>{lang key='store::store.bank_address_lable'}</strong></div></td>
+								<td colspan="3">{$store.bank_address}</td>
 							</tr>
 							
 							<tr>

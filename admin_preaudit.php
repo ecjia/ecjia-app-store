@@ -176,6 +176,15 @@ class admin_preaudit extends ecjia_admin {
 		
 		$id = intval($_GET['id']);
 		$store = RC_DB::table('store_preaudit')->where('id', $id)->first();
+		
+		$store['province'] = RC_DB::table('region')->where('region_id', $store['province'])
+		->select('region_name')
+		->pluck();
+		
+		$store['city'] = RC_DB::table('region')->where('region_id', $store['city'])
+		->select('region_name')
+		->pluck();
+		
 		$store['apply_time']	= RC_Time::local_date(ecjia::config('time_format'), $store['apply_time']);
 		$store['cat_name'] = RC_DB::TABLE('store_category')->where('cat_id', $store['cat_id'])->pluck('cat_name'); 
 		$this->assign('store', $store);
