@@ -34,7 +34,7 @@ class create_module extends api_front implements api_interface {
 		}
 		$data = array(
 				'user_id'	=> $user_id,
-				'seller_id' => $seller_id,
+				'store_id' => $seller_id,
 				'add_time'	=> RC_Time::gmtime(),
 				'is_attention' => 1,
 		);
