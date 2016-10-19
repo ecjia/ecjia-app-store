@@ -280,7 +280,7 @@ class admin extends ecjia_admin {
 
 		$data = $db_store_franchisee
 		->leftJoin('store_category as sc', RC_DB::raw('sf.cat_id'), '=', RC_DB::raw('sc.cat_id'))
-		->selectRaw('sf.store_id,sf.merchants_name,sf.contact_mobile,sf.responsible_person,sf.confirm_time,sf.company_name,sf.sort_order,sc.cat_name,ssi.status')
+		->selectRaw('sf.store_id,sf.merchants_name,sf.contact_mobile,sf.responsible_person,sf.confirm_time,sf.company_name,sf.sort_order,sc.cat_name,sf.status')
 		->orderby('store_id', 'asc')
 		->take(10)
 		->skip($page->start_id-1)
