@@ -54,9 +54,9 @@ class store_store_list_api extends Component_Event_Api {
 									->get_field('store_id', true);
 
 			if (!empty($seller_group)) {
-				$where['sf.store_id'] = array_unique($seller_group);
+				$where['ssi.store_id'] = array_unique($seller_group);
 			} else {
-				$where['sf.store_id'] = 0;
+				$where['ssi.store_id'] = 0;
 			}
 		}
 		$where['ssi.status'] = 1;
@@ -133,11 +133,15 @@ class store_store_list_api extends Component_Event_Api {
 
 				$seller_list[] = array(
 						'id'				 => $val['store_id'],
-						'merchants_name'	 => $val['merchants_name'],
-						'shop_cat_name'	     => $val['cat_name'],
-						'shop_logo'		     => empty($val['shop_logo']) ?  '' : RC_Upload::upload_url($val['shop_logo']),
+						'seller_name'		 => $val['merchants_name'],//后期删除
+						'merchants_name'	 => $val['merchants_name'],//后期增加
+						'shop_cat_name'	     => $val['cat_name'],//后期增加
+						'shop_logo'		     => empty($val['shop_logo']) ?  '' : RC_Upload::upload_url($val['shop_logo']),//后期增加
+						'seller_category'	 => $val['cat_name'],//后期删除
+						'seller_logo'		 => empty($val['shop_logo']) ?  '' : RC_Upload::upload_url($val['shop_logo']),//后期删除
 						'follower'			 => $val['follower'],
 						'is_follower'		 => $val['is_follower'],
+						
 				);
 			}
 		}
