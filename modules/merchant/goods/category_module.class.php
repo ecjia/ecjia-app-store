@@ -165,17 +165,21 @@ class category_module extends api_front implements api_interface {
 // 	return $options;
 // }
 
-function get_child_tree($tree_id){
+function get_child_tree($tree_id, $leavl = 1){
     $count = RC_DB::table('store_category')->where('parent_id',$tree_id)->where('is_show', 1)->count();
-    if ($count > 0 || $tree_id == 0) {
+    $leavl = empty($leavl)? 1 : $leavl;
+    if (($count > 0 || $tree_id == 0 ) && $leavl <= 3) {
         $res = RC_DB::table('store_category')->selectRaw('cat_id, cat_name , parent_id, is_show')
         ->where('parent_id',$tree_id)->where('is_show', 1)
         ->orderBy('sort_order','asc')->orderBy('cat_id', 'asc')->get();
+        $leavl += 1;
         foreach ($res as $row) {
             if ($row ['is_show']){
                 $three_arr['id'] = $row ['cat_id'];
                 $three_arr['name'] = $row ['cat_name'];
-                $three_arr['children'] = get_child_tree($row['cat_id']);
+                if($leavl< 4){
+                    $three_arr['children'] = get_child_tree($row['cat_id'], $leavl);
+                }
             }
         }
     }
