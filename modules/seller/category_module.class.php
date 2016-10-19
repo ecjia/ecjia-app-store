@@ -23,12 +23,8 @@ class category_module extends api_front implements api_interface {
 // 			$where['geohash'] = array('like' => "%$where_geohash%");
 // 		}
 
-        // $shop_cat = $scs_view->where(array('s.cat_id' => array('gt' => 0), 'is_show' => 1))->
-        // group('s.cat_id')->get_field('s.cat_id', true);
-        // $where['c.cat_id'] = $shop_cat;
-
 		$shop_cat = $scs_view->join('store_category')->field('ssi.cat_id')->where(array('ssi.cat_id' => array('gt' => 0), 'status' => 1))->group('ssi.cat_id')->select();
-        $shop_cat = array_column($shop_cat, 'cat_id');
+		$shop_cat = array_column($shop_cat, 'cat_id');
         $where['sc.cat_id'] = $shop_cat;
 		$cat_all = store_category::get_categories_tree($where);
 		$cat_all = array_merge($cat_all);
