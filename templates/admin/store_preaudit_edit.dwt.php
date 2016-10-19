@@ -20,6 +20,37 @@
 	<div class="span12">
 		<form class="form-horizontal" id="form-privilege" name="theForm" action="{$form_action}" method="post" enctype="multipart/form-data" >
 			<fieldset>
+				{if $store.identity_type eq 1}
+				<div class="control-group formSep" >
+					<label class="control-label">{lang key='store::store.identity_type_lable'}</label>
+					<div class="controls l_h30">
+						<span class="span6" name="identity_type" value="{$store.identity_type}">{lang key='store::store.personal'}</span>
+						<input type="hidden"  name="identity_type" value="{$store.identity_type}" />
+					</div>
+				</div>
+				
+				<div class="control-group formSep">
+					<label class="control-label">{t}个人名称： {/t}</label>
+					<div class="controls">
+						<input class="span6" name="responsible_person" type="text" value="{$store.responsible_person}" />
+					</div>
+				</div>
+				
+				<div class="control-group formSep">
+					<label class="control-label">{lang key='store::store.identity_number_lable'}</label>
+					<div class="controls">
+						<input class="span6" name="identity_number" type="text" value="{$store.identity_number}" />
+					</div>
+				</div>
+				{elseif $store.identity_type eq 2}
+				<div class="control-group formSep" >
+					<label class="control-label">{lang key='store::store.identity_type_lable'}</label>
+					<div class="controls l_h30">
+						<span class="span6" name="identity_type" value="{$store.identity_type}">{lang key='store::store.company'}</span>
+						<input type="hidden"  name="identity_type" value="{$store.identity_type}" />
+					</div>
+				</div>
+				
 				<div class="control-group formSep">
 					<label class="control-label">{lang key='store::store.companyname_lable'}</label>
 					<div class="controls">
@@ -33,15 +64,11 @@
 						<input class="span6" name="responsible_person" type="text" value="{$store.responsible_person}" />
 					</div>
 				</div>
-			
-				<div class="control-group formSep" >
-					<label class="control-label">{lang key='store::store.identity_type_lable'}</label>
+				
+				<div class="control-group formSep">
+					<label class="control-label">{lang key='store::store.identity_number_lable'}</label>
 					<div class="controls">
-						<select name="identity_type">
-							<option value=''  {if $store.identity_type eq '' } selected="true" {/if}>{lang key='store::store.select_plz'}</option>
-							<option value='1' {if $store.identity_type eq 1} selected="true" {/if}>{lang key='store::store.personal'}</option>
-							<option value='2' {if $store.identity_type eq 2} selected="true" {/if}>{lang key='store::store.company'}</option>
-						</select>
+						<input class="span6" name="identity_number" type="text" value="{$store.identity_number}" />
 					</div>
 				</div>
 				
@@ -88,6 +115,7 @@
 						<input class="span6" name="business_licence" type="text" value="{$store.business_licence}" />
 					</div>
 				</div>
+				{/if}
 				
 				<div class="control-group formSep">
 					{if $store.identity_pic_front eq ''}
@@ -197,12 +225,6 @@
 							</div>
 						</div>
 					{/if}
-				</div>
-				<div class="control-group formSep">
-					<label class="control-label">{lang key='store::store.identity_number_lable'}</label>
-					<div class="controls">
-						<input class="span6" name="identity_number" type="text" value="{$store.identity_number}" />
-					</div>
 				</div>
 				
 				<div class="control-group formSep">
