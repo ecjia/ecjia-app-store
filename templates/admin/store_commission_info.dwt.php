@@ -34,19 +34,13 @@ ecjia.admin.commission.init();
 						<select name="percent_id">
 							<option value="0">{t}请选择{/t}</option>						
 					        <!-- {foreach from=$store_percent item=percent} -->
-					        <option value="{$percent.percent_id}" {if $store_commission.percent_id eq $percent.percent_id} selected="selected" {/if}>{$percent.percent_value}</option>
+					        <option value="{$percent.percent_id}" {if $store_commission.percent_id eq $percent.percent_id} selected="selected" {/if}>{$percent.percent_value}%</option>
 							<!-- {/foreach} -->
 	    				</select>
 	    				<span class="input-must">*</span>
 					</div>				
 				</div>
 				
-				<div class="control-group formSep" >
-					<label class="control-label">{t}服务站描述：{/t}</label>
-					<div  class="controls">
-						<textarea rows="4" cols="60" name="description">{$store_commission.description}</textarea>
-					</div>
-				</div>
 				<div class="control-group " >
 					<div class="controls">
 						<input type="submit" value="{t}确定{/t}" class="btn btn-gebo" />

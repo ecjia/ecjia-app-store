@@ -30,7 +30,7 @@ class admin_commission extends ecjia_admin {
 		RC_Loader::load_app_func('ecmoban', 'store');
 		RC_Loader::load_app_func('order', 'store');
 		
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('佣金结算'),RC_Uri::url('store/admin_commission/init')));
+// 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('佣金结算'),RC_Uri::url('store/admin_commission/init')));
 	}
 	
 	/**
@@ -119,21 +119,19 @@ class admin_commission extends ecjia_admin {
 	public function edit()	{
 		$this->admin_priv('store_commission_update',ecjia::MSGTYPE_JSON);
 	
+		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('入驻商'),RC_Uri::url('store/admin/init')));
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here( __('编辑商家佣金')));
 		$this->assign('ur_here', __('编辑商家佣金'));
-		$this->assign('action_link', array('href' =>RC_Uri::url('store/admin_commission/init'), 'text' => __('佣金结算')));
+		$this->assign('action_link', array('href' =>RC_Uri::url('store/admin/init'), 'text' => __('入驻商')));
 		$this->assign('form_action', RC_Uri::url('store/admin_commission/update'));
 		
-		$id = $_GET['id'];
-		$this->assign('id',$id);
+		$store_id = $_GET['store_id'];
+		$this->assign('store_id', $store_id);
 		
-		//$store_commission = $this->msdb->where(array('server_id' => $server_id))->find();
-		$store_commission = RC_DB::table('store_commission')->where(RC_DB::raw('id'), '=', $id)->first();
-		$this->assign('store_commission',$store_commission);
+		$store_commission = RC_DB::table('store_franchisee')->where(RC_DB::raw('store_id'), $store_id)->first();
+		$this->assign('store_commission', $store_commission);
 		
-		//$merchants_name = $this->user_db->where(array('user_id'=>$server['user_id']))->get_field('user_name');
-		$merchants_name = RC_DB::table('store_franchisee')->where(RC_DB::raw('store_id'), '=', $store_commission['store_id'])->pluck('merchants_name');
-		$this->assign('merchants_name',$merchants_name);
+		$this->assign('merchants_name', $store_commission['merchants_name']);
 		$this->assign('store_id', $store_commission['store_id']);
 		
 		$store_percent = $this->get_suppliers_percent(); //管理员获取佣金百分比
@@ -153,25 +151,23 @@ class admin_commission extends ecjia_admin {
 		$store_id = $_POST['store_id'];
 		
 		$data = array (
-			'percent_id' => intval($_POST['percent_id']),
-			'description'   	=> trim($_POST['description'])
+			'percent_id'  => intval($_POST['percent_id']),
 		);
 		
 		if (empty($_POST['percent_id'])) {
 			$this->showmessage('请选择佣金比例！',ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 
-		RC_DB::table('store_commission')
-				->where(RC_DB::raw('id'), '=', $id)
+		RC_DB::table('store_franchisee')
 				->where(RC_DB::raw('store_id'), '=', $store_id)->update($data);
 
-			$merchants_name = RC_DB::table('store_franchisee')
-								->where(RC_DB::raw('store_id'), '=', $store_id)->pluck('merchants_name');
+		$merchants_name = RC_DB::table('store_franchisee')
+							->where(RC_DB::raw('store_id'), '=', $store_id)->pluck('merchants_name');
 
-			$percent = RC_DB::table('store_percent')->where(RC_DB::raw('percent_id'), '=', $_POST['percent_id'])->pluck('percent_value');
-			ecjia_admin::admin_log('商家名是 '.$merchants_name.'，'.'佣金比例是 '.$percent.'%', 'edit', 'store_commission');
-			
-			$this->showmessage('编辑成功！', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS , array('pjaxurl' => RC_Uri::url('store/admin_commission/edit',array('id' => $id, 'store_id' => $store_id))));
+		$percent = RC_DB::table('store_percent')->where(RC_DB::raw('percent_id'), '=', $_POST['percent_id'])->pluck('percent_value');
+		ecjia_admin::admin_log('商家名是 '.$merchants_name.'，'.'佣金比例是 '.$percent.'%', 'edit', 'store_commission');
+		
+		$this->showmessage('编辑成功！', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS , array('pjaxurl' => RC_Uri::url('store/admin_commission/edit',array('id' => $id, 'store_id' => $store_id))));
 	}
 
 	public function remove(){
