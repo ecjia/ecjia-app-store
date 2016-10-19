@@ -11,10 +11,10 @@ class data_module extends api_front implements api_interface {
     	$this->authSession();
 		$seller_id = $this->requestData('seller_id');
 		$location = $this->requestData('location', array());
-		$location = array(
-				'latitude'	=> '31.235450744628906',
-				'longitude' => '121.41641998291016',
-		);
+// 		$location = array(
+// 				'latitude'	=> '31.235450744628906',
+// 				'longitude' => '121.41641998291016',
+// 		);
 		if (empty($seller_id)) {
 			return new ecjia_error( 'invalid_parameter', RC_Lang::get ('system::system.invalid_parameter' ));
 		}
