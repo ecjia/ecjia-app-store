@@ -25,12 +25,12 @@ class store_store_list_api extends Component_Event_Api {
 	 * @access  private
 	 * @return  array       $order_list     订单列表
 	 */
-	private function seller_list($filter)
+	private function store_list($filter)
 	{
         $where = array();
 		/* 根据经纬度查询附近店铺*/
 		if (is_array($filter['location']) && !empty($filter['location']['latitude']) && !empty($filter['location']['longitude'])) {
-			$geohash = RC_Loader::load_app_class('geohash', 'shipping');
+			$geohash = RC_Loader::load_app_class('geohash', 'store');
 			$geohash_code = $geohash->encode($filter['location']['latitude'] , $filter['location']['longitude']);
 			$geohash_code = substr($geohash_code, 0, 5);
 			$where['geohash'] = array('like' => "%$geohash_code%");
@@ -59,21 +59,21 @@ class store_store_list_api extends Component_Event_Api {
 				$where['sf.store_id'] = 0;
 			}
 		}
-		$where['sf.status'] = 1;
+		$where['ssi.status'] = 1;
 
 		if (!empty($filter['keywords'])) {
 			$where['merchant_name'] = array('like' => "%".$filter['keywords']."%");
 		}
 
 		// /* 店铺分类*/
-		// if (!empty($filter['category_id'])) {
-		// 	RC_Loader::load_app_func('store_category','seller');
-		// 	$where['ssi.cat_id'] = get_children($filter['category_id']);
-		// }
+		if (!empty($filter['category_id'])) {
+			RC_Loader::load_app_func('store_category','seller');
+			$where['ssi.cat_id'] = get_children($filter['category_id']);
+		}
 
 
 // 		$msi_dbview = RC_Loader::load_app_model('merchants_shop_information_viewmodel', 'seller');
-		$ssi_dbview = RC_Model::model('seller/seller_shopinfo_viewmodel');
+		// $ssi_dbview = RC_Model::model('seller/seller_shopinfo_viewmodel');
 
         $db_store_franchisee = RC_Model::model('store/store_franchisee_viewmodel');
 		$count = $db_store_franchisee->join(null)->where($where)->count();
@@ -98,8 +98,8 @@ class store_store_list_api extends Component_Event_Api {
 //
 // 		$seller_list = array();
 
-        $field = 'ssi.*, count(cs.stor_id) as follower, SUM(IF(cs.user_id = '.$user_id.',1,0)) as is_follower';
-        $result = $db_store_franchisee->field($field)->where($where)->limit($limit)->group('ssi.store_id')->order($order_by)->select();
+        $field = 'ssi.*, count(ssi.store_id) as follower, SUM(IF(cs.user_id = '.$user_id.',1,0)) as is_follower';
+        $result = $db_store_franchisee->join(array('collect_store', 'store_category'))->field($field)->where($where)->limit($limit)->group('ssi.store_id')->order($order_by)->select();
         $store_config = array(
             'shop_title'                => '', // 店铺标题
             'shop_kf_mobile'            => '', // 客服手机号码
@@ -139,7 +139,7 @@ class store_store_list_api extends Component_Event_Api {
 			}
 		}
 
-		return array('list' => $seller_list, 'page' => $page_row);
+		return array('seller_list' => $seller_list, 'page' => $page_row);
 	}
 }
 
