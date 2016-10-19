@@ -282,6 +282,30 @@
 				</div>
 
 				<div class="control-group formSep">
+					<label class="control-label">{lang key='store::store.label_province'}</label>
+					<div class="controls">
+						<select class="region-summary-provinces" name="province" id="selProvinces" data-url="{url path='store/admin_preaudit/get_region'}" data-toggle="regionSummary" data-type="2" data-target="region-summary-cities" >
+							<option value='0'>{lang key='system::system.select_please'}</option>
+							<!-- {foreach from=$province item=region} -->
+							<option value="{$region.region_id}" {if $region.region_id eq $store.province}selected{/if}>{$region.region_name}</option>
+							<!-- {/foreach} -->
+						</select>
+					</div>
+				</div>
+
+				<div class="control-group formSep">
+					<label class="control-label">{lang key='store::store.label_city'}</label>
+					<div class="controls">
+						<select class="region-summary-cities" name="city" id="selCities" >
+							<option value='0'>{lang key='system::system.select_please'}</option>
+							<!-- {foreach from=$city item=region} -->
+							<option value="{$region.region_id}" {if $region.region_id eq $store.city}selected{/if}>{$region.region_name}</option>
+							<!-- {/foreach} -->
+						</select>
+					</div>
+				</div>
+
+				<div class="control-group formSep">
 					<label class="control-label">{t}获取经纬度：{/t}</label>
 					<div class="controls">
 						<input class="span6" name="detail_address" placeholder="填写店铺详细地址获取店铺经纬度" type="text" value="" />&nbsp;&nbsp;
