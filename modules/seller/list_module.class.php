@@ -50,54 +50,46 @@ class list_module extends api_front implements api_interface {
 			$is_active = ecjia_app::is_active('ecjia.mobilebuy');
 			foreach ($result['seller_list'] as $row) {
 				$field = 'count(*) as count, SUM(comment_rank) as comment_rank';
-				$comment = $db_goods_view->join(null)->field($field)->where(array('c.seller_id' => $row['id'], 'comment_type' => 0, 'parent_id' => 0, 'status' => 1))->find();
+				//$comment = $db_goods_view->join(null)->field($field)->where(array('c.seller_id' => $row['id'], 'comment_type' => 0, 'parent_id' => 0, 'status' => 1))->find();
 				$favourable_result = $db_favourable->where(array('store_id' => $row['id'], 'start_time' => array('elt' => RC_Time::gmtime()), 'end_time' => array('egt' => RC_Time::gmtime()), 'act_type' => array('neq' => 0)))->select();
 				$favourable_list = array();
-				if (empty($rec_type)) {
-					if (!empty($favourable_result)) {
-						foreach ($favourable_result as $val) {
-							if ($val['act_range'] == '0') {
-								$favourable_list[] = array(
-										'name' => $val['act_name'],
-										'type' => $val['act_type'] == '1' ? 'price_reduction' : 'price_discount',
-										'type_label' => $val['act_type'] == '1' ? __('满减') : __('满折'),
-								);
-							} else {
-								$act_range_ext = explode(',', $val['act_range_ext']);
-								switch ($val['act_range']) {
-									case 1 :
-										if (in_array($goods['cat_id'], $act_range_ext)) {
-											$favourable_list[] = array(
-													'name' => $val['act_name'],
-													'type' => $val['act_type'] == '1' ? 'price_reduction' : 'price_discount',
-													'type_label' => $val['act_type'] == '1' ? __('满减') : __('满折'),
-											);
-										}
-										break;
-									case 2 :
-										if (in_array($goods['brand_id'], $act_range_ext)) {
-											$favourable_list[] = array(
-													'name' => $val['act_name'],
-													'type' => $val['act_type'] == '1' ? 'price_reduction' : 'price_discount',
-													'type_label' => $val['act_type'] == '1' ? __('满减') : __('满折'),
-											);
-										}
-										break;
-									case 3 :
-										if (in_array($goods['goods_id'], $act_range_ext)) {
-											$favourable_list[] = array(
-													'name' => $val['act_name'],
-													'type' => $val['act_type'] == '1' ? 'price_reduction' : 'price_discount',
-													'type_label' => $val['act_type'] == '1' ? __('满减') : __('满折'),
-											);
-										}
-										break;
-									default:
-										break;
-								}
+				if (!empty($favourable_result)) {
+					foreach ($favourable_result as $val) {
+						if ($val['act_range'] == '0') {
+							$favourable_list[] = array(
+									'name' => $val['act_name'],
+									'type' => $val['act_type'] == '1' ? 'price_reduction' : 'price_discount',
+									'type_label' => $val['act_type'] == '1' ? __('满减') : __('满折'),
+							);
+						} else {
+							$act_range_ext = explode(',', $val['act_range_ext']);
+							switch ($val['act_range']) {
+								case 1 :
+									$favourable_list[] = array(
+											'name' => $val['act_name'],
+											'type' => $val['act_type'] == '1' ? 'price_reduction' : 'price_discount',
+											'type_label' => $val['act_type'] == '1' ? __('满减') : __('满折'),
+									);
+									break;
+								case 2 :
+									$favourable_list[] = array(
+											'name' => $val['act_name'],
+											'type' => $val['act_type'] == '1' ? 'price_reduction' : 'price_discount',
+											'type_label' => $val['act_type'] == '1' ? __('满减') : __('满折'),
+									);
+									break;
+								case 3 :
+									$favourable_list[] = array(
+											'name' => $val['act_name'],
+											'type' => $val['act_type'] == '1' ? 'price_reduction' : 'price_discount',
+											'type_label' => $val['act_type'] == '1' ? __('满减') : __('满折'),
+									);
+									break;
+								default:
+									break;
 							}
-
 						}
+
 					}
 				}
 
@@ -163,7 +155,7 @@ class list_module extends api_front implements api_interface {
 							'follower'			=> $row['follower'],
 							'is_follower'		=> $row['is_follower'],
 							'goods_count'		=> $goods_result['page']->total_records,
-							'comment'			=> $comment['count'] > 0 ? round($comment['comment_rank']/($comment['count']*5)*100).'%' : '100%',
+							//'comment'			=> $comment['count'] > 0 ? round($comment['comment_rank']/($comment['count']*5)*100).'%' : '100%',
 							'favourable_list'	=> $favourable_list,
 					));
 				} else {
@@ -176,7 +168,7 @@ class list_module extends api_front implements api_interface {
 							'follower'			=> $row['follower'],
 							'is_follower'		=> $row['is_follower'],
 							'goods_count'		=> $goods_result['page']->total_records,
-							'comment'			=> $comment['count'] > 0 ? round($comment['comment_rank']/($comment['count']*5)*100).'%' : '100%',
+							//'comment'			=> $comment['count'] > 0 ? round($comment['comment_rank']/($comment['count']*5)*100).'%' : '100%',
 							'favourable_list'	=> $favourable_list,
 					);
 				}

@@ -52,7 +52,7 @@ class store_store_list_api extends Component_Event_Api {
 			$seller_group = RC_Model::model('goods/goods_model')
 									->where($seller_group_where)
 									->get_field('store_id', true);
-
+			
 			if (!empty($seller_group)) {
 				$where['ssi.store_id'] = array_unique($seller_group);
 			} else {
@@ -67,7 +67,7 @@ class store_store_list_api extends Component_Event_Api {
 
 		// /* 店铺分类*/
 		if (!empty($filter['category_id'])) {
-			RC_Loader::load_app_func('store_category','seller');
+			RC_Loader::load_app_func('store_category','store');
 			$where['ssi.cat_id'] = get_children($filter['category_id']);
 		}
 
