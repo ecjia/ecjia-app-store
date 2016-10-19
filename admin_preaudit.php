@@ -5,9 +5,11 @@
 defined('IN_ECJIA') or exit('No permission resources.');
 
 class admin_preaudit extends ecjia_admin {
-	
+	private $db_region;
 	public function __construct() {
 		parent::__construct();
+		
+		$this->db_region = RC_Model::model('store/region_model');
 		
 		//全局JS和CSS
 		RC_Script::enqueue_script('smoke');
@@ -22,6 +24,7 @@ class admin_preaudit extends ecjia_admin {
 		RC_Style::enqueue_style('chosen');
 		
 		RC_Script::enqueue_script('store', RC_App::apps_url('statics/js/store.js', __FILE__));
+		RC_Script::enqueue_script('region',RC_Uri::admin_url('statics/lib/ecjia-js/ecjia.region.js'));
 		
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('store::store.store_preaudit'), RC_Uri::url('store/admin_preaudit/init')));
 	}
@@ -53,11 +56,19 @@ class admin_preaudit extends ecjia_admin {
 		
 		$id = intval($_GET['id']);
 		$store = RC_DB::table('store_preaudit')->where('id', $id)->first();
+
+		$province   = $this->db_region->get_regions(1, 1);
+		$city       = $this->db_region->get_regions(2, $store['province']);
+		$this->assign('province', $province);
+		$this->assign('city', $city);
+
+		
+		
 		$store['apply_time']	= RC_Time::local_date(ecjia::config('time_format'), $store['apply_time']);
 		$this->assign('store', $store);
 		$cat_list = $this->get_cat_select_list();
 		$this->assign('cat_list', $cat_list);
-		
+
 		$this->assign('form_action',RC_Uri::url('store/admin_preaudit/update'));
 
 		$this->display('store_preaudit_edit.dwt');
@@ -244,6 +255,7 @@ class admin_preaudit extends ecjia_admin {
 				}
 					
 				//审核通过产生一个主员工的资料
+				$password	= rand(100000,999999);
 				$salt = rand(1, 9999);
 				$data = array(
 					'mobile' 		=> $store['contact_mobile'],
@@ -252,7 +264,7 @@ class admin_preaudit extends ecjia_admin {
 					'nick_name' 	=> '',
 					'user_ident' 	=> 'SC001',
 					'email' 		=> $store['email'],
-					'password' 		=> md5(md5('123456') . $salt),
+					'password' 		=> md5(md5($password) . $salt),
 					'salt'			=> $salt,
 					'add_time' 		=> RC_Time::gmtime(),
 					'last_login' 	=> '',
@@ -265,6 +277,32 @@ class admin_preaudit extends ecjia_admin {
 					'introduction' 	=> '',
 				);
 				RC_DB::table('staff_user')->insertGetId($data);
+				
+				//短信发送通知
+				$tpl_name = 'sms_jion_merchant';
+				$tpl = RC_Api::api('sms', 'sms_template', $tpl_name);
+				if (!empty($tpl)) {
+					$this->assign('user_name', $store['responsible_person']);
+					$this->assign('shop_name', ecjia::config('shop_name'));
+					$this->assign('service_phone', 	ecjia::config('service_phone'));
+					$this->assign('mobile', $store['contact_mobile']);
+					$this->assign('password', $password);
+					$content = $this->fetch_string($tpl['template_content']);
+					 
+					$options = array(
+						'mobile' 		=> $store['contact_mobile'],
+						'msg'			=> $content,
+						'template_id' 	=> $tpl['template_id'],
+					);
+					$response = RC_Api::api('sms', 'sms_send', $options);
+					
+					if($response === true){
+						$this->showmessage('短信发送成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
+					}else{
+						$this->showmessage('短信发送失败', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
+					}
+				};
+				
 				$this->showmessage(RC_Lang::get('store::store.check_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin_preaudit/init', array('id' => $id))));
 			} else {
 				//再次审核
@@ -287,15 +325,8 @@ class admin_preaudit extends ecjia_admin {
 					'business_licence_pic'		=> $store['business_licence_pic'],
 				);
 				RC_DB::table('store_franchisee')->where('store_id', $store_id)->update($data);
-				
 				RC_DB::table('store_preaudit')->where('store_id', $store_id)->delete();
-				
-// 				$check_log =array(
-// 					'store_id' => $store_id,
-// 					'info'	   => $remark,
-// 					'time'	   => RC_Time::gmtime(),
-// 				);
-// 				RC_DB::table('store_check_log')->insertGetId($check_log);
+
 				$this->showmessage('再次审核成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin_preaudit/init', array('id' => $id))));
 			}
 		}else {
@@ -348,6 +379,21 @@ class admin_preaudit extends ecjia_admin {
 		}
 		return $cat_list;
 	}
+	
+	/**
+	 * 获取指定地区的子级地区
+	 */
+	public function get_region(){
+		$type      = !empty($_GET['type'])   ? intval($_GET['type'])   : 0;
+		$parent        = !empty($_GET['parent']) ? intval($_GET['parent']) : 0;
+		$arr['regions'] = $this->db_region->get_regions($type, $parent);
+		$arr['type']    = $type;
+		$arr['target']  = !empty($_GET['target']) ? stripslashes(trim($_GET['target'])) : '';
+		$arr['target']  = htmlspecialchars($arr['target']);
+		echo json_encode($arr);
+	}
+	
+	
 }
 
 //end

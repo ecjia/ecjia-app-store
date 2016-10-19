@@ -287,23 +287,28 @@
 				</div>
 				
 				<div class="control-group formSep">
-					<label class="control-label">{lang key='store::store.label_area'}</label>
-					<div class="controls choose_list not-line-height m_l130">
-						<select class="controls" name="province" data-toggle="regionSummary" data-type="1" data-target="region-summary-cities">
-							<option value="">{lang key='system::system.select_please'}</option>
-							<!--{foreach from=$province_list item=province} -->
-							<option value="{$province.region_id}" {if $order.province eq $province.region_id}selected{/if}>{$province.region_name}</option>
+					<label class="control-label">{t}所有省份：{/t}</label>
+					<div class="controls">
+						<select class="region-summary-provinces" name="province" id="selProvinces" data-url="{url path='store/admin_preaudit/get_region'}" data-toggle="regionSummary" data-type="2" data-target="region-summary-cities" >
+							<option value='0'>{t}请选择...{/t}</option>
+							<!-- {foreach from=$province item=region} -->
+							<option value="{$region.region_id}" {if $region.region_id eq $store.province}selected{/if}>{$region.region_name}</option>
 							<!-- {/foreach} -->
 						</select>
-						<select class="controls" name="city" data-toggle="regionSummary" data-type="2" data-target="region-summary-districts">
-							<option value="">{lang key='system::system.select_please'}</option>
-							<!-- {foreach from=$city_list item=city} -->
-							<option value="{$city.region_id}" {if $order.city eq $city.region_id}selected{/if}>{$city.region_name}</option>
-							<!-- {/foreach} -->
-						</select>
-					</div>
+					</div>						
 				</div>
-				
+				<div class="control-group formSep">
+					<label class="control-label">{t}所有城市：{/t}</label>
+					<div class="controls">
+						<select class="region-summary-cities" name="city" id="selCities" >
+							<option value='0'>{t}请选择...{/t}</option>
+							<!-- {foreach from=$city item=region} -->
+							<option value="{$region.region_id}" {if $region.region_id eq $store.city}selected{/if}>{$region.region_name}</option>
+							<!-- {/foreach} -->
+						</select>
+					</div>	
+				</div>
+ 
 				<div class="control-group formSep">
 					<label class="control-label">{lang key='store::store.longitude_lable'}</label>
 				 	<div class="controls l_h30">
