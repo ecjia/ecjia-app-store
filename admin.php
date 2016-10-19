@@ -68,12 +68,13 @@ class admin extends ecjia_admin {
 		$store = RC_DB::table('store_franchisee')->where('store_id', $store_id)->first();
 		$store['apply_time']	= RC_Time::local_date(ecjia::config('time_format'), $store['apply_time']);
 		$store['confirm_time']	= RC_Time::local_date(ecjia::config('time_format'), $store['confirm_time']);
-		$this->assign('store', $store);
 		$cat_list = $this->get_cat_select_list();
-		$this->assign('cat_list', $cat_list);
 
 		$province   = $this->db_region->get_regions(1, 1);
 		$city       = $this->db_region->get_regions(2, $store['province']);
+
+		$this->assign('cat_list', $cat_list);
+		$this->assign('store', $store);
 		$this->assign('form_action',RC_Uri::url('store/admin/update'));
 		$this->assign('province', $province);
 		$this->assign('city', $city);
@@ -143,7 +144,7 @@ class admin extends ecjia_admin {
 		}else {
 			$personhand_identity_pic = $pic_url['personhand_identity_pic'];
 		}
-		
+
 		$data = array(
 			'cat_id'   	   				=> !empty($_POST['store_cat']) 		? $_POST['store_cat'] : '',
 			'merchants_name'   			=> !empty($_POST['merchants_name']) ? $_POST['merchants_name'] : '',
@@ -160,6 +161,7 @@ class admin extends ecjia_admin {
 			'personhand_identity_pic' 	=> $personhand_identity_pic,
 			'bank_account_name'  		=> !empty($_POST['bank_account_name']) 	? $_POST['bank_account_name'] : '',
 			'business_licence_pic' 		=> $business_licence_pic,
+			'business_licence'      	=> !empty($_POST['business_licence']) 				? $_POST['business_licence'] : '',
 			'bank_name'      	  	 	=> !empty($_POST['bank_name']) 				? $_POST['bank_name'] : '',
 			'bank_name'      	  	 	=> !empty($_POST['bank_name']) 				? $_POST['bank_name'] : '',
 			'bank_branch_name'     		=> !empty($_POST['bank_branch_name']) 				? $_POST['bank_branch_name'] : '',

@@ -20,42 +20,50 @@
 	<div class="span12">
 		<form class="form-horizontal" id="form-privilege" name="theForm" action="{$form_action}" method="post" enctype="multipart/form-data" >
 			<fieldset>
+				{if $store.identity_type eq 1}
 				<div class="control-group formSep" >
 					<label class="control-label">{lang key='store::store.identity_type_lable'}</label>
 					<div class="controls l_h30">
-						{if $store.identity_type eq 1}
-						<span class="span6">{lang key='store::store.personal'}</span>
-						{else}
-						<span class="span6">{lang key='store::store.company'}</span>
-						{/if}
+						<span class="span6" name="identity_type" value="{$store.identity_type}">{lang key='store::store.personal'}</span>
+						<input type="hidden"  name="identity_type" value="{$store.identity_type}" />
 					</div>
 				</div>
 
-				{if $store.identity_type eq 1}
-				{else}
+				<div class="control-group formSep">
+					<label class="control-label">{t}个人名称：{/t}</label>
+					<div class="controls">
+						<input class="span6" name="responsible_person" type="text" value="{$store.responsible_person}" />
+					</div>
+				</div>
+
+				<div class="control-group formSep">
+					<label class="control-label">{lang key='store::store.identity_number_lable'}</label>
+					<div class="controls">
+						<input class="span6" name="identity_number" type="text" value="{$store.identity_number}" />
+					</div>
+				</div>
+				{elseif $store.identity_type eq 2}
+				<div class="control-group formSep" >
+					<label class="control-label">{lang key='store::store.identity_type_lable'}</label>
+					<div class="controls l_h30">
+						<span class="span6 " name="identity_type" value="{$store.identity_type}">{lang key='store::store.company'}</span>
+						<input type="hidden"  name="identity_type" value="{$store.identity_type}" />
+					</div>
+				</div>
+
 				<div class="control-group formSep">
 					<label class="control-label">{lang key='store::store.companyname_lable'}</label>
 					<div class="controls">
 						<input class="span6" name="company_name" type="text" value="{$store.company_name}" />
 					</div>
 				</div>
-				{/if}
 
-				{if $store.identity_type eq 1}
-				<div class="control-group formSep">
-					<label class="control-label">{'个人名称：'}</label>
-					<div class="controls">
-						<input class="span6" name="responsible_person" type="text" value="{$store.responsible_person}" />
-					</div>
-				</div>
-				{else}
 				<div class="control-group formSep">
 					<label class="control-label">{lang key='store::store.person_lable'}</label>
 					<div class="controls">
 						<input class="span6" name="responsible_person" type="text" value="{$store.responsible_person}" />
 					</div>
 				</div>
-				{/if}
 
 				<div class="control-group formSep">
 					<label class="control-label">{lang key='store::store.identity_number_lable'}</label>
@@ -64,42 +72,40 @@
 					</div>
 				</div>
 
-				{if $store.identity_type eq 1}
-				{else}
 				<div class="control-group formSep">
 					{if $store.business_licence_pic eq ''}
-						<label class="control-label">{lang key='store::store.business_licence_pic_lable'}</label>
-						<div class="controls">
-							<div class="fileupload fileupload-new" data-provides="fileupload">
-								<input type="hidden" name="{$var.code}" />
-								<div class="fileupload-preview fileupload-exists thumbnail" style="width: 50px; height: 50px; line-height: 50px;"></div>
+					<label class="control-label">{lang key='store::store.business_licence_pic_lable'}</label>
+					<div class="controls">
+						<div class="fileupload fileupload-new" data-provides="fileupload">
+							<input type="hidden" name="{$var.code}" />
+							<div class="fileupload-preview fileupload-exists thumbnail" style="width: 50px; height: 50px; line-height: 50px;"></div>
 								<span class="btn btn-file">
 									<span class="fileupload-new">{lang key='store::store.browse'}</span>
 									<span class="fileupload-exists">{lang key='store::store.modify'}</span>
 									<input type='file' name='one' size="35" />
 								</span>
-								<a class="btn fileupload-exists" data-dismiss="fileupload" href="#">{lang key='system::system.drop'}</a>
-							</div>
+							<a class="btn fileupload-exists" data-dismiss="fileupload" href="#">{lang key='system::system.drop'}</a>
 						</div>
+					</div>
 					{else}
-						<label class="control-label">{lang key='store::store.business_licence_pic_lable'}</label>
-						<div class="controls">
-							<div class="fileupload fileupload-new" data-provides="fileupload">
-								<img class="w120 h120"  class="img-polaroid" src="{RC_Upload::upload_url()}/{$store.business_licence_pic}"><br><br>
-								{lang key='store::store.file_address'}{$store.business_licence_pic}<br><br>
-								<input type="hidden" name="{$var.code}" />
-								<div class="fileupload-preview fileupload-exists thumbnail" style="width: 50px; height: 50px; line-height: 50px;"></div>
+					<label class="control-label">{lang key='store::store.business_licence_pic_lable'}</label>
+					<div class="controls">
+						<div class="fileupload fileupload-new" data-provides="fileupload">
+							<img class="w120 h120"  class="img-polaroid" src="{RC_Upload::upload_url()}/{$store.business_licence_pic}"><br><br>
+							{lang key='store::store.file_address'}{$store.business_licence_pic}<br><br>
+							<input type="hidden" name="{$var.code}" />
+							<div class="fileupload-preview fileupload-exists thumbnail" style="width: 50px; height: 50px; line-height: 50px;"></div>
 								<span class="btn btn-file">
 									<span class="fileupload-new">{lang key='store::store.change_image'}</span>
 									<span class="fileupload-exists">{lang key='store::store.modify'}</span>
 									<input type='file' name='one' size="35" />
 								</span>
-								<a class="btn fileupload-exists" data-dismiss="fileupload" href="#">{lang key='system::system.drop'}</a>
-								<input type="hidden" name="{$var.code}" />
-								<input type="hidden" name="{$store.business_licence_pic}" />
-								<input name="business_licence_pic" value="{$store.business_licence_pic}" class="hide">
-							</div>
+							<a class="btn fileupload-exists" data-dismiss="fileupload" href="#">{lang key='system::system.drop'}</a>
+							<input type="hidden" name="{$var.code}" />
+							<input type="hidden" name="{$store.business_licence_pic}" />
+							<input name="business_licence_pic" value="{$store.business_licence_pic}" class="hide">
 						</div>
+					</div>
 					{/if}
 				</div>
 
