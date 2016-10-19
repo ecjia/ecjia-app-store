@@ -155,6 +155,8 @@ class admin_preaudit extends ecjia_admin {
 			'bank_branch_name'     		=> !empty($_POST['bank_branch_name']) 		? $_POST['bank_branch_name'] : '',
 			'bank_account_name' 	 	=> !empty($_POST['bank_account_name'])		? $_POST['bank_account_name'] : '',
 			'bank_account_number' 	 	=> !empty($_POST['bank_account_number'])		? $_POST['bank_account_number'] : '',
+			'province'					=> !empty($_POST['province'])				? $_POST['province'] : '',
+			'city'						=> !empty($_POST['city'])					? $_POST['city'] : '',
 			'bank_address'         		=> !empty($_POST['bank_address']) 			? $_POST['bank_address'] : '',
 		);
 	

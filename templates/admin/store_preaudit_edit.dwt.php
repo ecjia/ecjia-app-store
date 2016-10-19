@@ -287,10 +287,10 @@
 				</div>
 				
 				<div class="control-group formSep">
-					<label class="control-label">{t}所有省份：{/t}</label>
+					<label class="control-label">{lang key='store::store.label_province'}</label>
 					<div class="controls">
 						<select class="region-summary-provinces" name="province" id="selProvinces" data-url="{url path='store/admin_preaudit/get_region'}" data-toggle="regionSummary" data-type="2" data-target="region-summary-cities" >
-							<option value='0'>{t}请选择...{/t}</option>
+							<option value='0'>{lang key='system::system.select_please'}</option>
 							<!-- {foreach from=$province item=region} -->
 							<option value="{$region.region_id}" {if $region.region_id eq $store.province}selected{/if}>{$region.region_name}</option>
 							<!-- {/foreach} -->
@@ -298,10 +298,10 @@
 					</div>						
 				</div>
 				<div class="control-group formSep">
-					<label class="control-label">{t}所有城市：{/t}</label>
+					<label class="control-label">{lang key='store::store.label_city'}</label>
 					<div class="controls">
 						<select class="region-summary-cities" name="city" id="selCities" >
-							<option value='0'>{t}请选择...{/t}</option>
+							<option value='0'>{lang key='system::system.select_please'}</option>
 							<!-- {foreach from=$city item=region} -->
 							<option value="{$region.region_id}" {if $region.region_id eq $store.city}selected{/if}>{$region.region_name}</option>
 							<!-- {/foreach} -->
