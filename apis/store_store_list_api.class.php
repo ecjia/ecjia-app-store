@@ -98,29 +98,32 @@ class store_store_list_api extends Component_Event_Api {
 //
 // 		$seller_list = array();
 
-        $field = 'ssi.*, count(ssi.store_id) as follower, SUM(IF(cs.user_id = '.$user_id.',1,0)) as is_follower';
+        $field = 'ssi.*, sc.cat_name, count(ssi.store_id) as follower, SUM(IF(cs.user_id = '.$user_id.',1,0)) as is_follower';
         $result = $db_store_franchisee->join(array('collect_store', 'store_category'))->field($field)->where($where)->limit($limit)->group('ssi.store_id')->order($order_by)->select();
-        $store_config = array(
-            'shop_title'                => '', // 店铺标题
-            'shop_kf_mobile'            => '', // 客服手机号码
-            'shop_kf_email'             => '', // 客服邮件地址
-            'shop_kf_qq'                => '', // 客服QQ号码
-            'shop_kf_ww'                => '', // 客服淘宝旺旺
-            'shop_kf_type'              => '', // 客服样式
-            'shop_logo'                 => '', // 默认店铺页头部LOGO
-            'shop_thumb_logo'           => '', // Logo缩略图
-            'shop_banner_pic'           => '', // banner图
-            'shop_qrcode_logo'          => '', // 二维码中间Logo
-            'shop_trade_time'           => '', // 营业时间
-            'shop_description'          => '', // 店铺描述
-            'shop_notice'               => '', // 店铺公告
-            'shop_front_logo'           => '', // 店铺封面图
-        );
-        $config = RC_DB::table('merchants_config')->where('store_id', $goods['store_id'])->select('code','value')->get();
-        foreach ($config as $key => $value) {
-            $store_config[$value['code']] = $value['value'];
+        foreach($result as $k => $val){
+            $store_config = array(
+                'shop_title'                => '', // 店铺标题
+                'shop_kf_mobile'            => '', // 客服手机号码
+                'shop_kf_email'             => '', // 客服邮件地址
+                'shop_kf_qq'                => '', // 客服QQ号码
+                'shop_kf_ww'                => '', // 客服淘宝旺旺
+                'shop_kf_type'              => '', // 客服样式
+                'shop_logo'                 => '', // 默认店铺页头部LOGO
+                'shop_thumb_logo'           => '', // Logo缩略图
+                'shop_banner_pic'           => '', // banner图
+                'shop_qrcode_logo'          => '', // 二维码中间Logo
+                'shop_trade_time'           => '', // 营业时间
+                'shop_description'          => '', // 店铺描述
+                'shop_notice'               => '', // 店铺公告
+                'shop_front_logo'           => '', // 店铺封面图
+            );
+            $config = RC_DB::table('merchants_config')->where('store_id', $val['store_id'])->select('code','value')->get();
+            foreach ($config as $key => $value) {
+                $store_config[$value['code']] = $value['value'];
+            }
+            $result[$k] = array_merge($result[$k], $store_config);
         }
-        $result = array_merge($result, $store_config);
+
 		if (!empty ($result)) {
 			foreach ($result as $key => $val) {
 

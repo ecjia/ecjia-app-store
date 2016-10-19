@@ -40,7 +40,7 @@ class list_module extends api_front implements api_interface {
 
 		$seller_list = array();
 		if (!empty($result['seller_list'])) {
-			$db_goods_view = RC_Model::model('comment/comment_viewmodel');
+			$db_goods_view = RC_Model::model('goods/comment_viewmodel');
 			$max_goods = 0;
 			$mobilebuy_db = RC_Model::model('goods/goods_activity_model');
 			$db_favourable = RC_Model::model('favourable/favourable_activity_model');
@@ -51,8 +51,7 @@ class list_module extends api_front implements api_interface {
 			foreach ($result['seller_list'] as $row) {
 				$field = 'count(*) as count, SUM(comment_rank) as comment_rank';
 				$comment = $db_goods_view->join(null)->field($field)->where(array('c.seller_id' => $row['id'], 'comment_type' => 0, 'parent_id' => 0, 'status' => 1))->find();
-
-				$favourable_result = $db_favourable->where(array('seller_id' => $row['id'], 'start_time' => array('elt' => RC_Time::gmtime()), 'end_time' => array('egt' => RC_Time::gmtime()), 'act_type' => array('neq' => 0)))->select();
+				$favourable_result = $db_favourable->where(array('store_id' => $row['id'], 'start_time' => array('elt' => RC_Time::gmtime()), 'end_time' => array('egt' => RC_Time::gmtime()), 'act_type' => array('neq' => 0)))->select();
 				$favourable_list = array();
 				if (empty($rec_type)) {
 					if (!empty($favourable_result)) {
@@ -101,7 +100,6 @@ class list_module extends api_front implements api_interface {
 						}
 					}
 				}
-
 
 				$goods_options = array('page' => 1, 'size' => 3, 'seller_id' => $row['id']);
 				if (!empty($goods_category)) {
@@ -158,9 +156,9 @@ class list_module extends api_front implements api_interface {
 				if ($goods_result['page']->total_records >= $max_goods) {
 					array_unshift($seller_list, array(
 							'id'				=> $row['id'],
-							'seller_name'		=> $row['merchant_name'],
-							'seller_category'	=> $row['seller_category'],
-							'seller_logo'		=> $row['seller_logo'],
+							'seller_name'		=> $row['merchants_name'],
+							'seller_category'	=> $row['shop_cat_name'],
+							'seller_logo'		=> $row['shop_logo'],
 							'seller_goods'		=> $goods_list,
 							'follower'			=> $row['follower'],
 							'is_follower'		=> $row['is_follower'],
@@ -172,8 +170,8 @@ class list_module extends api_front implements api_interface {
 					$seller_list[] = array(
 							'id'				=> $row['id'],
 							'seller_name'		=> $row['merchant_name'],
-							'seller_category'	=> $row['seller_category'],
-							'seller_logo'		=> $row['seller_logo'],
+							'seller_category'	=> $row['shop_cat_name'],
+							'seller_logo'		=> $row['shop_logo'],
 							'seller_goods'		=> $goods_list,
 							'follower'			=> $row['follower'],
 							'is_follower'		=> $row['is_follower'],
