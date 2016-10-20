@@ -5,18 +5,18 @@ defined('IN_ECJIA') or exit('No permission resources.');
  * @author will.chen
  *
  */
-class info_module implements ecjia_interface
-{
-    public function run(ecjia_api & $api)
-    { 
+class info_module extends api_admin implements api_interface {
+    public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) { 
 		$ecjia = RC_Loader::load_app_class('api_admin', 'api');
 		$ecjia->authadminSession();
-    	
-		$shop_id = RC_Model::model('seller/seller_shopinfo_model')->where(array('id' => $_SESSION['seller_id']))->get_field('shop_id');
-		$merchant_info = RC_Model::model('merchant/merchants_shop_information_model')->where(array('shop_id' => $shop_id))->find();
 		
+    	
+		//$shop_id = RC_Model::model('seller/seller_shopinfo_model')->where(array('id' => $_SESSION['seller_id']))->get_field('shop_id');
+		//$merchant_info = RC_Model::model('merchant/merchants_shop_information_model')->where(array('shop_id' => $shop_id))->find();
+		$merchant_info = RC_DB::table('store_franchisee')->where(RC_DB::raw('store_id'), $_SESSION['store_id'])->first();
 		/* 文件路径处理*/
-		$uid = $_SESSION['seller_id'];
+		//$uid = $_SESSION['seller_id'];
+		$uid = $_SESSION['store_id'];
 		$uid = abs(intval($uid));//保证uid为绝对的正整数
 		$uid = sprintf("%09d", $uid);//格式化uid字串， d 表示把uid格式为9位数的整数，位数不够的填0
 		$dir1 = substr($uid, 0, 3);//把uid分段

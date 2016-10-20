@@ -1,24 +1,23 @@
 <?php
 defined('IN_ECJIA') or exit('No permission resources.');
 /**
- * 店铺信息
- * @author luchongchong
+ * 入驻申请等信息获取验证码
+ * @author 
  *
  */
-class validate_module implements ecjia_interface
-{
-    public function run(ecjia_api & $api)
-    { 
+class validate_module extends api_admin implements api_interface {
+    public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {
 		$ecjia = RC_Loader::load_app_class('api_admin', 'api');
 		$ecjia->authadminSession();
-		$type = _POST('type');
+		$type = $this->requestData('type');
 		
 		if (empty($type)) {
-			EM_Api::outPut(101);
+			return new ecjia_error(101, '错误的参数提交');
 		}
 		
-		$shop_id = RC_Model::model('seller/seller_shopinfo_model')->where(array('id' => $_SESSION['seller_id']))->get_field('shop_id');
-		$value = RC_Model::model('merchant/merchants_shop_information_model')->where(array('shop_id' => $shop_id))->get_field('contact_mobile');
+		//$shop_id = RC_Model::model('seller/seller_shopinfo_model')->where(array('id' => $_SESSION['seller_id']))->get_field('shop_id');
+		//$value = RC_Model::model('merchant/merchants_shop_information_model')->where(array('shop_id' => $shop_id))->get_field('contact_mobile');
+		$value = RC_DB::table('store_franchisee')->where(RC_DB::raw('store_id'), $_SESSION['store_id'])->pluck('contact_mobile');
 		$code = rand(100000, 999999);
 		
 		if ($type == 'mobile' && !empty($value)) {
@@ -30,9 +29,9 @@ class validate_module implements ecjia_interface
 				$tpl   = RC_Api::api('sms', 'sms_template', $tpl_name);
 				/* 判断短信模板是否存在*/
 				if (!empty($tpl)) {
-					ecjia_api::$view_object->assign('action', __('申请入驻认证'));
-					ecjia_api::$view_object->assign('code', $code);
-					ecjia_api::$view_object->assign('service_phone', ecjia::config('service_phone'));
+					ecjia_api::$controller->assign('action', __('申请入驻认证'));
+					ecjia_api::$controller->assign('code', $code);
+					ecjia_api::$controller->assign('service_phone', ecjia::config('service_phone'));
 					 
 					$content = ecjia_api::$controller->fetch_string($tpl['template_content']);
 					$options = array(

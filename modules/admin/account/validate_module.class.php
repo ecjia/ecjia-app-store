@@ -5,28 +5,28 @@ defined('IN_ECJIA') or exit('No permission resources.');
  * @author will.chen
  *
  */
-class validate_module implements ecjia_interface
-{
-    public function run(ecjia_api & $api)
-    { 
+class validate_module extends api_admin implements api_interface {
+    public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) { 
 		$ecjia = RC_Loader::load_app_class('api_admin', 'api');
 		$ecjia->authadminSession();
     	
-		$validate_type = isset($_POST['validate_type']) ? trim($_POST['validate_type']) : '';
+		$validate_type = $this->requestData('validate_type', '');
+		
 		if (empty($validate_type)) {
 			return new ecjia_error(101, '错误的参数提交！');
 		}
 		
-		$validate_code = isset($_POST['validate_code']) ? trim($_POST['validate_code']) : '';
+		$validate_code = $this->requestData('validate_code', '');
 		$time = RC_Time::gmtime();
 		if (empty($validate_code) || $_SESSION['merchant_validate_code'] != $validate_code || $_SESSION['merchant_validate_expiry'] < $time) {
 			return new ecjia_error('code_error', '验证码不正确！');
 		}
 		
-		$shop_id = RC_Model::model('seller/seller_shopinfo_model')->where(array('id' => $_SESSION['seller_id']))->get_field('shop_id');
+		//$shop_id = RC_Model::model('seller/seller_shopinfo_model')->where(array('id' => $_SESSION['seller_id']))->get_field('shop_id');
 		
 		/* 文件路径处理*/
-		$uid = $_SESSION['seller_id'];
+		//$uid = $_SESSION['seller_id'];
+		$uid = $_SESSION['store_id'];
 		$uid = abs(intval($uid));//保证uid为绝对的正整数
 		$uid = sprintf("%09d", $uid);//格式化uid字串， d 表示把uid格式为9位数的整数，位数不够的填0
 		$dir1 = substr($uid, 0, 3);//把uid分段
@@ -37,16 +37,14 @@ class validate_module implements ecjia_interface
 		//创建目录
 		RC_Dir::create($path);
 		
-		$responsible_person	= isset($_POST['responsible_person']) ? trim($_POST['responsible_person']) : '';
-		$identity_type		= isset($_POST['identity_type']) ? trim($_POST['identity_type']) : '';
-		$identity_number	= isset($_POST['identity_number']) ? trim($_POST['identity_number']) : '';
-		$identity_pic		= isset($_POST['identity_pic']) ? $_POST['identity_pic'] : '';
-		$identity_pic_front	= isset($_POST['identity_pic_front']) ? $_POST['identity_pic_front'] : '';
-		$identity_pic_back	= isset($_POST['identity_pic_back']) ? $_POST['identity_pic_back'] : '';
-		
-		
-		$company_name		= isset($_POST['company_name']) ? trim($_POST['company_name']) : '';
-		$business_licence_pic	= isset($_POST['business_licence_pic']) ? $_POST['business_licence_pic'] : '';
+		$responsible_person 		= $this->requestData('responsible_person', '');
+		$identity_type 				= $this->requestData('identity_type', '');
+		$identity_number 			= $this->requestData('identity_number', '');
+		$personhand_identity_pic    = $this->requestData('identity_pic', '');
+		$identity_pic_front 		= $this->requestData('identity_pic_front', '');
+		$identity_pic_back  		= $this->requestData('identity_pic_back', '');
+		$company_name 				= $this->requestData('company_name', '');
+		$business_licence_pic		= $this->requestData('business_licence_pic', '');
 		
 		$data = array('validate_type' => $validate_type);
 		
@@ -66,12 +64,13 @@ class validate_module implements ecjia_interface
 			$data['identity_number'] = $identity_number;
 		}
 		
-		if (!empty($identity_pic)) {
+		if (!empty($personhand_identity_pic)) {
 			$filename_path = $path.'/'.substr($uid, -2).'_hand_id_'.$filename.'.jpg';
 			@unlink($filename_path);
-			$identity_pic = base64_decode($identity_pic);
-			file_put_contents($filename_path, $identity_pic);
-			$data['identity_pic'] = 'data/merchant/'.$dir1.'/'.$dir2.'/'.$dir3.'/'.substr($uid, -2).'_hand_id_'.$filename.'.jpg';
+			$personhand_identity_pic = base64_decode($personhand_identity_pic);
+			file_put_contents($filename_path, $personhand_identity_pic);
+			//$data['identity_pic'] = 'data/merchant/'.$dir1.'/'.$dir2.'/'.$dir3.'/'.substr($uid, -2).'_hand_id_'.$filename.'.jpg';
+			$data['personhand_identity_pic'] = 'data/merchant/'.$dir1.'/'.$dir2.'/'.$dir3.'/'.substr($uid, -2).'_hand_id_'.$filename.'.jpg';
 		}
 		
 		if (!empty($business_licence_pic)) {
@@ -98,9 +97,9 @@ class validate_module implements ecjia_interface
 			$data['identity_pic_front'] = 'data/merchant/'.$dir1.'/'.$dir2.'/'.$dir3.'/'.substr($uid, -2).'_id_back_'.$filename.'.jpg';
 		}
 		//$data['merchant_status'] = 0;
-		$data['merchant_status'] = 1;
-		RC_Model::model('merchant/merchants_shop_information_model')->where(array('shop_id' => $shop_id))->update($data);
-		
+		//$data['merchant_status'] = 1;
+		//RC_Model::model('merchant/merchants_shop_information_model')->where(array('shop_id' => $shop_id))->update($data);
+		RC_DB::table('store_franchisee')->where(RC_DB::raw('store_id'), $_SESSION['store_id'])->update($data);
 		return array();
     }	
     
