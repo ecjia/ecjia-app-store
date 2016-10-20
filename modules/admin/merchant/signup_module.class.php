@@ -30,6 +30,7 @@ class signup_module extends api_admin implements api_interface {
 				'company_name'			=> $company_name,
 				'merchants_name'		=> $seller_name,
 				'contact_mobile'		=> $mobile,
+				'email'					=> $email,
 				'check_status'			=> 1,
 				'apply_time'			=> RC_Time::gmtime(),
 				'store_id'				=> 0,
