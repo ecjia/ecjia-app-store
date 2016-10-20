@@ -243,7 +243,7 @@
 					</div>
 				</div>
 
-				<div class="control-group formSep">
+				<div class="control-group">
 					<label class="control-label">{lang key='store::store.personhand_identity_pic_lable'}</label>
 					<div class="controls">
 						<div class="fileupload fileupload-new" data-provides="fileupload">

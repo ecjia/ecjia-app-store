@@ -38,7 +38,7 @@
 
 <div class="row-fluid">
 	<div class="span12">
-		<table class="table table-striped smpl_tbl table-hide-edit">
+		<table class="table table-striped smpl_tbl table_vam table-hide-edit">
 			<thead>
 			  	<tr>
 					<th class="w50">{lang key='store::store.id'}</th>
