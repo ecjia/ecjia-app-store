@@ -99,6 +99,24 @@ return array(
 	'set_commission' 	=> '设置佣金',
     
     'preaudit_list'     => '全部',
+
+	'view_staff'		=>	'查看员工',
+	'user_ident'		=>	'编号：',
+	'employee_number'	=>	'员工编号',
+	'main_name'			=>	'名称：',
+	'employee_name'		=>	'员工姓名',
+	'nick_name'			=>	'昵称',
+	'main_email'		=>	'邮箱：',
+	'email'				=>	'邮箱',
+	'main_add_time'		=>	'加入时间：',
+	'add_time'			=>	'加入时间',
+	'main_introduction'		=>	'介绍：',
+	'introduction'		=>	'描述',
+	'shopowner'			=>	'店长：',
+	'mobile'			=>	'联系方式：',
+
+
+
 );
 
 //end
