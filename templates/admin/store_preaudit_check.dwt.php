@@ -58,11 +58,6 @@
 							{elseif $store.identity_type eq 2}
 							
 							<tr>
-								<td><div align="right"><strong>{lang key='store::store.companyname_lable'}</strong></div></td>
-								<td colspan="3">{$store.company_name}</td>
-							</tr>
-							
-							<tr>
 								<td><div align="right"><strong>{lang key='store::store.identity_type_lable'}</strong></div></td>
 								<td>{if $store.identity_type eq 1}个人{else}企业{/if}</td>
 								<td><div align="right"><strong>{lang key='store::store.person_lable'}</strong></div></td>
@@ -75,6 +70,11 @@
 								<td><div align="right"><strong>{lang key='store::store.identity_number_lable'}</strong></div></td>
 								<td>{$store.identity_number}</td>
 							</tr>
+							<tr>
+								<td><div align="right"><strong>{lang key='store::store.companyname_lable'}</strong></div></td>
+								<td colspan="3">{$store.company_name}</td>
+							</tr>
+							
 							{/if}
 							<tr>
 								<td><div align="right"><strong>{lang key='store::store.bank_name_lable'}</strong></div></td>
