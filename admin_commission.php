@@ -107,7 +107,7 @@ class admin_commission extends ecjia_admin {
 			$percent = $this->mpdb->where(array('percent_id' => $suppliers_percent))->get_field('percent_value');
 			ecjia_admin::admin_log('商家名是 '.$user_name.'，'.'佣金比例是 '.$percent.'%', 'add', 'store_commission');
 			
-			$this->showmessage('设置商家佣金成功！',ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl'=>RC_Uri::url('seller/admin_commission/edit',array('id'=>$server_id, 'user_id'=>$user_id))));
+			$this->showmessage('设置商家佣金成功！',ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl'=>RC_Uri::url('store/admin_commission/edit',array('id'=>$server_id, 'user_id'=>$user_id))));
 		} else {
 			$this->showmessage('设置商家佣金失败！',ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}

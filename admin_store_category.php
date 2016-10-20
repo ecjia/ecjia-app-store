@@ -57,8 +57,8 @@ class admin_store_category extends ecjia_admin {
 	 */
 	public function add() {
 	    $this->admin_priv('store_category_manage');
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(_('添加店铺分类')));
-		$this->assign('ur_here', _('添加分类'));
+		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('添加店铺分类')));
+		$this->assign('ur_here', __('添加分类'));
 		$this->assign('action_link',  array('href' => RC_Uri::url('store/admin_store_category/init'), 'text' => _('店铺分类')));
 		
 		$this->assign('cat_select', cat_list(0, 0, true));
@@ -122,9 +122,9 @@ class admin_store_category extends ecjia_admin {
 			$cat_info['cat_image'] = '';
 		}
 	
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(_('编辑店铺分类')));
-		$this->assign('ur_here', _('编辑店铺分类'));
-		$this->assign('action_link', array('text' => _('编辑店铺分类'), 'href' => RC_Uri::url('store/admin_store_category/init')));
+		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('编辑店铺分类')));
+		$this->assign('ur_here', __('编辑店铺分类'));
+		$this->assign('action_link', array('text' => __('编辑店铺分类'), 'href' => RC_Uri::url('store/admin_store_category/init')));
 
 		$this->assign('cat_info', $cat_info);
 		$this->assign('cat_select', cat_list(0, $cat_info['parent_id'], true));
@@ -160,7 +160,7 @@ class admin_store_category extends ecjia_admin {
 		$children = array_keys(cat_list($cat_id, 0, false));     // 获得当前分类的所有下级分类
 		if (in_array($cat['parent_id'], $children)) {
 			/* 选定的父类是当前分类或当前分类的下级分类 */
-			$this->showmessage(_('所选择的上级分类不能是当前分类或者当前分类的下级分类!'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			$this->showmessage(__('所选择的上级分类不能是当前分类或者当前分类的下级分类!'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 		
 		/* 更新分类图片 */
@@ -178,7 +178,7 @@ class admin_store_category extends ecjia_admin {
 						->update($cat);
 		/*记录log */
 		ecjia_admin::admin_log($_POST['cat_name'], 'edit', 'store_category');
-		$link[] = array('text' => _('返回店铺分类列表'), 'href' => RC_Uri::url('store/admin_store_category/init'));
+		$link[] = array('text' => __('返回店铺分类列表'), 'href' => RC_Uri::url('store/admin_store_category/init'));
 		$this->showmessage('编辑店铺分类成功！', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('links' => $link, 'id' => $cat_id));
 	}
 	
@@ -203,7 +203,7 @@ class admin_store_category extends ecjia_admin {
 			RC_DB::table('store_category')->where('cat_id', $cat_id)->delete();
 			//记录log
 			ecjia_admin::admin_log($cat_name, 'remove', 'store_category');
-			$this->showmessage(_('删除店铺分类成功！'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
+			$this->showmessage(__('删除店铺分类成功！'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
 		} else {
 			$this->showmessage($cat_name .' '. '不是末级分类或者此分类下还存在有店铺，您不能删除!', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
