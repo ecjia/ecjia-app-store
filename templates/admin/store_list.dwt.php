@@ -3,7 +3,6 @@
 <!-- {block name="footer"} -->
 <script type="text/javascript">
 	ecjia.admin.store_list.init();
-// 	ecjia.admin.store_edit.init();
 </script>
 <!-- {/block} -->
 <!-- {block name="main_content"} -->
@@ -66,7 +65,8 @@
 					      	{/if}
 					     	<a class="data-pjax " href='{RC_Uri::url("store/admin_commission/edit", "store_id={$list.store_id}&id={$list.id}")}' title="{lang key='store::store.set_commission'}">{lang key='store::store.set_commission'}</a>&nbsp;|&nbsp;
 					     	<a class="data-pjax " href='{RC_Uri::url("commission/admin/init", "store_id={$list.store_id}")}' title="结算账单">结算账单</a>&nbsp;|&nbsp;  
-					     	<a class="data-pjax" href='{RC_Uri::url("store/admin/preview", "store_id={$list.store_id}")}' title="{lang key='store::store.view'}">{lang key='store::store.view'}</a>
+					     	<a class="data-pjax" href='{RC_Uri::url("store/admin/preview", "store_id={$list.store_id}")}' title="{lang key='store::store.view'}">{lang key='store::store.view'}</a>&nbsp;|&nbsp;
+							<a class="data-pjax" href='{RC_Uri::url("store/admin/view_staff", "store_id={$list.store_id}")}' title="{lang key='store::store.view_staff'}">{lang key='store::store.view_staff'}</a>
 					     </div>
 					</td>
 					<td>{$list.cat_name}</td>

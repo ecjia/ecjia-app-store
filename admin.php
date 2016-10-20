@@ -203,6 +203,28 @@ class admin extends ecjia_admin {
 	}
 
 	/**
+	 * 查看员工
+	 */
+	public function view_staff() {
+		$this->admin_priv('store_affiliate_manage', ecjia::MSGTYPE_JSON);
+		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('store::store.view_staff')));
+
+		$store_id = intval($_GET['store_id']);
+		$main_staff = RC_DB::table('staff_user')->where('store_id', $store_id)->where('parent_id', 0)->first();
+		$parent_id = $main_staff['user_id'];
+
+		$staff_list = RC_DB::table('staff_user')->where('parent_id', $parent_id)->get();
+
+		$this->assign('action_link',array('href' => RC_Uri::url('store/admin/init'),'text' => RC_Lang::get('store::store.store_list')));
+		$this->assign('ur_here',RC_Lang::get('store::store.view_staff'));
+		$this->assign('main_staff', $main_staff);
+		$this->assign('staff_list', $staff_list);
+
+		$this->assign('store', $store);
+		$this->display('store_staff.dwt');
+	}
+
+	/**
 	 * 锁定商家
 	 */
 	public function status() {
