@@ -7,9 +7,11 @@ defined('IN_ECJIA') or exit('No permission resources.');
  */
 class info_module extends api_admin implements api_interface {
     public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) { 
-		$ecjia = RC_Loader::load_app_class('api_admin', 'api');
-		$ecjia->authadminSession();
 		
+		$this->authadminSession();
+		if ($_SESSION['staff_id'] <=0) {
+			return new ecjia_error(100, 'Invalid session');
+		}
     	
 		//$shop_id = RC_Model::model('seller/seller_shopinfo_model')->where(array('id' => $_SESSION['seller_id']))->get_field('shop_id');
 		//$merchant_info = RC_Model::model('merchant/merchants_shop_information_model')->where(array('shop_id' => $shop_id))->find();

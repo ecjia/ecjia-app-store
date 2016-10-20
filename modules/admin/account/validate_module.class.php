@@ -7,8 +7,10 @@ defined('IN_ECJIA') or exit('No permission resources.');
  */
 class validate_module extends api_admin implements api_interface {
     public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) { 
-		$ecjia = RC_Loader::load_app_class('api_admin', 'api');
-		$ecjia->authadminSession();
+    	$this->authadminSession();
+		if ($_SESSION['staff_id'] <=0) {
+			return new ecjia_error(100, 'Invalid session');
+		}
     	
 		$validate_type = $this->requestData('validate_type', '');
 		
