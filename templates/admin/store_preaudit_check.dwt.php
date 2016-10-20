@@ -29,7 +29,6 @@
 				<div class="accordion-body in collapse" id="goods_info_area_submit">
 					<table class="table table-oddtd m_b0">
 						<tbody class="first-td-no-leftbd">
-							{if $store.identity_type eq 1}
 							<tr>
 								<td><div align="right"><strong>{lang key='store::store.store_title_lable'}</strong></div></td>
 								<td>{$store.merchants_name}</td>
@@ -44,6 +43,7 @@
 								<td>{$store.apply_time}</td>
 							</tr>
 							
+							{if $store.identity_type eq 1}
 							<tr>
 								<td><div align="right"><strong>{lang key='store::store.identity_type_lable'}</strong></div></td>
 								<td>{if $store.identity_type eq 1}个人{else}企业{/if}</td>
@@ -56,19 +56,6 @@
 								<td colspan="3">{$store.responsible_person}</td>
 							</tr>
 							{elseif $store.identity_type eq 2}
-							<tr>
-								<td><div align="right"><strong>{lang key='store::store.store_title_lable'}</strong></div></td>
-								<td>{$store.merchants_name}</td>
-								<td><div align="right"><strong>{lang key='store::store.store_keywords_lable'}</strong></div></td>
-								<td>{$store.shop_keyword}</td>
-							</tr>
-							
-							<tr>
-								<td><div align="right"><strong>{lang key='store::store.store_cat_lable'}</strong></div></td>
-								<td>{$store.cat_name}</td>
-								<td><div align="right"><strong>{lang key='store::store.apply_time_lable'}</strong></div></td>
-								<td>{$store.apply_time}</td>
-							</tr>
 							
 							<tr>
 								<td><div align="right"><strong>{lang key='store::store.companyname_lable'}</strong></div></td>
