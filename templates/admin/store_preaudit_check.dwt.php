@@ -26,10 +26,10 @@
 					</a>
 				</div>
 				
-				{if $store.identity_type eq 1}
 				<div class="accordion-body in collapse" id="goods_info_area_submit">
 					<table class="table table-oddtd m_b0">
 						<tbody class="first-td-no-leftbd">
+							{if $store.identity_type eq 1}
 							<tr>
 								<td><div align="right"><strong>{lang key='store::store.store_title_lable'}</strong></div></td>
 								<td>{$store.merchants_name}</td>
@@ -55,57 +55,7 @@
 								<td><div align="right"><strong>{t}个人名称：{/t}</strong></div></td>
 								<td colspan="3">{$store.responsible_person}</td>
 							</tr>
-						
-							<tr>
-								<td><div align="right"><strong>{lang key='store::store.bank_name_lable'}</strong></div></td>
-								<td>{$store.bank_name}</td>
-								<td><div align="right"><strong>{lang key='store::store.bank_branch_name_lable'}</strong></div></td>
-								<td>{$store.bank_branch_name}</td>
-							</tr>
-						
-							<tr>
-								<td><div align="right"><strong>{lang key='store::store.bank_account_number_lable'}</strong></div></td>
-								<td>{$store.bank_account_number}</td>
-								<td><div align="right"><strong>{lang key='store::store.bank_account_name_label'}</strong></div></td>
-								<td>{$store.bank_account_name}</td>
-							</tr>
-						
-							<tr>
-								<td><div align="right"><strong>{lang key='store::store.email_lable'}</strong></div></td>
-								<td>{$store.email}</td>
-								<td><div align="right"><strong>{lang key='store::store.contact_lable'}</strong></div></td>
-								<td>{$store.contact_mobile}</td>
-							</tr>
-						
-							<tr>
-								<td><div align="right"><strong>{lang key='store::store.label_province'}</strong></div></td>
-								<td>{$store.province}</td>
-								<td><div align="right"><strong>{lang key='store::store.label_city'}</strong></div></td>
-								<td>{$store.city}</td>
-							</tr>
-						
-							<tr>
-								<td><div align="right"><strong>{lang key='store::store.longitude_lable'}</strong></div></td>
-								<td>{$store.longitude}</td>
-								<td><div align="right"><strong>{lang key='store::store.latitude_lable'}</strong></div></td>
-								<td>{$store.latitude}</td>
-							</tr>
-						
-							<tr>
-								<td><div align="right"><strong>{lang key='store::store.bank_address_lable'}</strong></div></td>
-								<td colspan="3">{$store.bank_address}</td>
-							</tr>
-							<tr>
-								<td><div align="right"><strong>{lang key='store::store.address_lable'}</strong></div></td>
-								<td colspan="3">{$store.address}</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-				{elseif $store.identity_type eq 2}
-				<div class="accordion-body in collapse" id="goods_info_area_submit">
-					<table class="table table-oddtd m_b0">
-						<tbody class="first-td-no-leftbd">
+							{elseif $store.identity_type eq 2}
 							<tr>
 								<td><div align="right"><strong>{lang key='store::store.store_title_lable'}</strong></div></td>
 								<td>{$store.merchants_name}</td>
@@ -138,7 +88,7 @@
 								<td><div align="right"><strong>{lang key='store::store.identity_number_lable'}</strong></div></td>
 								<td>{$store.identity_number}</td>
 							</tr>
-							
+							{/if}
 							<tr>
 								<td><div align="right"><strong>{lang key='store::store.bank_name_lable'}</strong></div></td>
 								<td>{$store.bank_name}</td>
@@ -186,7 +136,6 @@
 						</tbody>
 					</table>
 				</div>
-				{/if}
 			</div>
 		</div>
 		
