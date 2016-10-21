@@ -14,8 +14,8 @@ class list_module extends api_front implements api_interface {
 		$keyword = RC_String::unicode2string($filter['keywords']);
 		$category = !empty($filter['category_id']) ? intval($filter['category_id']) : 0;
 		$sort_type = $filter['sort_by'];
-		$shop_id = $this->requestData('seller_id');
-		if (empty($shop_id)) {
+		$store_id = $this->requestData('seller_id');
+		if (empty($store_id)) {
 			return new ecjia_error( 'invalid_parameter', RC_Lang::get ('system::system.invalid_parameter' ));
 		}
 		
@@ -46,7 +46,7 @@ class list_module extends api_front implements api_interface {
 		$options = array(
 				'cat_id'	=> $category,
 				'keywords'	=> $keyword,
-				'store_id'  => $shop_id,
+				'store_id'  => $store_id,
 				'sort'		=> $order_by,
 				'page'		=> $page,
 				'size'		=> $size,
@@ -59,6 +59,11 @@ class list_module extends api_front implements api_interface {
 				"count" => $result['page']->total_records,
 				"more" => $result['page']->total_pages <= $page ? 0 : 1,
 		);
+		
+		//更新店铺搜索关键字
+		if (!empty($keyword) && !empty($store_id)) {
+		    RC_Api::api('stats', 'update_store_keywords', array('store_id' => $store_id, 'keywords' => $keyword));
+		}
 		
 // 		if (!empty($result['list'])) {
 // 			$mobilebuy_db = RC_Model::model('goods/goods_activity_model');
