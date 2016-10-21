@@ -50,8 +50,7 @@ class info_module extends api_admin implements api_interface {
 				$identity_pic = RC_Upload::upload_url('data/merchant/'.$dir1.'/'.$dir2.'/'.$dir3.'/'.substr($uid, -2).'_hand_id_'.$filename.'.jpg');
 			}
 			return array(
-					//'validate_type'			=> $merchant_info['validate_type'],
-					'validate_type'			=> '1',//个人
+					'validate_type'			=> $merchant_info['validate_type'],
 					'validate_type'			=> $merchant_info['validate_type'],
 					'responsible_person'	=> $merchant_info['responsible_person'],
 					'identity_type'			=> $merchant_info['identity_type'],
@@ -70,8 +69,7 @@ class info_module extends api_admin implements api_interface {
 				$business_licence_pic = RC_Upload::upload_url('data/merchant/'.$dir1.'/'.$dir2.'/'.$dir3.'/'.substr($uid, -2).'_business_licence_'.$filename.'.jpg');
 			}
 			return array(
-					//'validate_type'		=> $merchant_info['validate_type'],
-					'validate_type'			=> '2',//企业
+					'validate_type'		=> $merchant_info['validate_type'],
 					'responsible_person'	=> $merchant_info['responsible_person'],
 					'company_name'			=> $merchant_info['company_name'],
 					'business_licence_pic'	=> $business_licence_pic,
