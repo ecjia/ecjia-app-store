@@ -53,7 +53,7 @@ class list_module extends api_front implements api_interface {
 		);
 		
 		$result = RC_Api::api('goods', 'goods_list', $options);
-		$data['list'] = $result;
+		$data['list'] = $result['list'];
 		$data['pager'] = array(
 				"total" => $result['page']->total_records,
 				"count" => $result['page']->total_records,
