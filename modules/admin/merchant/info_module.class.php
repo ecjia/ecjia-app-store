@@ -49,7 +49,8 @@ class info_module extends api_admin implements api_interface {
 	    	  		'seller_city'			=> $region->where(array('region_id'=>$info['city']))->get_field('region_name'),
 	    	  		'seller_address'		=> $info['address'],
 	    	  		'seller_description'	=> '',//$info['notice'],
-					'validated_status'		=> $info['status'],
+					//'validated_status'		=> $info['status'],
+					'validated_status'		=> '2',
 			);
 // 			$result = $this->admin_priv('merchant_setinfo');
 			if (is_ecjia_error($result)) {
