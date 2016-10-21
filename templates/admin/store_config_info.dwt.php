@@ -44,7 +44,7 @@
 					<span class="fileupload-exists">{t}修改{/t}</span>
 					<input type="file" name="merchante_admin_login_logo"/>
 					</span>
-					<a class="btn fileupload-exists" data-toggle="removefile" data-msg="{t}您确定要删除此文件吗？{/t}" data-href="{RC_Uri::url('seller/admin_config/del')}" {if $config_logo}data-removefile="true"{/if}>{t}删除{/t}</a>
+					<a class="btn fileupload-exists" data-toggle="removefile" data-msg="{t}您确定要删除此文件吗？{/t}" data-href="{RC_Uri::url('store/admin_config/del')}" {if $config_logo}data-removefile="true"{/if}>{t}删除{/t}</a>
 				</div>
 			</div>
 		</div>
