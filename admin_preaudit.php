@@ -62,8 +62,13 @@ class admin_preaudit extends ecjia_admin {
 		$this->assign('province', $province);
 		$this->assign('city', $city);
 
-
-
+		$certificates_list = array(
+			'1' => RC_Lang::get('store::store.people_id'),
+			'2' => RC_Lang::get('store::store.passport'),
+			'3' => RC_Lang::get('store::store.hong_kong_and_macao_pass')
+		);
+		$this->assign('certificates_list', $certificates_list);
+		
 		$store['apply_time']	= RC_Time::local_date(ecjia::config('time_format'), $store['apply_time']);
 		$this->assign('store', $store);
 		$cat_list = $this->get_cat_select_list();

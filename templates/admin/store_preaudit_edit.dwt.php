@@ -20,19 +20,29 @@
 	<div class="span12">
 		<form class="form-horizontal" id="form-privilege" name="theForm" action="{$form_action}" method="post" enctype="multipart/form-data" >
 			<fieldset>
-				{if $store.identity_type eq 1}
+				{if $store.validate_type eq 1}
 				<div class="control-group formSep" >
-					<label class="control-label">{lang key='store::store.identity_type_lable'}</label>
+					<label class="control-label">{lang key='store::store.validate_type'}</label>
 					<div class="controls l_h30">
-						<span class="span6" name="identity_type" value="{$store.identity_type}">{lang key='store::store.personal'}</span>
-						<input type="hidden"  name="identity_type" value="{$store.identity_type}" />
+						<span class="span6" name="validate_type" value="{$store.validate_type}">{lang key='store::store.personal'}</span>
+						<input type="hidden"  name="validate_type" value="{$store.validate_type}" />
 					</div>
 				</div>
 				
 				<div class="control-group formSep">
-					<label class="control-label">{t}个人名称： {/t}</label>
+					<label class="control-label">{lang key='store::store.personal_name'}</label>
 					<div class="controls">
 						<input class="span6" name="responsible_person" type="text" value="{$store.responsible_person}" />
+					</div>
+				</div>
+				
+				<div class="control-group formSep" >
+					<label class="control-label">{lang key='store::store.identity_type_lable'}</label>
+					<div class="controls">
+						<select name="identity_type">
+							<option value="0">{lang key='store::store.select_plz'}</option>
+							<!-- {html_options options=$certificates_list selected=$store.identity_type} -->
+						</select>
 					</div>
 				</div>
 				
@@ -42,12 +52,12 @@
 						<input class="span6" name="identity_number" type="text" value="{$store.identity_number}" />
 					</div>
 				</div>
-				{elseif $store.identity_type eq 2}
+				{elseif $store.validate_type eq 2}
 				<div class="control-group formSep" >
-					<label class="control-label">{lang key='store::store.identity_type_lable'}</label>
+					<label class="control-label">{lang key='store::store.validate_type'}</label>
 					<div class="controls l_h30">
-						<span class="span6" name="identity_type" value="{$store.identity_type}">{lang key='store::store.company'}</span>
-						<input type="hidden"  name="identity_type" value="{$store.identity_type}" />
+						<span class="span6" name="validate_type" value="{$store.validate_type}">{lang key='store::store.company'}</span>
+						<input type="hidden"  name="validate_type" value="{$store.validate_type}" />
 					</div>
 				</div>
 				
@@ -62,6 +72,16 @@
 					<label class="control-label">{lang key='store::store.person_lable'}</label>
 					<div class="controls">
 						<input class="span6" name="responsible_person" type="text" value="{$store.responsible_person}" />
+					</div>
+				</div>
+				
+				<div class="control-group formSep" >
+					<label class="control-label">{lang key='store::store.identity_type_lable'}</label>
+					<div class="controls">
+						<select name="identity_type">
+							<option value="0">{lang key='store::store.select_plz'}</option>
+							<!-- {html_options options=$certificates_list selected=$store.identity_type} -->
+						</select>
 					</div>
 				</div>
 				
