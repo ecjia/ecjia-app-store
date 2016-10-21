@@ -88,6 +88,7 @@ return array(
 	'open'	 	=>	'开启',
 	'close'	 	=>	'关闭',
 	'personal'	=>	'个人',
+	'personal_name'	=>	'个人名称：',
 	'company'	=>	'企业',
 	'no_upload' =>  '还未上传',
 	'apply_time'=>	'申请时间',	
@@ -99,6 +100,7 @@ return array(
 	'set_commission' 	=> '设置佣金',
     
     'preaudit_list'     => '全部',
+	'validate_type'		=>	'入驻类型：',
 
 	'view_staff'		=>	'查看员工',
 	'user_ident'		=>	'编号：',
@@ -115,8 +117,9 @@ return array(
 	'shopowner'			=>	'店长：',
 	'mobile'			=>	'联系方式：',
 
-
-
+	'people_id'			=>	'身份证',
+	'passport'			=>	'护照',
+	'hong_kong_and_macao_pass'			=>	'港澳通行证',
 );
 
 //end

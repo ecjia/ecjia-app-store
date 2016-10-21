@@ -69,11 +69,17 @@ class admin extends ecjia_admin {
 		$store['apply_time']	= RC_Time::local_date(ecjia::config('time_format'), $store['apply_time']);
 		$store['confirm_time']	= RC_Time::local_date(ecjia::config('time_format'), $store['confirm_time']);
 		$cat_list = $this->get_cat_select_list();
+		$certificates_list = array(
+				'1' => RC_Lang::get('store::store.people_id'),
+				'2' => RC_Lang::get('store::store.passport'),
+				'3' => RC_Lang::get('store::store.hong_kong_and_macao_pass')
+		);
 
 		$province   = $this->db_region->get_regions(1, 1);
 		$city       = $this->db_region->get_regions(2, $store['province']);
 
 		$this->assign('cat_list', $cat_list);
+		$this->assign('certificates_list', $certificates_list);
 		$this->assign('store', $store);
 		$this->assign('form_action',RC_Uri::url('store/admin/update'));
 		$this->assign('province', $province);
@@ -163,13 +169,13 @@ class admin extends ecjia_admin {
 			'business_licence_pic' 		=> $business_licence_pic,
 			'business_licence'      	=> !empty($_POST['business_licence']) 				? $_POST['business_licence'] : '',
 			'bank_name'      	  	 	=> !empty($_POST['bank_name']) 				? $_POST['bank_name'] : '',
-			'cat_id'      	  	 		=> !empty($_POST['store_cat']) 				? $_POST['store_cat'] : '',
 			'bank_branch_name'     		=> !empty($_POST['bank_branch_name']) 				? $_POST['bank_branch_name'] : '',
 			'bank_account_number'  		=> !empty($_POST['bank_account_number'])		? $_POST['bank_account_number'] : '',
 			'province'					=> !empty($_POST['province'])				? $_POST['province'] : '',
 			'city'						=> !empty($_POST['city'])					? $_POST['city'] : '',
 			'bank_address'         		=> !empty($_POST['bank_address']) 			? $_POST['bank_address'] : '',
 		);
+
 		RC_DB::table('store_franchisee')->where('store_id', $store_id)->update($data);
 
 		$this->showmessage(RC_Lang::get('store::store.edit_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin/edit', array('store_id' => $store_id))));

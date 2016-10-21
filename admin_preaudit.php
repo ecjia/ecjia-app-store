@@ -228,6 +228,8 @@ class admin_preaudit extends ecjia_admin {
 					'business_licence'			=>$store['business_licence'],
 					'business_licence_pic'		=>$store['business_licence_pic'],
 					'bank_name'					=>$store['bank_name'],
+					'province'					=>$store['province'],
+					'city'						=>$store['city'],
 					'bank_branch_name'			=>$store['bank_branch_name'],
 					'bank_account_number'		=>$store['bank_account_number'],
 					'bank_address'				=>$store['bank_address'],
@@ -236,7 +238,6 @@ class admin_preaudit extends ecjia_admin {
 					'latitude'					=>$store['latitude'],
 					'sort_order' 				=> 50,
 				);
-
 				$store_id = RC_DB::table('store_franchisee')->insertGetId($data);
 				RC_DB::table('store_preaudit')->where('id', $id)->delete();
 
@@ -334,6 +335,8 @@ class admin_preaudit extends ecjia_admin {
 					'personhand_identity_pic'	=> $store['personhand_identity_pic'],
 					'business_licence'			=> $store['business_licence'],
 					'business_licence_pic'		=> $store['business_licence_pic'],
+					'province'					=>$store['province'],
+					'city'						=>$store['city'],
 				);
 				RC_DB::table('store_franchisee')->where('store_id', $store_id)->update($data);
 				RC_DB::table('store_preaudit')->where('store_id', $store_id)->delete();
