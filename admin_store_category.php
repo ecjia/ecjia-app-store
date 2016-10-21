@@ -59,7 +59,7 @@ class admin_store_category extends ecjia_admin {
 	    $this->admin_priv('store_category_manage');
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('添加店铺分类')));
 		$this->assign('ur_here', __('添加分类'));
-		$this->assign('action_link',  array('href' => RC_Uri::url('store/admin_store_category/init'), 'text' => _('店铺分类')));
+		$this->assign('action_link',  array('href' => RC_Uri::url('store/admin_store_category/init'), 'text' => __('店铺分类')));
 		
 		$this->assign('cat_select', cat_list(0, 0, true));
 		$this->assign('form_action', RC_Uri::url('store/admin_store_category/insert'));
