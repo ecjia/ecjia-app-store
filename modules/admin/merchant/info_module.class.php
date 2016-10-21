@@ -32,8 +32,10 @@ class info_module extends api_admin implements api_interface {
 	    	  		'seller_province'		=> $region->where(array('region_id' => $info['province']))->get_field('region_name'),
 	    	  		'seller_city'			=> $region->where(array('region_id' => $info['city']))->get_field('region_name'),
 	    	  		'seller_address'		=> $info['address'],
+	    	  		'seller_description'	=> '',//$info['notice'],
+					//'validated_status'		=> $info['status'],
+					'validated_status'		=> '2',
 	    	  		'seller_description'	=> RC_DB::table('merchants_config')->where('store_id', $_SESSION['store_id'])->where('code', 'shop_description')->pluck('value'),
-					'validated_status'		=> $info['status'],
 			);
 			$result = $this->admin_priv('franchisee_manage');
 			if (is_ecjia_error($result)) {
