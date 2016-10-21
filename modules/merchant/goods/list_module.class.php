@@ -53,13 +53,13 @@ class list_module extends api_front implements api_interface {
 		);
 		
 		$result = RC_Api::api('goods', 'goods_list', $options);
-		$data = array();
+		$data['list'] = $result;
 		$data['pager'] = array(
 				"total" => $result['page']->total_records,
 				"count" => $result['page']->total_records,
 				"more" => $result['page']->total_pages <= $page ? 0 : 1,
 		);
-		$data['list'] = array();
+		
 // 		if (!empty($result['list'])) {
 // 			$mobilebuy_db = RC_Model::model('goods/goods_activity_model');
 // 			/* 手机专享*/
