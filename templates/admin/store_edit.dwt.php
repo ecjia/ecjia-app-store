@@ -24,13 +24,13 @@
 				<div class="control-group formSep" >
 					<label class="control-label">{lang key='store::store.validate_type'}</label>
 					<div class="controls l_h30">
-						<span class="span6" name="identity_type" value="{$store.identity_type}">{lang key='store::store.personal'}</span>
-						<input type="hidden"  name="identity_type" value="{$store.identity_type}" />
+						<span class="span6" name="validate_type" value="{$store.validate_type}">{lang key='store::store.personal'}</span>
+						<input type="hidden"  name="validate_type" value="{$store.validate_type}" />
 					</div>
 				</div>
 
 				<div class="control-group formSep">
-					<label class="control-label">{t}个人名称：{/t}</label>
+					<label class="control-label">{lang key='store::store.personal_name'}</label>
 					<div class="controls">
 						<input class="span6" name="responsible_person" type="text" value="{$store.responsible_person}" />
 					</div>
@@ -56,8 +56,8 @@
 				<div class="control-group formSep" >
 					<label class="control-label">{lang key='store::store.validate_type'}</label>
 					<div class="controls l_h30">
-						<span class="span6 " name="identity_type" value="{$store.identity_type}">{lang key='store::store.company'}</span>
-						<input type="hidden"  name="identity_type" value="{$store.identity_type}" />
+						<span class="span6 " name="validate_type" value="{$store.validate_type}">{lang key='store::store.company'}</span>
+						<input type="hidden"  name="validate_type" value="{$store.valtidate_type}" />
 					</div>
 				</div>
 
