@@ -43,36 +43,56 @@
 							<td>{$store.apply_time}</td>
 						</tr>
 
-						{if $store.identity_type eq 1}
+						{if $store.validate_type eq 1}
 						<tr>
-							<td><div align="right"><strong>{lang key='store::store.identity_type_lable'}</strong></div></td>
-							<td>{if $store.identity_type eq 1}个人{else}企业{/if}</td>
-							<td><div align="right"><strong>{lang key='store::store.identity_number_lable'}</strong></div></td>
-							<td>{$store.identity_number}</td>
+							<td><div align="right"><strong>{lang key='store::store.validate_type'}</strong></div></td>
+							<td>{if $store.validate_type eq 1}{lang key='store::store.personal'}{else}{lang key='store::store.company'}{/if}</td>
+							<td><div align="right"><strong>{lang key='store::store.personal_name'}</strong></div></td>
+							<td>{$store.responsible_person}</td>
 						</tr>
 
 						<tr>
-							<td><div align="right"><strong>{t}个人名称：{/t}</strong></div></td>
-							<td colspan="3">{$store.responsible_person}</td>
+							<td ><div align="right"><strong>{lang key='store::store.identity_type_lable'}</strong></div></td>
+							{if $store.identity_type eq 1}
+							<td>{lang key='store::store.people_id'}</td>
+							{elseif $store.identity_type eq 2}
+							<td>{lang key='store::store.passport'}</td>
+							{elseif $store.identity_type eq 3}
+							<td>{lang key='store::store.hong_kong_and_macao_pass'}</td>
+							{else}
+							<td></td>
+							{/if}
+							<td><div align="right"><strong>{lang key='store::store.identity_number_lable'}</strong></div></td>
+							<td>{$store.identity_number}</td>
 						</tr>
-						{elseif $store.identity_type eq 2}
+						{elseif $store.validate_type eq 2}
 						<tr>
-							<td><div align="right"><strong>{lang key='store::store.identity_type_lable'}</strong></div></td>
-							<td>{if $store.identity_type eq 1}个人{else}企业{/if}</td>
+							<td><div align="right"><strong>{lang key='store::store.validate_type'}</strong></div></td>
+							<td>{if $store.validate_type eq 1}{lang key='store::store.personal'}{else}{lang key='store::store.company'}{/if}</td>
 							<td><div align="right"><strong>{lang key='store::store.person_lable'}</strong></div></td>
 							<td>{$store.responsible_person}</td>
 						</tr>
 
 						<tr>
 							<td><div align="right"><strong>{lang key='store::store.business_licence_lable'}</strong></div></td>
-							<td>{$store.business_licence}</td>
-							<td><div align="right"><strong>{lang key='store::store.identity_number_lable'}</strong></div></td>
-							<td>{$store.identity_number}</td>
+							<td >{$store.business_licence}</td>
+							<td><div align="right"><strong>{lang key='store::store.companyname_lable'}</strong></div></td>
+							<td>{$store.company_name}</td>
 						</tr>
 
 						<tr>
-							<td><div align="right"><strong>{lang key='store::store.companyname_lable'}</strong></div></td>
-							<td colspan="3">{$store.company_name}</td>
+							<td><div align="right"><strong>{lang key='store::store.identity_type_lable'}</strong></div></td>
+							{if $store.identity_type eq 1}
+							<td>{lang key='store::store.people_id'}</td>
+							{elseif $store.identity_type eq 2}
+							<td>{lang key='store::store.passport'}</td>
+							{elseif $store.identity_type eq 3}
+							<td>{lang key='store::store.hong_kong_and_macao_pass'}</td>
+							{else}
+							<td></td>
+							{/if}
+							<td><div align="right"><strong>{lang key='store::store.identity_number_lable'}</strong></div></td>
+							<td>{$store.identity_number}</td>
 						</tr>
 						{/if}
 						<tr>
@@ -126,9 +146,9 @@
 
 		<form class="form-horizontal" id="form-privilege" name="theForm" action="{$form_action}" method="post" enctype="multipart/form-data" >
 			<fieldset>
-				{if $store.identity_type eq 1}
-				<input type="hidden"  name="identity_type" value="{$store.identity_type}" />
-				{elseif $store.identity_type eq 2}
+				{if $store.validate_type eq 1}
+				<input type="hidden"  name="identity_type" value="{$store.validate_type}" />
+				{elseif $store.validate_type eq 2}
 				<div class="control-group formSep">
 					<label class="control-label">{lang key='store::store.business_licence_pic_lable'}</label>
 					<div class="controls">

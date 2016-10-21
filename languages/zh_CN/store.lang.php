@@ -88,6 +88,7 @@ return array(
 	'open'	 	=>	'开启',
 	'close'	 	=>	'关闭',
 	'personal'	=>	'个人',
+	'personal_name'	=>	'个人名称：',
 	'company'	=>	'企业',
 	'no_upload' =>  '还未上传',
 	'apply_time'=>	'申请时间',	

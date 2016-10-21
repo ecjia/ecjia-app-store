@@ -16,6 +16,17 @@
         	app.store_edit.get_longitude();
     		var $form = $("form[name='theForm']");
 			var option = {
+				rules: {
+					identity_type: {
+						required: true,
+						min: 1
+					},
+				},
+				messages: {
+					identity_type: {
+						min: ''
+					},
+				},
 					submitHandler : function() {
 						$form.ajaxSubmit({
 							dataType : "json",
