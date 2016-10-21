@@ -62,6 +62,7 @@
 			</tr>
 			</thead>
 			<tbody>
+			{if $staff_list}
 			<!-- {foreach from=$staff_list item=list} -->
 			<tr>
 				<td>{$list.user_ident}</td>
@@ -72,6 +73,9 @@
 				<td>{$list.introduction}</td>
 			</tr>
 			<!-- {/foreach} -->
+			{else}
+			<td class="no-records" colspan="10">{t}没有找到任何记录{/t}</td>
+			{/if}
 			</tbody>
 		</table>
 		<!-- {$store_list.page} -->
