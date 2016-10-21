@@ -28,7 +28,7 @@
 		<div class="control-group formSep">
 			<label class="control-label">{t}后台名称：{/t}</label>
 			<div class="controls ">
-				<input name="merchante_admin_cpname" id="merchante_admin_cpname" type="text" value="{$config_cpname}"/>
+				<input name="merchant_admin_cpname" id="merchant_admin_cpname" type="text" value="{$config_cpname}"/>
 			</div>
 		</div>
 
@@ -42,9 +42,78 @@
 					<span class="btn btn-file">
 					<span class="fileupload-new">{t}浏览{/t}</span>
 					<span class="fileupload-exists">{t}修改{/t}</span>
-					<input type="file" name="merchante_admin_login_logo"/>
+					<input type="file" name="merchant_admin_login_logo"/>
 					</span>
-					<a class="btn fileupload-exists" data-toggle="removefile" data-msg="{t}您确定要删除此文件吗？{/t}" data-href="{RC_Uri::url('store/admin_config/del')}" {if $config_logo}data-removefile="true"{/if}>{t}删除{/t}</a>
+					<a class="btn fileupload-exists" data-toggle="removefile" data-msg="{t}您确定要删除该图片吗？{/t}" data-href="{RC_Uri::url('store/admin_config/del')}&type=logo" {if $config_logo}data-removefile="true"{/if}>{t}删除{/t}</a>
+				</div>
+			</div>
+		</div>
+		
+		<div class="control-group formSep">
+			<label class="control-label">{t}新浪微博：{/t}</label>
+			<div class="controls ">
+				<input name="merchant_admin_weibo" type="text" value="{$config_weibo}"/>
+			</div>
+		</div>
+		
+		<div class="control-group formSep">
+			<label class="control-label">{t}QQ：{/t}</label>
+			<div class="controls ">
+				<input name="merchant_admin_qq" type="text" value="{$config_qq}"/>
+			</div>
+		</div>
+		
+		<div class="control-group formSep">
+			<label class="control-label">{t}微信：{/t}</label>
+			<div class="controls ">
+				<input name="merchant_admin_weixin" type="text" value="{$config_weixin}"/>
+			</div>
+		</div>
+		
+		<div class="control-group formSep">
+			<label class="control-label">{t}Skype：{/t}</label>
+			<div class="controls ">
+				<input name="merchant_admin_skype" type="text" value="{$config_skype}"/>
+			</div>
+		</div>
+		
+		<div class="control-group formSep">
+			<label class="control-label">{t}Html5 App：{/t}</label>
+			<div class="controls ">
+				<input name="merchant_admin_html5" type="text" value="{$config_html5}"/>
+			</div>
+		</div>
+		
+		<div class="control-group formSep">
+			<label class="control-label">{t}iPhone App：{/t}</label>
+			<div class="controls">
+				<div class="fileupload {if $config_iphone}fileupload-exists{else}fileupload-new{/if}" data-provides="fileupload">
+					<div class="fileupload-preview thumbnail fileupload-exists" style="width: 50px; height: 50px; line-height: 50px;">
+						<img src="{$config_iphone_logo}" alt="{t}预览图片{/t}" />
+					</div>
+					<span class="btn btn-file">
+					<span class="fileupload-new">{t}浏览{/t}</span>
+					<span class="fileupload-exists">{t}修改{/t}</span>
+					<input type="file" name="merchant_admin_iphone"/>
+					</span>
+					<a class="btn fileupload-exists" data-toggle="removefile" data-msg="{t}您确定要删除该图片吗？{/t}" data-href="{RC_Uri::url('store/admin_config/del')}&type=iphone" {if $config_iphone}data-removefile="true"{/if}>{t}删除{/t}</a>
+				</div>
+			</div>
+		</div>
+		
+		<div class="control-group formSep">
+			<label class="control-label">{t}Android App：{/t}</label>
+			<div class="controls">
+				<div class="fileupload {if $config_android}fileupload-exists{else}fileupload-new{/if}" data-provides="fileupload">
+					<div class="fileupload-preview thumbnail fileupload-exists" style="width: 50px; height: 50px; line-height: 50px;">
+						<img src="{$config_android_logo}" alt="{t}预览图片{/t}" />
+					</div>
+					<span class="btn btn-file">
+					<span class="fileupload-new">{t}浏览{/t}</span>
+					<span class="fileupload-exists">{t}修改{/t}</span>
+					<input type="file" name="merchant_admin_android"/>
+					</span>
+					<a class="btn fileupload-exists" data-toggle="removefile" data-msg="{t}您确定要删除该图片吗？{/t}" data-href="{RC_Uri::url('store/admin_config/del')}&type=android" {if $config_android}data-removefile="true"{/if}>{t}删除{/t}</a>
 				</div>
 			</div>
 		</div>
@@ -57,5 +126,4 @@
 
 	</fieldset>
 </form>
-	        
 <!-- {/block} -->
