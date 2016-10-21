@@ -53,12 +53,37 @@ class list_module extends api_front implements api_interface {
 		);
 		
 		$result = RC_Api::api('goods', 'goods_list', $options);
-		$data['list'] = $result['list'];
-		$data['pager'] = array(
-				"total" => $result['page']->total_records,
-				"count" => $result['page']->total_records,
-				"more" => $result['page']->total_pages <= $page ? 0 : 1,
-		);
+		if ($result) {
+		    foreach ($result['list'] as $val) {
+		        /* 判断是否有促销价格*/
+		        $price = ($val['unformatted_shop_price'] > $val['unformatted_promote_price'] && $val['unformatted_promote_price'] > 0) ? $val['unformatted_promote_price'] : $val['unformatted_shop_price'];
+		        $activity_type = ($val['unformatted_shop_price'] > $val['unformatted_promote_price'] && $val['unformatted_promote_price'] > 0) ? 'PROMOTE_GOODS' : 'GENERAL_GOODS';
+		        /* 计算节约价格*/
+		        $saving_price = ($val['unformatted_shop_price'] > $val['unformatted_promote_price'] && $val['unformatted_promote_price'] > 0) ? $val['unformatted_shop_price'] - $val['unformatted_promote_price'] : (($val['unformatted_market_price'] > 0 && $val['unformatted_market_price'] > $val['unformatted_shop_price']) ? $val['unformatted_market_price'] - $val['unformatted_shop_price'] : 0);
+		        
+		        $data['list'][] = array(
+                    'id' => $val['goods_id'],
+                    'name' => $val['name'],
+                    'market_price' => $val['market_price'],
+                    'shop_price' => $val['shop_price'],
+                    'promote_price' => $val['promote_price'],
+                    'img' => array(
+                        'thumb' => $val['goods_thumb'],
+                        'url' => $val['original_img'],
+                        'small' => $val['goods_img']
+                    ),
+                    'activity_type' => $activity_type,
+                    'object_id' => 0,
+                    'saving_price' => $saving_price,
+                    'formatted_saving_price' => $saving_price > 0 ? '已省' . $saving_price . '元' : ''
+                );
+		    }
+		    $data['pager'] = array(
+		        'total' => $result['page']->total_records,
+		        'count' => $result['page']->total_records,
+		        'more' => $result['page']->total_pages <= $page ? 0 : 1,
+		    );
+		}
 		
 		//更新店铺搜索关键字
 		if (!empty($keyword) && !empty($store_id)) {
