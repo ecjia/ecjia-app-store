@@ -24,7 +24,7 @@
 		<div class="tabbable tabs-left">
 		
 			<ul class="nav nav-tabs tab_merchants_nav">
-				<li><a href='{RC_Uri::url("store/admin/preview","store_id={$smarty.get.store_id}")}'  class="pjax" >基本信息</a></li>
+				<li><a href='{RC_Uri::url("store/admin/preview","store_id={$smarty.get.store_id}")}' class="pjax" >基本信息</a></li>
 				<li><a href='{RC_Uri::url("store/admin_commission/edit","store_id={$smarty.get.store_id}")}' class="pjax" >设置佣金</a></li>
 				<li><a href='{RC_Uri::url("commission/admin/init","store_id={$smarty.get.store_id}")}' class="pjax" >结算账单</a></li>
 				<li class="active"><a href='{RC_Uri::url("store/admin/view_staff","store_id={$smarty.get.store_id}")}' class="pjax" >查看员工</a></li>

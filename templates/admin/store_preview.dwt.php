@@ -28,6 +28,12 @@
 				</ul>
 				<div class="tab-content tab_merchants">
 					<div class="tab-pane active" id="tab1">
+					<div class="control-group">
+					{if $store.status eq 1}<a class="data-pjax btn f_r" href='{RC_Uri::url("store/admin/status","&status=1&store_id={$smarty.get.store_id}")}'><i class="fontello-icon-lock"></i>锁定</a>{/if}
+					{if $store.status eq 2}<a class="data-pjax btn f_r" href='{RC_Uri::url("store/admin/status","&status=2&store_id={$smarty.get.store_id}")}'><i class="fontello-icon-lock-open"></i>解锁</a>{/if}
+					<a class="data-pjax btn f_r m_r10" href='{RC_Uri::url("store/admin/edit","store_id={$smarty.get.store_id}")}'><i class="fontello-icon-edit"></i>编辑</a>
+					
+					</div>
 					<form class="form-horizontal" id="form-privilege" name="theForm" action="{$form_action}" method="post" enctype="multipart/form-data" >
 						<div class="foldable-list move-mod-group">
             			<div class="accordion-group">

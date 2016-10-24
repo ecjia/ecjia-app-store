@@ -122,7 +122,7 @@ class admin_commission extends ecjia_admin {
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('入驻商'),RC_Uri::url('store/admin/init')));
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here( __('编辑商家佣金')));
 		$this->assign('ur_here', __('编辑商家佣金'));
-		$this->assign('action_link', array('href' =>RC_Uri::url('store/admin/init'), 'text' => __('入驻商')));
+		$this->assign('action_link', array('href' =>RC_Uri::url('store/admin/init'), 'text' => __('入驻商列表')));
 		$this->assign('form_action', RC_Uri::url('store/admin_commission/update'));
 		
 		$store_id = $_GET['store_id'];

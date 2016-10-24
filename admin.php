@@ -275,7 +275,7 @@ class admin extends ecjia_admin {
 
 		RC_DB::table('store_franchisee')->where('store_id', $store_id)->update(array('status' => $status_new));
 
-		$this->showmessage('操作成功！', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin/init')));
+		$this->showmessage('操作成功！', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin/preview', array('store_id' => $store_id))));
 	}
 
 	/**
