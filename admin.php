@@ -46,6 +46,9 @@ class admin extends ecjia_admin {
 	    $this->assign('ur_here', RC_Lang::get('store::store.store_list'));
 
 	    $store_list = $this->store_list();
+	    $cat_list = $this->get_cat_select_list();
+	    
+	    $this->assign('cat_list', $cat_list);
 	    $this->assign('store_list', $store_list);
 	    $this->assign('filter', $store_list['filter']);
 
@@ -187,7 +190,7 @@ class admin extends ecjia_admin {
 	public function preview() {
 		$this->admin_priv('store_affiliate_manage', ecjia::MSGTYPE_JSON);
 
-		$this->assign('ur_here',RC_Lang::get('store::store.view'));
+		
 		$this->assign('action_link',array('href' => RC_Uri::url('store/admin/init'),'text' => RC_Lang::get('store::store.store_list')));
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('store::store.view')));
 
@@ -202,6 +205,7 @@ class admin extends ecjia_admin {
 		$store['city'] = RC_DB::table('region')->where('region_id', $store['city'])
 												->select('region_name')
 												->pluck();
+		$this->assign('ur_here', $store['merchants_name']/*  .'-'. RC_Lang::get('store::store.view') */);
 		$store['cat_name'] = RC_DB::table('store_category')->where('cat_id', $store['cat_id'])->select('cat_name')->pluck();
 
 		$this->assign('store', $store);
@@ -302,9 +306,17 @@ class admin extends ecjia_admin {
 
 		$filter['keywords'] = empty($_GET['keywords']) ? '' : trim($_GET['keywords']);
 		$filter['type'] = empty($_GET['type']) ? '' : trim($_GET['type']);
+		$filter['cat'] = empty($_GET['cat']) ? null : trim($_GET['cat']);
 
 		if ($filter['keywords']) {
 		    $db_store_franchisee->where('merchants_name', 'like', '%'.mysql_like_quote($filter['keywords']).'%');
+		}
+		if ($filter['cat']) {
+		    if ($filter['cat'] == -1) {
+		        $db_store_franchisee->whereRaw('sf.cat_id=0');
+		    } else {
+		        $db_store_franchisee->whereRaw('sf.cat_id='.$filter['cat']);
+		    }
 		}
 
 		$filter_type = $db_store_franchisee
@@ -321,13 +333,13 @@ class admin extends ecjia_admin {
 		}
 
 		$count = $db_store_franchisee->count();
-		$page = new ecjia_page($count, 10, 5);
+		$page = new ecjia_page($count, 20, 5);
 
 		$data = $db_store_franchisee
 		->leftJoin('store_category as sc', RC_DB::raw('sf.cat_id'), '=', RC_DB::raw('sc.cat_id'))
 		->selectRaw('sf.store_id,sf.merchants_name,sf.contact_mobile,sf.responsible_person,sf.confirm_time,sf.company_name,sf.sort_order,sc.cat_name,sf.status')
 		->orderby('store_id', 'asc')
-		->take(10)
+		->take($page->page_size)
 		->skip($page->start_id-1)
 		->get();
 
