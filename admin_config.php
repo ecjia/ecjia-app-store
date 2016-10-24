@@ -35,12 +35,14 @@ class admin_config extends ecjia_admin {
     	$this->assign('config_cpname', ecjia::config('merchant_admin_cpname'));
     	$this->assign('config_weibo', ecjia::config('merchant_admin_weibo'));
     	$this->assign('config_qq', ecjia::config('merchant_admin_qq'));
-    	$this->assign('config_weixin', ecjia::config('merchant_admin_weixin'));
     	$this->assign('config_skype', ecjia::config('merchant_admin_skype'));
     	$this->assign('config_html5', ecjia::config('merchant_admin_html5'));
     	
     	$this->assign('config_logoimg', RC_Upload::upload_url(ecjia::config('merchant_admin_login_logo')));
     	$this->assign('config_logo', ecjia::config('merchant_admin_login_logo'));
+    	
+    	$this->assign('config_weixin_logo', RC_Upload::upload_url(ecjia::config('merchant_admin_weixin')));
+    	$this->assign('config_weixin', ecjia::config('merchant_admin_weixin'));
     	
     	$this->assign('config_iphone_logo', RC_Upload::upload_url(ecjia::config('merchant_admin_iphone')));
     	$this->assign('config_iphone', ecjia::config('merchant_admin_iphone'));
@@ -61,41 +63,27 @@ class admin_config extends ecjia_admin {
 		$merchant_admin_cpname 	= !empty($_POST['merchant_admin_cpname']) 	? trim($_POST['merchant_admin_cpname']) : '';
 		$merchant_admin_weibo 	= !empty($_POST['merchant_admin_weibo']) 	? trim($_POST['merchant_admin_weibo']) 	: '';
 		$merchant_admin_qq 		= !empty($_POST['merchant_admin_qq']) 		? trim($_POST['merchant_admin_qq']) 	: '';
-		$merchant_admin_weixin 	= !empty($_POST['merchant_admin_weixin']) 	? trim($_POST['merchant_admin_weixin'])	: '';
 		$merchant_admin_skype 	= !empty($_POST['merchant_admin_skype']) 	? trim($_POST['merchant_admin_skype']) 	: '';
 		$merchant_admin_html5 	= !empty($_POST['merchant_admin_html5']) 	? trim($_POST['merchant_admin_html5']) 	: '';
 		
 		//后台名称
-		if (!empty($merchant_admin_cpname)) {
-			ecjia_config::instance()->write_config('merchant_admin_cpname', $merchant_admin_cpname);
-		}
+		ecjia_config::instance()->write_config('merchant_admin_cpname', $merchant_admin_cpname);
 		
 		//微博
-		if (!empty($merchant_admin_weibo)) {
-			ecjia_config::instance()->write_config('merchant_admin_weibo', $merchant_admin_weibo);
-		}
+		ecjia_config::instance()->write_config('merchant_admin_weibo', $merchant_admin_weibo);
 		
 		//QQ
-		if (!empty($merchant_admin_qq)) {
-			ecjia_config::instance()->write_config('merchant_admin_qq', $merchant_admin_qq);
-		}
-		
-		//微信
-		if (!empty($merchant_admin_weixin)) {
-			ecjia_config::instance()->write_config('merchant_admin_weixin', $merchant_admin_weixin);
-		}
+		ecjia_config::instance()->write_config('merchant_admin_qq', $merchant_admin_qq);
 		
 		//Skype
-		if (!empty($merchant_admin_skype)) {
-			ecjia_config::instance()->write_config('merchant_admin_skype', $merchant_admin_skype);
-		}
+		ecjia_config::instance()->write_config('merchant_admin_skype', $merchant_admin_skype);
 		
 		//Html5 App
-		if (!empty($merchant_admin_html5)) {
-			ecjia_config::instance()->write_config('merchant_admin_html5', $merchant_admin_html5);
-		}
+		ecjia_config::instance()->write_config('merchant_admin_html5', $merchant_admin_html5);
 		
 		$upload = RC_Upload::uploader('image', array('save_path' => 'data/assets', 'save_name' => 'merchant_admin_logo', 'replace' => true, 'auto_sub_dirs' => false));
+		
+		//登录logo
 		$image_info = $upload->upload($_FILES['merchant_admin_login_logo']);		
 		/* 判断是否上传成功 */
 		if (!empty($image_info)) {
@@ -107,6 +95,19 @@ class admin_config extends ecjia_admin {
 			ecjia_config::instance()->write_config('merchant_admin_login_logo', $logo);
 		}
 		
+		//微信二维码
+		$weixin_info = $upload->upload($_FILES['merchant_admin_weixin']);
+		/* 判断是否上传成功 */
+		if (!empty($weixin_info)) {
+			$old_weixin_logo = ecjia::config('merchant_admin_weixin');
+			if (!empty($old_weixin_logo)) {
+				$upload->remove($old_weixin_logo);
+			}
+			$weixin_logo = $upload->get_position($weixin_info);
+			ecjia_config::instance()->write_config('merchant_admin_weixin', $weixin_logo);
+		}
+		
+		//iPhone
 		$iphone_info = $upload->upload($_FILES['merchant_admin_iphone']);
 		/* 判断是否上传成功 */
 		if (!empty($iphone_info)) {
@@ -118,6 +119,7 @@ class admin_config extends ecjia_admin {
 			ecjia_config::instance()->write_config('merchant_admin_iphone', $iphone_logo);
 		}
 		
+		//Android
 		$android_info = $upload->upload($_FILES['merchant_admin_android']);
 		/* 判断是否上传成功 */
 		if (!empty($android_info)) {
@@ -145,6 +147,9 @@ class admin_config extends ecjia_admin {
 			if ($type == 'logo') {
 				$disk->delete(RC_Upload::upload_path() . ecjia::config('merchant_admin_login_logo'));
 				ecjia_config::instance()->write_config('merchant_admin_login_logo', '');
+			} elseif ($type == 'weixin') {
+				$disk->delete(RC_Upload::upload_path() . ecjia::config('merchant_admin_weixin'));
+				ecjia_config::instance()->write_config('merchant_admin_weixin', '');
 			} elseif ($type == 'iphone') {
 				$disk->delete(RC_Upload::upload_path() . ecjia::config('merchant_admin_iphone'));
 				ecjia_config::instance()->write_config('merchant_admin_iphone', '');
@@ -153,7 +158,7 @@ class admin_config extends ecjia_admin {
 				ecjia_config::instance()->write_config('merchant_admin_android', '');
 			}
 		}
-		$this->showmessage(__('删除图片成功！'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
+		$this->showmessage(__('删除图片成功！'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin_config/init')));
 	}
 }
 

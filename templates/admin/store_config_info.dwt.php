@@ -65,8 +65,19 @@
 		
 		<div class="control-group formSep">
 			<label class="control-label">{t}微信：{/t}</label>
-			<div class="controls ">
-				<input name="merchant_admin_weixin" type="text" value="{$config_weixin}"/>
+			<div class="controls">
+				<div class="fileupload {if $config_weixin}fileupload-exists{else}fileupload-new{/if}" data-provides="fileupload">
+					<div class="fileupload-preview thumbnail fileupload-exists" style="width: 50px; height: 50px; line-height: 50px;">
+						<img src="{$config_weixin_logo}" alt="{t}预览图片{/t}" />
+					</div>
+					<span class="btn btn-file">
+					<span class="fileupload-new">{t}浏览{/t}</span>
+					<span class="fileupload-exists">{t}修改{/t}</span>
+					<input type="file" name="merchant_admin_weixin"/>
+					</span>
+					<a class="btn fileupload-exists" data-toggle="removefile" data-msg="{t}您确定要删除该图片吗？{/t}" data-href="{RC_Uri::url('store/admin_config/del')}&type=weixin" {if $config_iphone}data-removefile="true"{/if}>{t}删除{/t}</a>
+					<span class="help-block">请上传微信公众号二维码</span>
+				</div>
 			</div>
 		</div>
 		
@@ -97,6 +108,7 @@
 					<input type="file" name="merchant_admin_iphone"/>
 					</span>
 					<a class="btn fileupload-exists" data-toggle="removefile" data-msg="{t}您确定要删除该图片吗？{/t}" data-href="{RC_Uri::url('store/admin_config/del')}&type=iphone" {if $config_iphone}data-removefile="true"{/if}>{t}删除{/t}</a>
+					<span class="help-block">请上传iPhone客户端二维码</span>
 				</div>
 			</div>
 		</div>
@@ -114,6 +126,7 @@
 					<input type="file" name="merchant_admin_android"/>
 					</span>
 					<a class="btn fileupload-exists" data-toggle="removefile" data-msg="{t}您确定要删除该图片吗？{/t}" data-href="{RC_Uri::url('store/admin_config/del')}&type=android" {if $config_android}data-removefile="true"{/if}>{t}删除{/t}</a>
+					<span class="help-block">请上传Android客户端二维码</span>
 				</div>
 			</div>
 		</div>
