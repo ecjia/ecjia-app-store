@@ -28,14 +28,14 @@
 						<input type="hidden"  name="validate_type" value="{$store.validate_type}" />
 					</div>
 				</div>
-				
+
 				<div class="control-group formSep">
 					<label class="control-label">{lang key='store::store.personal_name'}</label>
 					<div class="controls">
 						<input class="span6" name="responsible_person" type="text" value="{$store.responsible_person}" />
 					</div>
 				</div>
-				
+
 				<div class="control-group formSep" >
 					<label class="control-label">{lang key='store::store.identity_type_lable'}</label>
 					<div class="controls">
@@ -45,7 +45,7 @@
 						</select>
 					</div>
 				</div>
-				
+
 				<div class="control-group formSep">
 					<label class="control-label">{lang key='store::store.identity_number_lable'}</label>
 					<div class="controls">
@@ -60,21 +60,21 @@
 						<input type="hidden"  name="validate_type" value="{$store.validate_type}" />
 					</div>
 				</div>
-				
+
 				<div class="control-group formSep">
 					<label class="control-label">{lang key='store::store.companyname_lable'}</label>
 					<div class="controls">
 						<input class="span6" name="company_name" type="text" value="{$store.company_name}" />
 					</div>
 				</div>
-				
+
 				<div class="control-group formSep">
 					<label class="control-label">{lang key='store::store.person_lable'}</label>
 					<div class="controls">
 						<input class="span6" name="responsible_person" type="text" value="{$store.responsible_person}" />
 					</div>
 				</div>
-				
+
 				<div class="control-group formSep" >
 					<label class="control-label">{lang key='store::store.identity_type_lable'}</label>
 					<div class="controls">
@@ -84,14 +84,14 @@
 						</select>
 					</div>
 				</div>
-				
+
 				<div class="control-group formSep">
 					<label class="control-label">{lang key='store::store.identity_number_lable'}</label>
 					<div class="controls">
 						<input class="span6" name="identity_number" type="text" value="{$store.identity_number}" />
 					</div>
 				</div>
-				
+
 				<div class="control-group formSep">
 					{if $store.business_licence_pic eq ''}
 						<label class="control-label">{lang key='store::store.business_licence_pic_lable'}</label>
@@ -128,7 +128,7 @@
 						</div>
 					{/if}
 				</div>
-				
+
 				<div class="control-group formSep">
 					<label class="control-label">{lang key='store::store.business_licence_lable'}</label>
 					<div class="controls">
@@ -136,7 +136,7 @@
 					</div>
 				</div>
 				{/if}
-				
+
 				<div class="control-group formSep">
 					{if $store.identity_pic_front eq ''}
 						<label class="control-label">{lang key='store::store.identity_pic_front_lable'}</label>
@@ -173,7 +173,7 @@
 						</div>
 					{/if}
 				</div>
-				
+
 				<div class="control-group formSep">
 					{if $store.identity_pic_back eq ''}
 						<label class="control-label">{lang key='store::store.identity_pic_back_lable'}</label>
@@ -246,64 +246,64 @@
 						</div>
 					{/if}
 				</div>
-				
+
 				<div class="control-group formSep">
 					<label class="control-label">{lang key='store::store.bank_name_lable'}</label>
 					<div class="controls">
 						<input class="span6" name="bank_name" type="text" value="{$store.bank_name}" />
 					</div>
 				</div>
-				
+
 				<div class="control-group formSep">
 					<label class="control-label">{lang key='store::store.bank_branch_name_lable'}</label>
 					<div class="controls">
 						<input class="span6" name="bank_branch_name" type="text" value="{$store.bank_branch_name}" />
 					</div>
 				</div>
-					
+
 				<div class="control-group formSep">
 					<label class="control-label">{lang key='store::store.bank_account_number_lable'}</label>
 					<div class="controls">
 						<input class="span6" name="bank_account_number" type="text" value="{$store.bank_account_number}" />
 					</div>
-				</div>	
-				
+				</div>
+
 				<div class="control-group formSep">
 					<label class="control-label">{lang key='store::store.bank_account_name_label'}</label>
 					<div class="controls">
 						<input class="span6" name="bank_account_name" type="text" value="{$store.bank_account_name}" />
 					</div>
 				</div>
-				
+
 				<div class="control-group formSep">
 					<label class="control-label">{lang key='store::store.bank_address_lable'}</label>
 					<div class="controls">
 						<input class="span6" name="bank_address" type="text" value="{$store.bank_address}" />
 					</div>
 				</div>
-				
-				
+
+
 				<div class="control-group formSep">
 					<label class="control-label">{lang key='store::store.email_lable'}</label>
 					<div class="controls">
 						<input class="span6" name="email" type="text" value="{$store.email}" />
 					</div>
 				</div>
-				
+
 				<div class="control-group formSep">
 					<label class="control-label">{lang key='store::store.contact_lable'}</label>
 					<div class="controls">
 						<input class="span6" name="contact_mobile" type="text" value="{$store.contact_mobile}" />
 					</div>
 				</div>
-				
+
 				<div class="control-group formSep">
 					<label class="control-label">{lang key='store::store.address_lable'}</label>
 					<div class="controls">
 						<input class="span6" name="address" type="text" value="{$store.address}" />
 					</div>
 				</div>
-			
+
 				<div class="control-group formSep" >
 					<label class="control-label">{lang key='store::store.store_cat_lable'}</label>
 					<div class="controls">
@@ -313,21 +313,21 @@
 						</select>
 					</div>
 				</div>
-				
+
 				<div class="control-group formSep">
 					<label class="control-label">{lang key='store::store.store_title_lable'}</label>
 					<div class="controls">
 						<input class="span6" name="merchants_name" type="text" value="{$store.merchants_name}" />
 					</div>
 				</div>
-				
+
 				<div class="control-group formSep">
 					<label class="control-label">{lang key='store::store.store_keywords_lable'}</label>
 					<div class="controls">
 						<input class="span6" name="shop_keyword" type="text" value="{$store.shop_keyword}" />
 					</div>
 				</div>
-				
+
 				<div class="control-group formSep">
 					<label class="control-label">{lang key='store::store.label_province'}</label>
 					<div class="controls">
@@ -337,41 +337,53 @@
 							<option value="{$region.region_id}" {if $region.region_id eq $store.province}selected{/if}>{$region.region_name}</option>
 							<!-- {/foreach} -->
 						</select>
-					</div>						
+					</div>
 				</div>
 				<div class="control-group formSep">
 					<label class="control-label">{lang key='store::store.label_city'}</label>
 					<div class="controls">
-						<select class="region-summary-cities" name="city" id="selCities" >
+						<select class="region-summary-cities" name="city" id="selCities" data-toggle="regionSummary" data-type="3" data-target="region-summary-district" >
 							<option value='0'>{lang key='system::system.select_please'}</option>
 							<!-- {foreach from=$city item=region} -->
 							<option value="{$region.region_id}" {if $region.region_id eq $store.city}selected{/if}>{$region.region_name}</option>
 							<!-- {/foreach} -->
 						</select>
-					</div>	
+					</div>
 				</div>
- 
+
+				<div class="control-group formSep">
+					<label class="control-label">{lang key='store::store.label_district'}</label>
+					<div class="controls">
+						<select class="region-summary-district" name="district" id="seldistrict" >
+							<option value='0'>{lang key='system::system.select_please'}</option>
+							<!-- {foreach from=$district item=region} -->
+							<option value="{$region.region_id}" {if $region.region_id eq $store.district}selected{/if}>{$region.region_name}</option>
+							<!-- {/foreach} -->
+						</select>
+					</div>
+				</div>
+
 				<div class="control-group formSep">
 					<label class="control-label">{lang key='store::store.longitude_lable'}</label>
 				 	<div class="controls l_h30">
 						{$store.longitude}
 					</div>
 				</div>
-				
+
 				<div class="control-group formSep">
 					<label class="control-label">{lang key='store::store.latitude_lable'}</label>
 				 	<div class="controls l_h30">
 						{$store.latitude}
 					</div>
 				</div>
-				
+
 				<div class="control-group formSep">
 					<label class="control-label">{lang key='store::store.apply_time_lable'}</label>
 				 	<div class="controls l_h30">
 						{$store.apply_time}
 					</div>
 				</div>
-				
+
 				<div class="control-group">
 					<div class="controls">
 						<input type="hidden"  name="id" value="{$store.id}" />
