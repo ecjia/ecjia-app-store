@@ -16,7 +16,6 @@
 	</h3>
 </div>
 
-
 <div class="row-fluid">
 	<div class="span12">
 		<div class="tabbable tabs-left">
@@ -32,6 +31,42 @@
 				<div class="tab-pane active " style="min-height:300px;">
 				<form class="form-horizontal" id="form-privilege" name="theForm" action="{$form_action}" method="post" enctype="multipart/form-data" >
         			<fieldset>
+        			
+        			    <div class="control-group formSep">
+        					<label class="control-label">{lang key='store::store.store_title_lable'}</label>
+        					<div class="controls">
+        						<input class="span6" name="merchants_name" type="text" value="{$store.merchants_name}" />
+        					</div>
+        				</div>
+        			    <div class="control-group formSep" >
+        					<label class="control-label">{lang key='store::store.store_cat_lable'}</label>
+        					<div class="controls">
+        						<select name="store_cat">
+        							<option value="0">{lang key='store::store.select_plz'}</option>
+        							<!-- {html_options options=$cat_list selected=$store.cat_id} -->
+        						</select>
+        					</div>
+        				</div>
+        				<div class="control-group formSep">
+        					<label class="control-label">{lang key='store::store.store_keywords_lable'}</label>
+        					<div class="controls">
+        						<input class="span6" name="shop_keyword" type="text" value="{$store.shop_keyword}" />
+        					</div>
+        				</div>
+        				
+        				<div class="control-group formSep">
+        					<label class="control-label">{lang key='store::store.contact_lable'}</label>
+        					<div class="controls">
+        						<input class="span6" name="contact_mobile" type="text" value="{$store.contact_mobile}" />
+        					</div>
+        				</div>
+        				<div class="control-group formSep">
+        					<label class="control-label">{lang key='store::store.email_lable'}</label>
+        					<div class="controls">
+        						<input class="span6" name="email" type="text" value="{$store.email}" />
+        					</div>
+        				</div>
+        				
         				{if $store.validate_type eq 1}
         				<div class="control-group formSep" >
         					<label class="control-label">{lang key='store::store.validate_type'}</label>
@@ -42,7 +77,7 @@
         				</div>
         
         				<div class="control-group formSep">
-        					<label class="control-label">{lang key='store::store.personal_name'}</label>
+        					<label class="control-label">负责人：</label>
         					<div class="controls">
         						<input class="span6" name="responsible_person" type="text" value="{$store.responsible_person}" />
         					</div>
@@ -259,90 +294,40 @@
         						</div>
         					{/if}
         				</div>
-        
+        				<!-- 银行 -->
         				<div class="control-group formSep">
         					<label class="control-label">{lang key='store::store.bank_name_lable'}</label>
         					<div class="controls">
         						<input class="span6" name="bank_name" type="text" value="{$store.bank_name}" />
         					</div>
         				</div>
-        				
-        				<div class="control-group formSep">
-        					<label class="control-label">{lang key='store::store.bank_branch_name_lable'}</label>
-        					<div class="controls">
-        						<input class="span6" name="bank_branch_name" type="text" value="{$store.bank_branch_name}" />
-        					</div>
-        				</div>
-        					
         				<div class="control-group formSep">
         					<label class="control-label">{lang key='store::store.bank_account_number_lable'}</label>
         					<div class="controls">
         						<input class="span6" name="bank_account_number" type="text" value="{$store.bank_account_number}" />
         					</div>
         				</div>
-        
         				<div class="control-group formSep">
         					<label class="control-label">{lang key='store::store.bank_account_name_label'}</label>
         					<div class="controls">
         						<input class="span6" name="bank_account_name" type="text" value="{$store.bank_account_name}" />
         					</div>
         				</div>
-        
+                        <div class="control-group formSep">
+        					<label class="control-label">{lang key='store::store.bank_branch_name_lable'}</label>
+        					<div class="controls">
+        						<input class="span6" name="bank_branch_name" type="text" value="{$store.bank_branch_name}" />
+        					</div>
+        				</div>
         				<div class="control-group formSep">
         					<label class="control-label">{lang key='store::store.bank_address_lable'}</label>
         					<div class="controls">
         						<input class="span6" name="bank_address" type="text" value="{$store.bank_address}" />
         					</div>
         				</div>
-        				
-        				
+        				<!-- 地区 -->
         				<div class="control-group formSep">
-        					<label class="control-label">{lang key='store::store.email_lable'}</label>
-        					<div class="controls">
-        						<input class="span6" name="email" type="text" value="{$store.email}" />
-        					</div>
-        				</div>
-        				
-        				<div class="control-group formSep">
-        					<label class="control-label">{lang key='store::store.contact_lable'}</label>
-        					<div class="controls">
-        						<input class="span6" name="contact_mobile" type="text" value="{$store.contact_mobile}" />
-        					</div>
-        				</div>
-        				
-        				<div class="control-group formSep">
-        					<label class="control-label">{lang key='store::store.address_lable'}</label>
-        					<div class="controls">
-        						<input class="span6" name="address" type="text" value="{$store.address}" />
-        					</div>
-        				</div>
-        			
-        				<div class="control-group formSep" >
-        					<label class="control-label">{lang key='store::store.store_cat_lable'}</label>
-        					<div class="controls">
-        						<select name="store_cat">
-        							<option value="0">{lang key='store::store.select_plz'}</option>
-        							<!-- {html_options options=$cat_list selected=$store.cat_id} -->
-        						</select>
-        					</div>
-        				</div>
-        				
-        				<div class="control-group formSep">
-        					<label class="control-label">{lang key='store::store.store_title_lable'}</label>
-        					<div class="controls">
-        						<input class="span6" name="merchants_name" type="text" value="{$store.merchants_name}" />
-        					</div>
-        				</div>
-        				
-        				<div class="control-group formSep">
-        					<label class="control-label">{lang key='store::store.store_keywords_lable'}</label>
-        					<div class="controls">
-        						<input class="span6" name="shop_keyword" type="text" value="{$store.shop_keyword}" />
-        					</div>
-        				</div>
-        
-        				<div class="control-group formSep">
-        					<label class="control-label">{lang key='store::store.label_province'}</label>
+        					<label class="control-label">选择地区：</label>
         					<div class="controls">
         						<select class="region-summary-provinces" name="province" id="selProvinces" data-url="{url path='store/admin_preaudit/get_region'}" data-toggle="regionSummary" data-type="2" data-target="region-summary-cities" >
         							<option value='0'>{lang key='system::system.select_please'}</option>
@@ -350,12 +335,7 @@
         							<option value="{$region.region_id}" {if $region.region_id eq $store.province}selected{/if}>{$region.region_name}</option>
         							<!-- {/foreach} -->
         						</select>
-        					</div>
-        				</div>
-        				<div class="control-group formSep">
-        					<label class="control-label">{lang key='store::store.label_city'}</label>
-        					<div class="controls">
-        						<select class="region-summary-cities" name="city" id="selCities" >
+        						<select class="region-summary-cities m_l10" name="city" id="selCities" >
         							<option value='0'>{lang key='system::system.select_please'}</option>
         							<!-- {foreach from=$city item=region} -->
         							<option value="{$region.region_id}" {if $region.region_id eq $store.city}selected{/if}>{$region.region_name}</option>
@@ -363,32 +343,19 @@
         						</select>
         					</div>
         				</div>
-        
         				<div class="control-group formSep">
-        					<label class="control-label">{t}获取经纬度：{/t}</label>
+        					<label class="control-label">{lang key='store::store.address_lable'}</label>
         					<div class="controls">
-        						<input class="span6" name="detail_address" placeholder="填写店铺详细地址获取店铺经纬度" type="text" value="" />&nbsp;&nbsp;
-        						<input type="button" class="btn btn-gebo longitude" value="{t}点击获取{/t}" data-url='{url path="store/admin/get_longitude&store_id={$store.store_id}"}'  title="{lang key='system::system.edit'}"/>
+        						<input class="span6" name="address" type="text" value="{$store.address}" />
+        						<input type="button" class="btn btn-gebo longitude" value="{t}点击获取经纬度{/t}" data-url='{url path="store/admin/get_longitude&store_id={$store.store_id}"}'  title="{lang key='system::system.edit'}"/>
         					</div>
         				</div>
+        
         				
         				<div class="control-group formSep">
-        					<label class="control-label">{lang key='store::store.longitude_lable'}</label>
-        				 	<div class="controls l_h30 long">
-        						
-        					</div>
-        				</div>
-        				
-        				<div class="control-group formSep">
-        					<label class="control-label">{lang key='store::store.latitude_lable'}</label>
-        				 	<div class="controls l_h30 latd">
-        					</div>
-        				</div>
-        				
-        				<div class="control-group formSep">
-        					<label class="control-label">{t}geohash_code：{/t}</label>
-        				 	<div class="controls l_h30 geo">
-        					</div>
+        					<label class="control-label">经纬度：</label>
+        				 	<div class="l_h30 long f_l"></div>
+        					<div class="l_h30 latd f_l m_l10"></div>
         				</div>
         				
         				<div class="control-group formSep">

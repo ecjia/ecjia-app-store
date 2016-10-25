@@ -7,33 +7,54 @@
 <!-- {/block} -->
 
 <!-- {block name="main_content"} -->
+<style>
+.heading .btn { margin-top:-3px;}
+</style>
 <div>
-	<h3 class="heading">
-		<!-- {if $ur_here}{$ur_here}{/if} -->
-		<!-- {if $action_link} -->
-		<a class="data-pjax btn plus_or_reply" id="sticky_a" href="{$action_link.href}"><i class="fontello-icon-reply"></i>{$action_link.text}</a>
-		<!-- {/if} -->
-	</h3>
-</div>
-
+                	<h3 class="heading">
+                		<!-- {if $ur_here}{$ur_here}{/if} -->
+                		<!-- {if $action_link} -->
+                		<a class="data-pjax btn plus_or_reply" id="sticky_a" href="{$action_link.href}"><i class="fontello-icon-reply"></i>{$action_link.text}</a>
+                		<!-- {/if} -->
+                		{if $store.status eq 1}<a class="data-pjax btn f_r" href='{RC_Uri::url("store/admin/status","&status=1&store_id={$smarty.get.store_id}")}'><i class="fontello-icon-lock"></i>锁定</a>{/if}
+    					{if $store.status eq 2}<a class="data-pjax btn f_r" href='{RC_Uri::url("store/admin/status","&status=2&store_id={$smarty.get.store_id}")}'><i class="fontello-icon-lock-open"></i>解锁</a>{/if}
+    					<a class="data-pjax btn f_r" href='{RC_Uri::url("store/admin/edit","store_id={$smarty.get.store_id}")}'><i class="fontello-icon-edit"></i>编辑</a>
+                	</h3>
+                </div>
 <div class="row-fluid">
 	<form method="post" class="form-horizontal" action="{$form_action}" name="theForm" enctype="multipart/form-data">
 		<div class="span12">
 			<div class="tabbable tabs-left">
-				<ul class="nav nav-tabs tab_merchants_nav">
+				<!-- <ul class="nav nav-tabs tab_merchants_nav">
 					<li class="active"><a href="#tab1" data-toggle="tab">基本信息</a></li>
 					<li><a href='{RC_Uri::url("store/admin_commission/edit","store_id={$smarty.get.store_id}")}' class="pjax" >设置佣金</a></li>
 					<li><a href='{RC_Uri::url("commission/admin/init","store_id={$smarty.get.store_id}")}' class="pjax" >结算账单</a></li>
 					<li><a href='{RC_Uri::url("store/admin/view_staff","store_id={$smarty.get.store_id}")}' class="pjax" >查看员工</a></li>
-				</ul>
+				</ul> -->
+				
+				<div class="float_block" style="    float: left;
+    position: relative;
+    margin-left: 30px;top:0;width:120px">
+                	<!-- <h4>快速导航</h4> -->
+                	<ul class="unstyled" style="">
+                	    <li data-toggle="goarea" data-area="#" class="active">
+                			<i class="fontello-icon-doc-text"></i>基本信息
+                		</li>
+                		<li data-toggle="goarea" data-area="#">
+                			<a href='{RC_Uri::url("store/admin_commission/edit","store_id={$smarty.get.store_id}")}' class="data-pjax"><i class="fontello-icon-edit"></i>设置佣金</a>
+                		</li>
+                		<li data-toggle="goarea" data-area="#">
+                			<a href='{RC_Uri::url("commission/admin/init","store_id={$smarty.get.store_id}")}' class="data-pjax"><i class="fontello-icon-chat"></i>结算账单</a>
+                		</li>
+                		<li data-toggle="goarea" data-area="#">
+                			<a href='{RC_Uri::url("store/admin/view_staff","store_id={$smarty.get.store_id}")}' class="data-pjax"><i class="fontello-icon-cog-alt"></i>查看员工</a>
+                		</li>
+                	</ul>
+                </div>
+				
 				<div class="tab-content tab_merchants">
+				
 					<div class="tab-pane active" id="tab1">
-					<div class="control-group">
-					{if $store.status eq 1}<a class="data-pjax btn f_r" href='{RC_Uri::url("store/admin/status","&status=1&store_id={$smarty.get.store_id}")}'><i class="fontello-icon-lock"></i>锁定</a>{/if}
-					{if $store.status eq 2}<a class="data-pjax btn f_r" href='{RC_Uri::url("store/admin/status","&status=2&store_id={$smarty.get.store_id}")}'><i class="fontello-icon-lock-open"></i>解锁</a>{/if}
-					<a class="data-pjax btn f_r m_r10" href='{RC_Uri::url("store/admin/edit","store_id={$smarty.get.store_id}")}'><i class="fontello-icon-edit"></i>编辑</a>
-					
-					</div>
 					<form class="form-horizontal" id="form-privilege" name="theForm" action="{$form_action}" method="post" enctype="multipart/form-data" >
 						<div class="foldable-list move-mod-group">
             			<div class="accordion-group">
@@ -72,6 +93,10 @@
             						<tr>
             							<td><div align="right"><strong>{lang key='store::store.address_lable'}</strong></div></td>
             							<td colspan="3">{$store.address}{if $store.longitude && $store.latitude}&nbsp;&nbsp;<a href="http://api.map.baidu.com/marker?location={$store.latitude},{$store.longitude}&title={$store.merchants_name}&content={$store.merchants_name}&output=html" title="查看地图" target="_blank">[查看地图]</a>{/if}</td>
+            						</tr>
+            						<tr>
+            							<td><div align="right"><strong>{lang key='store::store.address_lable'}</strong></div></td>
+            							<td colspan="3">分成比例，锁定状态，认证状态，</td>
             						</tr>
             						</tbody>
             					</table>

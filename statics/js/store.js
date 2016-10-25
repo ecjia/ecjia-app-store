@@ -39,10 +39,11 @@
 			var options = $.extend(ecjia.admin.defaultOptions.validate, option);
 			$form.validate(options);
         },
+        
         get_longitude: function() {
         	$('.longitude').on('click', function(e) {
     			e.preventDefault();
-    			var address		    = $("input[name='detail_address']").val(); //详细地址
+    			var address		    = $("input[name='address']").val(); //详细地址
     			var url				= $(".longitude").attr('data-url'); //请求链接
     			if(address	    	== 'undefined')address ='';
     			if(url        		== 'undefined')url ='';
@@ -53,9 +54,9 @@
 					var longitude = data.content.longitude;
 					var latitude  = data.content.latitude;
 					var geohash   = data.content.geohash;
-					$('.long').append(longitude);
-					$('.latd').append(latitude);
-					$('.geo').append(geohash);
+					$('.long').text(longitude);
+					$('.latd').text(latitude);
+					//$('.geo').append(geohash);
 				}, "JSON");
     		});
         },

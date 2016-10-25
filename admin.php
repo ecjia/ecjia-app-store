@@ -100,19 +100,23 @@ class admin extends ecjia_admin {
 
 		$store_id = intval($_POST['store_id']);
 
-		$pic_url = RC_DB::table('store_franchisee')->where('store_id', $store_id)->first();
+		$store_info = RC_DB::table('store_franchisee')->where('store_id', $store_id)->first();
+		
+		if (!$store_info) {
+		    $this->showmessage('店铺信息不存在', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+		}
 
 		if (!empty($_FILES['one']['name'])) {
 			$upload = RC_Upload::uploader('image', array('save_path' => 'data/store', 'auto_sub_dirs' => false));
 			$info = $upload->upload($_FILES['one']);
 			if (!empty($info)) {
 				$business_licence_pic = $upload->get_position($info);
-				$upload->remove($pic_url['business_licence_pic']);
+				$upload->remove($store_info['business_licence_pic']);
 			} else {
 				$this->showmessage($upload->error(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			}
-		}else {
-			$business_licence_pic = $pic_url['business_licence_pic'];
+		} else {
+			$business_licence_pic = $store_info['business_licence_pic'];
 		}
 
 		if (!empty($_FILES['two']['name'])) {
@@ -120,12 +124,12 @@ class admin extends ecjia_admin {
 			$info = $upload->upload($_FILES['two']);
 			if (!empty($info)) {
 				$identity_pic_front = $upload->get_position($info);
-				$upload->remove($pic_url['identity_pic_front']);
+				$upload->remove($store_info['identity_pic_front']);
 			} else {
 				$this->showmessage($upload->error(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			}
 		}else {
-			$identity_pic_front = $pic_url['identity_pic_front'];
+			$identity_pic_front = $store_info['identity_pic_front'];
 		}
 
 		if (!empty($_FILES['three']['name'])) {
@@ -133,12 +137,12 @@ class admin extends ecjia_admin {
 			$info = $upload->upload($_FILES['three']);
 			if (!empty($info)) {
 				$identity_pic_back = $upload->get_position($info);
-				$upload->remove($pic_url['identity_pic_back']);
+				$upload->remove($store_info['identity_pic_back']);
 			} else {
 				$this->showmessage($upload->error(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			}
 		}else {
-			$identity_pic_back = $pic_url['identity_pic_back'];
+			$identity_pic_back = $store_info['identity_pic_back'];
 		}
 
 		if (!empty($_FILES['four']['name'])) {
@@ -146,12 +150,12 @@ class admin extends ecjia_admin {
 			$info = $upload->upload($_FILES['four']);
 			if (!empty($info)) {
 				$personhand_identity_pic = $upload->get_position($info);
-				$upload->remove($pic_url['personhand_identity_pic']);
+				$upload->remove($store_info['personhand_identity_pic']);
 			} else {
 				$this->showmessage($upload->error(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			}
 		}else {
-			$personhand_identity_pic = $pic_url['personhand_identity_pic'];
+			$personhand_identity_pic = $store_info['personhand_identity_pic'];
 		}
 
 		$data = array(
@@ -169,11 +173,11 @@ class admin extends ecjia_admin {
 			'identity_pic_back' 		=> $identity_pic_back,
 			'personhand_identity_pic' 	=> $personhand_identity_pic,
 			'bank_account_name'  		=> !empty($_POST['bank_account_name']) 	? $_POST['bank_account_name'] : '',
-			'business_licence_pic' 		=> $business_licence_pic,
-			'business_licence'      	=> !empty($_POST['business_licence']) 				? $_POST['business_licence'] : '',
+			'business_licence_pic' 		=> $store_info['validate_type']  == 2 ? $business_licence_pic : null,
+			'business_licence'      	=> !empty($_POST['business_licence']) 		? $_POST['business_licence'] : '',
 			'bank_name'      	  	 	=> !empty($_POST['bank_name']) 				? $_POST['bank_name'] : '',
-			'bank_branch_name'     		=> !empty($_POST['bank_branch_name']) 				? $_POST['bank_branch_name'] : '',
-			'bank_account_number'  		=> !empty($_POST['bank_account_number'])		? $_POST['bank_account_number'] : '',
+			'bank_branch_name'     		=> !empty($_POST['bank_branch_name']) 		? $_POST['bank_branch_name'] : '',
+			'bank_account_number'  		=> !empty($_POST['bank_account_number'])	? $_POST['bank_account_number'] : '',
 			'province'					=> !empty($_POST['province'])				? $_POST['province'] : '',
 			'city'						=> !empty($_POST['city'])					? $_POST['city'] : '',
 			'bank_address'         		=> !empty($_POST['bank_address']) 			? $_POST['bank_address'] : '',
