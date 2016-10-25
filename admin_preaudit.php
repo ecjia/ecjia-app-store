@@ -369,12 +369,12 @@ class admin_preaudit extends ecjia_admin {
 		}
 
 		$count = $db_store_franchisee->count();
-		$page = new ecjia_page($count, 10, 5);
+		$page = new ecjia_page($count, 15, 5);
 		$data = $db_store_franchisee
 		->leftJoin('store_category as sc', RC_DB::raw('sp.cat_id'), '=', RC_DB::raw('sc.cat_id'))
 		->selectRaw('sp.id,sp.merchants_name,sp.merchants_name,sp.responsible_person,sp.apply_time,sp.company_name,sc.cat_name')
 		->orderby('id', 'asc')
-		->take(10)
+		->take($page->page_size)
 		->get();
 		$res = array();
 		if (!empty($data)) {

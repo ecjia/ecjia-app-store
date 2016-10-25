@@ -91,7 +91,7 @@
             						</tr>
             						<tr>
             							<td><div align="right"><strong>{lang key='store::store.address_lable'}</strong></div></td>
-            							<td colspan="3">{$store.address}{if $store.longitude && $store.latitude}&nbsp;&nbsp;<a href="http://api.map.baidu.com/marker?location={$store.latitude},{$store.longitude}&title={$store.merchants_name}&content={$store.merchants_name}&output=html" title="查看地图" target="_blank">[查看地图]</a>{/if}</td>
+            							<td colspan="3">{$store.address}{if $store.longitude && $store.latitude}&nbsp;&nbsp;<a href="http://api.map.baidu.com/marker?location={$store.latitude},{$store.longitude}&title=我的位置&content={$store.merchants_name}&output=html" title="查看地图" target="_blank">[查看地图]</a>{/if}</td>
             						</tr>
             						<tr>
             							<td><div align="right"><strong>{lang key='store::store.address_lable'}</strong></div></td>
@@ -222,7 +222,7 @@
             							</td>
             						</tr>
             						<tr>
-            							<td><div align="right"><strong>{lang key='store::store.bank_account_number_lable'}</strong></div></td>
+            							<td><div align="right"><strong>{lang key='store::store.identity_pic_back_lable'}</strong></div></td>
             							<td>
                 							{if $store.identity_pic_back neq ''}
                 							<a href="{RC_Upload::upload_url({$store.identity_pic_back})}" title="点击查看大图" target="_blank"><img class="w200 h120 thumbnail"  class="img-polaroid" src="{RC_Upload::upload_url({$store.identity_pic_back})}"></a>
