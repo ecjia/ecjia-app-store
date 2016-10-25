@@ -26,7 +26,7 @@ class info_module extends api_admin implements api_interface {
 			$seller_info = array(
 	    	  		'id'					=> $info['store_id'],
 	    	  		'seller_name'			=> $info['merchants_name'],
-	    	  		'seller_logo'			=> RC_Upload::upload_url(RC_DB::table('merchants_config')->where('store_id', $_SESSION['store_id'])->where('code', 'shop_thumb_logo')->pluck('value')),
+	    	  		'seller_logo'			=> RC_Upload::upload_url(RC_DB::table('merchants_config')->where('store_id', $_SESSION['store_id'])->where('code', 'shop_logo')->pluck('value')),
 	    	  		'seller_category'		=> RC_DB::table('store_category')->where('cat_id', $info['cat_id'])->pluck('cat_name'),
 	    	  		'seller_telephone'		=> RC_DB::table('merchants_config')->where('store_id', $_SESSION['store_id'])->where('code', 'shop_kf_mobile')->pluck('value'),
 	    	  		'seller_province'		=> $region->where(array('region_id' => $info['province']))->get_field('region_name'),
