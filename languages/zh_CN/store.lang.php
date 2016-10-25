@@ -7,11 +7,11 @@ defined('IN_ECJIA') or exit('No permission resources.');
  */
 
 return array(
-		
+
 	//主菜单
 	'store_manage'	=> '入驻商管理',
-	
-	//子菜单	
+
+	//子菜单
 	'store_affiliate'=> '入驻商家',
 	'preaudit' 		=> '待审核商家',
 	'category' 		=> '店铺分类',
@@ -19,7 +19,7 @@ return array(
 	'percent' 		=> '佣金比例',
 	'config' 		=> '后台设置',
 	'mobileconfig' 	=> '移动应用设置',
-	
+
 	//商家入驻列列表
 	'store'			=>	'入驻商',
 	'store_list'	=>	'入驻商列表',
@@ -33,14 +33,14 @@ return array(
 	'unlock'		=> '解锁',
 	'pls_name'		=>	'请输入店铺名称',
 	'serach'		=>	'搜索',
-		
-		
-	//待审核商家入驻列表	
+
+
+	//待审核商家入驻列表
 	'store_preaudit'			=>	'待审核入驻商',
 	'store_preaudit_list'	=>	'待审核入驻商列表',
 	'check'					=>	'审核',
 	'check_view'		    =>	'审核商家',
-		
+
 	//通用
 	'sub_update' =>'更新',
 	'sub_check'	 =>'处理',
@@ -59,7 +59,8 @@ return array(
 	'lable_contact_lable'	=>	'联系方式',
 	'label_province'		=>	'所在省份： ',
 	'label_city'			=>	'所在城市： ',
-	
+	'label_district'		=>	'所在市区： ',
+
 	'address_lable'			=>	'通讯地址：',
 	'identity_type_lable'			=>	'证件类型：',
 	'identity_number_lable'			=>	'证件号码：',
@@ -77,7 +78,7 @@ return array(
 	'longitude_lable'	=>	'经度：',
 	'latitude_lable'	=>	'纬度：',
 	'sort_order_lable'	=>	'排序：',
-	'apply_time_lable'	=>	'申请时间：',		
+	'apply_time_lable'	=>	'申请时间：',
 	'browse'			=> '浏览',
 	'modify'			=> '修改',
 	'change_image'			=> '更换图片',
@@ -91,14 +92,14 @@ return array(
 	'personal_name'	=>	'个人名称：',
 	'company'	=>	'企业',
 	'no_upload' =>  '还未上传',
-	'apply_time'=>	'申请时间',	
+	'apply_time'=>	'申请时间',
 	'person'    =>	'法定代表人',
 	'companyname'	=>	'公司名称',
 	'confirm_time'=>'审核通过时间',
 	'del_store_cat_img_ok' =>'删除店铺分类图片成功！',
 	'anonymous'	 => '匿名用户',
 	'set_commission' 	=> '设置佣金',
-    
+
     'preaudit_list'     => '全部',
 	'validate_type'		=>	'入驻类型：',
 
@@ -120,6 +121,8 @@ return array(
 	'people_id'			=>	'身份证',
 	'passport'			=>	'护照',
 	'hong_kong_and_macao_pass'			=>	'港澳通行证',
+    
+    'edit_store'		=>	'编辑商家信息',
 );
 
 //end

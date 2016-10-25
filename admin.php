@@ -182,9 +182,9 @@ class admin extends ecjia_admin {
 			'city'						=> !empty($_POST['city'])					? $_POST['city'] : '',
 			'bank_address'         		=> !empty($_POST['bank_address']) 			? $_POST['bank_address'] : '',
 		);
-
-		RC_DB::table('store_franchisee')->where('store_id', $store_id)->update($data);
-
+        
+		$sn =  RC_DB::table('store_franchisee')->where('store_id', $store_id)->update($data);
+		ecjia_admin::admin_log(RC_Lang::get('store::store.edit_store').' '.RC_Lang::get('store::store.store_title_lable').$store_info['merchants_name'], 'update', 'store');
 		$this->showmessage(RC_Lang::get('store::store.edit_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin/edit', array('store_id' => $store_id))));
 	}
 

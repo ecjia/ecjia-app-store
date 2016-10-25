@@ -59,8 +59,10 @@ class admin_preaudit extends ecjia_admin {
 
 		$province   = $this->db_region->get_regions(1, 1);
 		$city       = $this->db_region->get_regions(2, $store['province']);
+		$district   = $this->db_region->get_regions(3, $store['city']);
 		$this->assign('province', $province);
 		$this->assign('city', $city);
+		$this->assign('district', $district);
 
 		$certificates_list = array(
 			'1' => RC_Lang::get('store::store.people_id'),
@@ -68,7 +70,7 @@ class admin_preaudit extends ecjia_admin {
 			'3' => RC_Lang::get('store::store.hong_kong_and_macao_pass')
 		);
 		$this->assign('certificates_list', $certificates_list);
-		
+
 		$store['apply_time']	= RC_Time::local_date(ecjia::config('time_format'), $store['apply_time']);
 		$this->assign('store', $store);
 		$cat_list = $this->get_cat_select_list();
@@ -159,9 +161,10 @@ class admin_preaudit extends ecjia_admin {
 			'bank_name'      	   		=> !empty($_POST['bank_name']) 				? $_POST['bank_name'] : '',
 			'bank_branch_name'     		=> !empty($_POST['bank_branch_name']) 		? $_POST['bank_branch_name'] : '',
 			'bank_account_name' 	 	=> !empty($_POST['bank_account_name'])		? $_POST['bank_account_name'] : '',
-			'bank_account_number' 	 	=> !empty($_POST['bank_account_number'])		? $_POST['bank_account_number'] : '',
+			'bank_account_number' 	 	=> !empty($_POST['bank_account_number'])	? $_POST['bank_account_number'] : '',
 			'province'					=> !empty($_POST['province'])				? $_POST['province'] : '',
 			'city'						=> !empty($_POST['city'])					? $_POST['city'] : '',
+			'district'					=> !empty($_POST['district'])				? $_POST['district'] : '',
 			'bank_address'         		=> !empty($_POST['bank_address']) 			? $_POST['bank_address'] : '',
 		);
 
@@ -187,6 +190,9 @@ class admin_preaudit extends ecjia_admin {
 		->pluck();
 
 		$store['city'] = RC_DB::table('region')->where('region_id', $store['city'])
+		->select('region_name')
+		->pluck();
+		$store['district'] = RC_DB::table('region')->where('region_id', $store['district'])
 		->select('region_name')
 		->pluck();
 
@@ -235,6 +241,7 @@ class admin_preaudit extends ecjia_admin {
 					'bank_name'					=>$store['bank_name'],
 					'province'					=>$store['province'],
 					'city'						=>$store['city'],
+					'district'					=>$store['district'],
 					'bank_branch_name'			=>$store['bank_branch_name'],
 					'bank_account_number'		=>$store['bank_account_number'],
 					'bank_address'				=>$store['bank_address'],
@@ -340,8 +347,9 @@ class admin_preaudit extends ecjia_admin {
 					'personhand_identity_pic'	=> $store['personhand_identity_pic'],
 					'business_licence'			=> $store['business_licence'],
 					'business_licence_pic'		=> $store['business_licence_pic'],
-					'province'					=>$store['province'],
-					'city'						=>$store['city'],
+					'province'					=> $store['province'],
+					'city'						=> $store['city'],
+					'district'					=> $store['district'],
 				);
 				RC_DB::table('store_franchisee')->where('store_id', $store_id)->update($data);
 				RC_DB::table('store_preaudit')->where('store_id', $store_id)->delete();
