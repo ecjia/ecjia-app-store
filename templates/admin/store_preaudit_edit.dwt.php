@@ -20,61 +20,77 @@
 	<div class="span12">
 		<form class="form-horizontal" id="form-privilege" name="theForm" action="{$form_action}" method="post" enctype="multipart/form-data" >
 			<fieldset>
-				{if $store.validate_type eq 1}
+			
 				<div class="control-group formSep" >
 					<label class="control-label">{lang key='store::store.validate_type'}</label>
 					<div class="controls l_h30">
-						<span class="span6" name="validate_type" value="{$store.validate_type}">{lang key='store::store.personal'}</span>
+						<span class="span6" name="validate_type" value="{$store.validate_type}">
+						{if $store.validate_type eq 1} {lang key='store::store.personal'}
+						{elseif $store.validate_type eq 2}
+						{lang key='store::store.company'}
+						{/if}
+						</span>
 						<input type="hidden"  name="validate_type" value="{$store.validate_type}" />
 					</div>
 				</div>
-
-				<div class="control-group formSep">
-					<label class="control-label">{lang key='store::store.personal_name'}</label>
-					<div class="controls">
-						<input class="span6" name="responsible_person" type="text" value="{$store.responsible_person}" />
-					</div>
-				</div>
-
+				
 				<div class="control-group formSep" >
-					<label class="control-label">{lang key='store::store.identity_type_lable'}</label>
+					<label class="control-label">{lang key='store::store.store_cat_lable'}</label>
 					<div class="controls">
-						<select name="identity_type">
+						<select name="store_cat">
 							<option value="0">{lang key='store::store.select_plz'}</option>
-							<!-- {html_options options=$certificates_list selected=$store.identity_type} -->
+							<!-- {html_options options=$cat_list selected=$store.cat_id} -->
 						</select>
 					</div>
 				</div>
+				
+				<div class="control-group formSep">
+					<label class="control-label">{lang key='store::store.store_title_lable'}</label>
+					<div class="controls">
+						<input class="span6" name="merchants_name" type="text" value="{$store.merchants_name}" />
+					</div>
+				</div>
 
 				<div class="control-group formSep">
-					<label class="control-label">{lang key='store::store.identity_number_lable'}</label>
+					<label class="control-label">{lang key='store::store.store_keywords_lable'}</label>
 					<div class="controls">
-						<input class="span6" name="identity_number" type="text" value="{$store.identity_number}" />
+						<input class="span6" name="shop_keyword" type="text" value="{$store.shop_keyword}" />
 					</div>
 				</div>
-				{elseif $store.validate_type eq 2}
-				<div class="control-group formSep" >
-					<label class="control-label">{lang key='store::store.validate_type'}</label>
-					<div class="controls l_h30">
-						<span class="span6" name="validate_type" value="{$store.validate_type}">{lang key='store::store.company'}</span>
-						<input type="hidden"  name="validate_type" value="{$store.validate_type}" />
+				<div class="control-group formSep">
+					<label class="control-label">{lang key='store::store.contact_lable'}</label>
+					<div class="controls">
+						<input class="span6" name="contact_mobile" type="text" value="{$store.contact_mobile}" />
+					</div>
+				</div>
+				<div class="control-group formSep">
+					<label class="control-label">{lang key='store::store.email_lable'}</label>
+					<div class="controls">
+						<input class="span6" name="email" type="text" value="{$store.email}" />
 					</div>
 				</div>
 
+				{if $store.validate_type eq 2}
 				<div class="control-group formSep">
 					<label class="control-label">{lang key='store::store.companyname_lable'}</label>
 					<div class="controls">
 						<input class="span6" name="company_name" type="text" value="{$store.company_name}" />
 					</div>
 				</div>
+				{/if}
 
 				<div class="control-group formSep">
-					<label class="control-label">{lang key='store::store.person_lable'}</label>
+					<label class="control-label">
+					    {if $store.validate_type eq 1} 负责人：
+						{elseif $store.validate_type eq 2}
+						{lang key='store::store.person_lable'}
+						{/if}
+					</label>
 					<div class="controls">
 						<input class="span6" name="responsible_person" type="text" value="{$store.responsible_person}" />
 					</div>
 				</div>
-
+				
 				<div class="control-group formSep" >
 					<label class="control-label">{lang key='store::store.identity_type_lable'}</label>
 					<div class="controls">
@@ -92,51 +108,7 @@
 					</div>
 				</div>
 
-				<div class="control-group formSep">
-					{if $store.business_licence_pic eq ''}
-						<label class="control-label">{lang key='store::store.business_licence_pic_lable'}</label>
-						<div class="controls">
-							<div class="fileupload fileupload-new" data-provides="fileupload">
-								<input type="hidden" name="{$var.code}" />
-								<div class="fileupload-preview fileupload-exists thumbnail" style="width: 50px; height: 50px; line-height: 50px;"></div>
-								<span class="btn btn-file">
-									<span class="fileupload-new">{lang key='store::store.browse'}</span>
-									<span class="fileupload-exists">{lang key='store::store.modify'}</span>
-									<input type='file' name='one' size="35" />
-								</span>
-								<a class="btn fileupload-exists" data-dismiss="fileupload" href="#">{lang key='system::system.drop'}</a>
-							</div>
-						</div>
-					{else}
-						<label class="control-label">{lang key='store::store.business_licence_pic_lable'}</label>
-						<div class="controls">
-							<div class="fileupload fileupload-new" data-provides="fileupload">
-								<img class="w120 h120"  class="img-polaroid" src="{RC_Upload::upload_url()}/{$store.business_licence_pic}"><br><br>
-								{lang key='store::store.file_address'}{$store.business_licence_pic}<br><br>
-								<input type="hidden" name="{$var.code}" />
-								<div class="fileupload-preview fileupload-exists thumbnail" style="width: 50px; height: 50px; line-height: 50px;"></div>
-								<span class="btn btn-file">
-									<span class="fileupload-new">{lang key='store::store.change_image'}</span>
-									<span class="fileupload-exists">{lang key='store::store.modify'}</span>
-									<input type='file' name='one' size="35" />
-								</span>
-								<a class="btn fileupload-exists" data-dismiss="fileupload" href="#">{lang key='system::system.drop'}</a>
-								<input type="hidden" name="{$var.code}" />
-								<input type="hidden" name="{$store.business_licence_pic}" />
-								<input name="business_licence_pic" value="{$store.business_licence_pic}" class="hide">
-							</div>
-						</div>
-					{/if}
-				</div>
-
-				<div class="control-group formSep">
-					<label class="control-label">{lang key='store::store.business_licence_lable'}</label>
-					<div class="controls">
-						<input class="span6" name="business_licence" type="text" value="{$store.business_licence}" />
-					</div>
-				</div>
-				{/if}
-
+				<!-- 证件 -->
 				<div class="control-group formSep">
 					{if $store.identity_pic_front eq ''}
 						<label class="control-label">{lang key='store::store.identity_pic_front_lable'}</label>
@@ -246,7 +218,54 @@
 						</div>
 					{/if}
 				</div>
+				
+				<!-- 营业执照 -->
+				{if $store.validate_type eq 2}
+				<div class="control-group formSep">
+					<label class="control-label">{lang key='store::store.business_licence_lable'}</label>
+					<div class="controls">
+						<input class="span6" name="business_licence" type="text" value="{$store.business_licence}" />
+					</div>
+				</div>
+				<div class="control-group formSep">
+					{if $store.business_licence_pic eq ''}
+						<label class="control-label">{lang key='store::store.business_licence_pic_lable'}</label>
+						<div class="controls">
+							<div class="fileupload fileupload-new" data-provides="fileupload">
+								<input type="hidden" name="{$var.code}" />
+								<div class="fileupload-preview fileupload-exists thumbnail" style="width: 50px; height: 50px; line-height: 50px;"></div>
+								<span class="btn btn-file">
+									<span class="fileupload-new">{lang key='store::store.browse'}</span>
+									<span class="fileupload-exists">{lang key='store::store.modify'}</span>
+									<input type='file' name='one' size="35" />
+								</span>
+								<a class="btn fileupload-exists" data-dismiss="fileupload" href="#">{lang key='system::system.drop'}</a>
+							</div>
+						</div>
+					{else}
+						<label class="control-label">{lang key='store::store.business_licence_pic_lable'}</label>
+						<div class="controls">
+							<div class="fileupload fileupload-new" data-provides="fileupload">
+								<img class="w120 h120"  class="img-polaroid" src="{RC_Upload::upload_url()}/{$store.business_licence_pic}"><br><br>
+								{lang key='store::store.file_address'}{$store.business_licence_pic}<br><br>
+								<input type="hidden" name="{$var.code}" />
+								<div class="fileupload-preview fileupload-exists thumbnail" style="width: 50px; height: 50px; line-height: 50px;"></div>
+								<span class="btn btn-file">
+									<span class="fileupload-new">{lang key='store::store.change_image'}</span>
+									<span class="fileupload-exists">{lang key='store::store.modify'}</span>
+									<input type='file' name='one' size="35" />
+								</span>
+								<a class="btn fileupload-exists" data-dismiss="fileupload" href="#">{lang key='system::system.drop'}</a>
+								<input type="hidden" name="{$var.code}" />
+								<input type="hidden" name="{$store.business_licence_pic}" />
+								<input name="business_licence_pic" value="{$store.business_licence_pic}" class="hide">
+							</div>
+						</div>
+					{/if}
+				</div>
+				{/if}
 
+				<!-- 银行 -->
 				<div class="control-group formSep">
 					<label class="control-label">{lang key='store::store.bank_name_lable'}</label>
 					<div class="controls">
@@ -282,79 +301,23 @@
 					</div>
 				</div>
 
-
+				<!-- 地区 -->
 				<div class="control-group formSep">
-					<label class="control-label">{lang key='store::store.email_lable'}</label>
-					<div class="controls">
-						<input class="span6" name="email" type="text" value="{$store.email}" />
-					</div>
-				</div>
-
-				<div class="control-group formSep">
-					<label class="control-label">{lang key='store::store.contact_lable'}</label>
-					<div class="controls">
-						<input class="span6" name="contact_mobile" type="text" value="{$store.contact_mobile}" />
-					</div>
-				</div>
-
-				<div class="control-group formSep">
-					<label class="control-label">{lang key='store::store.address_lable'}</label>
-					<div class="controls">
-						<input class="span6" name="address" type="text" value="{$store.address}" />
-					</div>
-				</div>
-
-				<div class="control-group formSep" >
-					<label class="control-label">{lang key='store::store.store_cat_lable'}</label>
-					<div class="controls">
-						<select name="store_cat">
-							<option value="0">{lang key='store::store.select_plz'}</option>
-							<!-- {html_options options=$cat_list selected=$store.cat_id} -->
-						</select>
-					</div>
-				</div>
-
-				<div class="control-group formSep">
-					<label class="control-label">{lang key='store::store.store_title_lable'}</label>
-					<div class="controls">
-						<input class="span6" name="merchants_name" type="text" value="{$store.merchants_name}" />
-					</div>
-				</div>
-
-				<div class="control-group formSep">
-					<label class="control-label">{lang key='store::store.store_keywords_lable'}</label>
-					<div class="controls">
-						<input class="span6" name="shop_keyword" type="text" value="{$store.shop_keyword}" />
-					</div>
-				</div>
-
-				<div class="control-group formSep">
-					<label class="control-label">{lang key='store::store.label_province'}</label>
-					<div class="controls">
-						<select class="region-summary-provinces" name="province" id="selProvinces" data-url="{url path='store/admin_preaudit/get_region'}" data-toggle="regionSummary" data-type="2" data-target="region-summary-cities" >
+					<label class="control-label">选择地区：</label>
+					<div class="controls choose_list ">
+						<select class="region-summary-provinces w120 " name="province" id="selProvinces" data-url="{url path='store/admin_preaudit/get_region'}" data-toggle="regionSummary" data-type="2" data-target="region-summary-cities" >
 							<option value='0'>{lang key='system::system.select_please'}</option>
 							<!-- {foreach from=$province item=region} -->
 							<option value="{$region.region_id}" {if $region.region_id eq $store.province}selected{/if}>{$region.region_name}</option>
 							<!-- {/foreach} -->
 						</select>
-					</div>
-				</div>
-				<div class="control-group formSep">
-					<label class="control-label">{lang key='store::store.label_city'}</label>
-					<div class="controls">
-						<select class="region-summary-cities" name="city" id="selCities" data-toggle="regionSummary" data-type="3" data-target="region-summary-district" >
+						<select class="region-summary-cities w120" name="city" id="selCities" data-toggle="regionSummary" data-type="3" data-target="region-summary-district" >
 							<option value='0'>{lang key='system::system.select_please'}</option>
 							<!-- {foreach from=$city item=region} -->
 							<option value="{$region.region_id}" {if $region.region_id eq $store.city}selected{/if}>{$region.region_name}</option>
 							<!-- {/foreach} -->
 						</select>
-					</div>
-				</div>
-
-				<div class="control-group formSep">
-					<label class="control-label">{lang key='store::store.label_district'}</label>
-					<div class="controls">
-						<select class="region-summary-district" name="district" id="seldistrict" >
+						<select class="region-summary-district w120" name="district" id="seldistrict" >
 							<option value='0'>{lang key='system::system.select_please'}</option>
 							<!-- {foreach from=$district item=region} -->
 							<option value="{$region.region_id}" {if $region.region_id eq $store.district}selected{/if}>{$region.region_name}</option>

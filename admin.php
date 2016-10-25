@@ -80,13 +80,15 @@ class admin extends ecjia_admin {
 
 		$province   = $this->db_region->get_regions(1, 1);
 		$city       = $this->db_region->get_regions(2, $store['province']);
+		$district   = $this->db_region->get_regions(3, $store['city']);
+		$this->assign('province', $province);
+		$this->assign('city', $city);
+		$this->assign('district', $district);
 
 		$this->assign('cat_list', $cat_list);
 		$this->assign('certificates_list', $certificates_list);
 		$this->assign('store', $store);
 		$this->assign('form_action',RC_Uri::url('store/admin/update'));
-		$this->assign('province', $province);
-		$this->assign('city', $city);
 		$this->assign('longitudeForm_action',RC_Uri::url('store/admin/get_longitude'));
 
 		$this->display('store_edit.dwt');
@@ -180,6 +182,7 @@ class admin extends ecjia_admin {
 			'bank_account_number'  		=> !empty($_POST['bank_account_number'])	? $_POST['bank_account_number'] : '',
 			'province'					=> !empty($_POST['province'])				? $_POST['province'] : '',
 			'city'						=> !empty($_POST['city'])					? $_POST['city'] : '',
+		    'district'					=> !empty($_POST['district'])				? $_POST['district'] : '',
 			'bank_address'         		=> !empty($_POST['bank_address']) 			? $_POST['bank_address'] : '',
 		);
         
