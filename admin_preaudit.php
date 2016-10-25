@@ -185,19 +185,14 @@ class admin_preaudit extends ecjia_admin {
 		$id = intval($_GET['id']);
 		$store = RC_DB::table('store_preaudit')->where('id', $id)->first();
 
-		$store['province'] = RC_DB::table('region')->where('region_id', $store['province'])
-		->select('region_name')
-		->pluck();
+		$store['province'] = RC_DB::table('region')->where('region_id', $store['province'])->pluck('region_name');
 
-		$store['city'] = RC_DB::table('region')->where('region_id', $store['city'])
-		->select('region_name')
-		->pluck();
-		$store['district'] = RC_DB::table('region')->where('region_id', $store['district'])
-		->select('region_name')
-		->pluck();
+		$store['city'] = RC_DB::table('region')->where('region_id', $store['city'])->pluck('region_name');
+		
+		$store['district'] = RC_DB::table('region')->where('region_id', $store['district'])->pluck('region_name');
 
 		$store['apply_time']	= RC_Time::local_date(ecjia::config('time_format'), $store['apply_time']);
-		$store['cat_name'] = RC_DB::TABLE('store_category')->where('cat_id', $store['cat_id'])->pluck('cat_name');
+		$store['cat_name'] = RC_DB::table('store_category')->where('cat_id', $store['cat_id'])->pluck('cat_name');
 		$this->assign('store', $store);
 
 		$this->assign('form_action',RC_Uri::url('store/admin_preaudit/check_update'));
@@ -212,18 +207,19 @@ class admin_preaudit extends ecjia_admin {
 	public function check_update() {
 		$this->admin_priv('store_preaudit_update', ecjia::MSGTYPE_JSON);
 
-		$id = intval($_POST['id']);
+		$id         = intval($_POST['id']);
 		$store_id   = intval($_POST['store_id']);
-		$remark 	=!empty($_POST['remark']) ? $_POST['remark'] : '';
+		$remark 	=!empty($_POST['remark']) ? $_POST['remark'] : null;
 		//通过
 		if($_POST['check_status'] == 2) {
-			if($store_id == 0){//首次审核
+			if($store_id == 0) {//首次审核
 				$store = RC_DB::table('store_preaudit')->where('id', $id)->first();
 				$data =array(
 					'cat_id' 					=> $store['cat_id'],
 					'merchants_name'			=> $store['merchants_name'],
 					'shop_keyword'				=> $store['shop_keyword'],
 					'status'					=> 1,
+				    'identity_status'           => intval($_POST['identity_status']),
 					'responsible_person'		=>$store['responsible_person'],
 					'company_name'				=>$store['company_name'],
 					'email'						=>$store['email'],
@@ -257,15 +253,15 @@ class admin_preaudit extends ecjia_admin {
 				$merchant_config = array(
 					'shop_title' ,                // 店铺标题
 					'shop_kf_mobile' ,            // 客服手机号码
-					'shop_kf_email' ,             // 客服邮件地址
-					'shop_kf_type' ,              // 客服样式
-					'shop_kf_qq'  ,               // 客服QQ号码
-					'shop_kf_ww' ,                // 客服淘宝旺旺
+// 					'shop_kf_email' ,             // 客服邮件地址
+// 					'shop_kf_type' ,              // 客服样式
+// 					'shop_kf_qq'  ,               // 客服QQ号码
+// 					'shop_kf_ww' ,                // 客服淘宝旺旺
 					'shop_logo' ,                 // 默认店铺页头部LOGO
-					'shop_front_logo',            // 店铺封面图
-					'shop_thumb_logo' ,           // Logo缩略图
+// 					'shop_front_logo',            // 店铺封面图
+// 					'shop_thumb_logo' ,           // Logo缩略图
 					'shop_banner_pic' ,           // banner图
-					'shop_qrcode_logo' ,          // 二维码中间Logo
+// 					'shop_qrcode_logo' ,          // 二维码中间Logo
 					'shop_trade_time' ,           // 营业时间
 					'shop_description' ,          // 店铺描述
 					'shop_notice'   ,             // 店铺公告
@@ -333,6 +329,7 @@ class admin_preaudit extends ecjia_admin {
 				$store = RC_DB::table('store_preaudit')->where('store_id', $store_id)->first();
 				$data =array(
 					'cat_id' 					=> $store['cat_id'],
+				    'identity_status'           => intval($_POST['identity_status']),
 					'shop_keyword'				=> $store['shop_keyword'],
 					'responsible_person'		=> $store['responsible_person'],
 					'email'						=> $store['email'],
@@ -356,8 +353,8 @@ class admin_preaudit extends ecjia_admin {
 
 				$this->showmessage('再次审核成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin_preaudit/init', array('id' => $id))));
 			}
-		}else {
-			RC_DB::table('store_preaudit')->where('id', $id)->update(array('remark'=>$remark));
+		} else {
+			RC_DB::table('store_preaudit')->where('id', $id)->update(array('remark' => $remark));
 			$this->showmessage(RC_Lang::get('store::store.deal_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin_preaudit/check', array('id' => $id))));
 		}
 	}

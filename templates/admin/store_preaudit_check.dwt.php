@@ -233,8 +233,16 @@
 				<div class="control formSep">
 					<label class="control-label">{lang key='store::store.check_lable'}</label>
 				 	<div class="controls">
-						<input type="radio"  name="check_status" value="1" {if $store.check_status eq 1}checked{/if}><span>{lang key='store::store.check_no'}</span>
-						<input type="radio"  name="check_status" value="2" {if $store.check_status eq 2}checked{/if}><span>{lang key='store::store.check_yes'}</span>
+						<label class="ecjiaf-ib"><input type="radio"  name="check_status" value="1" {if $store.check_status eq 1}checked{/if}><span>{lang key='store::store.check_no'}</span></label>
+						<label class="ecjiaf-ib"><input type="radio"  name="check_status" value="2" {if $store.check_status eq 2}checked{/if}><span>{lang key='store::store.check_yes'}</span></label>
+					</div>
+				</div>
+				<div class="control formSep">
+					<label class="control-label">认证：</label>
+				 	<div class="controls">
+				 	    <label class="ecjiaf-ib"><input type="radio"  name="identity_status" value="0" {if $store.identity_status eq 0}checked{/if}><span>待审核</span></label>
+						<label class="ecjiaf-ib"><input type="radio"  name="identity_status" value="3" {if $store.identity_status eq 3}checked{/if}><span>{lang key='store::store.check_no'}</span></label>
+						<label class="ecjiaf-ib"><input type="radio"  name="identity_status" value="2" {if $store.identity_status eq 2}checked{/if}><span>{lang key='store::store.check_yes'}</span></label>
 					</div>
 				</div>
 
