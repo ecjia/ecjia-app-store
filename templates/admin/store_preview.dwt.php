@@ -55,7 +55,6 @@
 				<div class="tab-content tab_merchants">
 				
 					<div class="tab-pane active" id="tab1">
-					<form class="form-horizontal" id="form-privilege" name="theForm" action="{$form_action}" method="post" enctype="multipart/form-data" >
 						<div class="foldable-list move-mod-group">
             			<div class="accordion-group">
             				<div class="accordion-heading">
@@ -199,77 +198,74 @@
             					</table>
             				</div>
             			</div>
+            			
+            			<div class="accordion-group">
+            				<div class="accordion-heading">
+            					<a class="accordion-toggle collapsed move-mod-head" data-toggle="collapse" data-target="#identity_pic">
+            						<strong>证件电子版</strong>
+            					</a>
+            				</div>
+            
+            				<div class="accordion-body in collapse" id="identity_pic">
+            					<table class="table table-oddtd m_b0">
+            						<tbody class="first-td-no-leftbd">
+            						<tr>
+            							<td><div align="right"><strong>{lang key='store::store.identity_pic_front_lable'}</strong></div></td>
+            							<td>
+                							{if $store.identity_pic_front neq ''}
+                							<a href="{RC_Upload::upload_url({$store.identity_pic_front})}" title="点击查看大图" target="_blank"><img class="w200 h120 thumbnail"  class="img-polaroid" src="{RC_Upload::upload_url({$store.identity_pic_front})}"></a>
+                							{else}
+                							<div class="l_h30">
+                								{lang key='store::store.no_upload'}
+                							</div>
+                							{/if}
+            							</td>
+            						</tr>
+            						<tr>
+            							<td><div align="right"><strong>{lang key='store::store.bank_account_number_lable'}</strong></div></td>
+            							<td>
+                							{if $store.identity_pic_back neq ''}
+                							<a href="{RC_Upload::upload_url({$store.identity_pic_back})}" title="点击查看大图" target="_blank"><img class="w200 h120 thumbnail"  class="img-polaroid" src="{RC_Upload::upload_url({$store.identity_pic_back})}"></a>
+                							{else}
+                							<div class="l_h30">
+                								{lang key='store::store.no_upload'}
+                							</div>
+                							{/if}
+            							</td>
+            						</tr>
+            						<tr>
+            							<td><div align="right"><strong>{lang key='store::store.personhand_identity_pic_lable'}</strong></div></td>
+            							<td>
+                							{if $store.personhand_identity_pic neq ''}
+                							<a href="{RC_Upload::upload_url({$store.personhand_identity_pic})}" title="点击查看大图" target="_blank"><img class="w200 h120 thumbnail"  class="img-polaroid" src="{RC_Upload::upload_url({$store.personhand_identity_pic})}"></a>
+                							{else}
+                							<div class="l_h30">
+                								{lang key='store::store.no_upload'}
+                							</div>
+                							{/if}
+            							</td>
+            						</tr>
+            						<!-- {if $store.validate_type eq 1} -->
+            						<input type="hidden"  name="identity_type" value="{$store.validate_type}" />
+            						<!-- {elseif $store.validate_type eq 2} -->
+            						<tr>
+            							<td><div align="right"><strong>{lang key='store::store.business_licence_pic_lable'}</strong></div></td>
+            							<td>
+                							{if $store.personhand_identity_pic neq ''}
+                							<a href="{RC_Upload::upload_url({$store.business_licence_pic})}" title="点击查看大图" target="_blank"><img class="w200 h120 thumbnail"  class="img-polaroid" src="{RC_Upload::upload_url({$store.business_licence_pic})}"></a>
+                							{else}
+                							<div class="l_h30">
+                								{lang key='store::store.no_upload'}
+                							</div>
+                							{/if}
+            							</td>
+            						</tr>
+            						<!-- {/if} -->
+            						</tbody>
+            					</table>
+            				</div>
+            			</div>
 		                </div>
-            			<fieldset>
-            				{if $store.validate_type eq 1}
-            				<input type="hidden"  name="identity_type" value="{$store.validate_type}" />
-            				{elseif $store.validate_type eq 2}
-            				<div class="control-group formSep">
-            					<label class="control-label">{lang key='store::store.business_licence_pic_lable'}</label>
-            					<div class="controls">
-            						<div class="fileupload fileupload-new" data-provides="fileupload">
-            							{if $store.business_licence_pic neq ''}
-            							<img class="w120 h120 thumbnail"  class="img-polaroid" src="{RC_Upload::upload_url()}/{$store.business_licence_pic}"><br>
-            							{lang key='store::store.file_address'}{$store.business_licence_pic}<br>
-            							{else}
-            							<div class="l_h30">
-            								{lang key='store::store.no_upload'}
-            							</div>
-            							{/if}
-            						</div>
-            					</div>
-            				</div>
-            				{/if}
-            
-            				<div class="control-group formSep">
-            					<label class="control-label">{lang key='store::store.identity_pic_front_lable'}</label>
-            					<div class="controls">
-            						<div class="fileupload fileupload-new" data-provides="fileupload">
-            							{if $store.identity_pic_front neq ''}
-            							<img class="w120 h120 thumbnail"  class="img-polaroid" src="{RC_Upload::upload_url()}/{$store.identity_pic_front}"><br>
-            							{lang key='store::store.file_address'}{$store.identity_pic_front}<br>
-            							{else}
-            							<div class="l_h30">
-            								{lang key='store::store.no_upload'}
-            							</div>
-            							{/if}
-            						</div>
-            					</div>
-            				</div>
-            
-            				<div class="control-group formSep">
-            					<label class="control-label">{lang key='store::store.identity_pic_back_lable'}</label>
-            					<div class="controls">
-            						<div class="fileupload fileupload-new" data-provides="fileupload">
-            							{if $store.identity_pic_back neq ''}
-            							<img class="w120 h120 thumbnail"  class="img-polaroid" src="{RC_Upload::upload_url()}/{$store.identity_pic_back}"><br>
-            							{lang key='store::store.file_address'}{$store.identity_pic_back}<br>
-            							{else}
-            							<div class="l_h30">
-            								{lang key='store::store.no_upload'}
-            							</div>
-            							{/if}
-            						</div>
-            					</div>
-            				</div>
-            
-            				<div class="control-group">
-            					<label class="control-label">{lang key='store::store.personhand_identity_pic_lable'}</label>
-            					<div class="controls">
-            						<div class="fileupload fileupload-new" data-provides="fileupload">
-            							{if $store.personhand_identity_pic neq ''}
-            							<img class="w120 h120 thumbnail"  class="img-polaroid" src="{RC_Upload::upload_url()}/{$store.personhand_identity_pic}"><br>
-            							{lang key='store::store.file_address'}{$store.personhand_identity_pic}<br>
-            							{else}
-            							<div class="l_h30">
-            								{lang key='store::store.no_upload'}
-            							</div>
-            							{/if}
-            						</div>
-            					</div>
-            				</div>
-            			</fieldset>
-            		</form>
 							
 					</div>
 				</div>
