@@ -6,26 +6,30 @@ defined('IN_ECJIA') or exit('No permission resources.');
  *
  */
 class validate_module extends api_admin implements api_interface {
-    public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) { 
+    public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {
     	$this->authadminSession();
-		if ($_SESSION['staff_id'] <=0) {
-			return new ecjia_error(100, 'Invalid session');
-		}
-    	
+        if ($_SESSION['admin_id'] <= 0 && $_SESSION['staff_id'] <= 0) {
+            return new ecjia_error(100, 'Invalid session');
+        }
+
 		$validate_type = $this->requestData('validate_type', '');
-		
+
 		if (empty($validate_type)) {
 			return new ecjia_error(101, '错误的参数提交！');
 		}
-		
+
 		$validate_code = $this->requestData('validate_code', '');
+        _Dump($_SESSION['merchant_validate_code']);
+        _Dump($time);
+        _Dump($validate_code);
+        _Dump($_SESSION['merchant_validate_expiry'],1);
 		$time = RC_Time::gmtime();
 		if (empty($validate_code) || $_SESSION['merchant_validate_code'] != $validate_code || $_SESSION['merchant_validate_expiry'] < $time) {
 			return new ecjia_error('code_error', '验证码不正确！');
 		}
-		
+
 		//$shop_id = RC_Model::model('seller/seller_shopinfo_model')->where(array('id' => $_SESSION['seller_id']))->get_field('shop_id');
-		
+
 		/* 文件路径处理*/
 		//$uid = $_SESSION['seller_id'];
 		$uid = $_SESSION['store_id'];
@@ -38,7 +42,7 @@ class validate_module extends api_admin implements api_interface {
 		$path = RC_Upload::upload_path('data/merchant/'.$dir1.'/'.$dir2.'/'.$dir3);
 		//创建目录
 		RC_Dir::create($path);
-		
+
 		$responsible_person 		= $this->requestData('responsible_person', '');
 		$identity_type 				= $this->requestData('identity_type', '');
 		$identity_number 			= $this->requestData('identity_number', '');
@@ -47,25 +51,25 @@ class validate_module extends api_admin implements api_interface {
 		$identity_pic_back  		= $this->requestData('identity_pic_back', '');
 		$company_name 				= $this->requestData('company_name', '');
 		$business_licence_pic		= $this->requestData('business_licence_pic', '');
-		
+
 		$data = array('validate_type' => $validate_type);
-		
+
 		if (!empty($responsible_person)) {
 			$data['responsible_person'] = $responsible_person;
 		}
-		
+
 		if (!empty($company_name)) {
 			$data['company_name'] = $company_name;
 		}
-		
+
 		if (!empty($identity_type)) {
 			$data['identity_type'] = $identity_type;
 		}
-		
+
 		if (!empty($identity_number)) {
 			$data['identity_number'] = $identity_number;
 		}
-		
+
 		if (!empty($personhand_identity_pic)) {
 			$filename_path = $path.'/'.substr($uid, -2).'_hand_id_'.$filename.'.jpg';
 			@unlink($filename_path);
@@ -74,7 +78,7 @@ class validate_module extends api_admin implements api_interface {
 			//$data['identity_pic'] = 'data/merchant/'.$dir1.'/'.$dir2.'/'.$dir3.'/'.substr($uid, -2).'_hand_id_'.$filename.'.jpg';
 			$data['personhand_identity_pic'] = 'data/merchant/'.$dir1.'/'.$dir2.'/'.$dir3.'/'.substr($uid, -2).'_hand_id_'.$filename.'.jpg';
 		}
-		
+
 		if (!empty($business_licence_pic)) {
 			$filename_path = $path.'/'.substr($uid, -2).'_business_licence_'.$filename.'.jpg';
 			@unlink($filename_path);
@@ -82,7 +86,7 @@ class validate_module extends api_admin implements api_interface {
 			file_put_contents($filename_path, $business_licence_pic);
 			$data['business_licence_pic'] = 'data/merchant/'.$dir1.'/'.$dir2.'/'.$dir3.'/'.substr($uid, -2).'_business_licence_'.$filename.'.jpg';
 		}
-		
+
 		if (!empty($identity_pic_front)) {
 			$filename_path = $path.'/'.substr($uid, -2).'_id_front_'.$filename.'.jpg';
 			@unlink($filename_path);
@@ -90,7 +94,7 @@ class validate_module extends api_admin implements api_interface {
 			file_put_contents($filename_path, $identity_pic_front);
 			$data['identity_pic_front'] = 'data/merchant/'.$dir1.'/'.$dir2.'/'.$dir3.'/'.substr($uid, -2).'_id_front_'.$filename.'.jpg';
 		}
-			
+
 		if (!empty($identity_pic_back)) {
 			$filename_path = $path.'/'.substr($uid, -2).'_id_back_'.$filename.'.jpg';
 			@unlink($filename_path);
@@ -103,6 +107,6 @@ class validate_module extends api_admin implements api_interface {
 		//RC_Model::model('merchant/merchants_shop_information_model')->where(array('shop_id' => $shop_id))->update($data);
 		RC_DB::table('store_franchisee')->where(RC_DB::raw('store_id'), $_SESSION['store_id'])->update($data);
 		return array();
-    }	
-    
+    }
+
 }

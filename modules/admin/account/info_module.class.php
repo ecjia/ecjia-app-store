@@ -6,13 +6,13 @@ defined('IN_ECJIA') or exit('No permission resources.');
  *
  */
 class info_module extends api_admin implements api_interface {
-    public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) { 
-		
+    public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {
+
 		$this->authadminSession();
-		if ($_SESSION['staff_id'] <=0) {
-			return new ecjia_error(100, 'Invalid session');
-		}
-    	
+        if ($_SESSION['admin_id'] <= 0 && $_SESSION['staff_id'] <= 0) {
+            return new ecjia_error(100, 'Invalid session');
+        }
+
 		//$shop_id = RC_Model::model('seller/seller_shopinfo_model')->where(array('id' => $_SESSION['seller_id']))->get_field('shop_id');
 		//$merchant_info = RC_Model::model('merchant/merchants_shop_information_model')->where(array('shop_id' => $shop_id))->find();
 		$merchant_info = RC_DB::table('store_franchisee')->where(RC_DB::raw('store_id'), $_SESSION['store_id'])->first();
@@ -26,21 +26,21 @@ class info_module extends api_admin implements api_interface {
 		$dir3 = substr($uid, 5, 2);
 		$filename = md5($uid);
 		$path = RC_Upload::upload_path('data/merchant/'.$dir1.'/'.$dir2.'/'.$dir3.'/');
-		
+
 		/* 判断身份正面图片*/
 		if(!file_exists($path.substr($uid, -2).'_id_front_'.$filename.'.jpg')) {
 			$identity_pic_front = '';
 		} else {
 			$identity_pic_front = RC_Upload::upload_url('data/merchant/'.$dir1.'/'.$dir2.'/'.$dir3.'/'.substr($uid, -2).'_id_front_'.$filename.'.jpg');
 		}
-		
+
 		/* 判断身份反面图片*/
 		if(!file_exists($path.substr($uid, -2).'_id_back_'.$filename.'.jpg')) {
 			$identity_pic_back = '';
 		} else {
 			$identity_pic_back = RC_Upload::upload_url('data/merchant/'.$dir1.'/'.$dir2.'/'.$dir3.'/'.substr($uid, -2).'_id_back_'.$filename.'.jpg');
 		}
-		
+
 		/* 个人认证*/
 		if ($merchant_info['validate_type'] == 1) {
 			/* 判断手持身份图片*/
@@ -59,7 +59,7 @@ class info_module extends api_admin implements api_interface {
 					'identity_pic_front'	=> $identity_pic_front,
 					'identity_pic_back'		=> $identity_pic_back,
 					'contact_mobile'		=> $merchant_info['contact_mobile'],
-					
+
 			);
 		} else {
 			/* 判断营业执照图片*/
