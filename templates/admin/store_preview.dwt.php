@@ -39,32 +39,59 @@
             			<div class="accordion-group">
             				<div class="accordion-heading">
             					<a class="accordion-toggle collapsed move-mod-head" data-toggle="collapse" data-target="#goods_info_area_submit">
-            						<strong>商家信息</strong>
+            						<strong>店铺信息</strong>
             					</a>
             				</div>
-            
             				<div class="accordion-body in collapse" id="goods_info_area_submit">
             					<table class="table table-oddtd m_b0">
             						<tbody class="first-td-no-leftbd">
             						<tr>
             							<td><div align="right"><strong>{lang key='store::store.store_title_lable'}</strong></div></td>
-            							<td>{$store.merchants_name}</td>
+            							<td><strong>{$store.merchants_name}</strong></td>
             							<td><div align="right"><strong>{lang key='store::store.store_keywords_lable'}</strong></div></td>
             							<td>{$store.shop_keyword}</td>
             						</tr>
-            
             						<tr>
             							<td><div align="right"><strong>{lang key='store::store.store_cat_lable'}</strong></div></td>
-            							<td>{$store.cat_name}</td>
-            							<td><div align="right"><strong>{lang key='store::store.apply_time_lable'}</strong></div></td>
-            							<td>{$store.apply_time}</td>
+            							<td>{if $store.cat_name eq ''}未分类{else}{$store.cat_name}{/if}</td>
+            							<td><div align="right"><strong>开店时间：</strong></div></td>
+            							<td>{$store.confirm_time}</td>
             						</tr>
-            
+            						<tr>
+            						    <td><div align="right"><strong>{lang key='store::store.contact_lable'}</strong></div></td>
+            							<td>{$store.contact_mobile}</td>
+            							<td><div align="right"><strong>{lang key='store::store.email_lable'}</strong></div></td>
+            							<td>{$store.email}</td>
+            						</tr>
+            						<tr>
+            							<td><div align="right"><strong>所在地区：</strong></div></td>
+            							<td>{$store.province}&nbsp;&nbsp;{$store.city}</td>
+            							<td><div align="right"><strong>经纬度：</strong></div></td>
+            							<td>{$store.longitude}&nbsp;&nbsp;{$store.latitude}</td>
+            						</tr>
+            						<tr>
+            							<td><div align="right"><strong>{lang key='store::store.address_lable'}</strong></div></td>
+            							<td colspan="3">{$store.address}{if $store.longitude && $store.latitude}&nbsp;&nbsp;<a href="http://api.map.baidu.com/marker?location={$store.latitude},{$store.longitude}&title={$store.merchants_name}&content={$store.merchants_name}&output=html" title="查看地图" target="_blank">[查看地图]</a>{/if}</td>
+            						</tr>
+            						</tbody>
+            					</table>
+            				</div>
+            			</div>
+            			
+            			<div class="accordion-group">
+            				<div class="accordion-heading">
+            					<a class="accordion-toggle collapsed move-mod-head" data-toggle="collapse" data-target="#info2">
+            						<strong>经营主体信息</strong>
+            					</a>
+            				</div>
+            				<div class="accordion-body in collapse" id="info2">
+            					<table class="table table-oddtd m_b0">
+            						<tbody class="first-td-no-leftbd">
             						{if $store.validate_type eq 1}
             						<tr>
             							<td><div align="right"><strong>{lang key='store::store.validate_type'}</strong></div></td>
             							<td>{if $store.validate_type eq 1}{lang key='store::store.personal'}{else}{lang key='store::store.company'}{/if}</td>
-            							<td><div align="right"><strong>{lang key='store::store.personal_name'}</strong></div></td>
+            							<td><div align="right"><strong>负责人:</strong></div></td>
             							<td>{$store.responsible_person}</td>
             						</tr>
             
@@ -91,10 +118,10 @@
             						</tr>
             
             						<tr>
+            						    <td><div align="right"><strong>{lang key='store::store.companyname_lable'}</strong></div></td>
+            							<td>{$store.company_name}</td>
             							<td><div align="right"><strong>{lang key='store::store.business_licence_lable'}</strong></div></td>
             							<td >{$store.business_licence}</td>
-            							<td><div align="right"><strong>{lang key='store::store.companyname_lable'}</strong></div></td>
-            							<td>{$store.company_name}</td>
             						</tr>
             
             						<tr>
@@ -112,48 +139,36 @@
             							<td>{$store.identity_number}</td>
             						</tr>
             						{/if}
+            						</tbody>
+            					</table>
+            				</div>
+            			</div>
+            			
+            			<div class="accordion-group">
+            				<div class="accordion-heading">
+            					<a class="accordion-toggle collapsed move-mod-head" data-toggle="collapse" data-target="#merchant_bank">
+            						<strong>银行账户信息</strong>
+            					</a>
+            				</div>
+            
+            				<div class="accordion-body in collapse" id="merchant_bank">
+            					<table class="table table-oddtd m_b0">
+            						<tbody class="first-td-no-leftbd">
             						<tr>
             							<td><div align="right"><strong>{lang key='store::store.bank_name_lable'}</strong></div></td>
             							<td>{$store.bank_name}</td>
             							<td><div align="right"><strong>{lang key='store::store.bank_branch_name_lable'}</strong></div></td>
             							<td>{$store.bank_branch_name}</td>
             						</tr>
-            
             						<tr>
             							<td><div align="right"><strong>{lang key='store::store.bank_account_number_lable'}</strong></div></td>
             							<td>{$store.bank_account_number}</td>
             							<td><div align="right"><strong>{lang key='store::store.bank_account_name_label'}</strong></div></td>
             							<td>{$store.bank_account_name}</td>
             						</tr>
-            
-            						<tr>
-            							<td><div align="right"><strong>{lang key='store::store.email_lable'}</strong></div></td>
-            							<td>{$store.email}</td>
-            							<td><div align="right"><strong>{lang key='store::store.contact_lable'}</strong></div></td>
-            							<td>{$store.contact_mobile}</td>
-            						</tr>
-            
-            						<tr>
-            							<td><div align="right"><strong>{lang key='store::store.label_province'}</strong></div></td>
-            							<td>{$store.province}</td>
-            							<td><div align="right"><strong>{lang key='store::store.label_city'}</strong></div></td>
-            							<td>{$store.city}</td>
-            						</tr>
-            
-            						<tr>
-            							<td><div align="right"><strong>{lang key='store::store.longitude_lable'}</strong></div></td>
-            							<td>{$store.longitude}</td>
-            							<td><div align="right"><strong>{lang key='store::store.latitude_lable'}</strong></div></td>
-            							<td>{$store.latitude}</td>
-            						</tr>
-            
             						<tr>
             							<td><div align="right"><strong>{lang key='store::store.bank_address_lable'}</strong></div></td>
             							<td colspan="3">{$store.bank_address}</td>
-            						</tr>
-            						<tr>
-            							<td><div align="right"><strong>{lang key='store::store.address_lable'}</strong></div></td>
-            							<td colspan="3">{$store.address}</td>
             						</tr>
             						</tbody>
             					</table>
