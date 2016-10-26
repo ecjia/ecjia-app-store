@@ -62,12 +62,13 @@
 					<div class="tab-pane active" id="tab1">
 						<div class="foldable-list move-mod-group">
             			<div class="accordion-group">
-            				<div class="accordion-heading">
-            					<a class="accordion-toggle collapsed move-mod-head" data-toggle="collapse" data-target="#goods_info_area_submit">
-            						<strong>店铺信息</strong>
-            					</a>
-            				</div>
-            				<div class="accordion-body in collapse" id="goods_info_area_submit">
+                			<div class="accordion-heading accordion-heading-url">
+        						<div class="accordion-toggle acc-in" data-toggle="collapse" data-target="#info">
+        							<strong>店铺信息</strong>
+        						</div>
+    							<a class="data-pjax accordion-url" href='{RC_Uri::url("store/admin/edit","store_id={$smarty.get.store_id}&step=base")}'>编辑</a>
+    						</div>
+            				<div class="accordion-body in collapse" id="info">
             					<table class="table table-oddtd m_b0">
             						<tbody class="first-td-no-leftbd">
             						<tr>
@@ -111,9 +112,12 @@
             			
             			<div class="accordion-group">
             				<div class="accordion-heading">
-            					<a class="accordion-toggle collapsed move-mod-head" data-toggle="collapse" data-target="#info2">
-            						<strong>经营主体信息</strong>
-            					</a>
+            					<div class="accordion-heading accordion-heading-url">
+            						<div class="accordion-toggle acc-in" data-toggle="collapse" data-target="#info2">
+            							<strong>经营主体信息</strong>
+            						</div>
+        							<a class="data-pjax accordion-url m_l10" href='{RC_Uri::url("store/admin/edit","store_id={$smarty.get.store_id}&step=identity")}'>编辑</a>
+        						</div>
             				</div>
             				<div class="accordion-body in collapse" id="info2">
             					<table class="table table-oddtd m_b0">
@@ -172,7 +176,7 @@
             						{/if}
             						<tr>
             						    <td><div align="right"><strong>认证状态：</strong></div></td>
-            							<td>{if $store.identity_status eq 0}待认证
+            							<td colspan="3">{if $store.identity_status eq 0}待认证
             							{else if $store.identity_status eq 1}认证中
             							{else if $store.identity_status eq 2}认证通过
             							{else if $store.identity_status eq 3}<span class="ecjiafc_red m_l10">不通过</span>{/if}
@@ -185,9 +189,12 @@
             			
             			<div class="accordion-group">
             				<div class="accordion-heading">
-            					<a class="accordion-toggle collapsed move-mod-head" data-toggle="collapse" data-target="#merchant_bank">
-            						<strong>银行账户信息</strong>
-            					</a>
+            					<div class="accordion-heading accordion-heading-url">
+            						<div class="accordion-toggle acc-in" data-toggle="collapse" data-target="#merchant_bank">
+            							<strong>银行账户信息</strong>
+            						</div>
+        							<a class="data-pjax accordion-url m_l10" href='{RC_Uri::url("store/admin/edit","store_id={$smarty.get.store_id}&step=bank")}'>编辑</a>
+        						</div>
             				</div>
             
             				<div class="accordion-body in collapse" id="merchant_bank">
@@ -216,9 +223,12 @@
             			
             			<div class="accordion-group">
             				<div class="accordion-heading">
-            					<a class="accordion-toggle collapsed move-mod-head" data-toggle="collapse" data-target="#identity_pic">
-            						<strong>证件电子版</strong>
-            					</a>
+            					<div class="accordion-heading accordion-heading-url">
+            						<div class="accordion-toggle acc-in" data-toggle="collapse" data-target="#identity_pic">
+            							<strong>证件电子版</strong>
+            						</div>
+        							<a class="data-pjax accordion-url" href='{RC_Uri::url("store/admin/edit","store_id={$smarty.get.store_id}&step=pic")}'>编辑</a>
+        						</div>
             				</div>
             
             				<div class="accordion-body in collapse" id="identity_pic">

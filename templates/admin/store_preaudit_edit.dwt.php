@@ -311,7 +311,7 @@
 							<option value="{$region.region_id}" {if $region.region_id eq $store.province}selected{/if}>{$region.region_name}</option>
 							<!-- {/foreach} -->
 						</select>
-						<select class="region-summary-cities w120" name="city" id="selCities" data-toggle="regionSummary" data-type="3" data-target="region-summary-district" >
+						<select class="region-summary-cities w120" name="city" id="selCities" data-url="{url path='store/admin_preaudit/get_region'}" data-toggle="regionSummary" data-type="3" data-target="region-summary-district" >
 							<option value='0'>{lang key='system::system.select_please'}</option>
 							<!-- {foreach from=$city item=region} -->
 							<option value="{$region.region_id}" {if $region.region_id eq $store.city}selected{/if}>{$region.region_name}</option>
