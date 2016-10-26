@@ -32,6 +32,7 @@
 					<li><a href='{RC_Uri::url("store/admin_commission/edit","store_id={$smarty.get.store_id}")}' class="pjax" >设置佣金</a></li>
 					<li><a href='{RC_Uri::url("commission/admin/init","store_id={$smarty.get.store_id}")}' class="pjax" >结算账单</a></li>
 					<li><a href='{RC_Uri::url("store/admin/view_staff","store_id={$smarty.get.store_id}")}' class="pjax" >查看员工</a></li>
+					<li><a href='{RC_Uri::url("store/admin/view_log","store_id={$smarty.get.store_id}")}' class="pjax" >查看日志</a></li>
 				</ul>
 				{/if}
 				

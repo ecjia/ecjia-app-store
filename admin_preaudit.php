@@ -51,6 +51,7 @@ class admin_preaudit extends ecjia_admin {
 	public function edit() {
 		$this->admin_priv('store_preaudit_update', ecjia::MSGTYPE_JSON);
 
+		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('store::store.store_update')));
 		$this->assign('ur_here',RC_Lang::get('store::store.store_update'));
 		$this->assign('action_link',array('href' => RC_Uri::url('store/admin_preaudit/init'),'text' => RC_Lang::get('store::store.store_preaudit')));
 
@@ -179,6 +180,7 @@ class admin_preaudit extends ecjia_admin {
 	public function check() {
 		$this->admin_priv('store_preaudit_check', ecjia::MSGTYPE_JSON);
 
+		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('store::store.check_view')));
 		$this->assign('ur_here',RC_Lang::get('store::store.check_view'));
 		$this->assign('action_link',array('href' => RC_Uri::url('store/admin_preaudit/init'),'text' => RC_Lang::get('store::store.store_preaudit')));
 
