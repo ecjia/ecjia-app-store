@@ -28,6 +28,7 @@ class admin extends ecjia_admin {
 		RC_Style::enqueue_style('splashy');
 
 		RC_Script::enqueue_script('store', RC_App::apps_url('statics/js/store.js', __FILE__));
+		RC_Script::enqueue_script('store_log', RC_App::apps_url('statics/js/store_log.js', __FILE__));
 		RC_Script::enqueue_script('commission_info',RC_App::apps_url('statics/js/commission.js' , __FILE__));
 		RC_Script::enqueue_script('region',RC_Uri::admin_url('statics/lib/ecjia-js/ecjia.region.js'));
 
@@ -47,7 +48,7 @@ class admin extends ecjia_admin {
 
 	    $store_list = $this->store_list();
 	    $cat_list = $this->get_cat_select_list();
-	    
+
 	    $this->assign('cat_list', $cat_list);
 	    $this->assign('store_list', $store_list);
 	    $this->assign('filter', $store_list['filter']);
@@ -108,11 +109,11 @@ class admin extends ecjia_admin {
 		}
 
 		$store_info = RC_DB::table('store_franchisee')->where('store_id', $store_id)->first();
-		
+
 		if (!$store_info) {
 		    $this->showmessage('店铺信息不存在', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
-		
+
 		if ($step == 'base') {
 		    $data = array(
 		        'cat_id'   	   				=> !empty($_POST['store_cat']) 		? $_POST['store_cat'] : '',
@@ -158,7 +159,7 @@ class admin extends ecjia_admin {
 		    } else {
 		        $business_licence_pic = $store_info['business_licence_pic'];
 		    }
-		    
+
 		    if (!empty($_FILES['two']['name'])) {
 		        $upload = RC_Upload::uploader('image', array('save_path' => 'data/store', 'auto_sub_dirs' => false));
 		        $info = $upload->upload($_FILES['two']);
@@ -171,7 +172,7 @@ class admin extends ecjia_admin {
 		    } else {
 		        $identity_pic_front = $store_info['identity_pic_front'];
 		    }
-		    
+
 		    if (!empty($_FILES['three']['name'])) {
 		        $upload = RC_Upload::uploader('image', array('save_path' => 'data/store', 'auto_sub_dirs' => false));
 		        $info = $upload->upload($_FILES['three']);
@@ -184,7 +185,7 @@ class admin extends ecjia_admin {
 		    } else {
 		        $identity_pic_back = $store_info['identity_pic_back'];
 		    }
-		    
+
 		    if (!empty($_FILES['four']['name'])) {
 		        $upload = RC_Upload::uploader('image', array('save_path' => 'data/store', 'auto_sub_dirs' => false));
 		        $info = $upload->upload($_FILES['four']);
@@ -197,7 +198,7 @@ class admin extends ecjia_admin {
 		    } else {
 		        $personhand_identity_pic = $store_info['personhand_identity_pic'];
 		    }
-		    
+
 		    $data = array(
 		        'identity_pic_front'		=> $identity_pic_front,
 		        'identity_pic_back' 		=> $identity_pic_back,
@@ -206,7 +207,7 @@ class admin extends ecjia_admin {
 		    );
 		}
 
-		
+
 
 		/* $data = array(
 			'cat_id'   	   				=> !empty($_POST['store_cat']) 		? $_POST['store_cat'] : '',
@@ -233,10 +234,10 @@ class admin extends ecjia_admin {
 		    'district'					=> !empty($_POST['district'])				? $_POST['district'] : '',
 			'bank_address'         		=> !empty($_POST['bank_address']) 			? $_POST['bank_address'] : '',
 		); */
-        
+
 		$sn =  RC_DB::table('store_franchisee')->where('store_id', $store_id)->update($data);
 		ecjia_admin::admin_log(RC_Lang::get('store::store.edit_store').' '.RC_Lang::get('store::store.store_title_lable').$store_info['merchants_name'], 'update', 'store');
-		$this->showmessage(RC_Lang::get('store::store.edit_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, 
+		$this->showmessage(RC_Lang::get('store::store.edit_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS,
 		    array('pjaxurl' => RC_Uri::url('store/admin/edit', array('store_id' => $store_id, 'step' => $step))));
 	}
 
@@ -245,7 +246,7 @@ class admin extends ecjia_admin {
 	 */
 	public function preview() {
 		$this->admin_priv('store_affiliate_manage', ecjia::MSGTYPE_JSON);
-		
+
 		$this->assign('action_link',array('href' => RC_Uri::url('store/admin/init'),'text' => RC_Lang::get('store::store.store_list')));
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('store::store.view')));
 
@@ -257,7 +258,7 @@ class admin extends ecjia_admin {
 		$store['province'] = RC_DB::table('region')->where('region_id', $store['province'])->pluck('region_name');
 		$store['city'] = RC_DB::table('region')->where('region_id', $store['city'])->pluck('region_name');
 		$store['district'] = RC_DB::table('region')->where('region_id', $store['district'])->pluck('region_name');
-		
+
 		$this->assign('ur_here', $store['merchants_name']/*  .'-'. RC_Lang::get('store::store.view') */);
 		$store['cat_name'] = RC_DB::table('store_category')->where('cat_id', $store['cat_id'])->select('cat_name')->pluck();
 		if ($store['percent_id']) {
@@ -270,17 +271,17 @@ class admin extends ecjia_admin {
 
 	//店铺设置
 	public function store_set() {
-	    
-	    
+
+
 	    $this->display('store_preview.dwt');
 	}
-	
+
 	//店铺设置修改
 	public function store_set_update() {
-	    
-	    
+
+
 	}
-	
+
 	/**
 	 * 查看员工
 	 */
@@ -452,6 +453,172 @@ class admin extends ecjia_admin {
 		$arr['target']  = htmlspecialchars($arr['target']);
 		echo json_encode($arr);
 	}
+
+    /**
+	 * 查看店铺日志
+	 */
+    public function view_log(){
+        $this->admin_priv('store_affiliate_manage', ecjia::MSGTYPE_JSON);
+        $this->assign('action_link',array('href' => RC_Uri::url('store/admin/init'),'text' => RC_Lang::get('store::store.store_list')));
+        ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('store::store.view')));
+        $store_id = intval($_GET['store_id']);
+        if(empty($store_id)){
+            $this->showmessage(__('请选择商家店铺'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+        }
+
+        $store_jslang = array(
+			'choose_delet_time'	=> __('请先选择删除日志的时间！'),
+			'delet_ok_1'		=> __('确定删除'),
+			'delet_ok_2'		=> __('的日志吗？'),
+			'ok'				=> __('确定'),
+			'cancel'			=> __('取消')
+		);
+		RC_Script::localize_script('store', 'store', $store_jslang );
+
+        $merchants_name = RC_DB::table('store_franchisee')->where('store_id', $store_id)->pluck('merchants_name');
+
+        $this->assign('ur_here', $merchants_name);
+
+        $logs = $this->get_admin_logs($_REQUEST,$store_id);
+        $user_id    = !empty($_REQUEST['userid']) ? intval($_REQUEST['userid']) : 0;
+        $ip         = !empty($_REQUEST['ip']) ? $_REQUEST['ip'] : '';
+        $keyword    = !empty($_REQUEST['keyword']) ? trim(htmlspecialchars($_REQUEST['keyword'])) : '';
+
+        $this->assign('user_id',    $user_id);
+        $this->assign('ip',         $ip);
+        $this->assign('keyword',    $keyword);
+		/* 查询IP地址列表 */
+		$ip_list = array();
+		$data = RC_DB::table('staff_log')->selectRaw('distinct ip_address')->get();
+		if (!empty($data)) {
+			foreach ($data as $row) {
+				$ip_list[] = $row['ip_address'];
+			}
+		}
+
+		/* 查询管理员列表 */
+		$user_list = array();
+		$userdata = RC_DB::table('staff_user')->where(RC_DB::raw('store_id'), $store_id)->get();
+		if (!empty($userdata)) {
+			foreach ($userdata as $row) {
+				if (!empty($row['user_id']) && !empty($row['name'])) {
+					$user_list[$row['user_id']] = $row['name'];
+				}
+			}
+		}
+
+		$this->assign('form_search_action', RC_Uri::url('store/admin/view_log', array('store_id' => $store_id)));
+
+		$this->assign('logs', $logs);
+		$this->assign('ip_list',   $ip_list);
+		$this->assign('user_list',   $user_list);
+        $this->display('staff_log.dwt');
+    }
+
+    /**
+	 *  获取管理员操作记录
+	 *  @param array $_GET , $_POST, $_REQUEST 参数
+	 * @return array 'list', 'page', 'desc'
+	 */
+	private function get_admin_logs($args = array(),$store_id) {
+		$db_staff_log = RC_DB::table('staff_log as sl')
+						->leftJoin('staff_user as su', RC_DB::raw('sl.user_id'), '=', RC_DB::raw('su.user_id'));
+
+		$user_id  = !empty($args['userid']) ? intval($args['userid']) : 0;
+		$ip = !empty($args['ip']) ? $args['ip'] : '';
+
+
+		$filter = array();
+		$filter['sort_by']      = !empty($args['sort_by']) ? safe_replace($args['sort_by']) :  RC_DB::raw('sl.log_id');
+		$filter['sort_order']   = !empty($args['sort_order']) ? safe_replace($args['sort_order']) : 'DESC';
+
+		$keyword = !empty($args['keyword']) ? trim(htmlspecialchars($args['keyword'])) : '';
+
+		//查询条件
+		$where = array();
+		if (!empty($ip)) {
+			$db_staff_log->where(RC_DB::raw('sl.ip_address'), $ip);
+		}
+
+		if(!empty($keyword)) {
+			$db_staff_log->where(RC_DB::raw('sl.log_info'), 'like', '%'.$keyword.'%');
+		}
+
+		if (!empty($user_id)) {
+			$db_staff_log->where(RC_DB::raw('su.user_id'), $user_id);
+		}
+        $db_staff_log->where(RC_DB::raw('su.store_id'), $store_id);
+
+		$count = $db_staff_log->count();
+		$page = new ecjia_page($count, 15, 5);
+		$data = $db_staff_log
+		->selectRaw('sl.log_id,sl.log_time,sl.log_info,sl.ip_address,sl.ip_location,su.name')
+		->orderby($filter['sort_by'], $filter['sort_order'])
+		->take(10)
+		->skip($page->start_id-1)
+		->get();
+		/* 获取管理员日志记录 */
+		$list = array();
+		if (!empty($data)) {
+			foreach ($data as $rows) {
+				$rows['log_time'] = RC_Time::local_date(ecjia::config('time_format'), $rows['log_time']);
+				$list[] = $rows;
+			}
+		}
+		return array('list' => $list, 'page' => $page->show(5), 'desc' => $page->page_desc());
+	}
+
+    /**
+     * 批量删除管理员操作日志
+     */
+    public function batch_drop(){
+        $this->admin_priv('store_affiliate_manage', ecjia::MSGTYPE_JSON);
+
+        $drop_type_date = isset($_POST['drop_type_date']) ? $_POST['drop_type_date'] : '';
+        $staff_log = RC_DB::table('staff_log');
+        $store_id = $_GET['store_id'];
+		/* 按日期删除日志 */
+		if ($drop_type_date) {
+			if ($_POST['log_date'] > 0) {
+				$where = array();
+				switch ($_POST['log_date']) {
+					case 1:
+						$a_week = RC_Time::gmtime() - (3600 * 24 * 7);
+						$staff_log->where('log_time', '<=',$a_week);
+						$deltime = __('一周之前');
+					break;
+					case 2:
+						$a_month = RC_Time::gmtime() - (3600 * 24 * 30);
+                        $staff_log->where('log_time', '<=',$a_month);
+						$deltime = __('一个月前');
+					break;
+					case 3:
+						$three_month = RC_Time::gmtime() - (3600 * 24 * 90);
+                        $staff_log->where('log_time', '<=',$three_month);
+						$deltime = __('三个月前');
+					break;
+					case 4:
+						$half_year = RC_Time::gmtime() - (3600 * 24 * 180);
+                        $staff_log->where('log_time', '<=',$half_year);
+						$deltime = __('半年之前');
+					break;
+					case 5:
+					default:
+						$a_year = RC_Time::gmtime() - (3600 * 24 * 365);
+						$where['log_time'] = array('elt' => $a_year);
+                        $staff_log->where('log_time', '<=',$a_year);
+						$deltime = __('一年之前');
+					break;
+				}
+
+				RC_DB::table('staff_log')->where('store_id', $store_id)->delete();
+                $this->showmessage(sprintf(__('%s 的日志成功删除。'), $deltime), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin/view_log', array('store_id' => $store_id))));
+            }
+        }else{
+            $this->showmessage(__('请选择日期'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+        }
+    }
+
 }
 
 //end

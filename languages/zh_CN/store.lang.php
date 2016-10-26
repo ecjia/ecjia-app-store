@@ -121,8 +121,23 @@ return array(
 	'people_id'			=>	'身份证',
 	'passport'			=>	'护照',
 	'hong_kong_and_macao_pass'			=>	'港澳通行证',
-    
+
     'edit_store'		=>	'编辑商家信息',
+
+    // 日志
+    'log_list'	=>'员工日志记录',
+	'log_id'	=>'编号',
+	'log_name'	=>'操作者',
+	'log_time'	=>'操作日期',
+    'log_ip'	=>'IP地址',
+	'log_info'	=>'操作记录',
+    'js_lang' => array(
+			'choose_delet_time' => '请先选择删除日志的时间！',
+			'delet_ok_1' 		=> '确定删除',
+			'delet_ok_2' 		=> '的日志吗？',
+			'ok' 				=> '确定',
+			'cancel' 			=> '取消',
+	),
 );
 
 //end
