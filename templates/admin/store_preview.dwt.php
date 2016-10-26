@@ -11,31 +11,35 @@
 .heading .btn { margin-top:-3px;}
 </style>
 <div>
-                	<h3 class="heading">
-                		<!-- {if $ur_here}{$ur_here}{/if} -->
-                		<!-- {if $action_link} -->
-                		<a class="data-pjax btn plus_or_reply" id="sticky_a" href="{$action_link.href}"><i class="fontello-icon-reply"></i>{$action_link.text}</a>
-                		<!-- {/if} -->
-                		{if $store.status eq 1}<a class="data-pjax btn f_r" href='{RC_Uri::url("store/admin/status","&status=1&store_id={$smarty.get.store_id}")}'><i class="fontello-icon-lock"></i>锁定</a>{/if}
-    					{if $store.status eq 2}<a class="data-pjax btn f_r" href='{RC_Uri::url("store/admin/status","&status=2&store_id={$smarty.get.store_id}")}'><i class="fontello-icon-lock-open"></i>解锁</a>{/if}
-    					<a class="data-pjax btn f_r" href='{RC_Uri::url("store/admin/edit","store_id={$smarty.get.store_id}")}'><i class="fontello-icon-edit"></i>编辑</a>
-                	</h3>
-                </div>
+	<h3 class="heading">
+		<!-- {if $ur_here}{$ur_here}{/if} -->
+		<!-- {if $action_link} -->
+		<a class="data-pjax btn plus_or_reply" id="sticky_a" href="{$action_link.href}"><i class="fontello-icon-reply"></i>{$action_link.text}</a>
+		<!-- {/if} -->
+		{if $store.status eq 1}<a class="data-pjax btn f_r" href='{RC_Uri::url("store/admin/status","&status=1&store_id={$smarty.get.store_id}")}'><i class="fontello-icon-lock"></i>锁定</a>{/if}
+		{if $store.status eq 2}<a class="data-pjax btn f_r" href='{RC_Uri::url("store/admin/status","&status=2&store_id={$smarty.get.store_id}")}'><i class="fontello-icon-lock-open"></i>解锁</a>{/if}
+		<a class="data-pjax btn f_r" href='{RC_Uri::url("store/admin/edit","store_id={$smarty.get.store_id}")}'><i class="fontello-icon-edit"></i>编辑</a>
+	</h3>
+</div>
 <div class="row-fluid">
 	<form method="post" class="form-horizontal" action="{$form_action}" name="theForm" enctype="multipart/form-data">
 		<div class="span12">
 			<div class="tabbable tabs-left">
-				<!-- <ul class="nav nav-tabs tab_merchants_nav">
+			{if $smarty.get.style neq 2}
+				<ul class="nav nav-tabs tab_merchants_nav">
 					<li class="active"><a href="#tab1" data-toggle="tab">基本信息</a></li>
+					<li><a href='{RC_Uri::url("store/admin/store_set","store_id={$smarty.get.store_id}")}' class="pjax" >店铺设置</a></li>
 					<li><a href='{RC_Uri::url("store/admin_commission/edit","store_id={$smarty.get.store_id}")}' class="pjax" >设置佣金</a></li>
 					<li><a href='{RC_Uri::url("commission/admin/init","store_id={$smarty.get.store_id}")}' class="pjax" >结算账单</a></li>
 					<li><a href='{RC_Uri::url("store/admin/view_staff","store_id={$smarty.get.store_id}")}' class="pjax" >查看员工</a></li>
-				</ul> -->
+				</ul>
+				{/if}
 				
+				{if $smarty.get.style eq 2}
 				<div class="float_block" style="    float: left;
     position: relative;
     margin-left: 30px;top:0;width:120px">
-                	<!-- <h4>快速导航</h4> -->
+                	<h4>快速导航</h4>
                 	<ul class="unstyled" style="">
                 	    <li data-toggle="goarea" data-area="#" class="active">
                 			<i class="fontello-icon-doc-text"></i>基本信息
@@ -51,6 +55,7 @@
                 		</li>
                 	</ul>
                 </div>
+                {/if}
 				
 				<div class="tab-content tab_merchants">
 				
@@ -67,13 +72,19 @@
             						<tbody class="first-td-no-leftbd">
             						<tr>
             							<td><div align="right"><strong>{lang key='store::store.store_title_lable'}</strong></div></td>
-            							<td><strong>{$store.merchants_name}</strong></td>
-            							<td><div align="right"><strong>{lang key='store::store.store_keywords_lable'}</strong></div></td>
-            							<td>{$store.shop_keyword}</td>
-            						</tr>
-            						<tr>
+            							<td><strong>{$store.merchants_name}</strong>
+            							{if $store.identity_status eq 2}<span class="label label-success m_l10">已认证</span>{else}<span class="label m_l10">未认证</span>{/if}
+            							{if $store.status eq 2}<span class="label label-important m_l10">锁定</span>{/if}</td>
             							<td><div align="right"><strong>{lang key='store::store.store_cat_lable'}</strong></div></td>
             							<td>{if $store.cat_name eq ''}未分类{else}{$store.cat_name}{/if}</td>
+            						</tr>
+            						<tr>
+            							<td><div align="right"><strong>{lang key='store::store.store_keywords_lable'}</strong></div></td>
+            							<td colspan="3">{$store.shop_keyword}</td>
+            						</tr>
+            						<tr>
+            							<td><div align="right"><strong>分成比例：</strong></div></td>
+            							<td>{if $store.percent_value}{$store.percent_value}%{else}未设置，默认100%{/if}&nbsp;&nbsp;<a href='{RC_Uri::url("store/admin_commission/edit","store_id={$smarty.get.store_id}")}' title="编辑">编辑</a></td>
             							<td><div align="right"><strong>开店时间：</strong></div></td>
             							<td>{$store.confirm_time}</td>
             						</tr>
@@ -85,17 +96,13 @@
             						</tr>
             						<tr>
             							<td><div align="right"><strong>所在地区：</strong></div></td>
-            							<td>{$store.province}&nbsp;&nbsp;{$store.city}</td>
+            							<td>{$store.province}&nbsp;{$store.city}&nbsp;{$store.district}</td>
             							<td><div align="right"><strong>经纬度：</strong></div></td>
             							<td>{$store.longitude}&nbsp;&nbsp;{$store.latitude}</td>
             						</tr>
             						<tr>
             							<td><div align="right"><strong>{lang key='store::store.address_lable'}</strong></div></td>
             							<td colspan="3">{$store.address}{if $store.longitude && $store.latitude}&nbsp;&nbsp;<a href="http://api.map.baidu.com/marker?location={$store.latitude},{$store.longitude}&title=我的位置&content={$store.merchants_name}&output=html" title="查看地图" target="_blank">[查看地图]</a>{/if}</td>
-            						</tr>
-            						<tr>
-            							<td><div align="right"><strong>{lang key='store::store.address_lable'}</strong></div></td>
-            							<td colspan="3">分成比例，锁定状态，认证状态，</td>
             						</tr>
             						</tbody>
             					</table>
@@ -163,6 +170,14 @@
             							<td>{$store.identity_number}</td>
             						</tr>
             						{/if}
+            						<tr>
+            						    <td><div align="right"><strong>认证状态：</strong></div></td>
+            							<td>{if $store.identity_status eq 0}待认证
+            							{else if $store.identity_status eq 1}认证中
+            							{else if $store.identity_status eq 2}认证通过
+            							{else if $store.identity_status eq 3}<span class="ecjiafc_red m_l10">不通过</span>{/if}
+            							</td>
+            						</tr>
             						</tbody>
             					</table>
             				</div>

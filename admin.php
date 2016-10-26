@@ -196,7 +196,6 @@ class admin extends ecjia_admin {
 	 */
 	public function preview() {
 		$this->admin_priv('store_affiliate_manage', ecjia::MSGTYPE_JSON);
-
 		
 		$this->assign('action_link',array('href' => RC_Uri::url('store/admin/init'),'text' => RC_Lang::get('store::store.store_list')));
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('store::store.view')));
@@ -206,19 +205,33 @@ class admin extends ecjia_admin {
 		$store['apply_time']	= RC_Time::local_date(ecjia::config('time_format'), $store['apply_time']);
 		$store['confirm_time']	= RC_Time::local_date(ecjia::config('time_format'), $store['confirm_time']);
 
-		$store['province'] = RC_DB::table('region')->where('region_id', $store['province'])
-													->select('region_name')
-													->pluck();
-		$store['city'] = RC_DB::table('region')->where('region_id', $store['city'])
-												->select('region_name')
-												->pluck();
+		$store['province'] = RC_DB::table('region')->where('region_id', $store['province'])->pluck('region_name');
+		$store['city'] = RC_DB::table('region')->where('region_id', $store['city'])->pluck('region_name');
+		$store['district'] = RC_DB::table('region')->where('region_id', $store['district'])->pluck('region_name');
+		
 		$this->assign('ur_here', $store['merchants_name']/*  .'-'. RC_Lang::get('store::store.view') */);
 		$store['cat_name'] = RC_DB::table('store_category')->where('cat_id', $store['cat_id'])->select('cat_name')->pluck();
+		if ($store['percent_id']) {
+		    $store['percent_value'] = RC_DB::table('store_percent')->where('percent_id', $store['percent_id'])->select('percent_value')->pluck();
+		}
 
 		$this->assign('store', $store);
 		$this->display('store_preview.dwt');
 	}
 
+	//店铺设置
+	public function store_set() {
+	    
+	    
+	    $this->display('store_preview.dwt');
+	}
+	
+	//店铺设置修改
+	public function store_set_update() {
+	    
+	    
+	}
+	
 	/**
 	 * 查看员工
 	 */
