@@ -11,6 +11,7 @@ class admin extends ecjia_admin {
 
 		$this->db_region = RC_Model::model('store/region_model');
 		RC_Loader::load_app_func('global');
+		RC_Loader::load_app_func('store_merchant');
 		assign_adminlog_content();
 
 		//全局JS和CSS
@@ -68,6 +69,7 @@ class admin extends ecjia_admin {
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('编辑入驻商'));
 
 		$store_id = intval($_GET['store_id']);
+        $menu = set_store_menu($store_id, 'store_set');
 		$store = RC_DB::table('store_franchisee')->where('store_id', $store_id)->first();
 		$store['apply_time']	= RC_Time::local_date(ecjia::config('time_format'), $store['apply_time']);
 		$store['confirm_time']	= RC_Time::local_date(ecjia::config('time_format'), $store['confirm_time']);
@@ -86,6 +88,7 @@ class admin extends ecjia_admin {
 		$this->assign('district', $district);
 
 		$this->assign('cat_list', $cat_list);
+		$this->assign('menu', $menu);
 		$this->assign('certificates_list', $certificates_list);
 		$this->assign('store', $store);
 		$this->assign('form_action', RC_Uri::url('store/admin/update'));
@@ -249,8 +252,10 @@ class admin extends ecjia_admin {
 
 		$this->assign('action_link',array('href' => RC_Uri::url('store/admin/init'),'text' => RC_Lang::get('store::store.store_list')));
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('store::store.view')));
+        $store_id = intval($_GET['store_id']);
 
-		$store_id = intval($_GET['store_id']);
+        $menu = set_store_menu($store_id, 'preview');
+
 		$store = RC_DB::table('store_franchisee')->where('store_id', $store_id)->first();
 		$store['apply_time']	= RC_Time::local_date(ecjia::config('time_format'), $store['apply_time']);
 		$store['confirm_time']	= RC_Time::local_date(ecjia::config('time_format'), $store['confirm_time']);
@@ -266,13 +271,19 @@ class admin extends ecjia_admin {
 		}
 
 		$this->assign('store', $store);
+		$this->assign('menu', $menu);
 		$this->display('store_preview.dwt');
 	}
 
 	//店铺设置
 	public function store_set() {
 
+        $store_id = intval($_GET['store_id']);
+        $menu = set_store_menu($store_id, 'store_set');
 
+        $store_info = get_merchant_info($store_id, $arr);
+        $this->assign('menu', $menu);
+        $this->assign('store_info', $store_info);
 	    $this->display('store_preview.dwt');
 	}
 
@@ -292,7 +303,7 @@ class admin extends ecjia_admin {
 		$store_id = intval($_GET['store_id']);
 		$main_staff = RC_DB::table('staff_user')->where('store_id', $store_id)->where('parent_id', 0)->first();
 		$parent_id = $main_staff['user_id'];
-
+        $menu = set_store_menu($store_id, 'view_staff');
 		$staff_list = RC_DB::table('staff_user')->where('parent_id', $parent_id)->get();
 
 		$this->assign('action_link',array('href' => RC_Uri::url('store/admin/init'),'text' => RC_Lang::get('store::store.store_list')));
@@ -300,7 +311,9 @@ class admin extends ecjia_admin {
 		$this->assign('main_staff', $main_staff);
 		$this->assign('staff_list', $staff_list);
 
+
 		$this->assign('store', $store);
+		$this->assign('menu', $menu);
 		$this->display('store_staff.dwt');
 	}
 
@@ -465,7 +478,7 @@ class admin extends ecjia_admin {
         if(empty($store_id)){
             $this->showmessage(__('请选择商家店铺'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
-
+        $menu = set_store_menu($store_id, 'view_log');
         $store_jslang = array(
 			'choose_delet_time'	=> __('请先选择删除日志的时间！'),
 			'delet_ok_1'		=> __('确定删除'),
@@ -510,6 +523,7 @@ class admin extends ecjia_admin {
 		$this->assign('form_search_action', RC_Uri::url('store/admin/view_log', array('store_id' => $store_id)));
 
 		$this->assign('logs', $logs);
+		$this->assign('menu', $menu);
 		$this->assign('ip_list',   $ip_list);
 		$this->assign('user_list',   $user_list);
         $this->display('staff_log.dwt');

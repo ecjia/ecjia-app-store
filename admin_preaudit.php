@@ -211,21 +211,30 @@ class admin_preaudit extends ecjia_admin {
 		    $log_type = 1;
 		}
 		
-		$log_rs = RC_DB::table('store_check_log')->where('store_id', $log_store_id)->where('type', $log_type)->orderBy('id', 'desc')->get();
+		$log_rs = RC_DB::table('store_check_log')->where('store_id', $log_store_id)->where('type', $log_type)->orderBy('id', 'desc')->take(3)->get();
 		foreach ($log_rs as &$val) {
 		    $val['log'] = null;
-		    _dump(unserialize($val['original_data']));
-		    foreach (unserialize($val['original_data']) as $key => $original_data) {
-		        $new_data = unserialize($val['new_data']);
-		        foreach ($original_data as $key2 => $original) {
-// 		            $val['log'] .= '<br>“'.$key2 . '”，旧值为“'. $original.'”，新值为“'.$new_data[$key][$key2].'”；';
-		            $val['log'] .= '<br><code>'.$key2 . '</code>，旧值为<code>'. $original.'</code>，新值为<code>'.$new_data[$key][$key2].'</code>；';
+// 		    _dump(unserialize($val['original_data']));
+// 		    _dump(unserialize($val['new_data']));
+		    $new_data = unserialize($val['new_data']);
+		    $original_data = unserialize($val['original_data']);
+		    if ($original_data) {
+		        foreach ($original_data as $key => $original_data) {
+		            $val['log'] .= '<br><code>'.$original_data['name'] . '</code>，旧值为<code>'. $original_data['value'].'</code>，新值为<code>'.$new_data[$key]['value'].'</code>；';
 		        }
 		    }
 		    
+// 		    foreach (unserialize($val['original_data']) as $key => $original_data) {
+// 		        $new_data = unserialize($val['new_data']);
+// 		        foreach ($original_data as $key2 => $original) {
+// // 		            $val['log'] .= '<br>“'.$key2 . '”，旧值为“'. $original.'”，新值为“'.$new_data[$key][$key2].'”；';
+// 		            $val['log'] .= '<br><code>'.$key2 . '</code>，旧值为<code>'. $original.'</code>，新值为<code>'.$new_data[$key][$key2].'</code>；';
+// 		        }
+// 		    }
+		    
 		    $val['formate_time'] = RC_Time::local_date('Y-m-d H:i:s', $val['time']);
 		}
-// 		_dump(1,1);
+// 		_dump($log_rs,1);
 		$this->assign('log_list', $log_rs);
 
 		$this->display('store_preaudit_check.dwt');

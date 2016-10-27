@@ -18,48 +18,20 @@
 		<!-- {/if} -->
 		{if $store.status eq 1}<a class="data-pjax btn f_r" href='{RC_Uri::url("store/admin/status","&status=1&store_id={$smarty.get.store_id}")}'><i class="fontello-icon-lock"></i>锁定</a>{/if}
 		{if $store.status eq 2}<a class="data-pjax btn f_r" href='{RC_Uri::url("store/admin/status","&status=2&store_id={$smarty.get.store_id}")}'><i class="fontello-icon-lock-open"></i>解锁</a>{/if}
-		<a class="data-pjax btn f_r" href='{RC_Uri::url("store/admin/edit","store_id={$smarty.get.store_id}")}'><i class="fontello-icon-edit"></i>编辑</a>
 	</h3>
 </div>
 <div class="row-fluid">
 	<form method="post" class="form-horizontal" action="{$form_action}" name="theForm" enctype="multipart/form-data">
 		<div class="span12">
 			<div class="tabbable tabs-left">
-			{if $smarty.get.style neq 2}
 				<ul class="nav nav-tabs tab_merchants_nav">
-					<li class="active"><a href="#tab1" data-toggle="tab">基本信息</a></li>
-					<li><a href='{RC_Uri::url("store/admin/store_set","store_id={$smarty.get.store_id}")}' class="pjax" >店铺设置</a></li>
-					<li><a href='{RC_Uri::url("store/admin_commission/edit","store_id={$smarty.get.store_id}")}' class="pjax" >设置佣金</a></li>
-					<li><a href='{RC_Uri::url("commission/admin/init","store_id={$smarty.get.store_id}")}' class="pjax" >结算账单</a></li>
-					<li><a href='{RC_Uri::url("store/admin/view_staff","store_id={$smarty.get.store_id}")}' class="pjax" >查看员工</a></li>
-					<li><a href='{RC_Uri::url("store/admin/view_log","store_id={$smarty.get.store_id}")}' class="pjax" >查看日志</a></li>
+                    <!-- {foreach from=$menu item=val} -->
+                    <li {if $val.active}class="active"{/if}><a href="{$val.url}" {if $val.active}data-toggle="tab"{/if}>{$val.menu}</a></li>
+                    <!-- {/foreach} -->
 				</ul>
-				{/if}
-				
-				{if $smarty.get.style eq 2}
-				<div class="float_block" style="    float: left;
-    position: relative;
-    margin-left: 30px;top:0;width:120px">
-                	<h4>快速导航</h4>
-                	<ul class="unstyled" style="">
-                	    <li data-toggle="goarea" data-area="#" class="active">
-                			<i class="fontello-icon-doc-text"></i>基本信息
-                		</li>
-                		<li data-toggle="goarea" data-area="#">
-                			<a href='{RC_Uri::url("store/admin_commission/edit","store_id={$smarty.get.store_id}")}' class="data-pjax"><i class="fontello-icon-edit"></i>设置佣金</a>
-                		</li>
-                		<li data-toggle="goarea" data-area="#">
-                			<a href='{RC_Uri::url("commission/admin/init","store_id={$smarty.get.store_id}")}' class="data-pjax"><i class="fontello-icon-chat"></i>结算账单</a>
-                		</li>
-                		<li data-toggle="goarea" data-area="#">
-                			<a href='{RC_Uri::url("store/admin/view_staff","store_id={$smarty.get.store_id}")}' class="data-pjax"><i class="fontello-icon-cog-alt"></i>查看员工</a>
-                		</li>
-                	</ul>
-                </div>
-                {/if}
-				
+
 				<div class="tab-content tab_merchants">
-				
+
 					<div class="tab-pane active" id="tab1">
 						<div class="foldable-list move-mod-group">
             			<div class="accordion-group">
@@ -110,7 +82,7 @@
             					</table>
             				</div>
             			</div>
-            			
+
             			<div class="accordion-group">
             				<div class="accordion-heading">
             					<div class="accordion-heading accordion-heading-url">
@@ -130,7 +102,7 @@
             							<td><div align="right"><strong>负责人:</strong></div></td>
             							<td>{$store.responsible_person}</td>
             						</tr>
-            
+
             						<tr>
             							<td ><div align="right"><strong>{lang key='store::store.identity_type_lable'}</strong></div></td>
             							{if $store.identity_type eq 1}
@@ -152,14 +124,14 @@
             							<td><div align="right"><strong>{lang key='store::store.person_lable'}</strong></div></td>
             							<td>{$store.responsible_person}</td>
             						</tr>
-            
+
             						<tr>
             						    <td><div align="right"><strong>{lang key='store::store.companyname_lable'}</strong></div></td>
             							<td>{$store.company_name}</td>
             							<td><div align="right"><strong>{lang key='store::store.business_licence_lable'}</strong></div></td>
             							<td >{$store.business_licence}</td>
             						</tr>
-            
+
             						<tr>
             							<td><div align="right"><strong>{lang key='store::store.identity_type_lable'}</strong></div></td>
             							{if $store.identity_type eq 1}
@@ -187,7 +159,7 @@
             					</table>
             				</div>
             			</div>
-            			
+
             			<div class="accordion-group">
             				<div class="accordion-heading">
             					<div class="accordion-heading accordion-heading-url">
@@ -197,7 +169,7 @@
         							<a class="data-pjax accordion-url m_l10" href='{RC_Uri::url("store/admin/edit","store_id={$smarty.get.store_id}&step=bank")}'>编辑</a>
         						</div>
             				</div>
-            
+
             				<div class="accordion-body in collapse" id="merchant_bank">
             					<table class="table table-oddtd m_b0">
             						<tbody class="first-td-no-leftbd">
@@ -221,7 +193,7 @@
             					</table>
             				</div>
             			</div>
-            			
+
             			<div class="accordion-group">
             				<div class="accordion-heading">
             					<div class="accordion-heading accordion-heading-url">
@@ -231,7 +203,7 @@
         							<a class="data-pjax accordion-url" href='{RC_Uri::url("store/admin/edit","store_id={$smarty.get.store_id}&step=pic")}'>编辑</a>
         						</div>
             				</div>
-            
+
             				<div class="accordion-body in collapse" id="identity_pic">
             					<table class="table table-oddtd m_b0">
             						<tbody class="first-td-no-leftbd">
@@ -292,7 +264,7 @@
             				</div>
             			</div>
 		                </div>
-							
+
 					</div>
 				</div>
 			</div>

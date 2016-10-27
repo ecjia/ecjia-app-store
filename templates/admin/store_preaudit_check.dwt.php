@@ -276,14 +276,14 @@
         			<table class="table">
         				<thead>
         				  	<tr>
-        					    <th colspan="2" style="font-size:13px;background-color:#fff;">历史记录</th>
+        					    <th colspan="2" style="font-size:13px;background-color:#fff;">日志记录<a class="f_r data-pjax" style="font-weight:normal">更多</a></th>
         				  	</tr>
         			  	</thead>
         			  	<tbody>
         			  	{foreach from=$log_list item=list}
         			  		<tr align="center">
         				    <td style="padding:8px 0; width:5px; overflow:hidden;"><i class=" fontello-icon-right-dir"></i></td>
-        				    <td class="center-td" style="border-top:1px solid #e5e5e5; padding-left:0;"><span>{$list.formate_time}，</span><span>{$list.info}{$list.log}</span>&nbsp;</td>
+        				    <td class="center-td" style="border-top:1px solid #e5e5e5; padding-left:0;"><span>{$list.formate_time}，</span><span style="line-height: 170%">{$list.name} {$list.info}{$list.log}</span>&nbsp;</td>
         				    </tr>
         			    {/foreach}
         				</tbody>
