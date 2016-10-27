@@ -90,7 +90,7 @@
                         </form>
                         <form class="f_r" name="searchForm" method="post" action="{$form_search_action}">
                             <!-- 关键字 -->
-                            <input type="text" name="keyword" size="15" placeholder="{t}请输入关键字{/t}" />
+                            <input type="text" name="keyword" size="15" placeholder="{t}请输入关键字{/t}" value="{$smarty.get.keyword}" />
                             <button class="btn" type="submit">{t}搜索{/t}</button>
                         </form>
                     </div>
