@@ -17,12 +17,12 @@
 	<div class="span12">
 
 	<div class="control-group control-group-small">
-		<table class="table table-hover">
+		<table class="table">
 		    <thead>
 		      <tr>
-		      <th>时间</th>
-		      <th>操作人</th>
-		      <th>日志</th>
+    		      <th class="w120">时间</th>
+    		      <th>操作人</th>
+    		      <th>日志</th>
 		      </tr>
 		      
 		    </thead>
@@ -31,7 +31,29 @@
 		  		<tr align="center">
 			    <td>{$list.formate_time}</td>
 			    <td>{$list.name}</td>
-			    <td><span style="line-height: 170%"> {$list.info}{$list.log}</span></td>
+			    <td><span style="line-height: 170%"> {$list.info}</span>
+    			    {if $list.log}
+        			    <table class="table table-condensed table-hover log">
+                            <thead>
+                                <tr>
+                                <th>字段</th>
+                                <th>旧值</th>
+                                <th>新值</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <!-- {foreach from=$list.log item=log} -->
+                            <tr>
+                                <td>{$log.name}</td>
+                                <td>{if $log.is_img}{$log.original_data}{else}<code>{$log.original_data}</code>{/if}</td>
+                                <td>{if $log.is_img}{$log.new_data}{else}<code>{$log.new_data}</code>{/if}</td>
+                            </tr>
+                            <!-- {/foreach} -->
+                            </tbody>
+                        </table>
+                    {/if}
+			    
+			    </td>
 			    </tr>
 		    {/foreach}
 			</tbody>

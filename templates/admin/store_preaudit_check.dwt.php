@@ -329,7 +329,7 @@
                         <!-- {/foreach} -->
                         </tbody>
                     </table>
-                    {/if}
+                {/if}
 			    </td>
 			    </tr>
 		    {/foreach}
