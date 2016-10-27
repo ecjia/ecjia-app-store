@@ -22,14 +22,13 @@
 <div class="row-fluid">
 	<div class="span12">
 		<div class="tabbable tabs-left">
-		
+
 			<ul class="nav nav-tabs tab_merchants_nav">
-				<li><a href='{RC_Uri::url("store/admin/preview","store_id={$smarty.get.store_id}")}' class="pjax" >基本信息</a></li>
-				<li><a href='{RC_Uri::url("store/admin_commission/edit","store_id={$smarty.get.store_id}")}' class="pjax" >设置佣金</a></li>
-				<li><a href='{RC_Uri::url("commission/admin/init","store_id={$smarty.get.store_id}")}' class="pjax" >结算账单</a></li>
-				<li class="active"><a href='{RC_Uri::url("store/admin/view_staff","store_id={$smarty.get.store_id}")}' class="pjax" >查看员工</a></li>
+                <!-- {foreach from=$menu item=val} -->
+                <li {if $val.active}class="active"{/if}><a href="{$val.url}" {if $val.active}data-toggle="tab"{/if}>{$val.menu}</a></li>
+                <!-- {/foreach} -->
 			</ul>
-			
+
 			<div class="tab-content tab_merchants">
 				<div class="tab-pane active" style="min-height:300px;">
 				<div class="row-fluid">
@@ -37,7 +36,7 @@
                 		<strong class="f_l">{lang key='store::store.shopowner'}{$main_staff.name}</strong>
                 	</div>
                 </div>
-                
+
                 <div class="row-fluid goods_preview">
                 	<div class="span12">
                 		<div class="row-fluid">
@@ -60,7 +59,7 @@
                 		</div>
                 	</div>
                 </div>
-                
+
                 <div class="row-fluid">
                 	<div class="span12">
                 		<table class="table table-striped smpl_tbl table-hide-edit">
