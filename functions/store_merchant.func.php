@@ -59,3 +59,64 @@ function get_merchant_config($store_id, $code, $arr){
         return $config;
     }
 }
+
+/*
+ * 设置店铺配置信息
+ */
+function set_merchant_config($store_id, $code, $value, $arr){
+    $merchants_config = RC_Model::model('merchant/merchants_config_model');
+    if(empty($code)){
+        if(is_array($arr)){
+            foreach ($arr as $key => $val) {
+                $count = RC_DB::table('merchants_config')->where('store_id', $store_id)->where('code', '=', $key)->count();
+                if(empty($count)){
+                    RC_DB::table('merchants_config')->insert(array('store_id' => $store_id, 'code' => $key, 'value' => $val));
+                }else{
+                    RC_DB::table('merchants_config')->where('store_id', $store_id)->where('code', '=', $key)->update(array('value' => $val));
+                }
+            }
+            return true;
+        }else{
+            return new ecjia_error(101, '参数错误');
+        }
+    }else{
+        $count = RC_DB::table('merchants_config')->where('store_id', $store_id)->where('code', '=', $key)->count();
+        if(empty($count)){
+            RC_DB::table('merchants_config')->insert(array('store_id' => $store_id, 'code' => $code, 'value' => $value));
+        }else{
+            RC_DB::table('merchants_config')->where('store_id', $store_id)->where('code', '=', $key)->update(array('value' => $value));
+        }
+        return true;
+    }
+}
+
+/*
+ * 上传图片
+ *  @param string $path 上传路径
+ *  @param string $code 接收图片参数
+ *  @param string $old_images 旧图片
+ */
+function file_upload_info($path, $code, $old_images, $store_id){
+    $code = empty($code)? $path : $code;
+    $upload = RC_Upload::uploader('image', array('save_path' => 'merchant/'.$store_id.'/data/'.$path, 'auto_sub_dirs' => true));
+    $file = $_FILES[$code];
+
+    if (!empty($file)&&((isset($file['error']) && $file['error'] == 0) || (!isset($file['error']) && $file['tmp_name'] != 'none'))) {
+        // 检测图片类型是否符合
+        if (!$upload->check_upload_file($file)){
+           ecjia_admin::$controller->showmessage($upload->error(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+        }else{
+            $image_info = $upload->upload($file);
+            if (empty($image_info)) {
+               ecjia_admin::$controller->showmessage($upload->error(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            }
+            // 删除旧的图片
+            if (!empty($old_images)) {
+               $upload->remove($old_images);
+            }
+            $img_path = $upload->get_position($image_info);
+        }
+
+        return $img_path;
+    }
+}

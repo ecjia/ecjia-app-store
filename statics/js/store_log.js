@@ -51,5 +51,16 @@
 					}, {ok:store.ok, cancel:store.cancel});
 			});
 		},
+
+        range : function(){
+            $('.range-slider').jRange({
+                from: 0, to: 1440, step:30,
+                scale: ['00:00','03:00','06:00', '09:00','12:00' ,'15:00','18:00','21:00','24:00'],
+                format: '%s',
+                width: 500,
+                showLabels: true,
+                isRange : true
+            });
+        }
     }
 })(ecjia.admin, jQuery);
