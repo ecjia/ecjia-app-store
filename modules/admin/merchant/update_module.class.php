@@ -2,69 +2,78 @@
 defined('IN_ECJIA') or exit('No permission resources.');
 /**
  * 店铺update信息
- * @author luchongchong
+ * @author 
  *
  */
-class update_module implements ecjia_interface
-{
- 	
-    public function run(ecjia_api & $api)
+class update_module extends api_admin implements api_interface {
+    public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) 
     { 
-    	$ecjia = RC_Loader::load_app_class('api_admin', 'api');
-    	$ecjia->authadminSession();
-    	
-    	$ssi_db				= RC_Loader::load_app_model('seller_shopinfo_model', 'seller');
-    	$msi_category_db 	= RC_Loader::load_app_model('merchants_shop_information_model', 'seller');
-		$seller_category	= isset($_POST['seller_category']) ? $_POST['seller_category'] : null;
-		$seller_telephone	= isset($_POST['seller_telephone']) ? $_POST['seller_telephone'] : null;
-		$province			= isset($_POST['provice']) ? $_POST['provice'] :null;
-		$city				= isset($_POST['city']) ? $_POST['city'] : null;
-		$seller_address		= isset($_POST['seller_address']) ? $_POST['seller_address'] : null;
-		$seller_description	= isset($_POST['seller_description']) ? $_POST['seller_description'] : null;
+    	$this->authadminSession();
+    	if ($_SESSION['admin_id'] <= 0 && $_SESSION['staff_id'] <= 0) {
+    		return new ecjia_error(100, 'Invalid session');
+    	}
+    	//$ssi_db				= RC_Loader::load_app_model('seller_shopinfo_model', 'seller');
+    	//$msi_category_db 	= RC_Loader::load_app_model('merchants_shop_information_model', 'seller');
 		
-		if ($_SESSION['ru_id'] > 0) {
-			$result = $ecjia->admin_priv('merchant_setinfo');
-			if (is_ecjia_error($result)) {
-				EM_Api::outPut($result);
+		$seller_category 	= $this->requestData('seller_category', '');
+		$seller_telephone 	= $this->requestData('seller_telephone', '');
+		$province		 	= $this->requestData('province', '');
+		$city				= $this->requestData('city', '');
+		$seller_address		= $this->requestData('seller_address', '');
+		$seller_description = $this->requestData('seller_description', '');
+		
+		
+		if ($_SESSION['store_id'] > 0) {
+			//$result = $ecjia->admin_priv('merchant_setinfo');
+			$result1 = $this->admin_priv('franchisee_manage');
+			$result2 = $this->admin_priv('merchant_manage');
+			
+			if (is_ecjia_error($result1) || is_ecjia_error($result2)) {
+				return $result1;
 			}
-			RC_Loader::load_app_func('global', 'merchant');
-			assign_adminlog_contents();
-			$where1['user_id'] =$_SESSION['ru_id'];
-			$where2['ru_id'] = $_SESSION['ru_id'];
+			
+			RC_Loader::load_app_func('global', 'store');
+			assign_adminlog_content();
+			
+			//$where1['user_id'] =$_SESSION['ru_id'];
+			//$where2['ru_id'] = $_SESSION['ru_id'];
 			 
-			$data_category = array();
+			$data_franchisee = array();
 			if (isset($seller_category)) {
-				$data_category = array(
-						'shop_categoryMain'		=> $seller_category
-				);
+				$data_franchisee['cat_id'] = $seller_category;
+			}
+			
+			if (isset($province)) {
+			 	$data_franchisee['province'] = $province;
+			}
+			if (isset($city)) {
+			 	$data_franchisee['city'] = $city;
+			}	
+			if (isset($seller_address)) {
+				$data_franchisee['address'] = $seller_address;
 			}
 			
 			$data_shopinfo = array();
 			if (isset($seller_telephone)) {
-			 	$data_shopinfo['kf_tel'] = $seller_telephone;
-			}
-			if (isset($province)) {
-			 	$data_shopinfo['province'] = $province;
-			}
-			if (isset($city)) {
-			 	$data_shopinfo['city'] = $city;
-			}	
-			if (isset($seller_address)) {
-				$data_shopinfo['shop_address'] = $seller_address;
+				$data_shopinfo['shop_kf_mobile'] = $seller_telephone;
 			}
 			if (isset($seller_description)) {
-				$data_shopinfo['notice'] = $seller_description;
+				$data_shopinfo['shop_description'] = $seller_description;
 			}
 			
-			$count_category = $msi_category_db->where($where1)->update($data_category);
-			$count_shopinfo = $ssi_db->where($where2)->update($data_shopinfo);
-			ecjia_admin::admin_log('店铺设置>基本信息设置【来源掌柜】', 'edit', 'merchant');
+			//$count_category = $msi_category_db->where($where1)->update($data_category);
+			//$count_shopinfo = $ssi_db->where($where2)->update($data_shopinfo);
+			RC_DB::table('store_franchisee')->where(RC_DB::raw('store_id'), $_SESSION['store_id'])->update($data_franchisee);
+			RC_DB::table('merchants_config')->where(RC_DB::raw('store_id'), $_SESSION['store_id'])->where(RC_DB::raw('code'), 'shop_kf_mobile')->update(array('value' => $seller_telephone));
+			RC_DB::table('merchants_config')->where(RC_DB::raw('store_id'), $_SESSION['store_id'])->where(RC_DB::raw('code'), 'shop_description')->update(array('value' => $seller_description));
+			ecjia_admin::admin_log('店铺设置>基本信息设置【来源掌柜】', 'edit', 'config');
 	    	return true;
 	    	
 		} else {
-			$result = $ecjia->admin_priv('shop_config');
+			//$result = $ecjia->admin_priv('shop_config');
+			$result = $this->admin_priv('shop_config');
 			if (is_ecjia_error($result)) {
-				EM_Api::outPut($result);
+				return $result;
 			}
 			if (isset($seller_telephone)) {
 				ecjia_config::instance()->write_config('service_phone', $seller_telephone);
