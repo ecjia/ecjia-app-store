@@ -11,6 +11,7 @@ class admin extends ecjia_admin {
 
 		$this->db_region = RC_Model::model('store/region_model');
 		RC_Loader::load_app_func('global');
+		RC_Loader::load_app_func('store_merchant');
 		assign_adminlog_content();
 
 		//全局JS和CSS
@@ -68,7 +69,7 @@ class admin extends ecjia_admin {
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('编辑入驻商'));
 
 		$store_id = intval($_GET['store_id']);
-
+        $menu = set_store_menu($store_id, 'store_set');
 		$store = RC_DB::table('store_franchisee')->where('store_id', $store_id)->first();
 		$store['apply_time']	= RC_Time::local_date(ecjia::config('time_format'), $store['apply_time']);
 		$store['confirm_time']	= RC_Time::local_date(ecjia::config('time_format'), $store['confirm_time']);
@@ -276,9 +277,13 @@ class admin extends ecjia_admin {
 
 	//店铺设置
 	public function store_set() {
+
         $store_id = intval($_GET['store_id']);
         $menu = set_store_menu($store_id, 'store_set');
+
+        $store_info = get_merchant_info($store_id, $arr);
         $this->assign('menu', $menu);
+        $this->assign('store_info', $store_info);
 	    $this->display('store_preview.dwt');
 	}
 

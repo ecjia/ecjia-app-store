@@ -19,14 +19,13 @@
 <div class="row-fluid">
 	<div class="span12">
 		<div class="tabbable tabs-left">
-		
+
 			<ul class="nav nav-tabs tab_merchants_nav">
-				<li><a href='{RC_Uri::url("store/admin/preview","store_id={$smarty.get.store_id}")}' class="pjax" >基本信息</a></li>
-				<li><a href='{RC_Uri::url("store/admin_commission/edit","store_id={$smarty.get.store_id}")}' class="pjax" >设置佣金</a></li>
-				<li><a href='{RC_Uri::url("commission/admin/init","store_id={$smarty.get.store_id}")}' class="pjax" >结算账单</a></li>
-				<li><a href='{RC_Uri::url("store/admin/view_staff","store_id={$smarty.get.store_id}")}' class="pjax" >查看员工</a></li>
-			</ul>
-			
+                <!-- {foreach from=$menu item=val} -->
+                <li {if $val.active}class="active"{/if}><a href="{$val.url}" {if $val.active}data-toggle="tab"{/if}>{$val.menu}</a></li>
+                <!-- {/foreach} -->
+            </ul>
+
 			<div class="tab-content tab_merchants">
 				<div class="tab-pane active " style="min-height:300px;">
 				<form class="form-horizontal" id="form-privilege" name="theForm" action="{$form_action}" method="post" enctype="multipart/form-data" >
@@ -53,7 +52,7 @@
         						<input class="span6" name="shop_keyword" type="text" value="{$store.shop_keyword}" />
         					</div>
         				</div>
-        				
+
         				<div class="control-group formSep">
         					<label class="control-label">{lang key='store::store.contact_lable'}</label>
         					<div class="controls">
@@ -97,14 +96,14 @@
         						<input type="button" class="btn btn-gebo longitude" value="{t}点击获取经纬度{/t}" data-url='{url path="store/admin/get_longitude&store_id={$store.store_id}"}'  title="{lang key='system::system.edit'}"/>
         					</div>
         				</div>
-        
-        				
+
+
         				<div class="control-group formSep">
         					<label class="control-label">经纬度：</label>
         				 	<div class="l_h30 long f_l"></div>
         					<div class="l_h30 latd f_l m_l10"></div>
         				</div>
-        				
+
         				{else if $step eq 'identity'}
         				{if $store.validate_type eq 1}
         				<div class="control-group formSep" >
@@ -114,14 +113,14 @@
         						<input type="hidden"  name="validate_type" value="{$store.validate_type}" />
         					</div>
         				</div>
-        
+
         				<div class="control-group formSep">
         					<label class="control-label">负责人：</label>
         					<div class="controls">
         						<input class="span6" name="responsible_person" type="text" value="{$store.responsible_person}" />
         					</div>
         				</div>
-        
+
         				<div class="control-group formSep" >
         					<label class="control-label">{lang key='store::store.identity_type_lable'}</label>
         					<div class="controls">
@@ -131,7 +130,7 @@
         						</select>
         					</div>
         				</div>
-        
+
         				<div class="control-group formSep">
         					<label class="control-label">{lang key='store::store.identity_number_lable'}</label>
         					<div class="controls">
@@ -146,21 +145,21 @@
         						<input type="hidden"  name="validate_type" value="{$store.valtidate_type}" />
         					</div>
         				</div>
-        
+
         				<div class="control-group formSep">
         					<label class="control-label">{lang key='store::store.companyname_lable'}</label>
         					<div class="controls">
         						<input class="span6" name="company_name" type="text" value="{$store.company_name}" />
         					</div>
         				</div>
-        
+
         				<div class="control-group formSep">
         					<label class="control-label">{lang key='store::store.person_lable'}</label>
         					<div class="controls">
         						<input class="span6" name="responsible_person" type="text" value="{$store.responsible_person}" />
         					</div>
         				</div>
-        
+
         				<div class="control-group formSep" >
         					<label class="control-label">{lang key='store::store.identity_type_lable'}</label>
         					<div class="controls">
@@ -170,7 +169,7 @@
         						</select>
         					</div>
         				</div>
-        
+
         				<div class="control-group formSep">
         					<label class="control-label">{lang key='store::store.identity_number_lable'}</label>
         					<div class="controls">
@@ -183,9 +182,9 @@
         						<input class="span6" name="business_licence" type="text" value="{$store.business_licence}" />
         					</div>
         				</div>
-        
+
         				{/if}
-        				
+
         				{else if $step eq 'bank'}
         				<!-- 银行 -->
         				<div class="control-group formSep">
@@ -219,7 +218,7 @@
         					</div>
         				</div>
         				{else if $step eq 'pic'}
-        				
+
         				<div class="control-group formSep">
     						<label class="control-label">{lang key='store::store.identity_pic_front_lable'}</label>
     						<div class="controls">
@@ -246,7 +245,7 @@
     							</div>
     						</div>
         				</div>
-        				
+
         				<div class="control-group formSep">
     						<label class="control-label">{lang key='store::store.identity_pic_back_lable'}</label>
     						<div class="controls">
@@ -273,7 +272,7 @@
     							</div>
     						</div>
         				</div>
-        				
+
         				<div class="control-group formSep">
     						<label class="control-label">{lang key='store::store.identity_pic_back_lable'}</label>
     						<div class="controls">
@@ -300,7 +299,7 @@
     							</div>
     						</div>
         				</div>
-        				
+
         				<div class="control-group formSep">
         					<label class="control-label">{lang key='store::store.business_licence_pic_lable'}</label>
         					<div class="controls">
@@ -327,16 +326,16 @@
         						</div>
         					</div>
         				</div>
-        				
+
         				<!-- <div class="control-group formSep">
         					<label class="control-label">{lang key='store::store.apply_time_lable'}</label>
         				 	<div class="controls l_h30">
         						{$store.apply_time}
         					</div>
         				</div> -->
-        				
+
         				{/if}
-        				
+
         				<div class="control-group">
         					<div class="controls">
         						<input type="hidden"  name="store_id" value="{$store.store_id}" />

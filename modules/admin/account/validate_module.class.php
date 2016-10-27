@@ -19,10 +19,7 @@ class validate_module extends api_admin implements api_interface {
 		}
 
 		$validate_code = $this->requestData('validate_code', '');
-        _Dump($_SESSION['merchant_validate_code']);
-        _Dump($time);
-        _Dump($validate_code);
-        _Dump($_SESSION['merchant_validate_expiry'],1);
+    
 		$time = RC_Time::gmtime();
 		if (empty($validate_code) || $_SESSION['merchant_validate_code'] != $validate_code || $_SESSION['merchant_validate_expiry'] < $time) {
 			return new ecjia_error('code_error', '验证码不正确！');
@@ -105,6 +102,7 @@ class validate_module extends api_admin implements api_interface {
 		//$data['merchant_status'] = 0;
 		//$data['merchant_status'] = 1;
 		//RC_Model::model('merchant/merchants_shop_information_model')->where(array('shop_id' => $shop_id))->update($data);
+		$data['identity_status'] = 1;
 		RC_DB::table('store_franchisee')->where(RC_DB::raw('store_id'), $_SESSION['store_id'])->update($data);
 		return array();
     }

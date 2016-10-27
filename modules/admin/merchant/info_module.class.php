@@ -34,7 +34,8 @@ class info_module extends api_admin implements api_interface {
 	    	  		'seller_address'		=> $info['address'],
 	    	  		'seller_description'	=> '',//$info['notice'],
 					//'validated_status'		=> $info['status'],
-					'validated_status'		=> '0',
+					//'validated_status'		=> '0',
+					'validated_status'		=> $info['identity_status'],
 	    	  		'seller_description'	=> RC_DB::table('merchants_config')->where('store_id', $_SESSION['store_id'])->where('code', 'shop_description')->pluck('value'),
 			);
 			$result = $this->admin_priv('franchisee_manage');
