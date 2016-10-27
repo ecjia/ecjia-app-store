@@ -483,7 +483,12 @@ class admin_preaudit extends ecjia_admin {
 	        $original_data = unserialize($val['original_data']);
 	        if ($original_data) {
 	            foreach ($original_data as $key => $original_data) {
-	                $val['log'] .= '<br><code>'.$original_data['name'] . '</code>，旧值为<code>'. $original_data['value'].'</code>，新值为<code>'.$new_data[$key]['value'].'</code>；';
+	                if (in_array($key, array('identity_pic_front', 'identity_pic_back', 'personhand_identity_pic', 'business_licence_pic'))) {
+	                    $val['log'] .= '<br><code>'.$original_data['name'] . '</code>，旧值为<a href="'. $original_data['value'].'" target="_blank"><img class="w120 h70 thumbnail ecjiaf-ib" src="'. $original_data['value'].'"/></a>，新值为<a href="'. $new_data[$key]['value'].'" target="_blank"><img class="w120 h70 thumbnail ecjiaf-ib" src="'.$new_data[$key]['value'].'"/></a>；';
+	                } else {
+	                    $val['log'] .= '<br><code>'.$original_data['name'] . '</code>，旧值为<code>'. $original_data['value'].'</code>，新值为<code>'.$new_data[$key]['value'].'</code>；';
+	                }
+	                
 	            }
 	        }
 	        $val['formate_time'] = RC_Time::local_date('Y-m-d H:i:s', $val['time']);
