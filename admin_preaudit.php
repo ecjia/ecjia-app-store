@@ -253,8 +253,9 @@ class admin_preaudit extends ecjia_admin {
 		if($_POST['check_status'] == 2) {
 			if($store_id == 0) {//首次审核
 				$store = RC_DB::table('store_preaudit')->where('id', $id)->first();
+// 				_dump($store,1);
 				$data =array(
-					'cat_id' 					=> $store['cat_id'],
+					'cat_id' 					=> $store['cat_id'] ? $store['cat_id'] : 0,
 					'merchants_name'			=> $store['merchants_name'],
 					'shop_keyword'				=> $store['shop_keyword'],
 					'status'					=> 1,
@@ -363,6 +364,8 @@ class admin_preaudit extends ecjia_admin {
 					}
 				};
 
+				//审核通过，修改所有日志storeid type
+				RC_DB::table('store_check_log')->where('store_id', $id)->where('type', 1)->update(array('store_id' => $store_id, 'type' => 2));
 				$log = array(
 				    'store_id' => $store_id ? $store_id : $id,
 				    'type' => $store_id ? 2 : 1,
@@ -370,12 +373,14 @@ class admin_preaudit extends ecjia_admin {
 				    'info' => '恭喜您的申请通过审核。'.$remark,
 				);
 				RC_Api::api('store', 'add_check_log', $log);
-				//审核通过，修改所有日志storeid type
+				
 				$this->showmessage(RC_Lang::get('store::store.check_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin_preaudit/init', array('id' => $id))));
 			} else {
 				//再次审核
 				$store = RC_DB::table('store_preaudit')->where('store_id', $store_id)->first();
+				$franchisee_info = RC_DB::table('store_franchisee')->where('store_id', $store_id)->first();
 				$data =array(
+				    'merchants_name'            => $store['merchants_name'],
 					'cat_id' 					=> $store['cat_id'],
 				    'identity_status'           => intval($_POST['identity_status']),
 					'shop_keyword'				=> $store['shop_keyword'],
@@ -384,7 +389,6 @@ class admin_preaudit extends ecjia_admin {
 					'contact_mobile'			=> $store['contact_mobile'],
 					'apply_time'				=> $store['apply_time'],
 					'confirm_time'				=> RC_Time::gmtime(),
-					'address'					=> $store['address'],
 					'identity_type'				=> $store['identity_type'],
 					'identity_number'			=> $store['identity_number'],
 					'identity_pic_front'		=> $store['identity_pic_front'],
@@ -395,7 +399,23 @@ class admin_preaudit extends ecjia_admin {
 					'province'					=> $store['province'],
 					'city'						=> $store['city'],
 					'district'					=> $store['district'],
+				    'address'					=> $store['address'],
 				);
+				//判断图片是否更新，删除老图
+				/* $disk = RC_Filesystem::disk();
+				if ($store['identity_pic_front'] && $store['identity_pic_front'] != $franchisee_info['identity_pic_front']) {
+				    $disk->delete(RC_Upload::upload_path($franchisee_info['identity_pic_front']));
+				}
+				if ($store['identity_pic_back'] && $store['identity_pic_back'] != $franchisee_info['identity_pic_back']) {
+				    $disk->delete(RC_Upload::upload_path($franchisee_info['identity_pic_back']));
+				}
+				if ($store['personhand_identity_pic'] && $store['personhand_identity_pic'] != $franchisee_info['personhand_identity_pic']) {
+				    $disk->delete(RC_Upload::upload_path($franchisee_info['personhand_identity_pic']));
+				}
+				if ($store['business_licence_pic'] && $store['business_licence_pic'] != $franchisee_info['business_licence_pic']) {
+				    $disk->delete(RC_Upload::upload_path($franchisee_info['business_licence_pic']));
+				} */
+				
 				RC_DB::table('store_franchisee')->where('store_id', $store_id)->update($data);
 				RC_DB::table('store_preaudit')->where('store_id', $store_id)->delete();
 				$log = array(
@@ -477,23 +497,32 @@ class admin_preaudit extends ecjia_admin {
 	    }
 	    foreach ($log_rs as &$val) {
 	        $val['log'] = null;
-	        // 		    _dump(unserialize($val['original_data']));
-	        // 		    _dump(unserialize($val['new_data']));
 	        $new_data = unserialize($val['new_data']);
 	        $original_data = unserialize($val['original_data']);
 	        if ($original_data) {
 	            foreach ($original_data as $key => $original_data) {
 	                if (in_array($key, array('identity_pic_front', 'identity_pic_back', 'personhand_identity_pic', 'business_licence_pic'))) {
-	                    $val['log'] .= '<br><code>'.$original_data['name'] . '</code>，旧值为<a href="'. $original_data['value'].'" target="_blank"><img class="w120 h70 thumbnail ecjiaf-ib" src="'. $original_data['value'].'"/></a>，新值为<a href="'. $new_data[$key]['value'].'" target="_blank"><img class="w120 h70 thumbnail ecjiaf-ib" src="'.$new_data[$key]['value'].'"/></a>；';
+// 	                    $val['log'] .= '<br><code>'.$original_data['name'] . '</code>，旧图为<a href="'. $original_data['value'].'" target="_blank"><img class="w120 h70 thumbnail ecjiaf-ib" src="'. $original_data['value'].'"/></a>，新图为<a href="'. $new_data[$key]['value'].'" target="_blank"><img class="w120 h70 thumbnail ecjiaf-ib" src="'.$new_data[$key]['value'].'"/></a>；';
+	                    $val['log'][] = array(
+	                        'name' => $original_data['name'],
+	                        'original_data' => '<a href="'. $original_data['value'].'" target="_blank"><img class="w120 h70 thumbnail ecjiaf-ib" src="'. $original_data['value'].'"/></a>',
+	                        'new_data' => '<a href="'. $new_data[$key]['value'].'" target="_blank"><img class="w120 h70 thumbnail ecjiaf-ib" src="'.$new_data[$key]['value'].'"/></a>',
+	                        'is_img' => 1
+	                    );
 	                } else {
-	                    $val['log'] .= '<br><code>'.$original_data['name'] . '</code>，旧值为<code>'. $original_data['value'].'</code>，新值为<code>'.$new_data[$key]['value'].'</code>；';
+// 	                    $val['log'] .= '<br><code>'.$original_data['name'] . '</code>，旧值为<code>'. $original_data['value'].'</code>，新值为<code>'.$new_data[$key]['value'].'</code>；';
+	                    $val['log'][] = array(
+	                        'name' => $original_data['name'],
+	                        'original_data' => $original_data['value'],
+	                        'new_data' => $new_data[$key]['value'],
+	                    );
 	                }
 	                
 	            }
 	        }
 	        $val['formate_time'] = RC_Time::local_date('Y-m-d H:i:s', $val['time']);
 	    }
-	    // 		_dump($log_rs,1);
+// 	    _dump($log_rs,1);
 	    return array('list' => $log_rs, 'page' => $page->show(5), 'desc' => $page->page_desc());
 	    
 	}

@@ -7,6 +7,9 @@
 <!-- {/block} -->
 
 <!-- {block name="main_content"} -->
+<style>
+.table thead th{ background-color:#F5F5F5}
+</style>
 <div>
 	<h3 class="heading">
 		<!-- {if $ur_here}{$ur_here}{/if} -->
@@ -306,7 +309,28 @@
 		  	{foreach from=$log_list item=list}
 		  		<tr align="center">
 			    <td style="padding:8px 0; width:5px; overflow:hidden;"><i class=" fontello-icon-right-dir"></i></td>
-			    <td class="center-td" style="border-top:1px solid #e5e5e5; padding-left:0;"><span>{$list.formate_time}，</span><span style="line-height: 170%">{$list.name} {$list.info}{$list.log}</span>&nbsp;</td>
+			    <td class="center-td" style="border-top:1px solid #e5e5e5; padding-left:0;"><span>{$list.formate_time}，</span><span style="line-height: 170%">{$list.name} {$list.info}</span>
+			    {if $list.log}
+    			    <table class="table">
+                        <thead>
+                            <tr>
+                            <th>字段</th>
+                            <th>旧值</th>
+                            <th>新值</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <!-- {foreach from=$list.log item=log} -->
+                        <tr>
+                            <td>{$log.name}</td>
+                            <td>{if $log.is_img}{$log.original_data}{else}<code>{$log.original_data}</code>{/if}</td>
+                            <td>{if $log.is_img}{$log.new_data}{else}<code>{$log.new_data}</code>{/if}</td>
+                        </tr>
+                        <!-- {/foreach} -->
+                        </tbody>
+                    </table>
+                    {/if}
+			    </td>
 			    </tr>
 		    {/foreach}
 			</tbody>
