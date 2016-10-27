@@ -18,6 +18,7 @@ class store_admin_purview_api extends Component_Event_Api {
         	array('action_name' => RC_Lang::get('store::store.store_preaudit'), 'action_code' => 'store_preaudit_manage', 	'relevance' => ''),
         	array('action_name' => RC_Lang::get('store::store.store_update'), 'action_code' => 'store_preaudit_update', 	'relevance' => ''),
         	array('action_name' => RC_Lang::get('store::store.store_check'), 'action_code' => 'store_preaudit_check', 	'relevance' => ''),
+            array('action_name' => '查看审核日志', 'action_code' => 'store_preaudit_check_log', 	'relevance' => ''),
         	
         	//店铺分类权限
         	array('action_name' => __('店铺分类管理'), 'action_code' => 'store_category_manage', 'relevance'   => ''),

@@ -242,60 +242,76 @@
 				</table>
 			</div>
 		</div>
+		
+		<div class="accordion-group">
+			<div class="accordion-heading">
+				<div class="accordion-heading accordion-heading-url">
+					<div class="accordion-toggle acc-in" data-toggle="collapse" data-target="#operate">
+						<strong>可执行操作</strong>
+					</div>
+				</div>
+			</div>
+
+			<div class="accordion-body in collapse" id="operate">
+				<form class="form-horizontal" id="form-privilege" name="theForm" action="{$form_action}" method="post" enctype="multipart/form-data" >
+				<table class="table table-oddtd m_b0">
+					<tbody class="first-td-no-leftbd">
+					<tr>
+						<td><div align="right"><strong>{lang key='store::store.remark_lable'}</strong></div></td>
+						<td>
+							<textarea class="span12" name="remark" cols="40" rows="2">{$store.remark}</textarea>
+						    <input type="hidden"  name="original" value="{$store.remark}" />
+						</td>
+					</tr>
+					<tr>
+						<td><div align="right"><strong>{lang key='store::store.check_lable'}</strong></div></td>
+						<td>
+							<label class="ecjiaf-ib"><input type="radio"  name="check_status" value="1" {if $store.check_status eq 1}checked{/if}><span>{lang key='store::store.check_no'}</span></label>
+						    <label class="ecjiaf-ib"><input type="radio"  name="check_status" value="2" {if $store.check_status eq 2}checked{/if}><span>{lang key='store::store.check_yes'}</span></label>
+						</td>
+					</tr>
+					<tr>
+						<td><div align="right"><strong>认证：</strong></div></td>
+						<td>
+							<label class="ecjiaf-ib"><input type="radio"  name="identity_status" value="0" {if $store.identity_status eq 0}checked{/if}><span>待审核</span></label>
+    						<label class="ecjiaf-ib"><input type="radio"  name="identity_status" value="3" {if $store.identity_status eq 3}checked{/if}><span>{lang key='store::store.check_no'}</span></label>
+    						<label class="ecjiaf-ib"><input type="radio"  name="identity_status" value="2" {if $store.identity_status eq 2}checked{/if}><span>{lang key='store::store.check_yes'}</span></label>
+						</td>
+					</tr>
+					<tr>
+						<td><div align="right"><strong>操作：</strong></div></td>
+						<td>
+        					<input type="hidden"  name="id" value="{$store.id}" />
+        					<input type="hidden"  name="store_id" value="{$store.store_id}" />
+        					<button class="btn btn-gebo" type="submit">{lang key='store::store.sub_check'}</button>
+						</td>
+					</tr>
+					</tbody>
+				</table>
+				</form>
+			</div>
 		</div>
+		
+	</div>
 
-		<form class="form-horizontal" id="form-privilege" name="theForm" action="{$form_action}" method="post" enctype="multipart/form-data" >
-			<fieldset>
 
-
-				<div class="control formSep" >
-					<label class="control-label">{lang key='store::store.remark_lable'}</label>
-					<div class="controls">
-						<textarea class="span6" name="remark" cols="40" rows="3">{$store.remark}</textarea>
-						<input type="hidden"  name="original" value="{$store.remark}" />
-					</div>
-				</div>
-
-				<div class="control formSep">
-					<label class="control-label">{lang key='store::store.check_lable'}</label>
-				 	<div class="controls">
-						<label class="ecjiaf-ib"><input type="radio"  name="check_status" value="1" {if $store.check_status eq 1}checked{/if}><span>{lang key='store::store.check_no'}</span></label>
-						<label class="ecjiaf-ib"><input type="radio"  name="check_status" value="2" {if $store.check_status eq 2}checked{/if}><span>{lang key='store::store.check_yes'}</span></label>
-					</div>
-				</div>
-				<div class="control formSep">
-					<label class="control-label">认证：</label>
-				 	<div class="controls">
-				 	    <label class="ecjiaf-ib"><input type="radio"  name="identity_status" value="0" {if $store.identity_status eq 0}checked{/if}><span>待审核</span></label>
-						<label class="ecjiaf-ib"><input type="radio"  name="identity_status" value="3" {if $store.identity_status eq 3}checked{/if}><span>{lang key='store::store.check_no'}</span></label>
-						<label class="ecjiaf-ib"><input type="radio"  name="identity_status" value="2" {if $store.identity_status eq 2}checked{/if}><span>{lang key='store::store.check_yes'}</span></label>
-					</div>
-				</div>
-
-				<div class="control-group control-group-small">
-        			<table class="table">
-        				<thead>
-        				  	<tr>
-        					    <th colspan="2" style="font-size:13px;background-color:#fff;">日志记录<a class="f_r data-pjax" style="font-weight:normal">更多</a></th>
-        				  	</tr>
-        			  	</thead>
-        			  	<tbody>
-        			  	{foreach from=$log_list item=list}
-        			  		<tr align="center">
-        				    <td style="padding:8px 0; width:5px; overflow:hidden;"><i class=" fontello-icon-right-dir"></i></td>
-        				    <td class="center-td" style="border-top:1px solid #e5e5e5; padding-left:0;"><span>{$list.formate_time}，</span><span style="line-height: 170%">{$list.name} {$list.info}{$list.log}</span>&nbsp;</td>
-        				    </tr>
-        			    {/foreach}
-        				</tbody>
-        			</table>
-    		      </div>
-				<div class="controls">
-					<input type="hidden"  name="id" value="{$store.id}" />
-					<input type="hidden"  name="store_id" value="{$store.store_id}" />
-					<button class="btn btn-gebo" type="submit">{lang key='store::store.sub_check'}</button>
-				</div>
-			</fieldset>
-		</form>
+	<div class="control-group control-group-small">
+		<table class="table">
+			<thead>
+			  	<tr>
+				    <th colspan="2" style="font-size:13px;background-color:#fff;">日志记录<a class="f_r data-pjax" href='{RC_Uri::url("store/admin_preaudit/view_log","id={$store.id}")}' style="font-weight:normal">更多</a></th>
+			  	</tr>
+		  	</thead>
+		  	<tbody>
+		  	{foreach from=$log_list item=list}
+		  		<tr align="center">
+			    <td style="padding:8px 0; width:5px; overflow:hidden;"><i class=" fontello-icon-right-dir"></i></td>
+			    <td class="center-td" style="border-top:1px solid #e5e5e5; padding-left:0;"><span>{$list.formate_time}，</span><span style="line-height: 170%">{$list.name} {$list.info}{$list.log}</span>&nbsp;</td>
+			    </tr>
+		    {/foreach}
+			</tbody>
+		</table>
+      </div>
 	</div>
 </div>
 <!-- {/block} -->
