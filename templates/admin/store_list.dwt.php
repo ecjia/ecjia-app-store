@@ -20,7 +20,6 @@
 	/* color:#666 */
 }
 
-
 </style>
 <div>
 	<h3 class="heading">

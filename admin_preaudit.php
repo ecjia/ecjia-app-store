@@ -224,8 +224,9 @@ class admin_preaudit extends ecjia_admin {
 		}
 		
 		$log_rs = get_check_log($log_store_id, $log_type, 1, 3);
-		
+// 		_dump($log_rs,1);
 		$this->assign('log_list', $log_rs['list']);
+		$this->assign('log_last', $log_rs['list'][0]['log']);
 
 		$this->display('store_preaudit_check.dwt');
 	}

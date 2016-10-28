@@ -41,7 +41,7 @@ function set_store_menu($store_id, $key){
             'url'   => RC_Uri::url('store/admin/store_set', array('store_id' => $store_id))
         ),
         array(
-            'menu'  => '设置佣金',
+            'menu'  => '佣金设置',
             'name'  => 'commission_set',
             'url'   => RC_Uri::url('store/admin_commission/edit', array('store_id' => $store_id))
         ),
@@ -94,15 +94,15 @@ function get_check_log ($store_id, $type, $page = 1, $page_size = 10) {
             foreach ($original_data as $key => $original_data) {
                 if (in_array($key, array('identity_pic_front', 'identity_pic_back', 'personhand_identity_pic', 'business_licence_pic'))) {
                     // 	                    $val['log'] .= '<br><code>'.$original_data['name'] . '</code>，旧图为<a href="'. $original_data['value'].'" target="_blank"><img class="w120 h70 thumbnail ecjiaf-ib" src="'. $original_data['value'].'"/></a>，新图为<a href="'. $new_data[$key]['value'].'" target="_blank"><img class="w120 h70 thumbnail ecjiaf-ib" src="'.$new_data[$key]['value'].'"/></a>；';
-                    $val['log'][] = array(
+                    $val['log'][$key] = array(
                         'name' => $original_data['name'],
-                        'original_data' => '<a href="'. $original_data['value'].'" target="_blank"><img class="w120 h70 thumbnail ecjiaf-ib" src="'. $original_data['value'].'"/></a>',
-                        'new_data' => '<a href="'. $new_data[$key]['value'].'" target="_blank"><img class="w120 h70 thumbnail ecjiaf-ib" src="'.$new_data[$key]['value'].'"/></a>',
+                        'original_data' => '<a href="'. $original_data['value'].'" title="点击查看大图" target="_blank"><img class="w120 h70 thumbnail ecjiaf-ib" src="'. $original_data['value'].'"/></a>',
+                        'new_data' => '<a href="'. $new_data[$key]['value'].'" title="点击查看大图" target="_blank"><img class="w120 h70 thumbnail ecjiaf-ib" src="'.$new_data[$key]['value'].'"/></a>',
                         'is_img' => 1
                     );
                 } else {
                     // 	                    $val['log'] .= '<br><code>'.$original_data['name'] . '</code>，旧值为<code>'. $original_data['value'].'</code>，新值为<code>'.$new_data[$key]['value'].'</code>；';
-                    $val['log'][] = array(
+                    $val['log'][$key] = array(
                         'name' => $original_data['name'],
                         'original_data' => $original_data['value'],
                         'new_data' => $new_data[$key]['value'],

@@ -218,8 +218,6 @@
                 							</div>
                 							{/if}
             							</td>
-            						</tr>
-            						<tr>
             							<td><div align="right"><strong>{lang key='store::store.identity_pic_back_lable'}</strong></div></td>
             							<td>
                 							{if $store.identity_pic_back neq ''}
@@ -233,7 +231,7 @@
             						</tr>
             						<tr>
             							<td><div align="right"><strong>{lang key='store::store.personhand_identity_pic_lable'}</strong></div></td>
-            							<td>
+            							<td {if $store.validate_type eq 1} colspan="3"{/if}>
                 							{if $store.personhand_identity_pic neq ''}
                 							<a href="{RC_Upload::upload_url({$store.personhand_identity_pic})}" title="点击查看大图" target="_blank"><img class="w200 h120 thumbnail"  class="img-polaroid" src="{RC_Upload::upload_url({$store.personhand_identity_pic})}"></a>
                 							{else}
@@ -242,14 +240,12 @@
                 							</div>
                 							{/if}
             							</td>
-            						</tr>
             						<!-- {if $store.validate_type eq 1} -->
             						<input type="hidden"  name="identity_type" value="{$store.validate_type}" />
             						<!-- {elseif $store.validate_type eq 2} -->
-            						<tr>
             							<td><div align="right"><strong>{lang key='store::store.business_licence_pic_lable'}</strong></div></td>
             							<td>
-                							{if $store.personhand_identity_pic neq ''}
+                							{if $store.business_licence_pic neq ''}
                 							<a href="{RC_Upload::upload_url({$store.business_licence_pic})}" title="点击查看大图" target="_blank"><img class="w200 h120 thumbnail"  class="img-polaroid" src="{RC_Upload::upload_url({$store.business_licence_pic})}"></a>
                 							{else}
                 							<div class="l_h30">
