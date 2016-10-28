@@ -25,7 +25,7 @@ function assign_adminlog_content() {
 */
 function set_store_menu($store_id, $key){
 
-    $keys = array('preview','store_set','commission_set','commission','view_staff','view_log');
+    $keys = array('preview','store_set','commission_set','commission','view_staff','view_log','check_log');
     if(!in_array($key,$keys)){
         $key = 'preview';
     }
@@ -60,6 +60,11 @@ function set_store_menu($store_id, $key){
             'name'  => 'view_log',
             'url'   => RC_Uri::url('store/admin/view_log', array('store_id' => $store_id))
         ),
+        array(
+            'menu'  => '审核日志',
+            'name'  => 'check_log',
+            'url'   => RC_Uri::url('store/admin/check_log', array('store_id' => $store_id))
+        ),
     );
     foreach($arr as $k => $val){
         if($key == $val['name']){
@@ -68,6 +73,49 @@ function set_store_menu($store_id, $key){
         }
     }
     return $arr;
+}
+
+//审核日志
+function get_check_log ($store_id, $type, $page = 1, $page_size = 10) {
+     
+    $db_log = RC_DB::table('store_check_log')->where('store_id', $store_id)->where('type', $type);
+    $count = $db_log->count();
+    $page = new ecjia_page($count, $page_size, 5);
+    $log_rs = $db_log->orderBy('id', 'desc')->take($page->page_size)->skip($page->start_id-1)->get();
+     
+    if (empty($log_rs)) {
+        return false;
+    }
+    foreach ($log_rs as &$val) {
+        $val['log'] = null;
+        $new_data = unserialize($val['new_data']);
+        $original_data = unserialize($val['original_data']);
+        if ($original_data) {
+            foreach ($original_data as $key => $original_data) {
+                if (in_array($key, array('identity_pic_front', 'identity_pic_back', 'personhand_identity_pic', 'business_licence_pic'))) {
+                    // 	                    $val['log'] .= '<br><code>'.$original_data['name'] . '</code>，旧图为<a href="'. $original_data['value'].'" target="_blank"><img class="w120 h70 thumbnail ecjiaf-ib" src="'. $original_data['value'].'"/></a>，新图为<a href="'. $new_data[$key]['value'].'" target="_blank"><img class="w120 h70 thumbnail ecjiaf-ib" src="'.$new_data[$key]['value'].'"/></a>；';
+                    $val['log'][] = array(
+                        'name' => $original_data['name'],
+                        'original_data' => '<a href="'. $original_data['value'].'" target="_blank"><img class="w120 h70 thumbnail ecjiaf-ib" src="'. $original_data['value'].'"/></a>',
+                        'new_data' => '<a href="'. $new_data[$key]['value'].'" target="_blank"><img class="w120 h70 thumbnail ecjiaf-ib" src="'.$new_data[$key]['value'].'"/></a>',
+                        'is_img' => 1
+                    );
+                } else {
+                    // 	                    $val['log'] .= '<br><code>'.$original_data['name'] . '</code>，旧值为<code>'. $original_data['value'].'</code>，新值为<code>'.$new_data[$key]['value'].'</code>；';
+                    $val['log'][] = array(
+                        'name' => $original_data['name'],
+                        'original_data' => $original_data['value'],
+                        'new_data' => $new_data[$key]['value'],
+                    );
+                }
+                 
+            }
+        }
+        $val['formate_time'] = RC_Time::local_date('Y-m-d H:i:s', $val['time']);
+    }
+    // 	    _dump($log_rs,1);
+    return array('list' => $log_rs, 'page' => $page->show(5), 'desc' => $page->page_desc());
+     
 }
 
 //end

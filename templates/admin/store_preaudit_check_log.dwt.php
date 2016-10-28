@@ -15,50 +15,61 @@
 
 <div class="row-fluid">
 	<div class="span12">
-
-	<div class="control-group control-group-small">
-		<table class="table">
-		    <thead>
-		      <tr>
-    		      <th class="w120">时间</th>
-    		      <th>操作人</th>
-    		      <th>日志</th>
-		      </tr>
-		      
-		    </thead>
-		  	<tbody>
-		  	{foreach from=$log_list.list item=list}
-		  		<tr align="center">
-			    <td>{$list.formate_time}</td>
-			    <td>{$list.name}</td>
-			    <td><span style="line-height: 170%"> {$list.info}</span>
-    			    {if $list.log}
-        			    <table class="table table-condensed table-hover log">
-                            <thead>
-                                <tr>
-                                <th>字段</th>
-                                <th>旧值</th>
-                                <th>新值</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            <!-- {foreach from=$list.log item=log} -->
-                            <tr>
-                                <td>{$log.name}</td>
-                                <td>{if $log.is_img}{$log.original_data}{else}<code>{$log.original_data}</code>{/if}</td>
-                                <td>{if $log.is_img}{$log.new_data}{else}<code>{$log.new_data}</code>{/if}</td>
-                            </tr>
-                            <!-- {/foreach} -->
-                            </tbody>
-                        </table>
-                    {/if}
-			    
-			    </td>
-			    </tr>
-		    {/foreach}
-			</tbody>
-		</table>
-		{$log_list.page}
+		<div class="tabbable tabs-left">
+		    {if $menu}
+			<ul class="nav nav-tabs tab_merchants_nav">
+                <!-- {foreach from=$menu item=val} -->
+                <li {if $val.active}class="active"{/if}><a href="{$val.url}" {if $val.active}data-toggle="tab"{/if}>{$val.menu}</a></li>
+                <!-- {/foreach} -->
+			</ul>
+			{/if}
+			<div class="tab-content">
+			<div class="tab-pane active">
+				<table class="table">
+        		    <thead>
+        		      <tr>
+            		      <th class="w120">时间</th>
+            		      <th>操作人</th>
+            		      <th>日志</th>
+        		      </tr>
+        		      
+        		    </thead>
+        		  	<tbody>
+        		  	{foreach from=$log_list.list item=list}
+        		  		<tr align="center">
+        			    <td>{$list.formate_time}</td>
+        			    <td>{$list.name}</td>
+        			    <td><span style="line-height: 170%"> {$list.info}</span>
+            			    {if $list.log}
+                			    <table class="table table-condensed table-hover log">
+                                    <thead>
+                                        <tr>
+                                        <th>字段</th>
+                                        <th>旧值</th>
+                                        <th>新值</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    <!-- {foreach from=$list.log item=log} -->
+                                    <tr>
+                                        <td>{$log.name}</td>
+                                        <td>{if $log.is_img}{$log.original_data}{else}<code>{$log.original_data}</code>{/if}</td>
+                                        <td>{if $log.is_img}{$log.new_data}{else}<code>{$log.new_data}</code>{/if}</td>
+                                    </tr>
+                                    <!-- {/foreach} -->
+                                    </tbody>
+                                </table>
+                            {/if}
+        			    
+        			    </td>
+        			    </tr>
+        		    {/foreach}
+        			</tbody>
+        		</table>
+		      {$log_list.page}
+			
+			</div>
+			</div>
       </div>
 	</div>
 </div>

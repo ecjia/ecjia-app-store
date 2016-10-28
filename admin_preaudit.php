@@ -27,6 +27,8 @@ class admin_preaudit extends ecjia_admin {
 		RC_Script::enqueue_script('region',RC_Uri::admin_url('statics/lib/ecjia-js/ecjia.region.js'));
 
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('store::store.store_preaudit'), RC_Uri::url('store/admin_preaudit/init')));
+		
+		RC_Loader::load_app_func('global');
 	}
 
 	/**
@@ -221,7 +223,7 @@ class admin_preaudit extends ecjia_admin {
 		    $log_type = 1;
 		}
 		
-		$log_rs = $this->get_check_log($log_store_id, $log_type, 1, 3);
+		$log_rs = get_check_log($log_store_id, $log_type, 1, 3);
 		
 		$this->assign('log_list', $log_rs['list']);
 
@@ -244,7 +246,7 @@ class admin_preaudit extends ecjia_admin {
 	    $log_store_id = $info['store_id'] ? $info['store_id'] : $info['id'];
 	    $log_type = $info['store_id'] ? 2 : 1;
 	    
-	    $log = $this->get_check_log($log_store_id, $log_type, 1, 15);
+	    $log = get_check_log($log_store_id, $log_type, 1, 15);
 	    
 	    $this->assign('log_list', $log);
 	    $this->display('store_preaudit_check_log.dwt');
@@ -519,47 +521,6 @@ class admin_preaudit extends ecjia_admin {
 		return $cat_list;
 	}
 
-	private function get_check_log ($store_id, $type, $page = 1, $page_size = 10) {
-	    
-	    $db_log = RC_DB::table('store_check_log')->where('store_id', $store_id)->where('type', $type);
-	    $count = $db_log->count();
-	    $page = new ecjia_page($count, $page_size, 5);
-	    $log_rs = $db_log->orderBy('id', 'desc')->take($page->page_size)->skip($page->start_id-1)->get();
-	    
-	    if (empty($log_rs)) {
-	        return false;
-	    }
-	    foreach ($log_rs as &$val) {
-	        $val['log'] = null;
-	        $new_data = unserialize($val['new_data']);
-	        $original_data = unserialize($val['original_data']);
-	        if ($original_data) {
-	            foreach ($original_data as $key => $original_data) {
-	                if (in_array($key, array('identity_pic_front', 'identity_pic_back', 'personhand_identity_pic', 'business_licence_pic'))) {
-// 	                    $val['log'] .= '<br><code>'.$original_data['name'] . '</code>，旧图为<a href="'. $original_data['value'].'" target="_blank"><img class="w120 h70 thumbnail ecjiaf-ib" src="'. $original_data['value'].'"/></a>，新图为<a href="'. $new_data[$key]['value'].'" target="_blank"><img class="w120 h70 thumbnail ecjiaf-ib" src="'.$new_data[$key]['value'].'"/></a>；';
-	                    $val['log'][] = array(
-	                        'name' => $original_data['name'],
-	                        'original_data' => '<a href="'. $original_data['value'].'" target="_blank"><img class="w120 h70 thumbnail ecjiaf-ib" src="'. $original_data['value'].'"/></a>',
-	                        'new_data' => '<a href="'. $new_data[$key]['value'].'" target="_blank"><img class="w120 h70 thumbnail ecjiaf-ib" src="'.$new_data[$key]['value'].'"/></a>',
-	                        'is_img' => 1
-	                    );
-	                } else {
-// 	                    $val['log'] .= '<br><code>'.$original_data['name'] . '</code>，旧值为<code>'. $original_data['value'].'</code>，新值为<code>'.$new_data[$key]['value'].'</code>；';
-	                    $val['log'][] = array(
-	                        'name' => $original_data['name'],
-	                        'original_data' => $original_data['value'],
-	                        'new_data' => $new_data[$key]['value'],
-	                    );
-	                }
-	                
-	            }
-	        }
-	        $val['formate_time'] = RC_Time::local_date('Y-m-d H:i:s', $val['time']);
-	    }
-// 	    _dump($log_rs,1);
-	    return array('list' => $log_rs, 'page' => $page->show(5), 'desc' => $page->page_desc());
-	    
-	}
 	
 	/**
 	 * 获取指定地区的子级地区
