@@ -4,6 +4,26 @@
 <script type="text/javascript">
 	ecjia.admin.store_edit.init();
 </script>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=P4C6rokKFWHjXELjOnogw3zbxC0VYubo"></script>
+<script type="text/javascript">
+    // 百度地图API功能
+    var map = new BMap.Map("allmap");
+    var lat = '{$store.latitude}';
+    var lng = '{$store.longitude}';
+    var point = new BMap.Point(lng, lat);  // 创建点坐标
+    map.centerAndZoom(point,15);
+    map.enableScrollWheelZoom();
+    var marker = new BMap.Marker(point);  // 创建标注
+	map.addOverlay(marker);               // 将标注添加到地图中
+    map.addEventListener("click",function(e){
+        map.removeOverlay(marker);
+        $('input[name="longitude"]').val(e.point.lng)
+        $('input[name="latitude"]').val(e.point.lat)
+        point = new BMap.Point(e.point.lng, e.point.lat);
+        marker = new BMap.Marker(point)
+        map.addOverlay(marker);
+    });
+</script>
 <!-- {/block} -->
 
 <!-- {block name="main_content"} -->
@@ -93,15 +113,23 @@
         					<label class="control-label">{lang key='store::store.address_lable'}</label>
         					<div class="controls">
         						<input class="span6" name="address" type="text" value="{$store.address}" />
-        						<input type="button" class="btn btn-gebo longitude" value="{t}点击获取经纬度{/t}" data-url='{url path="store/admin/get_longitude&store_id={$store.store_id}"}'  title="{lang key='system::system.edit'}"/>
+        					</div>
+        				</div>
+
+        				<div class="control-group formSep">
+        					<label class="control-label">店铺精确位置：</label>
+        					<div class="controls">
+        						<div class="span6" id="allmap" style="height:320px;"></div>
         					</div>
         				</div>
 
 
         				<div class="control-group formSep">
         					<label class="control-label">经纬度：</label>
-        				 	<div class="l_h30 long f_l"></div>
-        					<div class="l_h30 latd f_l m_l10"></div>
+                            <div class="controls">
+                                <div class="l_h30 long f_l"> <input type="text" name="longitude" readonly="true" value="{$store.longitude}"></div>
+            					<div class="l_h30 latd f_l m_l10"><input type="text" name="latitude" readonly="true" value="{$store.latitude}"></div>
+                            </div>
         				</div>
 
         				{else if $step eq 'identity'}
