@@ -26,9 +26,9 @@ function assign_adminlog_content() {
 function set_store_menu($store_id, $key){
 
     $keys = array('preview','store_set','commission_set','commission','view_staff','view_log','check_log');
-    if(!in_array($key,$keys)){
-        $key = 'preview';
-    }
+//     if(!in_array($key,$keys)){
+//         $key = 'preview';
+//     }
     $arr = array(
         array(
             'menu'  => '基本信息',
