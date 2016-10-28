@@ -7,6 +7,18 @@
 <!-- {/block} -->
 <!-- {block name="main_content"} -->
 <style>
+.wookmark .bd {
+    height: 90px;
+    overflow: hidden;
+	line-height: 150%;
+}
+.merchants_name { 
+    font-size:16px;
+    margin-top: 32px;
+}
+.merchants_name .ecjiaf-fs1 {
+	/* color:#666 */
+}
 
 
 </style>
@@ -70,21 +82,16 @@
 				<li class="thumbnail">
 					<a href='{RC_Uri::url("store/admin/preview", "store_id={$list.store_id}")}'>
 					<div class="bd">
-						<div class="model-title ware_name">{$list.merchants_name}</div>
-					</div>
-
-					<div class="input">
-					   {$list.contact_mobile}
+						<div class="merchants_name">{$list.merchants_name}<br>
+						<span class="ecjiaf-fs1">{if $list.company_name}{$list.company_name}{else}{$list.responsible_person}{/if}</span>
+						</div>
 					</div>
 					</a>
 				</li>
 				<!-- {/foreach} -->
 			</ul>
-		  
 		</div>
-		
 		</form>
-		
 	</div>
 </div>
 <!-- {$store_list.page} -->
