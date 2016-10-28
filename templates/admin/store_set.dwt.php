@@ -49,29 +49,29 @@
                                             </tr>
 
                                             <tr>
-                                                <td><div align="right"><strong>店铺LOGO</strong></div></td>
+                                                <td><div align="right"><strong>店铺LOGO:</strong></div></td>
                                                 <td colspan="3"><img src="{$store_info.shop_logo}" alt="" style="max-width:120px;"/></td>
                                             </tr>
                                             <tr>
-                                                <td><div align="right"><strong>APP Banner图</strong></div></td>
+                                                <td><div align="right"><strong>APP Banner图:</strong></div></td>
                                                 <td colspan="3"><img src="{$store_info.shop_banner_pic}" alt="" style="max-width:120px;"/></td>
                                             </tr>
                                             <tr>
-                                                <td><div align="right"><strong>店铺导航背景图</strong></div></td>
+                                                <td><div align="right"><strong>店铺导航背景图:</strong></div></td>
                                                 <td colspan="3"><img src="{$store_info.shop_nav_background}" alt="" style="max-width:300px;" /></td>
                                             </tr>
                                             <tr>
-                                                <td><div align="right"><strong>营业时间</strong></div></td>
-                                                <td>{$store_info.shop_time_value}</td>
-                                                <td><div align="right"><strong>客服电话</strong></div></td>
+                                                <td><div align="right"><strong>营业时间:</strong></div></td>
+                                                <td>{$store_info.shop_trade_time}</td>
+                                                <td><div align="right"><strong>客服电话:</strong></div></td>
                                                 <td>{$store_info.shop_kf_mobile}</td>
                                             </tr>
                                             <tr>
-                                                <td><div align="right"><strong>店铺简介</strong></div></td>
+                                                <td><div align="right"><strong>店铺简介:</strong></div></td>
                                                 <td colspan="3">{$store_info.shop_description}</td>
                                             </tr>
                                             <tr>
-                                                <td><div align="right"><strong>店铺公告</strong></div></td>
+                                                <td><div align="right"><strong>店铺公告:</strong></div></td>
                                                 <td colspan="3">{$store_info.shop_notice}</td>
                                             </tr>
                                         </tbody>

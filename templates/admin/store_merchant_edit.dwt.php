@@ -19,7 +19,7 @@
 <style media="screen">
     .theme-green .back-bar .pointer:after{
         left: 3px;
-        top: 2px;
+        top: 1px;
     }
 </style>
 <div class="row-fluid">
@@ -61,7 +61,6 @@
         									<input type='file' name='shop_logo' size="35" />
         								</span>
         								<a class="btn fileupload-exists" data-dismiss="fileupload" href="#">{lang key='system::system.drop'}</a>
-        								<input name="shop_logo" value="{$store_info.shop_logo}" class="hide">
         							</div>
                                 </div>
                             </div>
@@ -83,7 +82,6 @@
         									<input type='file' name='shop_banner_pic' size="35" />
         								</span>
         								<a class="btn fileupload-exists" data-dismiss="fileupload" href="#">{lang key='system::system.drop'}</a>
-        								<input name="shop_banner_pic" value="{$store_info.shop_banner_pic}" class="hide">
         							</div>
                                 </div>
                             </div>
@@ -105,7 +103,6 @@
         									<input type='file' name='shop_nav_background' size="35" />
         								</span>
         								<a class="btn fileupload-exists" data-dismiss="fileupload" href="#">{lang key='system::system.drop'}</a>
-        								<input name="shop_nav_background" value="{$store.identity_pic_front}" class="hide">
         							</div>
                                 </div>
                             </div>
@@ -113,7 +110,7 @@
                             <div class="control-group formSep">
                                 <label class="control-label m_t10">店铺营业时间：</label>
                                 <div class="controls m_t15 m_b20 p_l10">
-                                    <input class="range-slider" name="shop_trade_time" type="hidden" value="270,1230" style="display: none;">
+                                    <input class="range-slider" name="shop_trade_time" type="hidden" value="{$store_info.shop_time_value}" style="display: none;">
                                 </div>
                             </div>
 
