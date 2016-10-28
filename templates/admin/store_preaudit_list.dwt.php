@@ -12,15 +12,30 @@
 	</h3>
 </div>
 
-<div class="row-fluid" >
-	<div class="row-fluid batch">
-		<form class="f_r form-inline" action="{$search_action}" name="searchForm" method="post">
-			<input type="text" name="keywords" placeholder="{lang key='store::store.pls_name'}" value="{$store_list.filter.keywords}"/>
-			<input class="btn search_store" type="submit" value="{lang key='store::store.serach'}"/>
-	  	</form>
-  	</div>
+<div class="nav nav-pills">
+	<li class="{if !$smarty.get.type || $smarty.get.type == 'join'}active{/if}">
+		<a class="data-pjax" href='{RC_Uri::url("store/admin_preaudit/init", "{if $smarty.get.keywords}&keywords={$smarty.get.keywords}{/if}" )}'>申请入驻 
+			<span class="badge badge-info">{$store_list.filter.count_join}</span>
+		</a>
+	</li>
+	
+	<li class="{if $smarty.get.type eq 'edit'}active{/if}">
+		<a class="data-pjax" href='{RC_Uri::url("store/admin_preaudit/init", "type=edit{if $smarty.get.keywords}&keywords={$smarty.get.keywords}{/if}")}'>资料修改
+			<span class="badge badge-info use-plugins-num">{$store_list.filter.count_edit}</span>
+		</a>
+	</li>
+	
+	<li class="{if $smarty.get.type eq 'refuse'}active{/if}">	
+		<a class="data-pjax" href='{RC_Uri::url("store/admin_preaudit/init", "type=refuse{if $smarty.get.keywords}&keywords={$smarty.get.keywords}{/if}")}'>审核未通过
+			<span class="badge badge-info unuse-plugins-num">{$store_list.filter.count_refuse}</span>
+		</a>
+	</li>
+	<form class="f_r form-inline" action="{$search_action}{if $smarty.get.type}&type={$smarty.get.type}{/if}" name="searchForm" method="post">
+		<input type="text" name="keywords" placeholder="{lang key='store::store.pls_name'}" value="{$store_list.filter.keywords}"/>
+		<input class="btn search_store" type="submit" value="{lang key='store::store.serach'}"/>
+  	</form>
 </div>
-  	
+
 <div class="row-fluid">
 	<div class="span12">
 		<table class="table table-striped smpl_tbl table-hide-edit">
@@ -41,8 +56,8 @@
 				    <td class="hide-edit-area">
 				    	<span>{$list.merchants_name}</span>
 				    	<div class="edit-list">
-				    		<a class="data-pjax" href='{RC_Uri::url("store/admin_preaudit/edit", "id={$list.id}")}' title="{lang key='system::system.edit'}">{lang key='system::system.edit'}</a>&nbsp;|&nbsp;
-					      	<a class="data-pjax" href='{RC_Uri::url("store/admin_preaudit/check", "id={$list.id}")}' title="{lang key='store::store.check'}">{lang key='store::store.check'}</a>
+				    		<a class="data-pjax" href='{RC_Uri::url("store/admin_preaudit/edit", "id={$list.id}{if $smarty.get.type}&type={$smarty.get.type}{/if}")}' title="{lang key='system::system.edit'}">{lang key='system::system.edit'}</a>&nbsp;|&nbsp;
+					      	<a class="data-pjax" href='{RC_Uri::url("store/admin_preaudit/check", "id={$list.id}{if $smarty.get.type}&type={$smarty.get.type}{/if}")}' title="{lang key='store::store.check'}">{lang key='store::store.check'}</a>
 					     </div>
 					</td>
 					<td>{$list.cat_name}</td>

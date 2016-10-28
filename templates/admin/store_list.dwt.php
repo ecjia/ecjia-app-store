@@ -12,7 +12,7 @@
     overflow: hidden;
 	line-height: 150%;
 }
-.merchants_name { 
+.merchants_name {
     font-size:16px;
     margin-top: 32px;
 }
@@ -31,13 +31,13 @@
 <div class="nav nav-pills">
 	<li class="{if !$smarty.get.type}active{/if}">
 		<a class="data-pjax" href="{RC_Uri::url('store/admin/init')}{if $store_list.status}&merchant_keywords={$store_list.status}{/if}{if $filter.keywords}&keywords={$filter.keywords}{/if}">{lang key='store::store.preaudit_list'} 
-			<span class="badge badge-info">{$filter.count_goods_num}</span>
+			<span class="badge badge-info">{$filter.count_all}</span>
 		</a>
 	</li>
 	
 	<li class="{if $smarty.get.type eq 1}active{/if}">
 		<a class="data-pjax" href='{RC_Uri::url("store/admin/init", "type=1{if $store_list.status}&merchant_keywords={$store_list.status}{/if}{if $filter.keywords}&keywords={$filter.keywords}{/if}")}'>正常
-			<span class="badge badge-info use-plugins-num">{$filter.count_Unlock}</span>
+			<span class="badge badge-info use-plugins-num">{$filter.count_unlock}</span>
 		</a>
 	</li>
 	

@@ -499,20 +499,19 @@ class admin extends ecjia_admin {
 		}
 
 		$filter_type = $db_store_franchisee
-		->select(RC_DB::raw('count(*) as count_goods_num'),
-		    RC_DB::raw('SUM(status = 1) as count_Unlock'),
+		->select(RC_DB::raw('count(*) as count_all'),
+		    RC_DB::raw('SUM(status = 1) as count_unlock'),
 		    RC_DB::raw('SUM(status = 2) as count_locking'))
 		    ->first();
 
-		$filter['count_goods_num'] = $filter_type['count_goods_num'];
-		$filter['count_Unlock'] = $filter_type['count_Unlock'];
+		$filter['count_all'] = $filter_type['count_all'];
+		$filter['count_unlock'] = $filter_type['count_unlock'];
 		$filter['count_locking'] = $filter_type['count_locking'];
 		if (!empty($filter['type'])) {
 		    $db_store_franchisee->where('status', $filter['type']);
 		}
 
-		$count = $db_store_franchisee->count();
-		$page = new ecjia_page($count, 20, 5);
+		$page = new ecjia_page($filter['count_all'], 20, 5);
 
 		$data = $db_store_franchisee
 		->leftJoin('store_category as sc', RC_DB::raw('sf.cat_id'), '=', RC_DB::raw('sc.cat_id'))

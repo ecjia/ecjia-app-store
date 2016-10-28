@@ -53,7 +53,12 @@ class admin_preaudit extends ecjia_admin {
 
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('store::store.store_update')));
 		$this->assign('ur_here',RC_Lang::get('store::store.store_update'));
-		$this->assign('action_link',array('href' => RC_Uri::url('store/admin_preaudit/init'),'text' => RC_Lang::get('store::store.store_preaudit')));
+		if ($_GET['type']) {
+		    $action_link_href = RC_Uri::url('store/admin_preaudit/init', array('type' => $_GET['type']));
+		} else {
+		    $action_link_href = RC_Uri::url('store/admin_preaudit/init');
+		}
+		$this->assign('action_link',array('href' => $action_link_href, 'text' => RC_Lang::get('store::store.store_preaudit')));
 
 		$id = intval($_GET['id']);
 		$store = RC_DB::table('store_preaudit')->where('id', $id)->first();
@@ -182,7 +187,12 @@ class admin_preaudit extends ecjia_admin {
 
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('store::store.check_view')));
 		$this->assign('ur_here',RC_Lang::get('store::store.check_view'));
-		$this->assign('action_link',array('href' => RC_Uri::url('store/admin_preaudit/init'),'text' => RC_Lang::get('store::store.store_preaudit')));
+		if ($_GET['type']) {
+		    $action_link_href = RC_Uri::url('store/admin_preaudit/init', array('type' => $_GET['type']));
+		} else {
+		    $action_link_href = RC_Uri::url('store/admin_preaudit/init');
+		}
+		$this->assign('action_link',array('href' => $action_link_href,'text' => RC_Lang::get('store::store.store_preaudit')));
 
 		$id = intval($_GET['id']);
 		$info = RC_DB::table('store_preaudit')->where('id', $id)->first();
@@ -449,12 +459,32 @@ class admin_preaudit extends ecjia_admin {
 		$db_store_franchisee = RC_DB::table('store_preaudit as sp');
 
 		$filter['keywords'] = empty($_GET['keywords']) ? '' : trim($_GET['keywords']);
+		$filter['type'] = empty($_GET['type']) ? 'join' : trim($_GET['type']);
 		if ($filter['keywords']) {
 			$db_store_franchisee->where('merchants_name', 'like', '%'.mysql_like_quote($filter['keywords']).'%');
 		}
 
-		$count = $db_store_franchisee->count();
-		$page = new ecjia_page($count, 15, 5);
+		$filter_type = $db_store_franchisee
+		->select(RC_DB::raw('count(*) as count_all'),
+		    RC_DB::raw('SUM(store_id = 0) as count_join'),
+		    RC_DB::raw('SUM(store_id <> 0) as count_edit'),
+		    RC_DB::raw('SUM(check_status = 3) as count_refuse'))
+		    ->first();
+		
+		$filter['count_all'] = $filter_type['count_all'] ? $filter_type['count_all'] : 0;
+		$filter['count_join'] = $filter_type['count_join'] ? $filter_type['count_join'] : 0;
+		$filter['count_edit'] = $filter_type['count_edit'] ? $filter_type['count_edit'] : 0;
+		$filter['count_refuse'] = $filter_type['count_refuse'] ? $filter_type['count_refuse'] : 0;
+		
+		if ($filter['type'] == 'edit') {
+		    $db_store_franchisee->where('store_id', '<>', 0);
+		} else if ($filter['type'] == 'refuse') {
+		    $db_store_franchisee->where('check_status', '=', 3);
+		} else {
+		    $db_store_franchisee->where('store_id', '=', 0);
+		}
+		
+		$page = new ecjia_page($filter['count_all'], 15, 5);
 		$data = $db_store_franchisee
 		->leftJoin('store_category as sc', RC_DB::raw('sp.cat_id'), '=', RC_DB::raw('sc.cat_id'))
 		->selectRaw('sp.id,sp.merchants_name,sp.merchants_name,sp.responsible_person,sp.apply_time,sp.company_name,sc.cat_name')
