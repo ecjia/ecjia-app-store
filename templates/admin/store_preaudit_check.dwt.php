@@ -269,8 +269,8 @@
 					<tr>
 						<td><div align="right"><strong>{lang key='store::store.check_lable'}</strong></div></td>
 						<td>
-							<label class="ecjiaf-ib"><input type="radio"  name="check_status" value="1" {if $store.check_status eq 1}checked{/if}><span>{lang key='store::store.check_no'}</span></label>
-						    <label class="ecjiaf-ib"><input type="radio"  name="check_status" value="2" {if $store.check_status eq 2}checked{/if}><span>{lang key='store::store.check_yes'}</span></label>
+						    <label class="ecjiaf-ib"><input type="radio"  name="check_status" value="2" checked><span>{lang key='store::store.check_yes'}</span></label>
+							<label class="ecjiaf-ib"><input type="radio"  name="check_status" value="3" ><span>{lang key='store::store.check_no'}</span></label>
 						</td>
 					</tr>
 					<tr>

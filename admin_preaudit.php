@@ -374,7 +374,7 @@ class admin_preaudit extends ecjia_admin {
 				);
 				RC_Api::api('store', 'add_check_log', $log);
 				
-				$this->showmessage(RC_Lang::get('store::store.check_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin_preaudit/init', array('id' => $id))));
+				$this->showmessage(RC_Lang::get('store::store.check_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin_preaudit/init')));
 			} else {
 				//再次审核
 				$store = RC_DB::table('store_preaudit')->where('store_id', $store_id)->first();
@@ -425,18 +425,22 @@ class admin_preaudit extends ecjia_admin {
 				    'info' => '审核通过。'.$remark,
 				);
 				RC_Api::api('store', 'add_check_log', $log);
-				$this->showmessage('再次审核成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin_preaudit/init', array('id' => $id))));
+				$this->showmessage('再次审核成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin_preaudit/init')));
 			}
-		} else {
+		} else if($_POST['check_status'] == 3) {
+		    //不通过
 		    $log = array(
-                'store_id' => $store_id ? $store_id : $id,
-                'type' => $store_id ? 2 : 1,
-                'name' => '管理员',
-                'info' => $remark,
+		        'store_id' => $store_id ? $store_id : $id,
+		        'type' => $store_id ? 2 : 1,
+		        'name' => '管理员',
+		        'info' => '审核不通过。'.$remark,
 		    );
 		    RC_Api::api('store', 'add_check_log', $log);
-			RC_DB::table('store_preaudit')->where('id', $id)->update(array('remark' => $remark));
-			$this->showmessage(RC_Lang::get('store::store.deal_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin_preaudit/check', array('id' => $id))));
+		    RC_DB::table('store_preaudit')->where('id', $id)->update(array('remark' => $remark, 'check_status' => intval($_POST['check_status'])));
+		    $this->showmessage(RC_Lang::get('store::store.deal_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin_preaudit/init')));
+		} else {
+		    //异常状态
+			$this->showmessage('操作异常，请检查', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 	}
 
