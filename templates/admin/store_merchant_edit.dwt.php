@@ -37,14 +37,7 @@
                     <form class="form-horizontal" id="form-privilege" name="theForm" action="{$form_action}" method="post" enctype="multipart/form-data" >
                         <fieldset>
                             <div class="control-group formSep">
-                                <label class="control-label">{lang key='store::store.store_title_lable'}</label>
-                                <div class="controls m_t5">
-                                    {$store_name}
-                                </div>
-                            </div>
-
-                            <div class="control-group formSep">
-                                <label class="control-label m_t10">店铺LOGO</label>
+                                <label class="control-label m_t10">店铺LOGO：</label>
                                 <div class="controls m_t15 m_b20 p_l10">
                                     <div class="fileupload fileupload-new" data-provides="fileupload">
         							    {if $store_info.shop_logo neq ''}

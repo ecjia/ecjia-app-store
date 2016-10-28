@@ -282,7 +282,7 @@ class admin extends ecjia_admin {
 	public function store_set() {
 
         $this->assign('action_link',array('href' => RC_Uri::url('store/admin/init'),'text' => RC_Lang::get('store::store.store_list')));
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('store::store.view')));
+		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('店铺设置'));
         $store_id = intval($_GET['store_id']);
         $store = RC_DB::table('store_franchisee')->where('store_id', $store_id)->first();
         $this->assign('ur_here', $store['merchants_name']);
@@ -623,27 +623,27 @@ class admin extends ecjia_admin {
 		$this->assign('user_list',   $user_list);
         $this->display('staff_log.dwt');
     }
-    
+
     public function check_log() {
 
         $this->admin_priv('store_preaudit_check_log', ecjia::MSGTYPE_JSON);
-        
+
         $store_id = intval($_GET['store_id']);
-        
+
         $store = RC_DB::table('store_franchisee')->where('store_id', $store_id)->first();
         $this->assign('ur_here',$store['merchants_name'].' - '.'审核申请日志');
-        
+
         ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here($store['merchants_name'], RC_Uri::url('store/admin/preview', array('store_id' => $store_id))));
         ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('审核申请日志'));
         $this->assign('action_link',array('href' => RC_Uri::url('store/admin/init'),'text' => RC_Lang::get('store::store.store_list')));
-         
+
         $log = get_check_log($store_id, 2, 1, 15);
-         
+
         $this->assign('log_list', $log);
         $menu = set_store_menu($store_id, 'check_log');
         $this->assign('menu', $menu);
         $this->display('store_preaudit_check_log.dwt');
-        
+
     }
 
     /**
