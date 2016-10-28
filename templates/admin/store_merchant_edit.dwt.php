@@ -112,6 +112,7 @@
                                 <div class="controls m_t15 m_b20 p_l10">
                                     <input class="range-slider" name="shop_trade_time" type="hidden" value="{$store_info.shop_time_value}" style="display: none;">
                                 </div>
+                                <span class="m_t30 controls help-block" style="margin-top:30px;">拖拽选取营业时间段</span>
                             </div>
 
                             <div class="control-group formSep">

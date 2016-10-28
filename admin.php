@@ -299,7 +299,7 @@ class admin extends ecjia_admin {
 	public function store_set_edit() {
 
         $this->assign('action_link',array('href' => RC_Uri::url('store/admin/store_set', array('store_id' => $_GET['store_id'])),'text' => '店铺设置'));
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('store::store.view')));
+        ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('编辑入驻商'));
         $store_id = intval($_GET['store_id']);
         $store = RC_DB::table('store_franchisee')->where('store_id', $store_id)->first();
         $this->assign('store_name', $store['merchants_name']);
