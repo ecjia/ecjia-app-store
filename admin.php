@@ -86,13 +86,18 @@ class admin extends ecjia_admin {
 		$province   = $this->db_region->get_regions(1, 1);
 		$city       = $this->db_region->get_regions(2, $store['province']);
 		$district   = $this->db_region->get_regions(3, $store['city']);
-		$this->assign('province', $province);
+        if(empty($store['latitude']) || empty($store['longitude'])){
+            $store['latitude'] = '31.235450744628906';
+            $store['longitude'] = '121.41641998291016';
+        }
+        $this->assign('province', $province);
 		$this->assign('city', $city);
 		$this->assign('district', $district);
 
 		$this->assign('cat_list', $cat_list);
 		$this->assign('menu', $menu);
 		$this->assign('certificates_list', $certificates_list);
+
 		$this->assign('store', $store);
 		$this->assign('form_action', RC_Uri::url('store/admin/update'));
 		$this->assign('longitudeForm_action', RC_Uri::url('store/admin/get_longitude'));
@@ -122,16 +127,22 @@ class admin extends ecjia_admin {
 
 		if ($step == 'base') {
 		    $data = array(
-		        'cat_id'   	   				=> !empty($_POST['store_cat']) 		? $_POST['store_cat'] : '',
-		        'merchants_name'   			=> !empty($_POST['merchants_name']) ? $_POST['merchants_name'] : '',
-		        'shop_keyword'      		=> !empty($_POST['shop_keyword']) 	? $_POST['shop_keyword'] : '',
+		        'cat_id'   	   				=> !empty($_POST['store_cat']) 		  ? $_POST['store_cat'] : '',
+		        'merchants_name'   			=> !empty($_POST['merchants_name'])     ? $_POST['merchants_name'] : '',
+		        'shop_keyword'      		=> !empty($_POST['shop_keyword']) 	     ? $_POST['shop_keyword'] : '',
 		        'email'      				=> !empty($_POST['email']) 				? $_POST['email'] : '',
 		        'contact_mobile'    		=> !empty($_POST['contact_mobile']) 	? $_POST['contact_mobile'] : '',
 		        'address'      				=> !empty($_POST['address']) 			? $_POST['address'] : '',
 		        'province'					=> !empty($_POST['province'])				? $_POST['province'] : '',
 		        'city'						=> !empty($_POST['city'])					? $_POST['city'] : '',
 		        'district'					=> !empty($_POST['district'])				? $_POST['district'] : '',
+		        'longitude'					=> !empty($_POST['longitude'])				? $_POST['longitude'] : '',
+		        'latitude'					=> !empty($_POST['latitude'])				? $_POST['latitude'] : '',
 		    );
+            $geohash = RC_Loader::load_app_class('geohash', 'store');
+            $geohash_code = $geohash->encode($latitude , $longitude);
+            $geohash_code = substr($geohash_code, 0, 10);
+            $data['geohash'] = $geohash_code;
 		} else if ($step == 'identity') {
 		    $data = array(
 		        'responsible_person'		=> !empty($_POST['responsible_person']) ? $_POST['responsible_person'] : '',
