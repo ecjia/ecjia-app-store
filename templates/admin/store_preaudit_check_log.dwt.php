@@ -4,6 +4,11 @@
 <!-- {/block} -->
 
 <!-- {block name="main_content"} -->
+<style>
+.table-condensed tr:first-child td {
+    border: none;
+}
+</style>
 <div>
 	<h3 class="heading">
 		<!-- {if $ur_here}{$ur_here}{/if} -->
