@@ -25,37 +25,11 @@
 <div class="row-fluid">
     <div class="span12">
         <div class="tabbable tabs-left">
-        {if $smarty.get.style neq 2}
             <ul class="nav nav-tabs tab_merchants_nav">
-                <li><a href='{RC_Uri::url("store/admin/store_set","store_id={$smarty.get.store_id}")}' class="pjax" >基本信息</a></li>
-                <li><a href='{RC_Uri::url("store/admin/store_set","store_id={$smarty.get.store_id}")}' class="pjax" >店铺设置</a></li>
-                <li><a href='{RC_Uri::url("store/admin_commission/edit","store_id={$smarty.get.store_id}")}' class="pjax" >设置佣金</a></li>
-                <li><a href='{RC_Uri::url("commission/admin/init","store_id={$smarty.get.store_id}")}' class="pjax" >结算账单</a></li>
-                <li><a href='{RC_Uri::url("store/admin/view_staff","store_id={$smarty.get.store_id}")}' class="pjax" >查看员工</a></li>
-                <li class="active"><a href="#tab6" data-toggle="tab" >查看日志</a></li>
+                <!-- {foreach from=$menu item=val} -->
+                <li {if $val.active}class="active"{/if}><a href="{$val.url}" {if $val.active}data-toggle="tab"{/if}>{$val.menu}</a></li>
+                <!-- {/foreach} -->
             </ul>
-        {/if}
-
-            {if $smarty.get.style eq 2}
-            <div class="float_block" style=" float: left;position: relative;margin-left: 30px;top:0;width:120px">
-                <h4>快速导航</h4>
-                <ul class="unstyled" style="">
-                    <li data-toggle="goarea" data-area="#" class="active">
-                        <i class="fontello-icon-doc-text"></i>基本信息
-                    </li>
-                    <li data-toggle="goarea" data-area="#">
-                        <a href='{RC_Uri::url("store/admin_commission/edit","store_id={$smarty.get.store_id}")}' class="data-pjax"><i class="fontello-icon-edit"></i>设置佣金</a>
-                    </li>
-                    <li data-toggle="goarea" data-area="#">
-                        <a href='{RC_Uri::url("commission/admin/init","store_id={$smarty.get.store_id}")}' class="data-pjax"><i class="fontello-icon-chat"></i>结算账单</a>
-                    </li>
-                    <li data-toggle="goarea" data-area="#">
-                        <a href='{RC_Uri::url("store/admin/view_staff","store_id={$smarty.get.store_id}")}' class="data-pjax"><i class="fontello-icon-cog-alt"></i>查看员工</a>
-                    </li>
-                </ul>
-            </div>
-            {/if}
-
             <div class="tab-content tab_merchants">
                 <div class="tab-pane active" id="tab6">
                     <div  class="control-group form-horizontal choose_list span12">

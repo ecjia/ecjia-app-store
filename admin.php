@@ -579,7 +579,7 @@ class admin extends ecjia_admin {
     public function view_log(){
         $this->admin_priv('store_affiliate_manage', ecjia::MSGTYPE_JSON);
         $this->assign('action_link',array('href' => RC_Uri::url('store/admin/init'),'text' => RC_Lang::get('store::store.store_list')));
-        ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('store::store.view')));
+        ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('查看日志'));
         $store_id = intval($_GET['store_id']);
         if(empty($store_id)){
             $this->showmessage(__('请选择商家店铺'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
