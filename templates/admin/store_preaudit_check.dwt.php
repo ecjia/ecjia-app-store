@@ -25,7 +25,7 @@
 
 <div class="row-fluid">
 	<div class="span12">
-	    <div class="row-fluid t_r m_b5">图示：<div class="high_light h_info">旧值</div>修改前数据，<div class="high_light h_success">新值</div>修改后数据</div>
+	    <div class="row-fluid m_b5"><div class="f_l f_s14">{lang key='store::store.apply_time_lable'}{$store.apply_time}</div><div class="f_r">图例：<div class="high_light h_info">旧值</div>修改前数据，<div class="high_light h_success">新值</div>修改后数据</div></div>
 		<div class="foldable-list move-mod-group">		
 		<div class="accordion-group">
 			<div class="accordion-heading accordion-heading-url">
@@ -59,7 +59,7 @@
 					</tr>
 					<tr>
 						<td><div align="right"><strong>{lang key='store::store.store_keywords_lable'}</strong></div></td>
-						<td>
+						<td colspan="3">
 						{if $log_last.shop_keyword}
     						<div class="high_light h_info">{$log_last.shop_keyword.original_data}</div><br>
     						<div class="high_light h_success">{$log_last.shop_keyword.new_data}</div>
@@ -67,8 +67,6 @@
 						    {$store.shop_keyword}
 						{/if}
 						</td>
-						<td><div align="right"><strong>{lang key='store::store.apply_time_lable'}</strong></div></td>
-				        <td>{$store.apply_time}</td>
 					</tr>
 					<tr>
 					    <td><div align="right"><strong>{lang key='store::store.contact_lable'}</strong></div></td>
@@ -399,7 +397,7 @@
 					<tr>
 						<td><div align="right"><strong>{lang key='store::store.remark_lable'}</strong></div></td>
 						<td>
-							<textarea class="span12" name="remark" cols="40" rows="2">{$store.remark}</textarea>
+							<textarea class="span12" name="remark" cols="40" rows="2" placeholder="请填写审核不通过的原因，方便商家修改资料，注意换行">{$store.remark}</textarea>
 						    <input type="hidden"  name="original" value="{$store.remark}" />
 						</td>
 					</tr>
