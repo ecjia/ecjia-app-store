@@ -140,7 +140,7 @@ class admin extends ecjia_admin {
 		        'latitude'					=> !empty($_POST['latitude'])				? $_POST['latitude'] : '',
 		    );
             $geohash = RC_Loader::load_app_class('geohash', 'store');
-            $geohash_code = $geohash->encode($latitude , $longitude);
+			$geohash_code = $geohash->encode($_POST['latitude'] , $_POST['longitude']);
             $geohash_code = substr($geohash_code, 0, 10);
             $data['geohash'] = $geohash_code;
 		} else if ($step == 'identity') {
