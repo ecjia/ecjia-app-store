@@ -224,8 +224,9 @@ class admin_preaudit extends ecjia_admin {
 		}
 		
 		$log_rs = get_check_log($log_store_id, $log_type, 1, 3);
-		
+// 		_dump($log_rs,1);
 		$this->assign('log_list', $log_rs['list']);
+		$this->assign('log_last', $log_rs['list'][0]['log']);
 
 		$this->display('store_preaudit_check.dwt');
 	}
@@ -265,6 +266,9 @@ class admin_preaudit extends ecjia_admin {
 		if($_POST['check_status'] == 2) {
 			if($store_id == 0) {//首次审核
 				$store = RC_DB::table('store_preaudit')->where('id', $id)->first();
+				$geohash = RC_Loader::load_app_class('geohash', 'store');
+				$geohash_code = $geohash->encode($store['latitude'] , $store['longitude']);
+				$geohash_code = substr($geohash_code, 0, 10);
 // 				_dump($store,1);
 				$data =array(
 					'cat_id' 					=> $store['cat_id'] ? $store['cat_id'] : 0,
@@ -296,6 +300,7 @@ class admin_preaudit extends ecjia_admin {
 					'remark'					=>$remark,
 					'longitude'					=>$store['longitude'],
 					'latitude'					=>$store['latitude'],
+				    'geohash'                   =>$geohash_code,
 					'sort_order' 				=> 50,
 				);
 				$store_id = RC_DB::table('store_franchisee')->insertGetId($data);
@@ -412,6 +417,9 @@ class admin_preaudit extends ecjia_admin {
 					'city'						=> $store['city'],
 					'district'					=> $store['district'],
 				    'address'					=> $store['address'],
+				    'longitude'					=> $store['longitude'],
+				    'latitude'					=> $store['latitude'],
+				    'geohash'                   => $store['geohash'],
 				);
 				//判断图片是否更新，删除老图
 				/* $disk = RC_Filesystem::disk();

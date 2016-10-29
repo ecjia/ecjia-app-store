@@ -8,7 +8,11 @@
 
 <!-- {block name="main_content"} -->
 <style>
-.table thead th{ background-color:#F5F5F5}
+.table thead th { background-color:#F5F5F5}
+.high_light { padding: 3px;border-radius: 4px;display:inline-block;}
+.h_success { background-color:#aedb97;border-color:#aedb97;margin-top:3px;}
+.h_info { background-color:#fffad7;border-color:#fffad7;}
+
 </style>
 <div>
 	<h3 class="heading">
@@ -21,6 +25,7 @@
 
 <div class="row-fluid">
 	<div class="span12">
+	    <div class="row-fluid t_r m_b5">图示：<div class="high_light h_info">旧值</div>修改前数据，<div class="high_light h_success">新值</div>修改后数据</div>
 		<div class="foldable-list move-mod-group">		
 		<div class="accordion-group">
 			<div class="accordion-heading accordion-heading-url">
@@ -33,33 +38,89 @@
 					<tbody class="first-td-no-leftbd">
 					<tr>
 						<td><div align="right"><strong>{lang key='store::store.store_title_lable'}</strong></div></td>
-						<td><strong>{$store.merchants_name}</strong>
+						<td>
+						{if $log_last.merchants_name}
+						<div class="high_light h_info">{$log_last.merchants_name.original_data}</div><br>
+						<div class="high_light h_success">{$log_last.merchants_name.new_data}</div>
+						{else}
+						<strong>{$store.merchants_name}</strong>
+						{/if}
 						{if $store.identity_status eq 2}<span class="label label-success m_l10">已认证</span>{else}<span class="label m_l10">未认证</span>{/if}
 						{if $store.status eq 2}<span class="label label-important m_l10">锁定</span>{/if}</td>
 						<td><div align="right"><strong>{lang key='store::store.store_cat_lable'}</strong></div></td>
-						<td>{if $store.cat_name eq ''}未分类{else}{$store.cat_name}{/if}</td>
+						<td>{if $store.cat_name eq ''}未分类{else}
+    						{if $log_last.cat_name}
+    						<div class="high_light h_info">{$log_last.cat_name.original_data}</div><br>
+    						<div class="high_light h_success">{$log_last.cat_name.new_data}</div>
+    						{else}
+    						{$store.cat_name}
+    						{/if}
+						{/if}</td>
 					</tr>
 					<tr>
 						<td><div align="right"><strong>{lang key='store::store.store_keywords_lable'}</strong></div></td>
-						<td>{$store.shop_keyword}</td>
+						<td>
+						{if $log_last.shop_keyword}
+    						<div class="high_light h_info">{$log_last.shop_keyword.original_data}</div><br>
+    						<div class="high_light h_success">{$log_last.shop_keyword.new_data}</div>
+    						{else}
+						    {$store.shop_keyword}
+						{/if}
+						</td>
 						<td><div align="right"><strong>{lang key='store::store.apply_time_lable'}</strong></div></td>
 				        <td>{$store.apply_time}</td>
 					</tr>
 					<tr>
 					    <td><div align="right"><strong>{lang key='store::store.contact_lable'}</strong></div></td>
-						<td>{$store.contact_mobile}</td>
+						<td>
+						{if $log_last.contact_mobile}
+    						<div class="high_light h_info">{$log_last.contact_mobile.original_data}</div><br>
+    						<div class="high_light h_success">{$log_last.contact_mobile.new_data}</div>
+    						{else}
+    						{$store.contact_mobile}
+						{/if}
+						</td>
 						<td><div align="right"><strong>{lang key='store::store.email_lable'}</strong></div></td>
-						<td>{$store.email}</td>
+						<td>
+						{if $log_last.email}
+    						<div class="high_light h_info">{$log_last.email.original_data}</div><br>
+    						<div class="high_light h_success">{$log_last.email.new_data}</div>
+						{else}
+    						{$store.email}
+						{/if}
+						</td>
 					</tr>
 					<tr>
 						<td><div align="right"><strong>所在地区：</strong></div></td>
-						<td>{$store.province}&nbsp;{$store.city}&nbsp;{$store.district}</td>
+						<td>
+						{if $log_last.province || $log_last.city || $log_last.district}
+    						<div class="high_light h_info">{$log_last.province.original_data}&nbsp;{$log_last.city.original_data}&nbsp;{$log_last.district.original_data}</div><br>
+    						<div class="high_light h_success">{$log_last.province.new_data}&nbsp;{$log_last.city.new_data}&nbsp;{$log_last.district.new_data}</div>
+						{else}
+    						{$store.province}&nbsp;{$store.city}&nbsp;{$store.district}
+						{/if}
+						</td>
 						<td><div align="right"><strong>经纬度：</strong></div></td>
-						<td>{$store.longitude}&nbsp;&nbsp;{$store.latitude}</td>
+						<td>
+						{if $log_last.longitude || $log_last.latitude}
+    						<div class="high_light h_info">{$log_last.longitude.original_data}&nbsp;{$log_last.latitude.original_data}</div><br>
+    						<div class="high_light h_success">{$log_last.longitude.new_data}&nbsp;{$log_last.latitude.new_data}</div>
+						{else}
+    						{$store.longitude}&nbsp;&nbsp;{$store.latitude}{if $store.longitude && $store.latitude}&nbsp;&nbsp;<a href="http://api.map.baidu.com/marker?location={$store.latitude},{$store.longitude}&title=我的位置&content={$store.merchants_name}&output=html&src=ecjiacityo2o" title="查看地图" target="_blank">[查看地图]</a>{/if}
+						{/if}
+						</td>
 					</tr>
 					<tr>
 						<td><div align="right"><strong>{lang key='store::store.address_lable'}</strong></div></td>
-						<td colspan="3">{$store.address}{if $store.longitude && $store.latitude}&nbsp;&nbsp;<a href="http://api.map.baidu.com/marker?location={$store.latitude},{$store.longitude}&title=我的位置&content={$store.merchants_name}&output=html" title="查看地图" target="_blank">[查看地图]</a>{/if}</td>
+						<td colspan="3">
+						{if $log_last.address}
+    						<div class="high_light h_info">{$log_last.address.original_data}</div><br>
+    						<div class="high_light h_success">{$log_last.address.new_data}</div>
+						{else}
+    						{$store.address}
+						{/if}
+						</td>
+<!-- 						http://map.baidu.com/?newmap=1&s=con%26wd%3D%E4%B8%AD%E5%B1%B1%E5%8C%97%E8%B7%AF3553%E5%8F%B7%26c%3D289&from=alamap&tpl=mapsite -->
 					</tr>
 					</tbody>
 				</table>
@@ -82,53 +143,78 @@
 						<td><div align="right"><strong>{lang key='store::store.validate_type'}</strong></div></td>
 						<td>{if $store.validate_type eq 1}{lang key='store::store.personal'}{else}{lang key='store::store.company'}{/if}</td>
 						<td><div align="right"><strong>负责人:</strong></div></td>
-						<td>{$store.responsible_person}</td>
+						<td>
+						{if $log_last.responsible_person}
+    						<div class="high_light h_info">{$log_last.responsible_person.original_data}</div><br>
+    						<div class="high_light h_success">{$log_last.responsible_person.new_data}</div>
+						{else}
+    						{$store.responsible_person}
+						{/if}
+						</td>
 					</tr>
 
-					<tr>
-						<td ><div align="right"><strong>{lang key='store::store.identity_type_lable'}</strong></div></td>
-						{if $store.identity_type eq 1}
-						<td>{lang key='store::store.people_id'}</td>
-						{elseif $store.identity_type eq 2}
-						<td>{lang key='store::store.passport'}</td>
-						{elseif $store.identity_type eq 3}
-						<td>{lang key='store::store.hong_kong_and_macao_pass'}</td>
-						{else}
-						<td></td>
-						{/if}
-						<td><div align="right"><strong>{lang key='store::store.identity_number_lable'}</strong></div></td>
-						<td>{$store.identity_number}</td>
-					</tr>
 					{elseif $store.validate_type eq 2}
 					<tr>
 						<td><div align="right"><strong>{lang key='store::store.validate_type'}</strong></div></td>
 						<td>{if $store.validate_type eq 1}{lang key='store::store.personal'}{else}{lang key='store::store.company'}{/if}</td>
 						<td><div align="right"><strong>{lang key='store::store.person_lable'}</strong></div></td>
-						<td>{$store.responsible_person}</td>
+						<td>
+						{if $log_last.responsible_person}
+    						<div class="high_light h_info">{$log_last.responsible_person.original_data}</div><br>
+    						<div class="high_light h_success">{$log_last.responsible_person.new_data}</div>
+						{else}
+    						{$store.responsible_person}
+						{/if}
+						</td>
 					</tr>
 
 					<tr>
 					    <td><div align="right"><strong>{lang key='store::store.companyname_lable'}</strong></div></td>
-						<td>{$store.company_name}</td>
-						<td><div align="right"><strong>{lang key='store::store.business_licence_lable'}</strong></div></td>
-						<td >{$store.business_licence}</td>
-					</tr>
-
-					<tr>
-						<td><div align="right"><strong>{lang key='store::store.identity_type_lable'}</strong></div></td>
-						{if $store.identity_type eq 1}
-						<td>{lang key='store::store.people_id'}</td>
-						{elseif $store.identity_type eq 2}
-						<td>{lang key='store::store.passport'}</td>
-						{elseif $store.identity_type eq 3}
-						<td>{lang key='store::store.hong_kong_and_macao_pass'}</td>
+						<td>
+						{if $log_last.company_name}
+    						<div class="high_light h_info">{$log_last.company_name.original_data}</div><br>
+    						<div class="high_light h_success">{$log_last.company_name.new_data}</div>
 						{else}
-						<td></td>
+    						{$store.company_name}
 						{/if}
-						<td><div align="right"><strong>{lang key='store::store.identity_number_lable'}</strong></div></td>
-						<td>{$store.identity_number}</td>
+						</td>
+						<td><div align="right"><strong>{lang key='store::store.business_licence_lable'}</strong></div></td>
+						<td>
+						{if $log_last.business_licence}
+    						<div class="high_light h_info">{$log_last.business_licence.original_data}</div><br>
+    						<div class="high_light h_success">{$log_last.business_licence.new_data}</div>
+						{else}
+    						{$store.business_licence}
+						{/if}
+						</td>
 					</tr>
 					{/if}
+					<tr>
+						<td ><div align="right"><strong>{lang key='store::store.identity_type_lable'}</strong></div></td>
+						<td>
+						{if $log_last.identity_type}
+    						<div class="high_light h_info">{$log_last.identity_type.original_data}</div><br>
+    						<div class="high_light h_success">{$log_last.identity_type.new_data}</div>
+						{else}
+    						{if $store.identity_type eq 1}
+    						{lang key='store::store.people_id'}
+    						{elseif $store.identity_type eq 2}
+    						{lang key='store::store.passport'}
+    						{elseif $store.identity_type eq 3}
+    						{lang key='store::store.hong_kong_and_macao_pass'}
+    						{/if}
+						{/if}
+						</td>
+						<td><div align="right"><strong>{lang key='store::store.identity_number_lable'}</strong></div></td>
+						<td>
+						{if $log_last.identity_number}
+    						<div class="high_light h_info">{$log_last.identity_number.original_data}</div><br>
+    						<div class="high_light h_success">{$log_last.identity_number.new_data}</div>
+						{else}
+    						{$store.identity_number}
+						{/if}
+						</td>
+					</tr>
 					<tr>
 					    <td><div align="right"><strong>认证状态：</strong></div></td>
 						<td colspan="3">{if $store.identity_status eq 0}待认证
@@ -157,19 +243,54 @@
 					<tbody class="first-td-no-leftbd">
 					<tr>
 						<td><div align="right"><strong>{lang key='store::store.bank_name_lable'}</strong></div></td>
-						<td>{$store.bank_name}</td>
+						<td>
+						{if $log_last.bank_name}
+    						<div class="high_light h_info">{$log_last.bank_name.original_data}</div><br>
+    						<div class="high_light h_success">{$log_last.bank_name.new_data}</div>
+						{else}
+    						{$store.bank_name}
+						{/if}
+						</td>
 						<td><div align="right"><strong>{lang key='store::store.bank_branch_name_lable'}</strong></div></td>
-						<td>{$store.bank_branch_name}</td>
+						<td>
+						{if $log_last.bank_branch_name}
+    						<div class="high_light h_info">{$log_last.bank_branch_name.original_data}</div><br>
+    						<div class="high_light h_success">{$log_last.bank_branch_name.new_data}</div>
+						{else}
+    						{$store.bank_branch_name}
+						{/if}
+						</td>
 					</tr>
 					<tr>
 						<td><div align="right"><strong>{lang key='store::store.bank_account_number_lable'}</strong></div></td>
-						<td>{$store.bank_account_number}</td>
+						<td>
+						{if $log_last.bank_account_number}
+    						<div class="high_light h_info">{$log_last.bank_account_number.original_data}</div><br>
+    						<div class="high_light h_success">{$log_last.bank_account_number.new_data}</div>
+						{else}
+    						{$store.bank_account_number}
+						{/if}
+						</td>
 						<td><div align="right"><strong>{lang key='store::store.bank_account_name_label'}</strong></div></td>
-						<td>{$store.bank_account_name}</td>
+						<td>
+						{if $log_last.bank_account_name}
+    						<div class="high_light h_info">{$log_last.bank_account_name.original_data}</div><br>
+    						<div class="high_light h_success">{$log_last.bank_account_name.new_data}</div>
+						{else}
+    						{$store.bank_account_name}
+						{/if}
+						</td>
 					</tr>
 					<tr>
 						<td><div align="right"><strong>{lang key='store::store.bank_address_lable'}</strong></div></td>
-						<td colspan="3">{$store.bank_address}</td>
+						<td colspan="3">
+						{if $log_last.bank_address}
+    						<div class="high_light h_info">{$log_last.bank_address.original_data}</div><br>
+    						<div class="high_light h_success">{$log_last.bank_address.new_data}</div>
+						{else}
+    						{$store.bank_address}
+						{/if}
+						</td>
 					</tr>
 					</tbody>
 				</table>
@@ -192,18 +313,25 @@
 					<tr>
 						<td><div align="right"><strong>{lang key='store::store.identity_pic_front_lable'}</strong></div></td>
 						<td>
-							{if $store.identity_pic_front neq ''}
+						{if $log_last.identity_pic_front}
+    						<div class="high_light h_info">{$log_last.identity_pic_front.original_data}</div><br>
+    						<div class="high_light h_success">{$log_last.identity_pic_front.new_data}</div>
+						{else}
+    						{if $store.identity_pic_front neq ''}
 							<a href="{RC_Upload::upload_url({$store.identity_pic_front})}" title="点击查看大图" target="_blank"><img class="w200 h120 thumbnail"  class="img-polaroid" src="{RC_Upload::upload_url({$store.identity_pic_front})}"></a>
 							{else}
 							<div class="l_h30">
 								{lang key='store::store.no_upload'}
 							</div>
 							{/if}
+						{/if}
 						</td>
-					</tr>
-					<tr>
 						<td><div align="right"><strong>{lang key='store::store.identity_pic_back_lable'}</strong></div></td>
 						<td>
+						{if $log_last.identity_pic_back}
+    						<div class="high_light h_info">{$log_last.identity_pic_back.original_data}</div><br>
+    						<div class="high_light h_success">{$log_last.identity_pic_back.new_data}</div>
+						{else}
 							{if $store.identity_pic_back neq ''}
 							<a href="{RC_Upload::upload_url({$store.identity_pic_back})}" title="点击查看大图" target="_blank"><img class="w200 h120 thumbnail"  class="img-polaroid" src="{RC_Upload::upload_url({$store.identity_pic_back})}"></a>
 							{else}
@@ -211,11 +339,16 @@
 								{lang key='store::store.no_upload'}
 							</div>
 							{/if}
+						{/if}
 						</td>
 					</tr>
 					<tr>
 						<td><div align="right"><strong>{lang key='store::store.personhand_identity_pic_lable'}</strong></div></td>
-						<td>
+						<td {if $store.validate_type eq 1} colspan="3"{/if}>
+						{if $log_last.personhand_identity_pic}
+    						<div class="high_light h_info">{$log_last.personhand_identity_pic.original_data}</div><br>
+    						<div class="high_light h_success">{$log_last.personhand_identity_pic.new_data}</div>
+						{else}
 							{if $store.personhand_identity_pic neq ''}
 							<a href="{RC_Upload::upload_url({$store.personhand_identity_pic})}" title="点击查看大图" target="_blank"><img class="w200 h120 thumbnail"  class="img-polaroid" src="{RC_Upload::upload_url({$store.personhand_identity_pic})}"></a>
 							{else}
@@ -223,21 +356,25 @@
 								{lang key='store::store.no_upload'}
 							</div>
 							{/if}
+						{/if}
 						</td>
-					</tr>
 					<!-- {if $store.validate_type eq 1} -->
 					<input type="hidden"  name="identity_type" value="{$store.validate_type}" />
 					<!-- {elseif $store.validate_type eq 2} -->
-					<tr>
 						<td><div align="right"><strong>{lang key='store::store.business_licence_pic_lable'}</strong></div></td>
 						<td>
-							{if $store.personhand_identity_pic neq ''}
+						{if $log_last.business_licence_pic}
+    						<div class="high_light h_info">{$log_last.business_licence_pic.original_data}</div><br>
+    						<div class="high_light h_success">{$log_last.business_licence_pic.new_data}</div>
+						{else}
+							{if $store.business_licence_pic neq ''}
 							<a href="{RC_Upload::upload_url({$store.business_licence_pic})}" title="点击查看大图" target="_blank"><img class="w200 h120 thumbnail"  class="img-polaroid" src="{RC_Upload::upload_url({$store.business_licence_pic})}"></a>
 							{else}
 							<div class="l_h30">
 								{lang key='store::store.no_upload'}
 							</div>
 							{/if}
+						{/if}
 						</td>
 					</tr>
 					<!-- {/if} -->
@@ -294,9 +431,7 @@
 				</form>
 			</div>
 		</div>
-		
 	</div>
-
 
 	<div class="control-group control-group-small">
 		<table class="table">
