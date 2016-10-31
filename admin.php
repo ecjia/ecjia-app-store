@@ -413,6 +413,12 @@ class admin extends ecjia_admin {
         $menu = set_store_menu($store_id, 'view_staff');
 		$staff_list = RC_DB::table('staff_user')->where('parent_id', $parent_id)->get();
 
+        $main_staff['avatar'] = !empty($main_staff['avatar'])? $main_staff['avatar'] : RC_App::apps_url('statics/images/ecjia_avatar.jpg', __FILE__);
+        $main_staff['add_time'] = RC_Time::local_date('Y-m-d', $main_staff['add_time']);
+        foreach($staff_list as $key => $val){
+            $staff_list[$key]['add_time'] = RC_Time::local_date('Y-m-d', $val['add_time']);
+        }
+
 		$this->assign('action_link',array('href' => RC_Uri::url('store/admin/init'),'text' => RC_Lang::get('store::store.store_list')));
 		$this->assign('ur_here',RC_Lang::get('store::store.view_staff'));
 		$this->assign('main_staff', $main_staff);

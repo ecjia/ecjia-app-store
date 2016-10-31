@@ -43,8 +43,6 @@
                 			<div class="span2 left">
                 				{if $main_staff.avatar}
                 				<img alt="{$main_staff.name}" class="span10 thumbnail" src="{$main_staff.avatar}">
-                				{else}
-                				<img alt="{$main_staff.name}" class="span10 thumbnail" src="{RC_Uri::admin_url('statics/images/avatar.png')}">
                 				{/if}
                 			</div>
                 			<div class="span8">
