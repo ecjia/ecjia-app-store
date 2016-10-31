@@ -532,8 +532,15 @@ class admin extends ecjia_admin {
 		if (!empty($filter['type'])) {
 		    $db_store_franchisee->where('status', $filter['type']);
 		}
+		if ($filter['type'] == 1) {
+		    $count = $filter_type['count_unlock'];
+		} else if ($filter['type'] == 2) {
+		    $count = $filter_type['count_locking'];
+		} else {
+		    $count = $filter_type['count_all'];
+		}
 
-		$page = new ecjia_page($filter['count_all'], 20, 5);
+		$page = new ecjia_page($count, 20, 5);
 
 		$data = $db_store_franchisee
 		->leftJoin('store_category as sc', RC_DB::raw('sf.cat_id'), '=', RC_DB::raw('sc.cat_id'))
@@ -551,7 +558,7 @@ class admin extends ecjia_admin {
 			}
 		}
 
-		return array('store_list' => $res, 'filter' => $filter, 'page' => $page->show(5), 'desc' => $page->page_desc());
+		return array('store_list' => $res, 'filter' => $filter, 'page' => $page->show(2), 'desc' => $page->page_desc());
 	}
 
 	/**
@@ -718,7 +725,7 @@ class admin extends ecjia_admin {
 				$list[] = $rows;
 			}
 		}
-		return array('list' => $list, 'page' => $page->show(5), 'desc' => $page->page_desc());
+		return array('list' => $list, 'page' => $page->show(2), 'desc' => $page->page_desc());
 	}
 
     /**

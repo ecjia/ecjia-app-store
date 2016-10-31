@@ -466,7 +466,7 @@ class admin_preaudit extends ecjia_admin {
 	}
 
 	//获取入驻商列表信息
-	private function store_preaudit_list() {
+	private function store_preaudit_list($page_size = 15) {
 		$db_store_franchisee = RC_DB::table('store_preaudit as sp');
 
 		$filter['keywords'] = empty($_GET['keywords']) ? '' : trim($_GET['keywords']);
@@ -489,13 +489,16 @@ class admin_preaudit extends ecjia_admin {
 		
 		if ($filter['type'] == 'edit') {
 		    $db_store_franchisee->where('store_id', '<>', 0);
+		    $count = $filter['count_edit'];
 		} else if ($filter['type'] == 'refuse') {
 		    $db_store_franchisee->where('check_status', '=', 3);
+		    $count = $filter['count_refuse'];
 		} else {
 		    $db_store_franchisee->where('store_id', '=', 0);
+		    $count = $filter['count_join'];
 		}
 		
-		$page = new ecjia_page($filter['count_all'], 15, 5);
+		$page = new ecjia_page($count, $page_size, 5);
 		$data = $db_store_franchisee
 		->leftJoin('store_category as sc', RC_DB::raw('sp.cat_id'), '=', RC_DB::raw('sc.cat_id'))
 		->selectRaw('sp.id,sp.merchants_name,sp.merchants_name,sp.responsible_person,sp.apply_time,sp.company_name,sc.cat_name')
@@ -509,7 +512,7 @@ class admin_preaudit extends ecjia_admin {
 				$res[] = $row;
 			}
 		}
-		return array('store_list' => $res, 'filter' => $filter, 'page' => $page->show(5), 'desc' => $page->page_desc());
+		return array('store_list' => $res, 'filter' => $filter, 'page' => $page->show(2), 'desc' => $page->page_desc());
 	}
 
 
