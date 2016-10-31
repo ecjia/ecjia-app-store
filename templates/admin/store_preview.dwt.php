@@ -63,6 +63,12 @@
             							<td>{$store.confirm_time}</td>
             						</tr>
             						<tr>
+            							<td><div align="right"><strong>店铺模式：</strong></div></td>
+            							<td>{if $store.manage_mode eq 'join'}入驻{else if $store.manage_mode eq 'self'}自营{/if}</td>
+            							<td><div align="right"><strong>商品审核：</strong></div></td>
+            							<td>{if $store.shop_review_goods eq 1}开启{else}关闭{/if}</td>
+            						</tr>
+            						<tr>
             						    <td><div align="right"><strong>{lang key='store::store.contact_lable'}</strong></div></td>
             							<td>{$store.contact_mobile}</td>
             							<td><div align="right"><strong>{lang key='store::store.email_lable'}</strong></div></td>

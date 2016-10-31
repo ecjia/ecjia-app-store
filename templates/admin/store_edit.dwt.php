@@ -1,10 +1,11 @@
 <?php defined('IN_ECJIA') or exit('No permission resources.');?>
 <!-- {extends file="ecjia.dwt.php"} -->
 <!-- {block name="footer"} -->
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=P4C6rokKFWHjXELjOnogw3zbxC0VYubo"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/getscript?v=2.0&ak=P4C6rokKFWHjXELjOnogw3zbxC0VYubo&services=&t=20161025142414"></script>
 <script type="text/javascript">
 	ecjia.admin.store_edit.init();
 </script>
-<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=P4C6rokKFWHjXELjOnogw3zbxC0VYubo"></script>
 <script type="text/javascript">
     // 百度地图API功能
     var map = new BMap.Map("allmap");
@@ -131,6 +132,21 @@
                                 <div class="l_h30 long f_l"> <input type="text" name="longitude" readonly="true" value="{$store.longitude}"></div>
             					<div class="l_h30 latd f_l m_l10"><input type="text" name="latitude" readonly="true" value="{$store.latitude}"></div>
                             </div>
+        				</div>
+        				<div class="control-group formSep">
+        					<label class="control-label">店铺模式：</label>
+        					<div class="controls chk_radio">
+								<label class="ecjiafd-iblock"><div class="uni-radio"><input name="manage_mode" type="radio" value="self" {if  $store.manage_mode eq 'self'}checked="checked" {/if}/></div><span>自营</span></label>
+								<label class="ecjiafd-iblock"><div class="uni-radio"><input name="manage_mode" type="radio" value="join" {if  $store.manage_mode eq 'join'}checked="checked" {/if}/></div><span>入驻</span></label>
+        					</div>
+        				</div>
+        				<div class="control-group formSep">
+        					<label class="control-label">商品审核：</label>
+        					<div class="controls chk_radio">
+        					    <label class="ecjiafd-iblock"><div class="uni-radio"><input name="shop_review_goods" type="radio" value="0" {if  $store.shop_review_goods eq '' || $store.shop_review_goods eq 0 }checked="checked" {/if}/></div><span>关闭</span></label>
+								<label class="ecjiafd-iblock"><div class="uni-radio"><input name="shop_review_goods" type="radio" value="1" {if  $store.shop_review_goods eq '1'}checked="checked" {/if}/></div><span>开启</span></label>
+        					</div>
+        					<div class="controls help-block">当商店设置中商品审核关闭时，对单个店铺设置失效。</div>
         				</div>
 
         				{else if $step eq 'identity'}

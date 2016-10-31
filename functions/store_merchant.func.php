@@ -80,11 +80,11 @@ function set_merchant_config($store_id, $code, $value, $arr){
             return new ecjia_error(101, '参数错误');
         }
     }else{
-        $count = RC_DB::table('merchants_config')->where('store_id', $store_id)->where('code', '=', $key)->count();
+        $count = RC_DB::table('merchants_config')->where('store_id', $store_id)->where('code', '=', $code)->count();
         if(empty($count)){
             RC_DB::table('merchants_config')->insert(array('store_id' => $store_id, 'code' => $code, 'value' => $value));
         }else{
-            RC_DB::table('merchants_config')->where('store_id', $store_id)->where('code', '=', $key)->update(array('value' => $value));
+            RC_DB::table('merchants_config')->where('store_id', $store_id)->where('code', '=', $code)->update(array('value' => $value));
         }
         return true;
     }

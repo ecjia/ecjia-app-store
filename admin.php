@@ -98,6 +98,7 @@ class admin extends ecjia_admin {
 		$this->assign('menu', $menu);
 		$this->assign('certificates_list', $certificates_list);
 
+		$store['shop_review_goods'] = get_merchant_config($store_id, 'shop_review_goods');
 		$this->assign('store', $store);
 		$this->assign('form_action', RC_Uri::url('store/admin/update'));
 		$this->assign('longitudeForm_action', RC_Uri::url('store/admin/get_longitude'));
@@ -138,11 +139,15 @@ class admin extends ecjia_admin {
 		        'district'					=> !empty($_POST['district'])				? $_POST['district'] : '',
 		        'longitude'					=> !empty($_POST['longitude'])				? $_POST['longitude'] : '',
 		        'latitude'					=> !empty($_POST['latitude'])				? $_POST['latitude'] : '',
+		        'manage_mode'				=> !empty($_POST['manage_mode'])				? $_POST['manage_mode'] : 'join',
 		    );
             $geohash = RC_Loader::load_app_class('geohash', 'store');
 			$geohash_code = $geohash->encode($_POST['latitude'] , $_POST['longitude']);
             $geohash_code = substr($geohash_code, 0, 10);
             $data['geohash'] = $geohash_code;
+            
+            set_merchant_config($store_id, 'shop_review_goods', $_POST['shop_review_goods']);
+            
 		} else if ($step == 'identity') {
 		    $data = array(
 		        'responsible_person'		=> !empty($_POST['responsible_person']) ? $_POST['responsible_person'] : '',
