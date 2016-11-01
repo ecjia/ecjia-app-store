@@ -42,10 +42,11 @@ class search_module extends api_front implements api_interface {
 		if (!empty($result['seller_list'])) {
 			$db_goods_view = RC_Model::model('goods/comment_viewmodel');
 			$max_goods = 0;
-			$mobilebuy_db = RC_Model::model('goods/goods_activity_model');
+// 			$mobilebuy_db = RC_Model::model('goods/goods_activity_model');
 			/* 手机专享*/
-			$result_mobilebuy = ecjia_app::validate_application('mobilebuy');
-			$is_active = ecjia_app::is_active('ecjia.mobilebuy');
+// 			$result_mobilebuy = ecjia_app::validate_application('mobilebuy');
+// 			$is_active = ecjia_app::is_active('ecjia.mobilebuy');
+
 			foreach ($result['seller_list'] as $row) {
 				$field = 'count(*) as count, SUM(comment_rank) as comment_rank';
 				//$comment = $db_goods_view->join(null)->field($field)->where(array('c.seller_id' => $row['id'], 'comment_type' => 0, 'parent_id' => 0, 'status' => 1))->find();
@@ -86,21 +87,19 @@ class search_module extends api_front implements api_interface {
 											'type_label' => $val['act_type'] == '1' ? __('满减') : __('满折'),
 									);
 									break;
-								default:
-									break;
+								default: break;
 							}
 						}
 
 					}
 				}
-				
 
-
-				$goods_options = array('page' => 1, 'size' => 3, 'seller_id' => $row['id']);
+				$goods_options = array('page' => 1, 'size' => 3, 'store_id' => $row['id']);
 				if (!empty($goods_category)) {
 					$goods_options['cat_id'] = $goods_category;
 				}
 				$goods_result = RC_Api::api('goods', 'goods_list', $goods_options);
+				
 				$goods_list = array();
 				if (!empty($goods_result['list'])) {
 					foreach ($goods_result['list'] as $val) {
@@ -110,7 +109,7 @@ class search_module extends api_front implements api_interface {
 						/* 计算节约价格*/
 						$saving_price = ($val['unformatted_shop_price'] > $val['unformatted_promote_price'] && $val['unformatted_promote_price'] > 0) ? $val['unformatted_shop_price'] - $val['unformatted_promote_price'] : (($val['unformatted_market_price'] > 0 && $val['unformatted_market_price'] > $val['unformatted_shop_price']) ? $val['unformatted_market_price'] - $val['unformatted_shop_price'] : 0);
 
-						$mobilebuy_price = $object_id = 0;
+						/* $mobilebuy_price = $object_id = 0;
 						if (!is_ecjia_error($result_mobilebuy) && $is_active) {
 							$mobilebuy = $mobilebuy_db->find(array(
 									'goods_id'	 => $val['goods_id'],
@@ -128,7 +127,7 @@ class search_module extends api_front implements api_interface {
 									$saving_price = ($val['unformatted_shop_price'] - $mobilebuy_price) > 0 ? $val['unformatted_shop_price'] - $mobilebuy_price : 0;
 								}
 							}
-						}
+						} */
 
 						$goods_list[] = array(
 								'goods_id'		=> $val['goods_id'],
@@ -158,7 +157,7 @@ class search_module extends api_front implements api_interface {
 					'follower'			=> $row['follower'],
 					'is_follower'		=> $row['is_follower'],
 					'goods_count'		=> $goods_result['page']->total_records,
-					//'comment'			=> $comment['count'] > 0 ? round($comment['comment_rank']/($comment['count']*5)*100).'%' : '100%',
+// 					'comment'			=> $comment['count'] > 0 ? round($comment['comment_rank']/($comment['count']*5)*100).'%' : '100%',
 					'favourable_list'	=> $favourable_list,
 					));
 				} else {
