@@ -114,7 +114,7 @@ function get_check_log ($store_id, $type, $page = 1, $page_size = 10) {
         $val['formate_time'] = RC_Time::local_date('Y-m-d H:i:s', $val['time']);
     }
     // 	    _dump($log_rs,1);
-    return array('list' => $log_rs, 'page' => $page->show(5), 'desc' => $page->page_desc());
+    return array('list' => $log_rs, 'page' => $page->show(2), 'desc' => $page->page_desc());
      
 }
 

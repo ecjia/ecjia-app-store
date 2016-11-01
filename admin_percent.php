@@ -215,7 +215,7 @@ class admin_percent extends ecjia_admin {
 			}
 		}
 		
-		return array('item' => $data, 'filter'=>$filter, 'page' => $page->show(5), 'desc' => $page->page_desc(), 'current_page' => $page->current_page);
+		return array('item' => $data, 'filter'=>$filter, 'page' => $page->show(2), 'desc' => $page->page_desc(), 'current_page' => $page->current_page);
 	}
 }
 //end

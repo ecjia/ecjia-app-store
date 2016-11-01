@@ -362,7 +362,7 @@ class admin_commission extends ecjia_admin {
 			}
 		}
 
-		$arr = array('item' => $data, 'filter'=>$filter,'page' => $page->show(5), 'desc' => $page->page_desc(), 'current_page' => $page->current_page);
+		$arr = array('item' => $data, 'filter'=>$filter,'page' => $page->show(2), 'desc' => $page->page_desc(), 'current_page' => $page->current_page);
 		return $arr;
 	}
 
@@ -592,7 +592,7 @@ class admin_commission extends ecjia_admin {
 		if (!empty($filter['all_brokerage_amount'])) {
 			$filter['all_brokerage_amount'] = price_format($filter['all_brokerage_amount']);
 		}
-    	$arr = array('item' => $row, 'filter' => $filter, 'page' => $page->show(5), 'desc' => $page->page_desc(), 'current_page' => $page->current_page);
+    	$arr = array('item' => $row, 'filter' => $filter, 'page' => $page->show(2), 'desc' => $page->page_desc(), 'current_page' => $page->current_page);
     	return $arr;
 	}
 }
