@@ -48,19 +48,16 @@ class data_module extends api_front implements api_interface {
             'shop_title'                => '', // 店铺标题
             'shop_kf_mobile'            => '', // 客服手机号码
             'shop_kf_email'             => '', // 客服邮件地址
-            'shop_kf_qq'                => '', // 客服QQ号码
-            'shop_kf_ww'                => '', // 客服淘宝旺旺
-            'shop_kf_type'              => '', // 客服样式
+//             'shop_kf_qq'                => '', // 客服QQ号码
+//             'shop_kf_ww'                => '', // 客服淘宝旺旺
+//             'shop_kf_type'              => '', // 客服样式
             'shop_logo'                 => '', // 默认店铺页头部LOGO
-            'shop_thumb_logo'           => '', // Logo缩略图
             'shop_banner_pic'           => '', // banner图
-            'shop_qrcode_logo'          => '', // 二维码中间Logo
             'shop_trade_time'           => '', // 营业时间
             'shop_description'          => '', // 店铺描述
             'shop_notice'               => '', // 店铺公告
-            'shop_front_logo'           => '', // 店铺封面图
         );
-        $config = RC_DB::table('merchants_config')->where('store_id', $seller_id)->select('code','value')->get();
+        $config = RC_DB::table('merchants_config')->where('store_id', $seller_id)->select('code', 'value')->get();
         foreach ($config as $key => $value) {
             $store_config[$value['code']] = $value['value'];
         }
@@ -305,7 +302,8 @@ class data_module extends api_front implements api_interface {
 		$seller_info = array(
 				'id'				=> $info['store_id'],
 				'seller_name'		=> $info['merchants_name'],
-				'seller_logo'		=> empty($info['shop_logo']) ?  '' : RC_Upload::upload_url().'/'.$info['shop_logo'],
+				'seller_logo'		=> empty($info['shop_logo']) ?  '' : RC_Upload::upload_url($info['shop_logo']),
+		        'seller_banner'		=> empty($info['shop_banner_pic']) ?  '' : RC_Upload::upload_url($info['shop_banner_pic']),
 				'seller_category'	=> $info['cat_name'],
 				'shop_name'			=> $info['company_name'],
 				'shop_address'		=> $province_name.' '.$city_name.' '.$info['address'],
