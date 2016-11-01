@@ -138,6 +138,9 @@ return array(
 			'ok' 				=> '确定',
 			'cancel' 			=> '取消',
 	),
+	
+	'store_lock'=>'锁定商家',
+	'store_check' =>'审核入驻商'
 );
 
 //end
