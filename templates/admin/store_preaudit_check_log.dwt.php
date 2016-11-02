@@ -40,7 +40,7 @@
         		      
         		    </thead>
         		  	<tbody>
-        		  	{foreach from=$log_list.list item=list}
+        		  	<!-- {foreach from=$log_list.list item=list} -->
         		  		<tr align="center">
         			    <td>{$list.formate_time}</td>
         			    <td>{$list.name}</td>
@@ -68,7 +68,9 @@
         			    
         			    </td>
         			    </tr>
-        		    {/foreach}
+        			<!-- {foreachelse} -->
+					    <tr><td class="no-records" colspan="5">暂无数据</td></tr>
+        		    <!-- {/foreach} -->
         			</tbody>
         		</table>
 		      {$log_list.page}

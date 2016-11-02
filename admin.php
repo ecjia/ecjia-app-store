@@ -652,6 +652,74 @@ class admin extends ecjia_admin {
 		$arr['target']  = htmlspecialchars($arr['target']);
 		echo json_encode($arr);
 	}
+	
+	//查看配送方式
+	public function shipping() {
+	    $this->admin_priv('store_shipping_manage', ecjia::MSGTYPE_JSON);
+	    
+	    RC_Loader::load_app_class('shipping_factory', 'shipping', false);
+	    
+	    $this->assign('action_link',array('href' => RC_Uri::url('store/admin/init'),'text' => RC_Lang::get('store::store.store_list')));
+	    ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('store::store.view')));
+	    $store_id = intval($_GET['store_id']);
+	    if (empty($store_id)) {
+	        $this->showmessage(__('请选择您要操作的店铺'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+	    }
+	    
+	    $menu = set_store_menu($store_id, 'shipping');
+	    
+	    //已启用的配送方式
+		$enabled_data = RC_DB::table('shipping as s')
+			->leftJoin('shipping_area as a', function($join) {
+				$join->on(RC_DB::raw('s.shipping_id'), '=', RC_DB::raw('a.shipping_id'));
+			})
+			->groupBy(RC_DB::raw('s.shipping_id'))
+			->orderBy(RC_DB::raw('s.shipping_order'))
+			->selectRaw('s.*, a.shipping_area_id')
+			->where(RC_DB::raw('a.store_id'), '=', $store_id)
+			->where(RC_DB::raw('s.enabled'), 1)
+			->whereNotNull(RC_DB::raw('a.shipping_area_id'))
+			->get();
+			
+		$plugins = ecjia_config::instance()->get_addon_config('shipping_plugins', true);
+		/* 插件已经安装了，获得名称以及描述 */
+		$enabled_modules = array();
+		
+		//已启用
+		foreach ($enabled_data as $_key => $_value) {
+		    if (isset($plugins[$_value['shipping_code']])) {
+		        $enabled_modules[$_key]['id']      			= $_value['shipping_id'];
+		        $enabled_modules[$_key]['code']      		= $_value['shipping_code'];
+		        $enabled_modules[$_key]['name']    			= $_value['shipping_name'];
+		        $enabled_modules[$_key]['desc']    			= $_value['shipping_desc'];
+		        $enabled_modules[$_key]['cod']     			= $_value['support_cod'];
+		        $enabled_modules[$_key]['shipping_order'] 	= $_value['shipping_order'];
+		        $enabled_modules[$_key]['insure_fee']  		= $_value['insure'];
+		        $enabled_modules[$_key]['enabled'] 			= $_value['enabled'];
+		        	
+		        /* 判断该派送方式是否支持保价 支持报价的允许在页面修改保价费 */
+		        $shipping_handle = new shipping_factory($_value['shipping_code']);
+		        $config          = $shipping_handle->configure_config();
+		
+		        /* 只能根据配置判断是否支持保价  只有配置项明确说明不支持保价，才是不支持*/
+		        if (isset($config['insure']) && ($config['insure'] === false)) {
+		            $enabled_modules[$_key]['is_insure'] = false;
+		        } else {
+		            $enabled_modules[$_key]['is_insure'] = true;
+		        }
+		    }
+		}
+		$this->assign('enabled', $enabled_modules);
+		
+		$store = RC_DB::table('store_franchisee')->where('store_id', $store_id)->first();
+	    
+	    $this->assign('ur_here', $store['merchants_name']);
+	    $this->assign('form_action', RC_Uri::url('store/admin/auth_update'));
+	    $this->assign('store', $store);
+	    $this->assign('menu', $menu);
+	    $this->display('store_shipping.dwt');
+	    
+	}
 
     /**
 	 * 查看店铺日志
@@ -662,7 +730,7 @@ class admin extends ecjia_admin {
         ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('查看日志'));
         $store_id = intval($_GET['store_id']);
         if(empty($store_id)){
-            $this->showmessage(__('请选择商家店铺'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            $this->showmessage(__('请选择您要操作的店铺'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
         $menu = set_store_menu($store_id, 'view_log');
         $store_jslang = array(

@@ -17,6 +17,7 @@ class store_admin_purview_api extends Component_Event_Api {
             array('action_name' => '修改店铺设置', 'action_code' => 'store_set_update', 	'relevance' => ''),
             array('action_name' => '资质认证', 'action_code' => 'store_auth_manage', 	'relevance' => ''),
             array('action_name' => '查看员工', 'action_code' => 'store_staff_manage', 	'relevance' => ''),
+            array('action_name' => '配送方式', 'action_code' => 'store_shipping_manage', 	'relevance' => ''),
             array('action_name' => '查看日志', 'action_code' => 'store_log_manage', 	'relevance' => ''),
             array('action_name' => '删除日志', 'action_code' => 'store_log_delete', 	'relevance' => ''),
             array('action_name' => '查看审核日志', 'action_code' => 'store_preaudit_check_log', 	'relevance' => ''),

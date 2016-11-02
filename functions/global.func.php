@@ -61,6 +61,11 @@ function set_store_menu($store_id, $key){
             'url'   => RC_Uri::url('store/admin/view_staff', array('store_id' => $store_id))
         ),
         array(
+            'menu'  => '配送方式',
+            'name'  => 'shipping',
+            'url'   => RC_Uri::url('store/admin/shipping', array('store_id' => $store_id))
+        ),
+        array(
             'menu'  => '查看日志',
             'name'  => 'view_log',
             'url'   => RC_Uri::url('store/admin/view_log', array('store_id' => $store_id))
