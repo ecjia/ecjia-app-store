@@ -130,7 +130,7 @@
         				</div>
 
 
-        				<div class="control-group formSep">
+        				<div class="control-group formSep {if !$store.latitude || !$store.longitude}hide{/if}">
         					<label class="control-label">经纬度：</label>
                             <div class="controls">
                                 <div class="l_h30 long f_l"> <input type="text" name="longitude" readonly="true" value="{$store.longitude}"></div>
