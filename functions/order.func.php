@@ -1930,7 +1930,7 @@ function get_order_detail ($order_id, $user_id = 0)
             }
         }
         $var_card = deleteRepeat($virtual_card);
-        ecjia::$view_object->assign('virtual_card', $var_card);
+        ecjia_front::$controller->assign('virtual_card', $var_card);
     }
 
     /* 确认时间 支付时间 发货时间 */
