@@ -52,8 +52,8 @@ function set_store_menu($store_id, $key){
         ),
         array(
             'menu'  => '结算账单',
-            'name'  => 'commission',
-            'url'   => RC_Uri::url('commission/admin/init', array('store_id' => $store_id))
+            'name'  => 'bill',
+            'url'   => RC_Uri::url('commission/admin/init', array('store_id' => $store_id, 'refer' => 'store'))
         ),
         array(
             'menu'  => '查看员工',
