@@ -41,6 +41,11 @@ function set_store_menu($store_id, $key){
             'url'   => RC_Uri::url('store/admin/store_set', array('store_id' => $store_id))
         ),
         array(
+            'menu'  => '资质认证',
+            'name'  => 'auth',
+            'url'   => RC_Uri::url('store/admin/auth', array('store_id' => $store_id))
+        ),
+        array(
             'menu'  => '佣金设置',
             'name'  => 'commission_set',
             'url'   => RC_Uri::url('store/admin_commission/edit', array('store_id' => $store_id))

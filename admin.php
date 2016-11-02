@@ -297,6 +297,8 @@ class admin extends ecjia_admin {
 	//店铺设置
 	public function store_set() {
 
+	    $this->admin_priv('store_set_manage', ecjia::MSGTYPE_JSON);
+	    
         $this->assign('action_link',array('href' => RC_Uri::url('store/admin/init'),'text' => RC_Lang::get('store::store.store_list')));
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('店铺设置'));
         $store_id = intval($_GET['store_id']);
@@ -313,6 +315,7 @@ class admin extends ecjia_admin {
 
 	//店铺设置修改
 	public function store_set_edit() {
+	    $this->admin_priv('store_set_update', ecjia::MSGTYPE_JSON);
 
         $this->assign('action_link',array('href' => RC_Uri::url('store/admin/store_set', array('store_id' => $_GET['store_id'])),'text' => '店铺设置'));
         ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('编辑入驻商'));
@@ -331,6 +334,7 @@ class admin extends ecjia_admin {
 
 	//店铺设置修改
 	public function store_set_update() {
+	    $this->admin_priv('store_set_update', ecjia::MSGTYPE_JSON);
 
         $store_id               = intval($_POST['store_id']);
         if(empty($store_id)){
@@ -404,12 +408,43 @@ class admin extends ecjia_admin {
             $this->showmessage('编辑成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin/store_set', array('store_id' => $store_id))));
         }
 	}
+	
+	/**
+	 * 资质认证
+	 */
+	public function auth() {
+	    $this->admin_priv('store_auth_manage', ecjia::MSGTYPE_JSON);
+	
+	    $this->assign('action_link',array('href' => RC_Uri::url('store/admin/init'),'text' => RC_Lang::get('store::store.store_list')));
+	    ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('store::store.view')));
+	    $store_id = intval($_GET['store_id']);
+	
+	    $menu = set_store_menu($store_id, 'preview');
+	
+	    $store = RC_DB::table('store_franchisee')->where('store_id', $store_id)->first();
+	    $store['apply_time']	= RC_Time::local_date(ecjia::config('time_format'), $store['apply_time']);
+	    $store['confirm_time']	= RC_Time::local_date(ecjia::config('time_format'), $store['confirm_time']);
+	
+	    $store['province'] = RC_DB::table('region')->where('region_id', $store['province'])->pluck('region_name');
+	    $store['city'] = RC_DB::table('region')->where('region_id', $store['city'])->pluck('region_name');
+	    $store['district'] = RC_DB::table('region')->where('region_id', $store['district'])->pluck('region_name');
+	
+	    $this->assign('ur_here', $store['merchants_name']);
+	    $store['cat_name'] = RC_DB::table('store_category')->where('cat_id', $store['cat_id'])->select('cat_name')->pluck();
+	    if ($store['percent_id']) {
+	        $store['percent_value'] = RC_DB::table('store_percent')->where('percent_id', $store['percent_id'])->select('percent_value')->pluck();
+	    }
+	
+	    $this->assign('store', $store);
+	    $this->assign('menu', $menu);
+	    $this->display('store_preview.dwt');
+	}
 
 	/**
 	 * 查看员工
 	 */
 	public function view_staff() {
-		$this->admin_priv('store_affiliate_manage', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('store_staff_manage', ecjia::MSGTYPE_JSON);
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('store::store.view_staff')));
 
 		$store_id = intval($_GET['store_id']);
@@ -595,7 +630,7 @@ class admin extends ecjia_admin {
 	 * 查看店铺日志
 	 */
     public function view_log(){
-        $this->admin_priv('store_affiliate_manage', ecjia::MSGTYPE_JSON);
+        $this->admin_priv('store_log_manage', ecjia::MSGTYPE_JSON);
         $this->assign('action_link',array('href' => RC_Uri::url('store/admin/init'),'text' => RC_Lang::get('store::store.store_list')));
         ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('查看日志'));
         $store_id = intval($_GET['store_id']);
@@ -732,7 +767,7 @@ class admin extends ecjia_admin {
      * 批量删除管理员操作日志
      */
     public function batch_drop(){
-        $this->admin_priv('store_affiliate_manage', ecjia::MSGTYPE_JSON);
+        $this->admin_priv('store_log_delete', ecjia::MSGTYPE_JSON);
 
         $drop_type_date = isset($_POST['drop_type_date']) ? $_POST['drop_type_date'] : '';
         $staff_log = RC_DB::table('staff_log');

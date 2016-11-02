@@ -14,6 +14,7 @@ function get_merchant_info($store_id){
         'shop_trade_time'           => '', // 营业时间
         'shop_description'          => '', // 店铺描述
         'shop_notice'               => '', // 店铺公告
+        'shop_review_goods',
     );
 
     $data = get_merchant_config($store_id, '', $data);
