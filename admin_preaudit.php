@@ -275,7 +275,7 @@ class admin_preaudit extends ecjia_admin {
 					'merchants_name'			=> $store['merchants_name'],
 					'shop_keyword'				=> $store['shop_keyword'],
 					'status'					=> 1,
-				    'identity_status'           => intval($_POST['identity_status']),
+// 				    'identity_status'           => intval($_POST['identity_status']),
 					'responsible_person'		=>$store['responsible_person'],
 					'company_name'				=>$store['company_name'],
 					'email'						=>$store['email'],
@@ -400,7 +400,7 @@ class admin_preaudit extends ecjia_admin {
 				$data =array(
 				    'merchants_name'            => $store['merchants_name'],
 					'cat_id' 					=> $store['cat_id'],
-				    'identity_status'           => intval($_POST['identity_status']),
+// 				    'identity_status'           => intval($_POST['identity_status']),
 					'shop_keyword'				=> $store['shop_keyword'],
 					'responsible_person'		=> $store['responsible_person'],
 					'email'						=> $store['email'],

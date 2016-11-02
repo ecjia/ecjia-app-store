@@ -411,14 +411,6 @@
 						</td>
 					</tr>
 					<tr>
-						<td><div align="right"><strong>认证：</strong></div></td>
-						<td>
-							<label class="ecjiaf-ib"><input type="radio"  name="identity_status" value="0" {if $store.identity_status eq 0}checked{/if}><span>待审核</span></label>
-    						<label class="ecjiaf-ib"><input type="radio"  name="identity_status" value="3" {if $store.identity_status eq 3}checked{/if}><span>{lang key='store::store.check_no'}</span></label>
-    						<label class="ecjiaf-ib"><input type="radio"  name="identity_status" value="2" {if $store.identity_status eq 2}checked{/if}><span>{lang key='store::store.check_yes'}</span></label>
-						</td>
-					</tr>
-					<tr>
 						<td><div align="right"><strong>操作：</strong></div></td>
 						<td>
         					<input type="hidden"  name="id" value="{$store.id}" />
