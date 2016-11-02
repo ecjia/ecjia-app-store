@@ -11,19 +11,20 @@
     var map = new BMap.Map("allmap");
     var lat = '{$store.latitude}';
     var lng = '{$store.longitude}';
-    var point = new BMap.Point(lng, lat);  // 创建点坐标
-    map.centerAndZoom(point,15);
-    map.enableScrollWheelZoom();
-    var marker = new BMap.Marker(point);  // 创建标注
-	map.addOverlay(marker);               // 将标注添加到地图中
-    map.addEventListener("click",function(e){
-        map.removeOverlay(marker);
-        $('input[name="longitude"]').val(e.point.lng)
-        $('input[name="latitude"]').val(e.point.lat)
-        point = new BMap.Point(e.point.lng, e.point.lat);
-        marker = new BMap.Marker(point)
-        map.addOverlay(marker);
-    });
+    if(lng && lat){
+        var point = new BMap.Point(lng, lat);  // 创建点坐标
+        map.centerAndZoom(point,15);
+        var marker = new BMap.Marker(point);  // 创建标注
+    	map.addOverlay(marker);               // 将标注添加到地图中
+        map.addEventListener("click",function(e){
+            map.removeOverlay(marker);
+            $('input[name="longitude"]').val(e.point.lng)
+            $('input[name="latitude"]').val(e.point.lat)
+            point = new BMap.Point(e.point.lng, e.point.lat);
+            marker = new BMap.Marker(point)
+            map.addOverlay(marker);
+        });
+    }
 </script>
 <!-- {/block} -->
 
@@ -114,10 +115,13 @@
         					<label class="control-label">{lang key='store::store.address_lable'}</label>
         					<div class="controls">
         						<input class="span6" name="address" type="text" value="{$store.address}" />
+                                <div class="input-must">
+                                    <button class="btn btn-info small-btn" data-toggle="get-gohash" data-url="{url path='store/admin/getgeohash'}">获取精准坐标</button>
+                                </div>
         					</div>
         				</div>
 
-        				<div class="control-group formSep">
+        				<div class="control-group formSep {if !$store.latitude || !$store.longitude}hide{/if}">
         					<label class="control-label">店铺精确位置：</label>
         					<div class="controls" style="overflow:hidden;">
         						<div class="span6" id="allmap" style="height:320px;"></div>
