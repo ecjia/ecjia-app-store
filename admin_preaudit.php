@@ -231,28 +231,6 @@ class admin_preaudit extends ecjia_admin {
 		$this->display('store_preaudit_check.dwt');
 	}
 
-	public function view_log() {
-	    $this->admin_priv('store_preaudit_check_log', ecjia::MSGTYPE_JSON);
-	    
-	    $this->assign('ur_here','查看日志');
-	    $id = intval($_GET['id']);
-	    ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('store::store.check_view'), RC_Uri::url('store/admin_preaudit/check', array('id' => $id))));
-	    ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('查看日志'));
-	    $this->assign('action_link',array('href' => RC_Uri::url('store/admin_preaudit/check', array('id' => $id)),'text' => RC_Lang::get('store::store.store_preaudit')));
-	    $info = RC_DB::table('store_preaudit')->where('id', $id)->first();
-	    
-	    if (empty($info)) {
-	        $this->showmessage('信息不存在或已处理完成', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR,  array('pjaxurl' => RC_Uri::url('store/admin_preaudit/init')));
-	    }
-	    $log_store_id = $info['store_id'] ? $info['store_id'] : $info['id'];
-	    $log_type = $info['store_id'] ? 2 : 1;
-	    
-	    $log = get_check_log($log_store_id, $log_type, 1, 15);
-	    
-	    $this->assign('log_list', $log);
-	    $this->display('store_preaudit_check_log.dwt');
-	}
-
 	/**
 	 * 审核入驻商
 	 */
@@ -463,6 +441,28 @@ class admin_preaudit extends ecjia_admin {
 		    //异常状态
 			$this->showmessage('操作异常，请检查', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
+	}
+	
+	public function view_log() {
+	    $this->admin_priv('store_preaudit_check_log', ecjia::MSGTYPE_JSON);
+	     
+	    $this->assign('ur_here','查看日志');
+	    $id = intval($_GET['id']);
+	    ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('store::store.check_view'), RC_Uri::url('store/admin_preaudit/check', array('id' => $id))));
+	    ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('查看日志'));
+	    $this->assign('action_link',array('href' => RC_Uri::url('store/admin_preaudit/check', array('id' => $id)),'text' => RC_Lang::get('store::store.store_preaudit')));
+	    $info = RC_DB::table('store_preaudit')->where('id', $id)->first();
+	     
+	    if (empty($info)) {
+	        $this->showmessage('信息不存在或已处理完成', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR,  array('pjaxurl' => RC_Uri::url('store/admin_preaudit/init')));
+	    }
+	    $log_store_id = $info['store_id'] ? $info['store_id'] : $info['id'];
+	    $log_type = $info['store_id'] ? 2 : 1;
+	     
+	    $log = get_check_log($log_store_id, $log_type, 1, 15);
+	     
+	    $this->assign('log_list', $log);
+	    $this->display('store_preaudit_check_log.dwt');
 	}
 
 	//获取入驻商列表信息
