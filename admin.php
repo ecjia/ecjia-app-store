@@ -272,6 +272,9 @@ class admin extends ecjia_admin {
 		$this->assign('action_link',array('href' => RC_Uri::url('store/admin/init'),'text' => RC_Lang::get('store::store.store_list')));
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('store::store.view')));
         $store_id = intval($_GET['store_id']);
+        if (empty($store_id)) {
+            $this->showmessage(__('请选择您要操作的店铺'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+        }
 
         $menu = set_store_menu($store_id, 'preview');
 
@@ -302,6 +305,10 @@ class admin extends ecjia_admin {
         $this->assign('action_link',array('href' => RC_Uri::url('store/admin/init'),'text' => RC_Lang::get('store::store.store_list')));
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('店铺设置'));
         $store_id = intval($_GET['store_id']);
+        if (empty($store_id)) {
+            $this->showmessage(__('请选择您要操作的店铺'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+        }
+        
         $store = RC_DB::table('store_franchisee')->where('store_id', $store_id)->first();
         $this->assign('ur_here', $store['merchants_name']);
         $this->assign('store_name', $store['merchants_name']);
@@ -399,7 +406,7 @@ class admin extends ecjia_admin {
         if(!empty($merchants_config)){
             $merchant = set_merchant_config($store_id, '', '', $merchants_config);
         }else{
-            $this->showmessage('请编辑要修改的内容', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            $this->showmessage('您没有做任何修改', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
 
         if(!empty($merchant)){
@@ -418,26 +425,46 @@ class admin extends ecjia_admin {
 	    $this->assign('action_link',array('href' => RC_Uri::url('store/admin/init'),'text' => RC_Lang::get('store::store.store_list')));
 	    ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('store::store.view')));
 	    $store_id = intval($_GET['store_id']);
-	
-	    $menu = set_store_menu($store_id, 'preview');
-	
-	    $store = RC_DB::table('store_franchisee')->where('store_id', $store_id)->first();
-	    $store['apply_time']	= RC_Time::local_date(ecjia::config('time_format'), $store['apply_time']);
-	    $store['confirm_time']	= RC_Time::local_date(ecjia::config('time_format'), $store['confirm_time']);
-	
-	    $store['province'] = RC_DB::table('region')->where('region_id', $store['province'])->pluck('region_name');
-	    $store['city'] = RC_DB::table('region')->where('region_id', $store['city'])->pluck('region_name');
-	    $store['district'] = RC_DB::table('region')->where('region_id', $store['district'])->pluck('region_name');
-	
-	    $this->assign('ur_here', $store['merchants_name']);
-	    $store['cat_name'] = RC_DB::table('store_category')->where('cat_id', $store['cat_id'])->select('cat_name')->pluck();
-	    if ($store['percent_id']) {
-	        $store['percent_value'] = RC_DB::table('store_percent')->where('percent_id', $store['percent_id'])->select('percent_value')->pluck();
+	    if (empty($store_id)) {
+	        $this->showmessage(__('请选择您要操作的店铺'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 	    }
 	
+	    $menu = set_store_menu($store_id, 'auth');
+	
+	    $store = RC_DB::table('store_franchisee')->where('store_id', $store_id)->first();
+	
+	    $this->assign('ur_here', $store['merchants_name']);
+	    $this->assign('form_action', RC_Uri::url('store/admin/auth_update'));
 	    $this->assign('store', $store);
 	    $this->assign('menu', $menu);
-	    $this->display('store_preview.dwt');
+	    $this->display('store_auth.dwt');
+	}
+	
+	public function auth_update() {
+	    $this->admin_priv('store_auth_manage', ecjia::MSGTYPE_JSON);
+	    
+	    $store_id = intval($_POST['store_id']);
+	    if(empty($store_id)) {
+	        $this->showmessage('参数错误', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+	    }
+	    
+	    //0、待审核，1、审核中，2、审核通过，3、拒绝通过',
+	    $data = array();
+	    if (isset($_POST['check_ing'])) {
+	        $data['identity_status'] = 1;
+	    }
+	    if (isset($_POST['check_no'])) {
+	        $data['identity_status'] = 3;
+	    }
+	    if (isset($_POST['check_yes'])) {
+	        $data['identity_status'] = 2;
+	    }
+	    
+	    if (RC_DB::table('store_franchisee')->where('store_id', $store_id)->update($data)) {
+	        $this->showmessage('操作成功！', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin/auth', array('store_id' => $store_id))));
+	    } else {
+	        $this->showmessage('操作失败！', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+	    }
 	}
 
 	/**

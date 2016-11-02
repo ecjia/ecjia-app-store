@@ -16,8 +16,6 @@
 		<!-- {if $action_link} -->
 		<a class="data-pjax btn plus_or_reply" id="sticky_a" href="{$action_link.href}"><i class="fontello-icon-reply"></i>{$action_link.text}</a>
 		<!-- {/if} -->
-		{if $store.status eq 1}<a class="data-pjax btn f_r" href='{RC_Uri::url("store/admin/status","&status=1&store_id={$smarty.get.store_id}")}'><i class="fontello-icon-lock"></i>锁定</a>{/if}
-		{if $store.status eq 2}<a class="data-pjax btn f_r" href='{RC_Uri::url("store/admin/status","&status=2&store_id={$smarty.get.store_id}")}'><i class="fontello-icon-lock-open"></i>解锁</a>{/if}
 	</h3>
 </div>
 <div class="row-fluid">
@@ -34,60 +32,6 @@
 
 					<div class="tab-pane active" id="tab1">
 						<div class="foldable-list move-mod-group">
-            			<div class="accordion-group">
-                			<div class="accordion-heading accordion-heading-url">
-        						<div class="accordion-toggle acc-in" data-toggle="collapse" data-target="#info">
-        							<strong>店铺信息</strong>
-        						</div>
-    							<a class="data-pjax accordion-url" href='{RC_Uri::url("store/admin/edit","store_id={$smarty.get.store_id}&step=base")}'>编辑</a>
-    						</div>
-            				<div class="accordion-body in collapse" id="info">
-            					<table class="table table-oddtd m_b0">
-            						<tbody class="first-td-no-leftbd">
-            						<tr>
-            							<td><div align="right"><strong>{lang key='store::store.store_title_lable'}</strong></div></td>
-            							<td><strong>{$store.merchants_name}</strong>
-            							{if $store.identity_status eq 2}<span class="label label-success m_l10">已认证</span>{else}<span class="label m_l10">未认证</span>{/if}
-            							{if $store.status eq 2}<span class="label label-important m_l10">锁定</span>{/if}</td>
-            							<td><div align="right"><strong>{lang key='store::store.store_cat_lable'}</strong></div></td>
-            							<td>{if $store.cat_name eq ''}未分类{else}{$store.cat_name}{/if}</td>
-            						</tr>
-            						<tr>
-            							<td><div align="right"><strong>{lang key='store::store.store_keywords_lable'}</strong></div></td>
-            							<td colspan="3">{$store.shop_keyword}</td>
-            						</tr>
-            						<tr>
-            							<td><div align="right"><strong>分成比例：</strong></div></td>
-            							<td>{if $store.percent_value}{$store.percent_value}%{else}未设置，默认100%{/if}&nbsp;&nbsp;<a href='{RC_Uri::url("store/admin_commission/edit","store_id={$smarty.get.store_id}")}' title="编辑">编辑</a></td>
-            							<td><div align="right"><strong>开店时间：</strong></div></td>
-            							<td>{$store.confirm_time}</td>
-            						</tr>
-            						<tr>
-            							<td><div align="right"><strong>店铺模式：</strong></div></td>
-            							<td>{if $store.manage_mode eq 'join'}入驻{else if $store.manage_mode eq 'self'}自营{/if}</td>
-            							<td><div align="right"><strong>商品审核：</strong></div></td>
-            							<td>{if $store.shop_review_goods eq 1}开启{else}关闭{/if}</td>
-            						</tr>
-            						<tr>
-            						    <td><div align="right"><strong>{lang key='store::store.contact_lable'}</strong></div></td>
-            							<td>{$store.contact_mobile}</td>
-            							<td><div align="right"><strong>{lang key='store::store.email_lable'}</strong></div></td>
-            							<td>{$store.email}</td>
-            						</tr>
-            						<tr>
-            							<td><div align="right"><strong>所在地区：</strong></div></td>
-            							<td>{$store.province}&nbsp;{$store.city}&nbsp;{$store.district}</td>
-            							<td><div align="right"><strong>经纬度：</strong></div></td>
-            							<td>{$store.longitude}&nbsp;&nbsp;{$store.latitude}{if $store.longitude && $store.latitude}&nbsp;&nbsp;<a href="http://api.map.baidu.com/marker?location={$store.latitude},{$store.longitude}&title=我的位置&content={$store.merchants_name}&output=html" title="查看地图" target="_blank">[查看地图]</a>{/if}</td>
-            						</tr>
-            						<tr>
-            							<td><div align="right"><strong>{lang key='store::store.address_lable'}</strong></div></td>
-            							<td colspan="3">{$store.address}</td>
-            						</tr>
-            						</tbody>
-            					</table>
-            				</div>
-            			</div>
 
             			<div class="accordion-group">
             				<div class="accordion-heading">
@@ -161,40 +105,6 @@
             			<div class="accordion-group">
             				<div class="accordion-heading">
             					<div class="accordion-heading accordion-heading-url">
-            						<div class="accordion-toggle acc-in" data-toggle="collapse" data-target="#merchant_bank">
-            							<strong>银行账户信息</strong>
-            						</div>
-        							<a class="data-pjax accordion-url m_l10" href='{RC_Uri::url("store/admin/edit","store_id={$smarty.get.store_id}&step=bank")}'>编辑</a>
-        						</div>
-            				</div>
-
-            				<div class="accordion-body in collapse" id="merchant_bank">
-            					<table class="table table-oddtd m_b0">
-            						<tbody class="first-td-no-leftbd">
-            						<tr>
-            							<td><div align="right"><strong>{lang key='store::store.bank_name_lable'}</strong></div></td>
-            							<td>{$store.bank_name}</td>
-            							<td><div align="right"><strong>{lang key='store::store.bank_branch_name_lable'}</strong></div></td>
-            							<td>{$store.bank_branch_name}</td>
-            						</tr>
-            						<tr>
-            							<td><div align="right"><strong>{lang key='store::store.bank_account_number_lable'}</strong></div></td>
-            							<td>{$store.bank_account_number}</td>
-            							<td><div align="right"><strong>{lang key='store::store.bank_account_name_label'}</strong></div></td>
-            							<td>{$store.bank_account_name}</td>
-            						</tr>
-            						<tr>
-            							<td><div align="right"><strong>{lang key='store::store.bank_address_lable'}</strong></div></td>
-            							<td colspan="3">{$store.bank_address}</td>
-            						</tr>
-            						</tbody>
-            					</table>
-            				</div>
-            			</div>
-
-            			<div class="accordion-group">
-            				<div class="accordion-heading">
-            					<div class="accordion-heading accordion-heading-url">
             						<div class="accordion-toggle acc-in" data-toggle="collapse" data-target="#identity_pic">
             							<strong>证件电子版</strong>
             						</div>
@@ -258,6 +168,50 @@
             				</div>
             			</div>
 		                </div>
+		                <div class="accordion-group">
+                			<div class="accordion-heading">
+                				<div class="accordion-heading accordion-heading-url">
+                					<div class="accordion-toggle acc-in" data-toggle="collapse" data-target="#operate">
+                						<strong>认证操作</strong>
+                					</div>
+                				</div>
+                			</div>
+            
+                			<div class="accordion-body in collapse" id="operate">
+                				<form class="form-horizontal" id="form-privilege" name="theForm" action="{$form_action}" method="post" enctype="multipart/form-data" >
+                				<table class="table table-oddtd m_b0">
+                					<tbody class="first-td-no-leftbd">
+<!--                 					<tr> -->
+<!--                 						<td><div align="right"><strong>认证：</strong></div></td> -->
+<!--                 						<td> -->
+<!--                 							<label class="ecjiaf-ib"><input type="radio"  name="identity_status" value="0" {if $store.identity_status eq 0}checked{/if}><span>待审核</span></label> -->
+<!--                     						<label class="ecjiaf-ib"><input type="radio"  name="identity_status" value="3" {if $store.identity_status eq 3}checked{/if}><span>{lang key='store::store.check_no'}</span></label> -->
+<!--                     						<label class="ecjiaf-ib"><input type="radio"  name="identity_status" value="2" {if $store.identity_status eq 2}checked{/if}><span>{lang key='store::store.check_yes'}</span></label> -->
+<!--                 						</td> -->
+<!--                 					</tr> -->
+                					<tr>
+                						<td><div align="right"><strong>当前认证状态：</strong></div></td>
+                						<td colspan="3">{if $store.identity_status eq 0}待认证
+            							{else if $store.identity_status eq 1}认证中
+            							{else if $store.identity_status eq 2}认证通过
+            							{else if $store.identity_status eq 3}<span class="ecjiafc_red m_l10">不通过</span>{/if}
+            							</td>
+                					</tr>
+                					<tr>
+                						<td><div align="right"><strong>可执行操作：</strong></div></td>
+                						<td>
+                        					<input type="hidden" name="store_id" value="{$store.store_id}" />
+                        					<button class="btn operatesubmit" type="submit" name="check_ing">认证中</button>&nbsp;
+                        					<button class="btn operatesubmit" type="submit" name="check_no">不通过</button>&nbsp;
+                        					<button class="btn operatesubmit" type="submit" name="check_yes">{lang key='store::store.check_yes'}</button>
+                        					<!-- <button class="btn btn-gebo" type="submit">{lang key='store::store.sub_check'}</button> -->
+                						</td>
+                					</tr>
+                					</tbody>
+                				</table>
+                				</form>
+                			</div>
+            		  </div>
 
 					</div>
 				</div>
