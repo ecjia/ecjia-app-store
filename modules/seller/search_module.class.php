@@ -47,11 +47,12 @@ class search_module extends api_front implements api_interface {
 // 			$result_mobilebuy = ecjia_app::validate_application('mobilebuy');
 // 			$is_active = ecjia_app::is_active('ecjia.mobilebuy');
 
+			$db_favourable = RC_Model::model('favourable/favourable_activity_model');
+
 			foreach ($result['seller_list'] as $row) {
 				$field = 'count(*) as count, SUM(comment_rank) as comment_rank';
 				//$comment = $db_goods_view->join(null)->field($field)->where(array('c.seller_id' => $row['id'], 'comment_type' => 0, 'parent_id' => 0, 'status' => 1))->find();
-
-				$db_favourable = RC_Model::model('favourable/favourable_activity_model');
+				
 				$favourable_result = $db_favourable->where(array('store_id' => $row['id'], 'start_time' => array('elt' => RC_Time::gmtime()), 'end_time' => array('egt' => RC_Time::gmtime()), 'act_type' => array('neq' => 0)))->select();
 				$favourable_list = array();
 				
@@ -157,6 +158,7 @@ class search_module extends api_front implements api_interface {
 					'follower'			=> $row['follower'],
 					'is_follower'		=> $row['is_follower'],
 					'goods_count'		=> $goods_result['page']->total_records,
+					'comment'			=> '100%',
 // 					'comment'			=> $comment['count'] > 0 ? round($comment['comment_rank']/($comment['count']*5)*100).'%' : '100%',
 					'favourable_list'	=> $favourable_list,
 					));
@@ -170,6 +172,7 @@ class search_module extends api_front implements api_interface {
 							'follower'			=> $row['follower'],
 							'is_follower'		=> $row['is_follower'],
 							'goods_count'		=> $goods_result['page']->total_records,
+					        'comment'			=> '100%', 
 							//'comment'			=> $comment['count'] > 0 ? round($comment['comment_rank']/($comment['count']*5)*100).'%' : '100%',
 							'favourable_list'	=> $favourable_list,
 					);
