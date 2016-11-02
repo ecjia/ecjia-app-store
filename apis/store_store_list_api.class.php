@@ -49,7 +49,7 @@ class store_store_list_api extends Component_Event_Api {
 			if (ecjia::config('review_goods')) {
 				$seller_group_where['review_status'] = array('gt' => 2);
 			}
-			$seller_group = RC_Model::model('goods/goods_model')
+			$seller_group = RC_Model::model('goods/goods_viewmodel')->join(null)
 									->where($seller_group_where)
 									->get_field('store_id', true);
 			
