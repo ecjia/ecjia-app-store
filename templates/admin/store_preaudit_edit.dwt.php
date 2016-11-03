@@ -1,8 +1,31 @@
 <?php defined('IN_ECJIA') or exit('No permission resources.');?>
 <!-- {extends file="ecjia.dwt.php"} -->
+
 <!-- {block name="footer"} -->
 <script type="text/javascript">
 	ecjia.admin.store_edit.init();
+</script>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=P4C6rokKFWHjXELjOnogw3zbxC0VYubo"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/getscript?v=2.0&ak=P4C6rokKFWHjXELjOnogw3zbxC0VYubo&services=&t=20161025142414"></script>
+<script type="text/javascript">
+    // 百度地图API功能
+    var map = new BMap.Map("allmap");
+    var lat = '{$store.latitude}';
+    var lng = '{$store.longitude}';
+    if(lng && lat){
+        var point = new BMap.Point(lng, lat);  // 创建点坐标
+        map.centerAndZoom(point,15);
+        var marker = new BMap.Marker(point);  // 创建标注
+    	map.addOverlay(marker);               // 将标注添加到地图中
+        map.addEventListener("click",function(e){
+            map.removeOverlay(marker);
+            $('input[name="longitude"]').val(e.point.lng)
+            $('input[name="latitude"]').val(e.point.lat)
+            point = new BMap.Point(e.point.lng, e.point.lat);
+            marker = new BMap.Marker(point)
+            map.addOverlay(marker);
+        });
+    }
 </script>
 <!-- {/block} -->
 
@@ -20,7 +43,7 @@
 	<div class="span12">
 		<form class="form-horizontal" id="form-privilege" name="theForm" action="{$form_action}" method="post" enctype="multipart/form-data" >
 			<fieldset>
-			
+
 				<div class="control-group formSep" >
 					<label class="control-label">{lang key='store::store.validate_type'}</label>
 					<div class="controls l_h30">
@@ -33,7 +56,7 @@
 						<input type="hidden"  name="validate_type" value="{$store.validate_type}" />
 					</div>
 				</div>
-				
+
 				<div class="control-group formSep" >
 					<label class="control-label">{lang key='store::store.store_cat_lable'}</label>
 					<div class="controls">
@@ -43,7 +66,7 @@
 						</select>
 					</div>
 				</div>
-				
+
 				<div class="control-group formSep">
 					<label class="control-label">{lang key='store::store.store_title_lable'}</label>
 					<div class="controls">
@@ -90,7 +113,7 @@
 						<input class="span6" name="responsible_person" type="text" value="{$store.responsible_person}" />
 					</div>
 				</div>
-				
+
 				<div class="control-group formSep" >
 					<label class="control-label">{lang key='store::store.identity_type_lable'}</label>
 					<div class="controls">
@@ -218,7 +241,7 @@
 						</div>
 					{/if}
 				</div>
-				
+
 				<!-- 营业执照 -->
 				{if $store.validate_type eq 2}
 				<div class="control-group formSep">
@@ -327,16 +350,34 @@
 				</div>
 
 				<div class="control-group formSep">
+					<label class="control-label">详细地址：</label>
+					<div class="controls">
+						<input class="span6" name="address" type="text" value="{$store.address}" />
+						<div class="input-must">
+							<button class="btn btn-info small-btn" data-toggle="get-gohash" data-url="{url path='store/admin/getgeohash'}">获取精准坐标</button>
+						</div>
+					</div>
+				</div>
+
+				<div class="control-group formSep {if !$store.latitude || !$store.longitude}hide{/if}">
+					<label class="control-label">店铺精确位置：</label>
+					<div class="controls" style="overflow:hidden;">
+						<div class="span6" id="allmap" style="height:320px;"></div>
+					</div>
+					<div class="m_t30 controls help-block">点击选择店铺精确位置，双击放大地图，拖动查看地图其他区域</div>
+				</div>
+
+				<div class="control-group formSep">
 					<label class="control-label">{lang key='store::store.longitude_lable'}</label>
 				 	<div class="controls l_h30">
-						{$store.longitude}
+						<input class="span6" name="longitude" type="text" readonly="true" value="{$store.longitude}" />
 					</div>
 				</div>
 
 				<div class="control-group formSep">
 					<label class="control-label">{lang key='store::store.latitude_lable'}</label>
 				 	<div class="controls l_h30">
-						{$store.latitude}
+						<input class="span6" name="latitude" type="text" readonly="true" value="{$store.latitude}" />
 					</div>
 				</div>
 

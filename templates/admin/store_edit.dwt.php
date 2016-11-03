@@ -1,5 +1,6 @@
 <?php defined('IN_ECJIA') or exit('No permission resources.');?>
 <!-- {extends file="ecjia.dwt.php"} -->
+
 <!-- {block name="footer"} -->
 <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=P4C6rokKFWHjXELjOnogw3zbxC0VYubo"></script>
 <script type="text/javascript" src="http://api.map.baidu.com/getscript?v=2.0&ak=P4C6rokKFWHjXELjOnogw3zbxC0VYubo&services=&t=20161025142414"></script>
@@ -126,7 +127,7 @@
         					<div class="controls" style="overflow:hidden;">
         						<div class="span6" id="allmap" style="height:320px;"></div>
         					</div>
-                            <div class="m_t30 controls help-block">点击选择店铺精确位置，双击或滚动鼠标滚轮放大地图，拖动查看地图其他区域</div>
+                            <div class="m_t30 controls help-block">点击选择店铺精确位置，双击放大地图，拖动查看地图其他区域</div>
         				</div>
 
 

@@ -27,7 +27,7 @@ class admin_preaudit extends ecjia_admin {
 		RC_Script::enqueue_script('region',RC_Uri::admin_url('statics/lib/ecjia-js/ecjia.region.js'));
 
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('store::store.store_preaudit'), RC_Uri::url('store/admin_preaudit/init')));
-		
+
 		RC_Loader::load_app_func('global');
 	}
 
@@ -163,8 +163,8 @@ class admin_preaudit extends ecjia_admin {
 			'identity_number'   		=> !empty($_POST['identity_number']) 	? $_POST['identity_number'] : '',
 			'identity_pic_front'		=> $identity_pic_front,
 			'identity_pic_back' 		=> $identity_pic_back,
-			'personhand_identity_pic'	=>$personhand_identity_pic,
-			'business_licence'  		=> !empty($_POST['business_licence']) 	? $_POST['business_licence'] : '',
+			'personhand_identity_pic'	=> $personhand_identity_pic,
+			'business_licence'  		=> !empty($_POST['business_licence']) 		? $_POST['business_licence'] : '',
 			'business_licence_pic' 		=> $business_licence_pic,
 			'bank_name'      	   		=> !empty($_POST['bank_name']) 				? $_POST['bank_name'] : '',
 			'bank_branch_name'     		=> !empty($_POST['bank_branch_name']) 		? $_POST['bank_branch_name'] : '',
@@ -174,8 +174,14 @@ class admin_preaudit extends ecjia_admin {
 			'city'						=> !empty($_POST['city'])					? $_POST['city'] : '',
 			'district'					=> !empty($_POST['district'])				? $_POST['district'] : '',
 			'bank_address'         		=> !empty($_POST['bank_address']) 			? $_POST['bank_address'] : '',
+			'longitude'         		=> !empty($_POST['longitude']) 				? $_POST['longitude'] : '',
+			'latitude'         			=> !empty($_POST['latitude']) 				? $_POST['latitude'] : '',
 		);
-
+		$geohash = RC_Loader::load_app_class('geohash', 'store');
+		if(!empty($_POST['latitude']) && !empty($_POST['longitude']))
+		$geohash_code = $geohash->encode($_POST['latitude'] , $_POST['longitude']);
+		$geohash_code = substr($geohash_code, 0, 10);
+		$data['geohash'] = $geohash_code;
 		RC_DB::table('store_preaudit')->where('id', $id)->update($data);
 
 		$this->showmessage(RC_Lang::get('store::store.edit_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin_preaudit/edit', array('id' => $id))));
@@ -205,7 +211,7 @@ class admin_preaudit extends ecjia_admin {
 		$info['province'] = RC_DB::table('region')->where('region_id', $info['province'])->pluck('region_name');
 
 		$info['city'] = RC_DB::table('region')->where('region_id', $info['city'])->pluck('region_name');
-		
+
 		$info['district'] = RC_DB::table('region')->where('region_id', $info['district'])->pluck('region_name');
 
 		$info['apply_time']	= RC_Time::local_date(ecjia::config('time_format'), $info['apply_time']);
@@ -213,7 +219,7 @@ class admin_preaudit extends ecjia_admin {
 		$this->assign('store', $info);
 
 		$this->assign('form_action',RC_Uri::url('store/admin_preaudit/check_update'));
-		
+
 		//审核日志
 		if ($info['store_id']) {
 		    $log_store_id = $info['store_id'];
@@ -222,7 +228,7 @@ class admin_preaudit extends ecjia_admin {
 		    $log_store_id = $info['id'];
 		    $log_type = 1;
 		}
-		
+
 		$log_rs = get_check_log($log_store_id, $log_type, 1, 3);
 // 		_dump($log_rs,1);
 		$this->assign('log_list', $log_rs['list']);
@@ -369,7 +375,7 @@ class admin_preaudit extends ecjia_admin {
 				    'info' => '恭喜您的申请通过审核。'.$remark,
 				);
 				RC_Api::api('store', 'add_check_log', $log);
-				
+
 				$this->showmessage(RC_Lang::get('store::store.check_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin_preaudit/init')));
 			} else {
 				//再次审核
@@ -414,7 +420,7 @@ class admin_preaudit extends ecjia_admin {
 				if ($store['business_licence_pic'] && $store['business_licence_pic'] != $franchisee_info['business_licence_pic']) {
 				    $disk->delete(RC_Upload::upload_path($franchisee_info['business_licence_pic']));
 				} */
-				
+
 				RC_DB::table('store_franchisee')->where('store_id', $store_id)->update($data);
 				RC_DB::table('store_preaudit')->where('store_id', $store_id)->delete();
 				$log = array(
@@ -442,25 +448,25 @@ class admin_preaudit extends ecjia_admin {
 			$this->showmessage('操作异常，请检查', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 	}
-	
+
 	public function view_log() {
 	    $this->admin_priv('store_preaudit_check_log', ecjia::MSGTYPE_JSON);
-	     
+
 	    $this->assign('ur_here','查看日志');
 	    $id = intval($_GET['id']);
 	    ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('store::store.check_view'), RC_Uri::url('store/admin_preaudit/check', array('id' => $id))));
 	    ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('查看日志'));
 	    $this->assign('action_link',array('href' => RC_Uri::url('store/admin_preaudit/check', array('id' => $id)),'text' => RC_Lang::get('store::store.store_preaudit')));
 	    $info = RC_DB::table('store_preaudit')->where('id', $id)->first();
-	     
+
 	    if (empty($info)) {
 	        $this->showmessage('信息不存在或已处理完成', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR,  array('pjaxurl' => RC_Uri::url('store/admin_preaudit/init')));
 	    }
 	    $log_store_id = $info['store_id'] ? $info['store_id'] : $info['id'];
 	    $log_type = $info['store_id'] ? 2 : 1;
-	     
+
 	    $log = get_check_log($log_store_id, $log_type, 1, 15);
-	     
+
 	    $this->assign('log_list', $log);
 	    $this->display('store_preaudit_check_log.dwt');
 	}
@@ -481,12 +487,12 @@ class admin_preaudit extends ecjia_admin {
 		    RC_DB::raw('SUM(store_id <> 0) as count_edit'),
 		    RC_DB::raw('SUM(check_status = 3) as count_refuse'))
 		    ->first();
-		
+
 		$filter['count_all'] = $filter_type['count_all'] ? $filter_type['count_all'] : 0;
 		$filter['count_join'] = $filter_type['count_join'] ? $filter_type['count_join'] : 0;
 		$filter['count_edit'] = $filter_type['count_edit'] ? $filter_type['count_edit'] : 0;
 		$filter['count_refuse'] = $filter_type['count_refuse'] ? $filter_type['count_refuse'] : 0;
-		
+
 		if ($filter['type'] == 'edit') {
 		    $db_store_franchisee->where('store_id', '<>', 0);
 		    $count = $filter['count_edit'];
@@ -497,7 +503,7 @@ class admin_preaudit extends ecjia_admin {
 		    $db_store_franchisee->where('store_id', '=', 0);
 		    $count = $filter['count_join'];
 		}
-		
+
 		$page = new ecjia_page($count, $page_size, 5);
 		$data = $db_store_franchisee
 		->leftJoin('store_category as sc', RC_DB::raw('sp.cat_id'), '=', RC_DB::raw('sc.cat_id'))
@@ -533,7 +539,7 @@ class admin_preaudit extends ecjia_admin {
 		return $cat_list;
 	}
 
-	
+
 	/**
 	 * 获取指定地区的子级地区
 	 */
