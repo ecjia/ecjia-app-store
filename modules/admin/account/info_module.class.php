@@ -51,7 +51,6 @@ class info_module extends api_admin implements api_interface {
 			}
 			return array(
 					'validate_type'			=> $merchant_info['validate_type'],
-					'validate_type'			=> $merchant_info['validate_type'],
 					'responsible_person'	=> $merchant_info['responsible_person'],
 					'identity_type'			=> $merchant_info['identity_type'],
 					'identity_number'		=> $merchant_info['identity_number'],
