@@ -270,7 +270,7 @@ class admin extends ecjia_admin {
 		$this->admin_priv('store_affiliate_manage', ecjia::MSGTYPE_JSON);
 
 		$this->assign('action_link',array('href' => RC_Uri::url('store/admin/init'),'text' => RC_Lang::get('store::store.store_list')));
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('store::store.view')));
+		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('基本信息'));
         $store_id = intval($_GET['store_id']);
         if (empty($store_id)) {
             $this->showmessage(__('请选择您要操作的店铺'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
@@ -310,7 +310,7 @@ class admin extends ecjia_admin {
         }
         
         $store = RC_DB::table('store_franchisee')->where('store_id', $store_id)->first();
-        $this->assign('ur_here', $store['merchants_name']);
+        $this->assign('ur_here', $store['merchants_name'].' - 店铺设置');
         $this->assign('store_name', $store['merchants_name']);
         $menu = set_store_menu($store_id, 'store_set');
 
@@ -423,7 +423,7 @@ class admin extends ecjia_admin {
 	    $this->admin_priv('store_auth_manage', ecjia::MSGTYPE_JSON);
 	
 	    $this->assign('action_link',array('href' => RC_Uri::url('store/admin/init'),'text' => RC_Lang::get('store::store.store_list')));
-	    ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('store::store.view')));
+	    ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('资质认证'));
 	    $store_id = intval($_GET['store_id']);
 	    if (empty($store_id)) {
 	        $this->showmessage(__('请选择您要操作的店铺'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
@@ -433,7 +433,7 @@ class admin extends ecjia_admin {
 	
 	    $store = RC_DB::table('store_franchisee')->where('store_id', $store_id)->first();
 	
-	    $this->assign('ur_here', $store['merchants_name']);
+	    $this->assign('ur_here', $store['merchants_name']. ' - 资质认证');
 	    $this->assign('form_action', RC_Uri::url('store/admin/auth_update'));
 	    $this->assign('store', $store);
 	    $this->assign('menu', $menu);
@@ -476,6 +476,7 @@ class admin extends ecjia_admin {
 
 		$store_id = intval($_GET['store_id']);
 		$main_staff = RC_DB::table('staff_user')->where('store_id', $store_id)->where('parent_id', 0)->first();
+		$store = RC_DB::table('store_franchisee')->where('store_id', $store_id)->first();
 		$parent_id = $main_staff['user_id'];
         $menu = set_store_menu($store_id, 'view_staff');
 		$staff_list = RC_DB::table('staff_user')->where('parent_id', $parent_id)->get();
@@ -487,7 +488,7 @@ class admin extends ecjia_admin {
         }
 
 		$this->assign('action_link',array('href' => RC_Uri::url('store/admin/init'),'text' => RC_Lang::get('store::store.store_list')));
-		$this->assign('ur_here',RC_Lang::get('store::store.view_staff'));
+		$this->assign('ur_here',$store['merchants_name'].' - '.RC_Lang::get('store::store.view_staff'));
 		$this->assign('main_staff', $main_staff);
 		$this->assign('staff_list', $staff_list);
 
@@ -660,7 +661,7 @@ class admin extends ecjia_admin {
 	    RC_Loader::load_app_class('shipping_factory', 'shipping', false);
 	    
 	    $this->assign('action_link',array('href' => RC_Uri::url('store/admin/init'),'text' => RC_Lang::get('store::store.store_list')));
-	    ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('store::store.view')));
+	    ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('配送方式'));
 	    $store_id = intval($_GET['store_id']);
 	    if (empty($store_id)) {
 	        $this->showmessage(__('请选择您要操作的店铺'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
@@ -713,7 +714,7 @@ class admin extends ecjia_admin {
 		
 		$store = RC_DB::table('store_franchisee')->where('store_id', $store_id)->first();
 	    
-	    $this->assign('ur_here', $store['merchants_name']);
+	    $this->assign('ur_here', $store['merchants_name'].' - 配送方式');
 	    $this->assign('form_action', RC_Uri::url('store/admin/auth_update'));
 	    $this->assign('store', $store);
 	    $this->assign('menu', $menu);
@@ -744,7 +745,7 @@ class admin extends ecjia_admin {
 
         $merchants_name = RC_DB::table('store_franchisee')->where('store_id', $store_id)->pluck('merchants_name');
 
-        $this->assign('ur_here', $merchants_name);
+        $this->assign('ur_here', $merchants_name.' - 查看日志');
 
         $logs = $this->get_admin_logs($_REQUEST,$store_id);
         $user_id    = !empty($_REQUEST['userid']) ? intval($_REQUEST['userid']) : 0;

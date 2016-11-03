@@ -120,8 +120,8 @@ class admin_commission extends ecjia_admin {
 		$this->admin_priv('store_commission_update',ecjia::MSGTYPE_JSON);
 
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('入驻商'),RC_Uri::url('store/admin/init')));
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here( __('编辑商家佣金')));
-		$this->assign('ur_here', __('编辑商家佣金'));
+		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here( __('佣金设置')));
+		
 		$this->assign('action_link', array('href' =>RC_Uri::url('store/admin/init'), 'text' => __('入驻商列表')));
 		$this->assign('form_action', RC_Uri::url('store/admin_commission/update'));
 
@@ -131,6 +131,7 @@ class admin_commission extends ecjia_admin {
 		$store_commission = RC_DB::table('store_franchisee')->where(RC_DB::raw('store_id'), $store_id)->first();
 		$this->assign('store_commission', $store_commission);
 
+		$this->assign('ur_here', $store_commission['merchants_name'].' - '.__('佣金设置'));
 		$this->assign('merchants_name', $store_commission['merchants_name']);
 		$this->assign('store_id', $store_commission['store_id']);
 
