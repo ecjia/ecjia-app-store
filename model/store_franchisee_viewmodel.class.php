@@ -24,6 +24,11 @@ class store_franchisee_viewmodel extends Component_Model_View {
 						'alias' => 'tr',
 						'on'    => 'tr.object_id = ssi.store_id and object_type="ecjia.merchant" and item_key1="merchant_adsense"',
 				),
+				'goods' => array(
+						'type'  => Component_Model_View::TYPE_LEFT_JOIN,
+						'alias' => 'g',
+						'on'    => 'g.store_id = ssi.store_id',
+				),
 		);
 		
 		
