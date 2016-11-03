@@ -15,13 +15,12 @@ class update_module extends api_admin implements api_interface {
     	//$ssi_db				= RC_Loader::load_app_model('seller_shopinfo_model', 'seller');
     	//$msi_category_db 	= RC_Loader::load_app_model('merchants_shop_information_model', 'seller');
 		
-		$seller_category 	= $this->requestData('seller_category', '');
+		//$seller_category 	= $this->requestData('seller_category', '');
 		$seller_telephone 	= $this->requestData('seller_telephone', '');
-		$province		 	= $this->requestData('province', '');
+		$province		 	= $this->requestData('provice', '');
 		$city				= $this->requestData('city', '');
 		$seller_address		= $this->requestData('seller_address', '');
 		$seller_description = $this->requestData('seller_description', '');
-		
 		
 		if ($_SESSION['store_id'] > 0) {
 			//$result = $ecjia->admin_priv('merchant_setinfo');
@@ -39,9 +38,9 @@ class update_module extends api_admin implements api_interface {
 			//$where2['ru_id'] = $_SESSION['ru_id'];
 			 
 			$data_franchisee = array();
-			if (isset($seller_category)) {
-				$data_franchisee['cat_id'] = $seller_category;
-			}
+			//if (isset($seller_category)) {
+			//	$data_franchisee['cat_id'] = $seller_category;
+			//}
 			
 			if (isset($province)) {
 			 	$data_franchisee['province'] = $province;
