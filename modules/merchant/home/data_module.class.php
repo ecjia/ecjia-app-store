@@ -29,7 +29,7 @@ class data_module extends api_front implements api_interface {
 // 		$where['msi.merchants_audit'] = 1;
 		// $where['ssi.id'] = $seller_id;
 
-		$user_id = EM_Api::$session['uid'];
+		$user_id = $_SESSION['user_id'];
 		$user_id = empty($user_id) ? 0 : $user_id;
 
 // 		$field ='ssi.*, ssi.id as seller_id, ssi.shop_name as seller_name, tr.item_value1, tr.item_value2,  sc.cat_name, count(cs.seller_id) as follower, SUM(IF(cs.user_id = '.$user_id.',1,0)) as is_follower';
@@ -232,10 +232,10 @@ class data_module extends api_front implements api_interface {
 		}
 
 
-		$db_goods_view = RC_Model::model('goods/comment_viewmodel');
+// 		$db_goods_view = RC_Model::model('goods/comment_viewmodel');
 
-		$field = 'count(*) as count, SUM(comment_rank) as comment_rank, SUM(comment_server) as comment_server, SUM(comment_delivery) as comment_delivery';
-		$comment = $db_goods_view->join(null)->field($field)->where(array('c.seller_id' => $seller_id, 'parent_id' => 0, 'status' => 1))->find();
+// 		$field = 'count(*) as count, SUM(comment_rank) as comment_rank, SUM(comment_server) as comment_server, SUM(comment_delivery) as comment_delivery';
+// 		$comment = $db_goods_view->join(null)->field($field)->where(array('c.seller_id' => $seller_id, 'parent_id' => 0, 'status' => 1))->find();
 
 		//导航距离计算
 		//表更换
@@ -264,7 +264,7 @@ class data_module extends api_front implements api_interface {
 						$act_range_ext = explode(',', $val['act_range_ext']);
 						switch ($val['act_range']) {
 							case 1 :
-								if (in_array($goods['cat_id'], $act_range_ext)) {
+								if (in_array($val['cat_id'], $act_range_ext)) {
 									$favourable_list[] = array(
 											'name' => $val['act_name'],
 											'type' => $val['act_type'] == '1' ? 'price_reduction' : 'price_discount',
@@ -273,7 +273,7 @@ class data_module extends api_front implements api_interface {
 								}
 								break;
 							case 2 :
-								if (in_array($goods['brand_id'], $act_range_ext)) {
+								if (in_array($val['brand_id'], $act_range_ext)) {
 									$favourable_list[] = array(
 											'name' => $val['act_name'],
 											'type' => $val['act_type'] == '1' ? 'price_reduction' : 'price_discount',
@@ -282,7 +282,7 @@ class data_module extends api_front implements api_interface {
 								}
 								break;
 							case 3 :
-								if (in_array($goods['goods_id'], $act_range_ext)) {
+								if (in_array($val['goods_id'], $act_range_ext)) {
 									$favourable_list[] = array(
 											'name' => $val['act_name'],
 											'type' => $val['act_type'] == '1' ? 'price_reduction' : 'price_discount',
@@ -324,9 +324,12 @@ class data_module extends api_front implements api_interface {
 						'hot_goods'		=> $goods_count['hot_goods'],
 				),
 				'comment' 	=> array(
-						'comment_goods'			=> $comment['count'] > 0 ? round($comment['comment_rank']/($comment['count']*5)*100).'%' : '100%',
-						'comment_server'		=> $comment['count'] > 0 ? round($comment['comment_server']/($comment['count']*5)*100).'%' : '100%',
-						'comment_delivery'		=> $comment['count'] > 0 ? round($comment['comment_delivery']/($comment['count']*5)*100).'%' : '100%',
+				    'comment_goods'			=> '100%',
+				    'comment_server'		=> '100%',
+				    'comment_delivery'		=> '100%',
+// 						'comment_goods'			=> $comment['count'] > 0 ? round($comment['comment_rank']/($comment['count']*5)*100).'%' : '100%',
+// 						'comment_server'		=> $comment['count'] > 0 ? round($comment['comment_server']/($comment['count']*5)*100).'%' : '100%',
+// 						'comment_delivery'		=> $comment['count'] > 0 ? round($comment['comment_delivery']/($comment['count']*5)*100).'%' : '100%',
 				),
 				'new_goods'			=> $newgoods_list,
 				'hot_goods'			=> $hotgoods_list,
