@@ -387,6 +387,7 @@ class admin_preaudit extends ecjia_admin {
 // 				    'identity_status'           => intval($_POST['identity_status']),
 					'shop_keyword'				=> $store['shop_keyword'],
 					'responsible_person'		=> $store['responsible_person'],
+				    'company_name'		        => $store['company_name'],
 					'email'						=> $store['email'],
 					'contact_mobile'			=> $store['contact_mobile'],
 					'apply_time'				=> $store['apply_time'],
@@ -420,6 +421,24 @@ class admin_preaudit extends ecjia_admin {
 				if ($store['business_licence_pic'] && $store['business_licence_pic'] != $franchisee_info['business_licence_pic']) {
 				    $disk->delete(RC_Upload::upload_path($franchisee_info['business_licence_pic']));
 				} */
+				//判断是否修改认证相关字段
+				if (
+				    ($store['identity_pic_front'] && $store['identity_pic_front'] != $franchisee_info['identity_pic_front']) ||
+				    ($store['identity_pic_back'] && $store['identity_pic_back'] != $franchisee_info['identity_pic_back']) || 
+				    ($store['personhand_identity_pic'] && $store['personhand_identity_pic'] != $franchisee_info['personhand_identity_pic']) ||
+				    ($store['business_licence_pic'] && $store['business_licence_pic'] != $franchisee_info['business_licence_pic']) || 
+				    ($store['identity_type'] && $store['identity_type'] != $franchisee_info['identity_type']) || 
+				    ($store['identity_number'] && $store['identity_number'] != $franchisee_info['identity_number']) || 
+				    ($store['business_licence'] && $store['business_licence'] != $franchisee_info['business_licence']) ||
+				    ($store['responsible_person'] && $store['responsible_person'] != $franchisee_info['responsible_person']) ||
+				    ($store['company_name'] && $store['company_name'] != $franchisee_info['company_name'])
+				    ) {
+				        $data['identity_status'] = 0;
+				        if (ecjia::config('store_identity_certification') == 1) {
+				            //如强制审核，则关闭该商店
+				            $data['shop_close'] = 1;
+				        }
+				    }
 
 				RC_DB::table('store_franchisee')->where('store_id', $store_id)->update($data);
 				RC_DB::table('store_preaudit')->where('store_id', $store_id)->delete();
