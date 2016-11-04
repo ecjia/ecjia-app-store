@@ -17,7 +17,7 @@ class process_module  extends api_admin implements api_interface {
     	/* 判断校验码*/
     	if ($_SESSION['merchant_validate_code'] != $validate_code) {
     		return new ecjia_error('validate_code_error', '校验码错误！');
-    	} elseif ($_SESSION['merchant_validate_expiry'] > RC_Time::gmtime()) {
+    	} elseif ($_SESSION['merchant_validate_expiry'] < RC_Time::gmtime()) {
     		return new ecjia_error('validate_code_time_out', '校验码已过期！');
     	}
 
