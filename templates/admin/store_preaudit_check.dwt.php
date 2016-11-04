@@ -400,7 +400,7 @@
 						<td><div align="right"><strong>{lang key='store::store.remark_lable'}</strong></div></td>
 						<td>
 							<textarea class="span12" name="remark" cols="40" rows="2" placeholder="请填写审核不通过的原因，方便商家修改资料，注意换行">{$store.remark}</textarea>
-						    <input type="hidden"  name="original" value="{$store.remark}" />
+						    <input type="hidden"  name="original" />
 						</td>
 					</tr>
 					<tr>
