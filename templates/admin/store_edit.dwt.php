@@ -2,8 +2,6 @@
 <!-- {extends file="ecjia.dwt.php"} -->
 
 <!-- {block name="footer"} -->
-<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=P4C6rokKFWHjXELjOnogw3zbxC0VYubo"></script>
-<script type="text/javascript" src="http://api.map.baidu.com/getscript?v=2.0&ak=P4C6rokKFWHjXELjOnogw3zbxC0VYubo&services=&t=20161025142414"></script>
 <script type="text/javascript">
 	ecjia.admin.store_edit.init();
 </script>
