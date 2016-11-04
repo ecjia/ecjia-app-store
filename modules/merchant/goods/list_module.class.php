@@ -44,7 +44,7 @@ class list_module extends api_front implements api_interface {
 		$page = $this->requestData('pagination.page', 1);
 		
 		$options = array(
-				'cat_id'	=> $category,
+				'merchant_cat_id'	=> $category,
 				'keywords'	=> $keyword,
 				'store_id'  => $store_id,
 				'sort'		=> $order_by,
