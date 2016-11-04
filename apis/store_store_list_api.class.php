@@ -48,12 +48,14 @@ class store_store_list_api extends Component_Event_Api {
 									->get_field('store_id', true);
 			
 			if (!empty($seller_group)) {
-				$where['ssi.store_id'] = array_unique($seller_group);
+				$where['ssi.store_id'] = $seller_group = array_unique($seller_group);
 			}
 		}
 		
-		if (!empty($filter['store_id_group'])) {
-			$where['ssi.store_id'] = array_merge($where['ssi.store_id'], $filter['store_id_group']);
+		if (isset($seller_group) && !empty($seller_group) && !empty($filter['store_id_group'])) {
+			$where['ssi.store_id'] = array_intersect($seller_group, $filter['store_id_group']);
+		} elseif (!empty($filter['store_id_group'])) {
+			$where['ssi.store_id'] = $filter['store_id_group'];
 		}
 
 		if (!empty($filter['keywords'])) {
