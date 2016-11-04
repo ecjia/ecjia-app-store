@@ -7,30 +7,50 @@ defined('IN_ECJIA') or exit('No permission resources.');
  */
 class validate_module extends api_admin implements api_interface {
     public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {
-    	$this->authadminSession();
-        if ($_SESSION['admin_id'] <= 0 && $_SESSION['staff_id'] <= 0) {
-            return new ecjia_error(100, 'Invalid session');
-        }
-		$type = $this->requestData('type');
-
-		if (empty($type)) {
-			return new ecjia_error(101, '错误的参数提交');
+		$type		= $this->requestData('type');
+		$value		= $this->requestData('value');
+		$validate_type	= $this->requestData('validate_type');
+		$validate_code	= $this->requestData('validate_code');
+		if (empty($type) || empty($value) || empty($validate_type)) {
+			return new ecjia_error( 'invalid_parameter', RC_Lang::get ('system::system.invalid_parameter' ));
 		}
-		//$shop_id = RC_Model::model('seller/seller_shopinfo_model')->where(array('id' => $_SESSION['seller_id']))->get_field('shop_id');
-		//$value = RC_Model::model('merchant/merchants_shop_information_model')->where(array('shop_id' => $shop_id))->get_field('contact_mobile');
-		$value = RC_DB::table('store_franchisee')->where(RC_DB::raw('store_id'), $_SESSION['store_id'])->pluck('contact_mobile');
-		$code = rand(100000, 999999);
+		
+		/* 如果进度查询，查询入驻信息是否存在*/
+		if ($validate_type == 'process') {
+			$info_store_preaudit	= RC_DB::table('store_preaudit')->where('contact_mobile', $value)->first();
+			$info_store_franchisee	= RC_DB::table('store_franchisee')->where('contact_mobile', $value)->first();
+			if (empty($info_store_preaudit) || empty($info_store_franchisee)) {
+				return new ecjia_error('store_error', '您还未申请入驻！');
+			}
+		}
+		
+		if (!empty($validate_code)) {
+			/* 判断校验码*/
+			if ($_SESSION['merchant_validate_code'] != $validate_code) {
+				return new ecjia_error('validate_code_error', '校验码错误！');
+			} elseif ($_SESSION['merchant_validate_expiry'] > RC_Time::gmtime()) {
+				return new ecjia_error('validate_code_time_out', '校验码已过期！');
+			}
+			return array('message' => '校验成功！');
+		}
+		
 
-		if ($type == 'mobile' && !empty($value)) {
+		if ($type == 'mobile') {
 			$result = ecjia_app::validate_application('sms');
 			/* 判断是否有短信app*/
 			if (!is_ecjia_error($result)) {
 				//发送短信
+				$code = rand(100000, 999999);
 				$tpl_name = 'sms_verifying_authentication';
 				$tpl   = RC_Api::api('sms', 'sms_template', $tpl_name);
 				/* 判断短信模板是否存在*/
 				if (!empty($tpl)) {
-					ecjia_api::$controller->assign('action', __('申请入驻认证'));
+					if ($validate_type == 'signup') {
+						ecjia_api::$controller->assign('action', '申请入驻认证');
+					} else {
+						ecjia_api::$controller->assign('action', '查询入驻审核进度');
+					}
+					
 					ecjia_api::$controller->assign('code', $code);
 					ecjia_api::$controller->assign('service_phone', ecjia::config('service_phone'));
 
@@ -44,30 +64,15 @@ class validate_module extends api_admin implements api_interface {
 					$response = RC_Api::api('sms', 'sms_send', $options);
 				}
 			}
-		} else {
-			return new ecjia_error('mobile_error', '手机号码不能为空！');
 		}
-// 		/* 邮箱找回密码*/
-// 		if ($type == 'email') {
-// 			$tpl_name = 'email_verifying_authentication';
-// 			$tpl   = RC_Api::api('mail', 'mail_template', $tpl_name);
-// 			/* 判断短信模板是否存在*/
-// 			if (!empty($tpl)) {
-// 				ecjia_api::$view_object->assign('action', __('通过短信找回密码'));
-// 				ecjia_api::$view_object->assign('code', $code);
-// 				ecjia_api::$view_object->assign('service_phone', ecjia::config('service_phone'));
-// 				$content = ecjia_api::$controller->fetch_string($tpl['template_content']);
-// 				$response = RC_Mail::send_mail(ecjia::config('shop_name'), ecjia::config('service_email'), $tpl['template_subject'], $content, $tpl['is_html']);
 
-// 			}
-// 		}
 
 		/* 判断是否发送成功*/
-		if ($response === true) {
+		if (isset($response) && $response === true) {
 			$time = RC_Time::gmtime();
             $_SESSION['merchant_validate_code'] = $code;
             $_SESSION['merchant_validate_expiry'] = $time + 600;//设置有效期10分钟
-			return array('data' => '验证码发送成功！');
+			return array('message' => '验证码发送成功！');
 		} else {
 			return new ecjia_error('send_code_error', __('验证码发送失败！'));
 		}
