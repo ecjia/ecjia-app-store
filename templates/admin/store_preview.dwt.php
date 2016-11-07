@@ -48,6 +48,9 @@
             							<td><div align="right"><strong>{lang key='store::store.store_title_lable'}</strong></div></td>
             							<td><strong>{$store.merchants_name}</strong>
             							{if $store.identity_status eq 2}<span class="label label-success m_l10">已认证</span>{else}<span class="label m_l10">未认证</span>{/if}
+            							{if $store.shop_close eq 0}<span class="label label-success m_l10">开店</span>
+            							{else if $store.shop_close eq 1}<span class="label label-important m_l10">店铺关闭</span>
+            							{/if}
             							{if $store.status eq 2}<span class="label label-important m_l10">锁定</span>{/if}</td>
             							<td><div align="right"><strong>{lang key='store::store.store_cat_lable'}</strong></div></td>
             							<td>{if $store.cat_name eq ''}未分类{else}{$store.cat_name}{/if}</td>

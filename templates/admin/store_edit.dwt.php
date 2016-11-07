@@ -151,6 +151,14 @@
         					</div>
         					<div class="controls help-block">当商店设置中商品审核关闭时，对单个店铺设置失效。</div>
         				</div>
+        				<div class="control-group formSep">
+        					<label class="control-label">店铺开关：</label>
+        					<div class="controls chk_radio">
+        					    <label class="ecjiafd-iblock"><div class="uni-radio"><input name="shop_close" type="radio" value="0" {if  $store.shop_close eq 0}checked="checked" {/if}/></div><span>开</span></label>
+								<label class="ecjiafd-iblock"><div class="uni-radio"><input name="shop_close" type="radio" value="1" {if  $store.shop_close eq 1}checked="checked" {/if}/></div><span>关</span></label>
+        					</div>
+        					<div class="controls help-block">当商店设置中开启“商家强制认证”后，未认证通过的商家不能开店和显示</div>
+        				</div>
 
         				{else if $step eq 'identity'}
         				{if $store.validate_type eq 1}
