@@ -129,19 +129,24 @@ class admin extends ecjia_admin {
 
 		if ($step == 'base') {
 		    $data = array(
-		        'cat_id'   	   				=> !empty($_POST['store_cat']) 		  ? $_POST['store_cat'] : '',
+		        'cat_id'   	   				=> !empty($_POST['store_cat']) 		    ? $_POST['store_cat'] : '',
 		        'merchants_name'   			=> !empty($_POST['merchants_name'])     ? $_POST['merchants_name'] : '',
-		        'shop_keyword'      		=> !empty($_POST['shop_keyword']) 	     ? $_POST['shop_keyword'] : '',
+		        'shop_keyword'      		=> !empty($_POST['shop_keyword']) 	    ? $_POST['shop_keyword'] : '',
 		        'email'      				=> !empty($_POST['email']) 				? $_POST['email'] : '',
 		        'contact_mobile'    		=> !empty($_POST['contact_mobile']) 	? $_POST['contact_mobile'] : '',
 		        'address'      				=> !empty($_POST['address']) 			? $_POST['address'] : '',
-		        'province'					=> !empty($_POST['province'])				? $_POST['province'] : '',
-		        'city'						=> !empty($_POST['city'])					? $_POST['city'] : '',
-		        'district'					=> !empty($_POST['district'])				? $_POST['district'] : '',
-		        'longitude'					=> !empty($_POST['longitude'])				? $_POST['longitude'] : '',
-		        'latitude'					=> !empty($_POST['latitude'])				? $_POST['latitude'] : '',
-		        'manage_mode'				=> !empty($_POST['manage_mode'])				? $_POST['manage_mode'] : 'join',
+		        'province'					=> !empty($_POST['province'])			? $_POST['province'] : '',
+		        'city'						=> !empty($_POST['city'])				? $_POST['city'] : '',
+		        'district'					=> !empty($_POST['district'])			? $_POST['district'] : '',
+		        'longitude'					=> !empty($_POST['longitude'])			? $_POST['longitude'] : '',
+		        'latitude'					=> !empty($_POST['latitude'])			? $_POST['latitude'] : '',
+		        'manage_mode'				=> !empty($_POST['manage_mode'])		? $_POST['manage_mode'] : 'join',
+		        'shop_close'				=> isset($_POST['shop_close'])			? $_POST['shop_close'] : 1,
 		    );
+		    
+		    if ($store_info['identity_status'] != 2 && $data['shop_close'] == 0 && ecjia::config('store_identity_certification') == 1) {
+		        $this->showmessage('未认证通过不能开启店铺', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+		    }
             $geohash = RC_Loader::load_app_class('geohash', 'store');
 			$geohash_code = $geohash->encode($_POST['latitude'] , $_POST['longitude']);
             $geohash_code = substr($geohash_code, 0, 10);
