@@ -30,19 +30,26 @@ class store_store_list_api extends Component_Event_Api {
         $where = array();
         $where['ssi.status'] = 1;
         $where['ssi.store_id'] = array();
+        
 		/* 商品分类*/
 		if (!empty($filter['goods_category'])) {
 			RC_Loader::load_app_class('goods_category', 'goods', false);
-			isset($filter['goods_category']) and $children = goods_category::get_children($filter['goods_category'], 'cat_id');
+			
+			$children = RC_Cache::app_cache_get('goods_category_children_'. $filter['goods_category'], 'goods');
+	    	if (!$children) {
+	    		$children = goods_category::get_children($filter['goods_category'], 'cat_id');
+	    		$children = RC_Cache::app_cache_set('goods_category_children_'. $filter['goods_category'], $children, 'goods', 10080);
+	    	}
+			
+			
 			$seller_group_where = array(
 					"(". $children ." OR ".goods_category::get_extension_goods($children, 'goods_id').")",
 					'is_on_sale'	=> 1,
 					'is_alone_sale' => 1,
 					'is_delete'		=> 0,
+					'review_status'	=> array('gt' => 2),
 			);
-			if (ecjia::config('review_goods')) {
-				$seller_group_where['review_status'] = array('gt' => 2);
-			}
+			
 			$seller_group = RC_Model::model('goods/goods_viewmodel')->join(null)
 									->where($seller_group_where)
 									->get_field('store_id', true);
@@ -58,33 +65,45 @@ class store_store_list_api extends Component_Event_Api {
 			$where['ssi.store_id'] = $filter['store_id_group'];
 		}
 
+		/* 关键字*/
 		if (!empty($filter['keywords'])) {
 			$where[] = '(merchants_name like "%'.$filter['keywords'].'%" or goods_name like "%'.$filter['keywords'].'%")';
 		}
 
-		// /* 店铺分类*/
+		/* 店铺分类*/
 		if (!empty($filter['seller_category'])) {
 // 			RC_Loader::load_app_func('store_category','store');
 // 			$where['ssi.cat_id'] = get_children($filter['category_id']);
 			$where['ssi.cat_id'] = $filter['category_id'];
 		}
+		
+		
+		/* 获取当前经纬度周边的geohash值*/
+		if (isset($filter['geohash']) && !empty($filter['geohash'])) {
+			/* 载入geohash类*/
+			$geohash	  = RC_Loader::load_app_class('geohash', 'store');
+			$geohash_code = substr($filter['geohash'], 0, 5);
+			$geohash_group = $geohash->geo_neighbors($geohash_code);
+			$store_geohash = array_merge(array($geohash_code), $geohash_group);
+// 			$where['geohash'] = $store_geohash;
+			$where['left(geohash, 5)'] = $store_geohash;
+		}
 
         $db_store_franchisee = RC_Model::model('store/store_franchisee_viewmodel');
 		$count = $db_store_franchisee->join(array('goods'))->where($where)->count('distinct(ssi.store_id)');
-
+		
 		//加载分页类
 		RC_Loader::load_sys_class('ecjia_page', false);
 		//实例化分页
 		$page_row = new ecjia_page($count, $filter['size'], 6, '', $filter['page']);
-
-		$user_id = $_SESSION['user_id'];
 
 		$limit = $filter['limit'] == 'all' ? null : $page_row->limit();
 
 		$seller_list = array();
 
         $field = 'ssi.*, sc.cat_name, count(cs.store_id) as follower';
-        $result = $db_store_franchisee->join(array('collect_store', 'store_category', 'goods'))->field($field)->where($where)->limit($limit)->group('ssi.store_id')->order($filter['sort'])->select();
+        $result = $db_store_franchisee->join(array('collect_store', 'store_category', 'goods'))->field($field)->where($where)->limit($limit)->group('ssi.store_id')->order(array())->select();
+		
         if (!empty($result)) {
         	foreach($result as $k => $val){
         		$store_config = array(
@@ -99,7 +118,7 @@ class store_store_list_api extends Component_Event_Api {
         				'shop_description'          => '', // 店铺描述
         				'shop_notice'               => '', // 店铺公告
         		);
-        		$config = RC_DB::table('merchants_config')->where('store_id', $val['store_id'])->select('code','value')->get();
+        		$config = RC_DB::table('merchants_config')->where('store_id', $val['store_id'])->select('code', 'value')->get();
         		foreach ($config as $key => $value) {
         			$store_config[$value['code']] = $value['value'];
         		}
@@ -117,10 +136,12 @@ class store_store_list_api extends Component_Event_Api {
         				'shop_logo'		     => empty($result[$k]['shop_logo']) ?  '' : RC_Upload::upload_url($result[$k]['shop_logo']),//后期增加
         				'seller_logo'		 => empty($result[$k]['shop_logo']) ?  '' : RC_Upload::upload_url($result[$k]['shop_logo']),//后期删除
         				'follower'			 => $result[$k]['follower'],
-            		    'location' => array(
+        				'sort_order'		 => $result[$k]['sort_order'],
+        				'location' => array(
             		        'latitude'  => $result[$k]['latitude'],
             		        'longitude' => $result[$k]['longitude'],
             		    ),
+        				
         		);
         	}
         }
