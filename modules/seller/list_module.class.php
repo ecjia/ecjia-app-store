@@ -10,12 +10,10 @@ class list_module extends api_front implements api_interface {
 
 		$seller_categroy	= $this->requestData('seller_category', 0);
 		$goods_category		= $this->requestData('goods_category', 0);
+		
 		$keywords	 = $this->requestData('keywords');
 		$location	 = $this->requestData('location', array());
-		$location = array(
-				'longitude' => '121.42084',
-				'latitude'	=> '31.23697',
-		);
+		
 		/*经纬度为空判断*/
 		if (!is_array($location) || empty($location['longitude']) || empty($location['latitude'])) {
 			$seller_list = array();
@@ -33,7 +31,7 @@ class list_module extends api_front implements api_interface {
 		/* 获取数量 */
 		$size = $this->requestData('pagination.count', 15);
 		$page = $this->requestData('pagination.page', 1);
-		$page =2;
+		
 		$options = array(
 				'seller_category'	=> $seller_categroy,
 				'goods_category'	=> $goods_category,

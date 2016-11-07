@@ -38,7 +38,7 @@ class store_store_list_api extends Component_Event_Api {
 			$children = RC_Cache::app_cache_get('goods_category_children_'. $filter['goods_category'], 'goods');
 	    	if (!$children) {
 	    		$children = goods_category::get_children($filter['goods_category'], 'cat_id');
-	    		$children = RC_Cache::app_cache_set('goods_category_children_'. $filter['goods_category'], $children, 'goods', 10080);
+	    		RC_Cache::app_cache_set('goods_category_children_'. $filter['goods_category'], $children, 'goods', 10080);
 	    	}
 			
 			
@@ -59,11 +59,11 @@ class store_store_list_api extends Component_Event_Api {
 			}
 		}
 		
-		if (isset($seller_group) && !empty($seller_group) && !empty($filter['store_id_group'])) {
-			$where['ssi.store_id'] = array_intersect($seller_group, $filter['store_id_group']);
-		} elseif (!empty($filter['store_id_group'])) {
-			$where['ssi.store_id'] = $filter['store_id_group'];
-		}
+// 		if (isset($seller_group) && !empty($seller_group) && !empty($filter['store_id_group'])) {
+// 			$where['ssi.store_id'] = array_intersect($seller_group, $filter['store_id_group']);
+// 		} elseif (!empty($filter['store_id_group'])) {
+// 			$where['ssi.store_id'] = $filter['store_id_group'];
+// 		}
 
 		/* 关键字*/
 		if (!empty($filter['keywords'])) {
