@@ -56,6 +56,8 @@ class store_store_list_api extends Component_Event_Api {
 			
 			if (!empty($seller_group)) {
 				$where['ssi.store_id'] = $seller_group = array_unique($seller_group);
+			} else {
+				$where['ssi.store_id'] = 0;
 			}
 		}
 		
