@@ -58,8 +58,8 @@
                                     <!-- {foreach from=$list.log item=log} -->
                                     <tr>
                                         <td>{$log.name}</td>
-                                        <td>{if $log.is_img}{$log.original_data}{else}<code>{$log.original_data}</code>{/if}</td>
-                                        <td>{if $log.is_img}{$log.new_data}{else}<code>{$log.new_data}</code>{/if}</td>
+                                        <td>{if $log.is_img}{$log.original_data}{else}{$log.original_data}{/if}</td>
+                                        <td>{if $log.is_img}{$log.new_data}{else}{$log.new_data}{/if}</td>
                                     </tr>
                                     <!-- {/foreach} -->
                                     </tbody>
