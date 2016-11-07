@@ -25,12 +25,6 @@
 
 <form class="form-horizontal"  name="theForm" action="{$form_action}" method="post"  enctype="multipart/form-data" >
 	<fieldset>
-		<div class="control-group formSep">
-			<label class="control-label">{t}后台名称：{/t}</label>
-			<div class="controls ">
-				<input name="merchant_admin_cpname" id="merchant_admin_cpname" type="text" value="{$config_cpname}"/>
-			</div>
-		</div>
 
 		<div class="control-group formSep">
 			<label class="control-label">{t}登录Logo：{/t}</label>
@@ -45,7 +39,7 @@
 					<input type="file" name="merchant_admin_login_logo"/>
 					</span>
 					<a class="btn fileupload-exists" data-toggle="removefile" data-msg="{t}您确定要删除该图片吗？{/t}" data-href="{RC_Uri::url('store/admin_config/del')}&type=logo" {if $config_logo}data-removefile="true"{/if}>{t}删除{/t}</a>
-					<span class="help-block">推荐图片的尺寸为：230x50px</span>
+					<span class="help-block">推荐尺寸：230px * 50px</span>
 				</div>
 			</div>
 		</div>

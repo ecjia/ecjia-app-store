@@ -31,7 +31,7 @@ class admin_config extends ecjia_admin {
 		$this->assign('ur_here', '后台配置');
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('后台配置')));
 
-    	$this->assign('config_cpname', ecjia::config('merchant_admin_cpname'));
+//     	$this->assign('config_cpname', ecjia::config('merchant_admin_cpname')); //需删除
     	
     	$this->assign('config_logoimg', RC_Upload::upload_url(ecjia::config('merchant_admin_login_logo')));
     	$this->assign('config_logo', ecjia::config('merchant_admin_login_logo'));
