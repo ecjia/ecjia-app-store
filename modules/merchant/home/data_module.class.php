@@ -310,6 +310,7 @@ class data_module extends api_front implements api_interface {
 				'telephone'			=> $info['shop_kf_mobile'],
 				'seller_qq'			=> $info['shop_kf_qq'],
 				'seller_description'	=> $info['shop_notice'],
+		        'manage_mode'       => $info['manage_mode'],
 				'follower'			=> $info['follower'],
 				'is_follower'		=> $info['is_follower'],
 				'location'			=> array(
