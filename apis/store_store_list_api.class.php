@@ -117,6 +117,10 @@ class store_store_list_api extends Component_Event_Api {
         				'shop_logo'		     => empty($result[$k]['shop_logo']) ?  '' : RC_Upload::upload_url($result[$k]['shop_logo']),//后期增加
         				'seller_logo'		 => empty($result[$k]['shop_logo']) ?  '' : RC_Upload::upload_url($result[$k]['shop_logo']),//后期删除
         				'follower'			 => $result[$k]['follower'],
+            		    'location' => array(
+            		        'latitude'  => $result[$k]['latitude'],
+            		        'longitude' => $result[$k]['longitude'],
+            		    ),
         		);
         	}
         }
