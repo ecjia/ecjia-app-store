@@ -208,8 +208,8 @@
 						<td><div align="right"><strong>{lang key='store::store.identity_number_lable'}</strong></div></td>
 						<td>
 						{if $log_last.identity_number}
-    						<div class="high_light h_info">{$log_last.identity_number.original_data}</div><br>
-    						<div class="high_light h_success">{$log_last.identity_number.new_data}</div>
+    						<div>旧值：{$log_last.identity_number.original_data}</div><br>
+    						<div>新值：{$log_last.identity_number.new_data}</div>
 						{else}
     						{$store.identity_number}
 						{/if}
@@ -451,8 +451,8 @@
                         <!-- {foreach from=$list.log item=log} -->
                         <tr>
                             <td>{$log.name}</td>
-                            <td>{if $log.is_img}{$log.original_data}{else}<code>{$log.original_data}</code>{/if}</td>
-                            <td>{if $log.is_img}{$log.new_data}{else}<code>{$log.new_data}</code>{/if}</td>
+                            <td>{if $log.is_img}{$log.original_data}{else}{$log.original_data}{/if}</td>
+                            <td>{if $log.is_img}{$log.new_data}{else}{$log.new_data}{/if}</td>
                         </tr>
                         <!-- {/foreach} -->
                         </tbody>

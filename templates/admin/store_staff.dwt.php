@@ -42,7 +42,7 @@
                 		<div class="row-fluid">
                 			<div class="span2 left">
                 				{if $main_staff.avatar}
-                				<img alt="{$main_staff.name}" class="span10 thumbnail" src="{$main_staff.avatar}">
+                				<img alt="{$main_staff.name}" class="span10 thumbnail" src="{RC_Upload::upload_url()}/{$main_staff.avatar}">
                 				{/if}
                 			</div>
                 			<div class="span8">
