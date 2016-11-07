@@ -29,7 +29,7 @@ class store_store_list_api extends Component_Event_Api {
 	{
         $where = array();
         $where['ssi.status'] = 1;
-        $where['ssi.store_id'] = array(0);
+        $where['ssi.store_id'] = array();
 		/* 商品分类*/
 		if (!empty($filter['goods_category'])) {
 			RC_Loader::load_app_class('goods_category', 'goods', false);
