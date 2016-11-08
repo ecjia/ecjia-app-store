@@ -23,6 +23,8 @@ class info_module extends api_admin implements api_interface {
 			
 			$info = RC_DB::table('store_franchisee')->where('store_id', $_SESSION['store_id'])->first();
 			
+			$shop_trade_time = RC_DB::table('merchants_config')->where('store_id', $_SESSION['store_id'])->where('code', 'shop_trade_time')->pluck('value');
+			$shop_trade_time = !empty($shop_trade_time) ? unserialize($shop_trade_time) : null;
 			$seller_info = array(
 	    	  		'id'					=> $info['store_id'],
 	    	  		'seller_name'			=> $info['merchants_name'],
@@ -32,11 +34,10 @@ class info_module extends api_admin implements api_interface {
 	    	  		'seller_province'		=> $region->where(array('region_id' => $info['province']))->get_field('region_name'),
 	    	  		'seller_city'			=> $region->where(array('region_id' => $info['city']))->get_field('region_name'),
 	    	  		'seller_address'		=> $info['address'],
-	    	  		'seller_description'	=> '',//$info['notice'],
-					//'validated_status'		=> $info['status'],
-					//'validated_status'		=> '0',
 					'validated_status'		=> $info['identity_status'],
 	    	  		'seller_description'	=> RC_DB::table('merchants_config')->where('store_id', $_SESSION['store_id'])->where('code', 'shop_description')->pluck('value'),
+					'seller_notice'			=> RC_DB::table('merchants_config')->where('store_id', $_SESSION['store_id'])->where('code', 'shop_notice')->pluck('value'),
+					'trade_time'			=> $shop_trade_time
 			);
 			$result = $this->admin_priv('franchisee_manage');
 			if (is_ecjia_error($result)) {

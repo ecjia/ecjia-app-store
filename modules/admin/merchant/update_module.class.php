@@ -21,9 +21,11 @@ class update_module extends api_admin implements api_interface {
 		$city				= $this->requestData('city', '');
 		$seller_address		= $this->requestData('seller_address', '');
 		$seller_description = $this->requestData('seller_description', '');
+		$seller_notice		= $this->requestData('seller_notice');
+		$trade_time			= $this->requestData('trade_time');
+		
 		
 		if ($_SESSION['store_id'] > 0) {
-			//$result = $ecjia->admin_priv('merchant_setinfo');
 			$result1 = $this->admin_priv('franchisee_manage');
 			$result2 = $this->admin_priv('merchant_manage');
 			
@@ -34,13 +36,7 @@ class update_module extends api_admin implements api_interface {
 			RC_Loader::load_app_func('global', 'store');
 			assign_adminlog_content();
 			
-			//$where1['user_id'] =$_SESSION['ru_id'];
-			//$where2['ru_id'] = $_SESSION['ru_id'];
-			 
 			$data_franchisee = array();
-			//if (isset($seller_category)) {
-			//	$data_franchisee['cat_id'] = $seller_category;
-			//}
 			
 			if (isset($province)) {
 			 	$data_franchisee['province'] = $province;
@@ -52,12 +48,9 @@ class update_module extends api_admin implements api_interface {
 				$data_franchisee['address'] = $seller_address;
 			}
 			
-			$data_shopinfo = array();
-			if (isset($seller_telephone)) {
-				$data_shopinfo['shop_kf_mobile'] = $seller_telephone;
-			}
-			if (isset($seller_description)) {
-				$data_shopinfo['shop_description'] = $seller_description;
+			if (isset($trade_time['start']) && isset($trade_time['end']) && !empty($trade_time['start']) && !empty($trade_time['end'])) {
+				$seller_trade_time = serialize($trade_time);
+				RC_DB::table('merchants_config')->where(RC_DB::raw('store_id'), $_SESSION['store_id'])->where(RC_DB::raw('code'), 'shop_trade_time')->update(array('value' => $seller_trade_time));
 			}
 			
 			//$count_category = $msi_category_db->where($where1)->update($data_category);
@@ -65,6 +58,9 @@ class update_module extends api_admin implements api_interface {
 			RC_DB::table('store_franchisee')->where(RC_DB::raw('store_id'), $_SESSION['store_id'])->update($data_franchisee);
 			RC_DB::table('merchants_config')->where(RC_DB::raw('store_id'), $_SESSION['store_id'])->where(RC_DB::raw('code'), 'shop_kf_mobile')->update(array('value' => $seller_telephone));
 			RC_DB::table('merchants_config')->where(RC_DB::raw('store_id'), $_SESSION['store_id'])->where(RC_DB::raw('code'), 'shop_description')->update(array('value' => $seller_description));
+			RC_DB::table('merchants_config')->where(RC_DB::raw('store_id'), $_SESSION['store_id'])->where(RC_DB::raw('code'), 'shop_notice')->update(array('value' => $seller_notice));
+			
+			
 			ecjia_admin::admin_log('店铺设置>基本信息设置【来源掌柜】', 'edit', 'config');
 	    	return true;
 	    	
