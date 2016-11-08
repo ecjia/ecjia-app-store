@@ -30,18 +30,18 @@ class store_store_list_api extends Component_Event_Api {
         $where = array();
         $where['ssi.status'] = 1;
         $where['ssi.store_id'] = array();
-        
+
 		/* 商品分类*/
 		if (!empty($filter['goods_category'])) {
 			RC_Loader::load_app_class('goods_category', 'goods', false);
-			
+
 			$children = RC_Cache::app_cache_get('goods_category_children_'. $filter['goods_category'], 'goods');
 	    	if (!$children) {
 	    		$children = goods_category::get_children($filter['goods_category'], 'cat_id');
 	    		RC_Cache::app_cache_set('goods_category_children_'. $filter['goods_category'], $children, 'goods', 10080);
 	    	}
-			
-			
+
+
 			$seller_group_where = array(
 					"(". $children ." OR ".goods_category::get_extension_goods($children, 'goods_id').")",
 					'is_on_sale'	=> 1,
@@ -49,18 +49,18 @@ class store_store_list_api extends Component_Event_Api {
 					'is_delete'		=> 0,
 					'review_status'	=> array('gt' => 2),
 			);
-			
+
 			$seller_group = RC_Model::model('goods/goods_viewmodel')->join(null)
 									->where($seller_group_where)
 									->get_field('store_id', true);
-			
+
 			if (!empty($seller_group)) {
 				$where['ssi.store_id'] = $seller_group = array_unique($seller_group);
 			} else {
 				$where['ssi.store_id'] = 0;
 			}
 		}
-		
+
 // 		if (isset($seller_group) && !empty($seller_group) && !empty($filter['store_id_group'])) {
 // 			$where['ssi.store_id'] = array_intersect($seller_group, $filter['store_id_group']);
 // 		} elseif (!empty($filter['store_id_group'])) {
@@ -78,8 +78,8 @@ class store_store_list_api extends Component_Event_Api {
 // 			$where['ssi.cat_id'] = get_children($filter['category_id']);
 			$where['ssi.cat_id'] = $filter['category_id'];
 		}
-		
-		
+
+
 		/* 获取当前经纬度周边的geohash值*/
 		if (isset($filter['geohash']) && !empty($filter['geohash'])) {
 			/* 载入geohash类*/
@@ -91,9 +91,11 @@ class store_store_list_api extends Component_Event_Api {
 			$where['left(geohash, 5)'] = $store_geohash;
 		}
 
+		$where['shop_close'] = '0';
+
         $db_store_franchisee = RC_Model::model('store/store_franchisee_viewmodel');
 		$count = $db_store_franchisee->join(array('goods'))->where($where)->count('distinct(ssi.store_id)');
-		
+
 		//加载分页类
 		RC_Loader::load_sys_class('ecjia_page', false);
 		//实例化分页
@@ -105,7 +107,7 @@ class store_store_list_api extends Component_Event_Api {
 
         $field = 'ssi.*, sc.cat_name, count(cs.store_id) as follower';
         $result = $db_store_franchisee->join(array('collect_store', 'store_category', 'goods'))->field($field)->where($where)->limit($limit)->group('ssi.store_id')->order(array())->select();
-		
+
         if (!empty($result)) {
         	foreach($result as $k => $val){
         		$store_config = array(
@@ -125,11 +127,11 @@ class store_store_list_api extends Component_Event_Api {
         			$store_config[$value['code']] = $value['value'];
         		}
         		$result[$k] = array_merge($result[$k], $store_config);
-        	
+
         		if(substr($result[$k]['shop_logo'], 0, 1) == '.') {
         			$result[$k]['shop_logo'] = str_replace('../', '/', $val['shop_logo']);
         		}
-        	
+
         		$seller_list[] = array(
         				'id'				 => $result[$k]['store_id'],
         				'seller_name'		 => $result[$k]['merchants_name'],
@@ -143,11 +145,11 @@ class store_store_list_api extends Component_Event_Api {
             		        'latitude'  => $result[$k]['latitude'],
             		        'longitude' => $result[$k]['longitude'],
             		    ),
-        				
+
         		);
         	}
         }
-        
+
 		return array('seller_list' => $seller_list, 'page' => $page_row);
 	}
 }
