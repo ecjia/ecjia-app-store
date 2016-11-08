@@ -41,15 +41,15 @@ class validate_module extends api_admin implements api_interface {
 			if (!is_ecjia_error($result)) {
 				//发送短信
 				$code = rand(100000, 999999);
-				$tpl_name = 'sms_verifying_authentication';
+				$tpl_name = 'sms_get_validate';
 				$tpl   = RC_Api::api('sms', 'sms_template', $tpl_name);
 				/* 判断短信模板是否存在*/
 				if (!empty($tpl)) {
-					if ($validate_type == 'signup') {
-						ecjia_api::$controller->assign('action', '申请入驻认证');
-					} else {
-						ecjia_api::$controller->assign('action', '查询入驻审核进度');
-					}
+// 					if ($validate_type == 'signup') {
+// 						ecjia_api::$controller->assign('action', '申请入驻认证');
+// 					} else {
+// 						ecjia_api::$controller->assign('action', '查询入驻审核进度');
+// 					}
 					
 					ecjia_api::$controller->assign('code', $code);
 					ecjia_api::$controller->assign('service_phone', ecjia::config('service_phone'));
