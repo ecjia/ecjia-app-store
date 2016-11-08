@@ -42,7 +42,7 @@ class process_module  extends api_admin implements api_interface {
     		);
     	} elseif (!empty($info_store_franchisee)) {
     		return array(
-    				'check_status'	=> $info_store_preaudit['check_status'],
+    				'check_status'	=> 2,
     				'merchant_info' => array(
     						'responsible_person'	=> $info_store_franchisee['responsible_person'],
     						'email'					=> $info_store_franchisee['email'],
