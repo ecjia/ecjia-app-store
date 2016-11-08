@@ -37,7 +37,6 @@
             		      <th>操作人</th>
             		      <th>日志</th>
         		      </tr>
-        		      
         		    </thead>
         		  	<tbody>
         		  	<!-- {foreach from=$log_list.list item=list} -->
@@ -49,9 +48,9 @@
                 			    <table class="table table-condensed table-hover log">
                                     <thead>
                                         <tr>
-                                        <th>字段</th>
-                                        <th>旧值</th>
-                                        <th>新值</th>
+                                        <th width="20%">字段</th>
+                                        <th width="40%">旧值</th>
+                                        <th width="40%">新值</th>
                                         </tr>
                                     </thead>
                                     <tbody>
