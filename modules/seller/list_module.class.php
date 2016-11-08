@@ -8,8 +8,8 @@ defined('IN_ECJIA') or exit('No permission resources.');
 class list_module extends api_front implements api_interface {
     public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {
 
-		$seller_categroy	= $this->requestData('seller_category', 0);
-		$goods_category		= $this->requestData('goods_category', 0);
+		$seller_categroy	= $this->requestData('category_id', 0);
+// 		$goods_category		= $this->requestData('goods_category', 0);
 		
 		$keywords	 = $this->requestData('keywords');
 		$location	 = $this->requestData('location', array());
@@ -34,7 +34,7 @@ class list_module extends api_front implements api_interface {
 		
 		$options = array(
 				'seller_category'	=> $seller_categroy,
-				'goods_category'	=> $goods_category,
+// 				'goods_category'	=> $goods_category,
 				'keywords'		=> $keywords,
 				'size'			=> $size,
 				'page'			=> $page,
@@ -44,7 +44,7 @@ class list_module extends api_front implements api_interface {
 				'limit'			=> 'all'
 		);
 		
-		$cache_id = sprintf('%X', crc32($seller_categroy . '-' . $goods_category  .'-' . $_SESSION['user_rank']. '-' .
+		$cache_id = sprintf('%X', crc32($seller_categroy .'-' . $_SESSION['user_rank']. '-' .
 				$keywords . '-'. $geohash_code));
 		
 		$cache_key = 'seller_list_'.$cache_id;
