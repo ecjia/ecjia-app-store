@@ -17,9 +17,9 @@ class update_module extends api_admin implements api_interface {
 		
 		//$seller_category 	= $this->requestData('seller_category', '');
 		$seller_telephone 	= $this->requestData('seller_telephone', '');
-		$province		 	= $this->requestData('provice', '');
-		$city				= $this->requestData('city', '');
-		$seller_address		= $this->requestData('seller_address', '');
+// 		$province		 	= $this->requestData('provice', '');
+// 		$city				= $this->requestData('city', '');
+// 		$seller_address		= $this->requestData('seller_address', '');
 		$seller_description = $this->requestData('seller_description', '');
 		$seller_notice		= $this->requestData('seller_notice');
 		$trade_time			= $this->requestData('trade_time');
@@ -38,15 +38,15 @@ class update_module extends api_admin implements api_interface {
 			
 			$data_franchisee = array();
 			
-			if (isset($province)) {
-			 	$data_franchisee['province'] = $province;
-			}
-			if (isset($city)) {
-			 	$data_franchisee['city'] = $city;
-			}	
-			if (isset($seller_address)) {
-				$data_franchisee['address'] = $seller_address;
-			}
+// 			if (isset($province) && !empty($province)) {
+// 			 	$data_franchisee['province'] = $province;
+// 			}
+// 			if (isset($city)) {
+// 			 	$data_franchisee['city'] = $city;
+// 			}	
+// 			if (isset($seller_address)) {
+// 				$data_franchisee['address'] = $seller_address;
+// 			}
 			
 			if (isset($trade_time['start']) && isset($trade_time['end']) && !empty($trade_time['start']) && !empty($trade_time['end'])) {
 				$seller_trade_time = serialize($trade_time);
@@ -55,7 +55,7 @@ class update_module extends api_admin implements api_interface {
 			
 			//$count_category = $msi_category_db->where($where1)->update($data_category);
 			//$count_shopinfo = $ssi_db->where($where2)->update($data_shopinfo);
-			RC_DB::table('store_franchisee')->where(RC_DB::raw('store_id'), $_SESSION['store_id'])->update($data_franchisee);
+// 			RC_DB::table('store_franchisee')->where(RC_DB::raw('store_id'), $_SESSION['store_id'])->update($data_franchisee);
 			RC_DB::table('merchants_config')->where(RC_DB::raw('store_id'), $_SESSION['store_id'])->where(RC_DB::raw('code'), 'shop_kf_mobile')->update(array('value' => $seller_telephone));
 			RC_DB::table('merchants_config')->where(RC_DB::raw('store_id'), $_SESSION['store_id'])->where(RC_DB::raw('code'), 'shop_description')->update(array('value' => $seller_description));
 			RC_DB::table('merchants_config')->where(RC_DB::raw('store_id'), $_SESSION['store_id'])->where(RC_DB::raw('code'), 'shop_notice')->update(array('value' => $seller_notice));
