@@ -15,6 +15,8 @@ class list_module extends api_front implements api_interface {
 		$category = !empty($filter['category_id']) ? intval($filter['category_id']) : 0;
 		$sort_type = $filter['sort_by'];
 		$store_id = $this->requestData('seller_id');
+		$action_type = $this->requestData('action_type', '');
+		
 		if (empty($store_id)) {
 			return new ecjia_error( 'invalid_parameter', RC_Lang::get ('system::system.invalid_parameter' ));
 		}
@@ -48,6 +50,7 @@ class list_module extends api_front implements api_interface {
 				'keywords'	=> $keyword,
 				'store_id'  => $store_id,
 				'sort'		=> $order_by,
+				'intro'		=> $action_type,
 				'page'		=> $page,
 				'size'		=> $size,
 		);
