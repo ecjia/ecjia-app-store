@@ -175,6 +175,7 @@ class list_module extends api_front implements api_interface {
 						'goods_count'       => $goods_store_data['count'],
 						'favourable_list'	=> $favourable_list,
 						'distance'			=> $distance,
+						'label_trade_time'	=> $row['label_trade_time'],
 				);
 			}
 			array_multisort($distance_list, SORT_ASC, $sort_order, SORT_ASC, $seller_list);

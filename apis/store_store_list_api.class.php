@@ -121,6 +121,7 @@ class store_store_list_api extends Component_Event_Api {
         				'shop_trade_time'           => '', // 营业时间
         				'shop_description'          => '', // 店铺描述
         				'shop_notice'               => '', // 店铺公告
+        				
         		);
         		$config = RC_DB::table('merchants_config')->where('store_id', $val['store_id'])->select('code', 'value')->get();
         		foreach ($config as $key => $value) {
@@ -131,7 +132,7 @@ class store_store_list_api extends Component_Event_Api {
         		if(substr($result[$k]['shop_logo'], 0, 1) == '.') {
         			$result[$k]['shop_logo'] = str_replace('../', '/', $val['shop_logo']);
         		}
-
+        		$result[$k]['trade_time'] = !empty($result[$k]['shop_trade_time']) ? unserialize($result[$k]['shop_trade_time']) : array('start' => '8:00', 'end' => '21:00');
         		$seller_list[] = array(
         				'id'				 => $result[$k]['store_id'],
         				'seller_name'		 => $result[$k]['merchants_name'],
@@ -145,7 +146,7 @@ class store_store_list_api extends Component_Event_Api {
             		        'latitude'  => $result[$k]['latitude'],
             		        'longitude' => $result[$k]['longitude'],
             		    ),
-
+						'label_trade_time'	 => $result[$k]['trade_time']['start'] . ' - '. $result[$k]['trade_time']['end'],
         		);
         	}
         }
