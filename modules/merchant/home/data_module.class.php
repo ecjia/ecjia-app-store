@@ -60,7 +60,7 @@ class data_module extends api_front implements api_interface {
 		}
 
 		$goods_db = RC_Model::model('goods/goods_model');
-		$gfield = 'count(*) as count, SUM(IF(is_new=1, 1, 0)) as new_goods, SUM(IF(is_best=1, 1, 0)) as best_goods, SUM(IF(is_hot=1, 1, 0)) as hot_goods';
+		$gfield = 'count(*) as count, SUM(IF(store_new=1, 1, 0)) as new_goods, SUM(IF(store_best=1, 1, 0)) as best_goods, SUM(IF(store_hot=1, 1, 0)) as hot_goods';
 		$count_where = array('store_id' => $seller_id, 'is_on_sale' => 1, 'is_alone_sale' => 1, 'is_delete' => 0);
 		
 		$count_where['review_status'] = array('gt' => 2);
@@ -120,6 +120,7 @@ class data_module extends api_front implements api_interface {
 			RC_Cache::app_cache_set($cache_favourable_key, $favourable_list, 'favourable', 10080);
 		}
 
+		$info['trade_time'] = !empty($info['shop_trade_time']) ? unserialize($info['shop_trade_time']) : array('start' => '8:00', 'end' => '21:00');
 		$seller_info = array(
 				'id'				=> $info['store_id'],
 				'seller_name'		=> $info['merchants_name'],
@@ -130,7 +131,8 @@ class data_module extends api_front implements api_interface {
 				'shop_address'		=> $province_name.' '.$city_name.' '.$info['address'],
 				'telephone'			=> $info['shop_kf_mobile'],
 				'seller_qq'			=> $info['shop_kf_qq'],
-				'seller_description'	=> $info['shop_notice'],
+				'seller_description'	=> $info['shop_description'],
+				'seller_notice'		=> $info['shop_notice'],
 		        'manage_mode'       => $info['manage_mode'],
 				'follower'			=> $info['follower'],
 				'is_follower'		=> $info['is_follower'],
@@ -157,7 +159,8 @@ class data_module extends api_front implements api_interface {
 // 				'new_goods'			=> $newgoods_list,
 // 				'hot_goods'			=> $hotgoods_list,
 // 				'best_goods'		=> $bestgoods_list,
-				'favourable_list'	=> $favourable_list
+				'favourable_list'	=> $favourable_list,
+				'label_trade_time'	=> $info['trade_time']['start'] . ' - '. $info['trade_time']['end'],
 		);
 
 		return $seller_info;

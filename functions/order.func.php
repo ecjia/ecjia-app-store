@@ -114,9 +114,9 @@ function order_info($order_id, $order_sn = '') {
 	$total_fee = " (goods_amount - discount + tax + shipping_fee + insure_fee + pay_fee + pack_fee + card_fee) AS total_fee ";
 	$order_id = intval($order_id);
 	if ($order_id > 0) {
-		$order = $db->field('*,'.$total_fee)->find(array('order_id' => $order_id, 'extension_code' => '', 'extension_id' => 0));
+		$order = $db->field('*,'.$total_fee)->find(array('order_id' => $order_id, 'extension_code' => '', 'extension_id' => 0, 'is_delete' => 0));
 	} else {
-		$order = $db->field('*,'.$total_fee)->find(array('order_sn' => $order_sn, 'extension_code' => '', 'extension_id' => 0));
+		$order = $db->field('*,'.$total_fee)->find(array('order_sn' => $order_sn, 'extension_code' => '', 'extension_id' => 0, 'is_delete' => 0));
 	}
 
 	/* 格式化金额字段 */

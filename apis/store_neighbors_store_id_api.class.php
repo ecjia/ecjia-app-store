@@ -35,10 +35,10 @@ class store_neighbors_store_id_api extends Component_Event_Api {
 		/* 获取当前经纬度周边的geohash值*/
 		$geohash_group = $geohash->geo_neighbors($geohash_code);
 
-		$group_store_id = RC_DB::table('store_franchisee')->where('geohash', 'like', $geohash_code.'%')->lists('store_id');
+		$group_store_id = RC_DB::table('store_franchisee')->where('geohash', 'like', $geohash_code.'%')->where('shop_close', '0')->lists('store_id');
 
 		foreach ($geohash_group as $val) {
-			$store_id = RC_DB::table('store_franchisee')->where('geohash', 'like', $val.'%')->lists('store_id');
+			$store_id = RC_DB::table('store_franchisee')->where('geohash', 'like', $val.'%')->where('shop_close', '0')->lists('store_id');
 			if (!empty($store_id)) {
 				$group_store_id = array_merge($group_store_id, $store_id);
 			}
