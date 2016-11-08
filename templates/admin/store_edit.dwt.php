@@ -330,7 +330,7 @@
         				</div>
 
         				<div class="control-group formSep">
-    						<label class="control-label">{lang key='store::store.identity_pic_back_lable'}</label>
+    						<label class="control-label">{lang key='store::store.personhand_identity_pic_lable'}</label>
     						<div class="controls">
     							<div class="fileupload fileupload-new" data-provides="fileupload">
     								{if $store.personhand_identity_pic neq ''}
@@ -356,6 +356,7 @@
     						</div>
         				</div>
 
+        				{if $store.validate_type eq 2}
         				<div class="control-group formSep">
         					<label class="control-label">{lang key='store::store.business_licence_pic_lable'}</label>
         					<div class="controls">
@@ -382,7 +383,8 @@
         						</div>
         					</div>
         				</div>
-
+                        {/if}
+                        
         				<!-- <div class="control-group formSep">
         					<label class="control-label">{lang key='store::store.apply_time_lable'}</label>
         				 	<div class="controls l_h30">
