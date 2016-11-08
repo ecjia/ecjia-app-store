@@ -723,6 +723,7 @@ class admin extends ecjia_admin {
 	    $this->assign('ur_here', $store['merchants_name'].' - 配送方式');
 	    $this->assign('form_action', RC_Uri::url('store/admin/auth_update'));
 	    $this->assign('store', $store);
+	    $this->assign('store_id', $store_id);
 	    $this->assign('menu', $menu);
 	    $this->display('store_shipping.dwt');
 	    

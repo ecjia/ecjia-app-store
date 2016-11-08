@@ -44,7 +44,7 @@
 							<td class="hide-edit-area">
 								{$module.desc|nl2br}
 								<div class="edit-list">
-									<a class="data-pjax" href='{RC_Uri::url("shipping/mh_area/init", "shipping_id={$module.id}&code={$module.code}")}'  title="{lang key='shipping::shipping.shipping_area'}">{lang key='shipping::shipping.set_shipping'}</a>
+									<a target="_blank" href='{RC_Uri::url("shipping/admin_area/init", "shipping_id={$module.id}&code={$module.code}&store_id={$store_id}")}'  title="{lang key='shipping::shipping.shipping_area'}">{lang key='shipping::shipping.set_shipping'}</a>
 								</div>
 							</td>
 							<td>
