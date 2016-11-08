@@ -50,7 +50,7 @@ class list_module extends api_front implements api_interface {
 				'keywords'	=> $keyword,
 				'store_id'  => $store_id,
 				'sort'		=> $order_by,
-				'intro'		=> $action_type,
+				'store_intro'	=> $action_type,
 				'page'		=> $page,
 				'size'		=> $size,
 		);

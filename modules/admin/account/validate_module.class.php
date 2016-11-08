@@ -12,11 +12,7 @@ class validate_module extends api_admin implements api_interface {
             return new ecjia_error(100, 'Invalid session');
         }
 
-		$validate_type = $this->requestData('validate_type', '');
 
-		if (empty($validate_type)) {
-			return new ecjia_error(101, '错误的参数提交！');
-		}
 
 		$validate_code = $this->requestData('validate_code', '');
     
@@ -25,85 +21,107 @@ class validate_module extends api_admin implements api_interface {
 			return new ecjia_error('code_error', '验证码不正确！');
 		}
 
-		//$shop_id = RC_Model::model('seller/seller_shopinfo_model')->where(array('id' => $_SESSION['seller_id']))->get_field('shop_id');
-
-		/* 文件路径处理*/
-		//$uid = $_SESSION['seller_id'];
-		$uid = $_SESSION['store_id'];
-		$uid = abs(intval($uid));//保证uid为绝对的正整数
-		$uid = sprintf("%09d", $uid);//格式化uid字串， d 表示把uid格式为9位数的整数，位数不够的填0
-		$dir1 = substr($uid, 0, 3);//把uid分段
-		$dir2 = substr($uid, 3, 2);
-		$dir3 = substr($uid, 5, 2);
-		$filename = md5($uid);
-		$path = RC_Upload::upload_path('data/merchant/'.$dir1.'/'.$dir2.'/'.$dir3);
-		//创建目录
-		RC_Dir::create($path);
-
+		$merchant_info = RC_DB::table('store_franchisee')->where(RC_DB::raw('store_id'), $_SESSION['store_id'])->first();
+		
+		
 		$responsible_person 		= $this->requestData('responsible_person', '');
 		$identity_type 				= $this->requestData('identity_type', '');
 		$identity_number 			= $this->requestData('identity_number', '');
+		$company_name 				= $this->requestData('company_name', '');
+		
 		$personhand_identity_pic    = $this->requestData('identity_pic', '');
 		$identity_pic_front 		= $this->requestData('identity_pic_front', '');
 		$identity_pic_back  		= $this->requestData('identity_pic_back', '');
-		$company_name 				= $this->requestData('company_name', '');
+		
 		$business_licence_pic		= $this->requestData('business_licence_pic', '');
 
-		$data = array('validate_type' => $validate_type);
+		$data = array();
 
 		if (!empty($responsible_person)) {
 			$data['responsible_person'] = $responsible_person;
+		}
+		
+		if (!empty($identity_type)) {
+			$data['identity_type'] = $identity_type;
+		}
+		
+		if (!empty($identity_number)) {
+			$data['identity_number'] = $identity_number;
 		}
 
 		if (!empty($company_name)) {
 			$data['company_name'] = $company_name;
 		}
 
-		if (!empty($identity_type)) {
-			$data['identity_type'] = $identity_type;
-		}
+		$store_preaudit_info = RC_DB::table('store_preaudit')->where(RC_DB::raw('store_id'), $_SESSION['store_id'])->first();
 
-		if (!empty($identity_number)) {
-			$data['identity_number'] = $identity_number;
+		$save_path = 'merchant/'.$_SESSION['store_id'].'/data/identity_pic';
+		$upload = RC_Upload::uploader('image', array('save_path' => $save_path, 'auto_sub_dirs' => true));
+		
+		/* 手持身份证*/
+		if (isset($_FILES['identity_pic'])) {
+			$image_info	= $upload->upload($_FILES['identity_pic']);
+			/* 判断是否上传成功 */
+			if (!empty($image_info)) {
+				$personhand_identity_pic = $upload->get_position($image_info);
+				if (!empty($store_preaudit_info['personhand_identity_pic'])) {
+					$upload->remove($store_preaudit_info['personhand_identity_pic']);
+				}
+				$data['personhand_identity_pic'] = $personhand_identity_pic;
+			}
 		}
-
-		if (!empty($personhand_identity_pic)) {
-			$filename_path = $path.'/'.substr($uid, -2).'_hand_id_'.$filename.'.jpg';
-			@unlink($filename_path);
-			$personhand_identity_pic = base64_decode($personhand_identity_pic);
-			file_put_contents($filename_path, $personhand_identity_pic);
-			//$data['identity_pic'] = 'data/merchant/'.$dir1.'/'.$dir2.'/'.$dir3.'/'.substr($uid, -2).'_hand_id_'.$filename.'.jpg';
-			$data['personhand_identity_pic'] = 'data/merchant/'.$dir1.'/'.$dir2.'/'.$dir3.'/'.substr($uid, -2).'_hand_id_'.$filename.'.jpg';
+		
+		/* 身份证正面*/
+		if (isset($_FILES['identity_pic_front'])) {
+			$image_info	= $upload->upload($_FILES['identity_pic_front']);
+			/* 判断是否上传成功 */
+			if (!empty($image_info)) {
+				$identity_pic_front = $upload->get_position($image_info);
+				if (!empty($store_preaudit_info['identity_pic_front'])) {
+					$upload->remove($store_preaudit_info['identity_pic_front']);
+				}
+				$data['identity_pic_front'] = $identity_pic_front;
+			}
 		}
-
-		if (!empty($business_licence_pic)) {
-			$filename_path = $path.'/'.substr($uid, -2).'_business_licence_'.$filename.'.jpg';
-			@unlink($filename_path);
-			$business_licence_pic = base64_decode($business_licence_pic);
-			file_put_contents($filename_path, $business_licence_pic);
-			$data['business_licence_pic'] = 'data/merchant/'.$dir1.'/'.$dir2.'/'.$dir3.'/'.substr($uid, -2).'_business_licence_'.$filename.'.jpg';
+		
+		/* 手持身反面*/
+		if (isset($_FILES['identity_pic_back'])) {
+			$image_info	= $upload->upload($_FILES['identity_pic_back']);
+			/* 判断是否上传成功 */
+			if (!empty($image_info)) {
+				$identity_pic_back = $upload->get_position($image_info);
+				if (!empty($store_preaudit_info['identity_pic_back'])) {
+					$upload->remove($store_preaudit_info['identity_pic_back']);
+				}
+				$data['identity_pic_back'] = $identity_pic_back;
+			}
 		}
-
-		if (!empty($identity_pic_front)) {
-			$filename_path = $path.'/'.substr($uid, -2).'_id_front_'.$filename.'.jpg';
-			@unlink($filename_path);
-			$identity_pic_front = base64_decode($identity_pic_front);
-			file_put_contents($filename_path, $identity_pic_front);
-			$data['identity_pic_front'] = 'data/merchant/'.$dir1.'/'.$dir2.'/'.$dir3.'/'.substr($uid, -2).'_id_front_'.$filename.'.jpg';
+		
+		/* 营业执照*/
+		if (isset($_FILES['business_licence_pic'])) {
+			$save_path = 'merchant/'.$_SESSION['store_id'].'/data/business_licence';
+			$upload_business_licence = RC_Upload::uploader('image', array('save_path' => $save_path, 'auto_sub_dirs' => true));
+			
+			$image_info	= $upload_business_licence->upload($_FILES['business_licence_pic']);
+			/* 判断是否上传成功 */
+			if (!empty($image_info)) {
+				$business_licence_pic = $upload_business_licence->get_position($image_info);
+				if (!empty($store_preaudit_info['business_licence_pic'])) {
+					$upload_business_licence->remove($store_preaudit_info['business_licence_pic']);
+				}
+				$data['business_licence_pic'] = $business_licence_pic;
+			}
 		}
-
-		if (!empty($identity_pic_back)) {
-			$filename_path = $path.'/'.substr($uid, -2).'_id_back_'.$filename.'.jpg';
-			@unlink($filename_path);
-			$identity_pic_back = base64_decode($identity_pic_back);
-			file_put_contents($filename_path, $identity_pic_back);
-			$data['identity_pic_front'] = 'data/merchant/'.$dir1.'/'.$dir2.'/'.$dir3.'/'.substr($uid, -2).'_id_back_'.$filename.'.jpg';
-		}
-		//$data['merchant_status'] = 0;
-		//$data['merchant_status'] = 1;
-		//RC_Model::model('merchant/merchants_shop_information_model')->where(array('shop_id' => $shop_id))->update($data);
+		
 		$data['identity_status'] = 1;
-		RC_DB::table('store_franchisee')->where(RC_DB::raw('store_id'), $_SESSION['store_id'])->update($data);
+		
+		
+		if ($store_preaudit_info) {
+			RC_DB::table('store_preaudit')->where(RC_DB::raw('store_id'), $_SESSION['store_id'])->update($data);
+		} else {
+			RC_DB::table('store_preaudit')->where(RC_DB::raw('store_id'), $_SESSION['store_id'])->insertGetId($data);
+		}
+		
 		return array();
     }
 

@@ -60,7 +60,7 @@ class data_module extends api_front implements api_interface {
 		}
 
 		$goods_db = RC_Model::model('goods/goods_model');
-		$gfield = 'count(*) as count, SUM(IF(is_new=1, 1, 0)) as new_goods, SUM(IF(is_best=1, 1, 0)) as best_goods, SUM(IF(is_hot=1, 1, 0)) as hot_goods';
+		$gfield = 'count(*) as count, SUM(IF(store_new=1, 1, 0)) as new_goods, SUM(IF(store_best=1, 1, 0)) as best_goods, SUM(IF(store_hot=1, 1, 0)) as hot_goods';
 		$count_where = array('store_id' => $seller_id, 'is_on_sale' => 1, 'is_alone_sale' => 1, 'is_delete' => 0);
 		
 		$count_where['review_status'] = array('gt' => 2);
