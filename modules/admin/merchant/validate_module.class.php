@@ -12,7 +12,7 @@ class validate_module extends api_admin implements api_interface {
 		$validate_type	= $this->requestData('validate_type');
 		$validate_code	= $this->requestData('validate_code');
 		$time = RC_Time::gmtime();
-		if (($_SESSION['merchant_validate_expiry'] - 1740) - > $time) {
+		if (($_SESSION['merchant_validate_expiry'] - 1740) > $time) {
 			return new ecjia_error('restrict_times', '请在1分钟后获取校验码！');
 		}
 
