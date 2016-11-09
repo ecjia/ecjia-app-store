@@ -38,6 +38,7 @@ class process_module  extends api_admin implements api_interface {
     						'seller_name'			=> $info_store_preaudit['merchants_name'],
     						'seller_category'		=> RC_DB::table('store_category')->where('cat_id', $info_store_preaudit['cat_id'])->pluck('cat_name'),
     						'address'				=> RC_DB::table('region')->where('region_id', $info_store_preaudit['city'])->pluck('region_name').$info_store_preaudit['address'],
+    				        'remark'                => $info_store_preaudit['remark'],
     				)
     		);
     	} elseif (!empty($info_store_franchisee)) {
@@ -50,6 +51,7 @@ class process_module  extends api_admin implements api_interface {
     						'seller_name'			=> $info_store_franchisee['merchants_name'],
     						'seller_category'		=> RC_DB::table('store_category')->where('cat_id', $info_store_franchisee['cat_id'])->pluck('cat_name'),
     						'address'				=> RC_DB::table('region')->where('region_id', $info_store_franchisee['city'])->pluck('region_name').$info_store_franchisee['address'],
+    				        'remark'                => $info_store_franchisee['remark'],
     				)
     		);
     		
