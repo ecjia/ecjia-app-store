@@ -76,7 +76,7 @@ class store_store_list_api extends Component_Event_Api {
 		if (isset($filter['seller_category']) && !empty($filter['seller_category'])) {
 // 			RC_Loader::load_app_func('store_category','store');
 // 			$where['ssi.cat_id'] = get_children($filter['category_id']);
-			$where['ssi.cat_id'] = $filter['category_id'];
+			$where['ssi.cat_id'] = $filter['seller_category'];
 		}
 
 
