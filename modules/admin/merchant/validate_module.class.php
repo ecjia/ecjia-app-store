@@ -20,16 +20,16 @@ class validate_module extends api_admin implements api_interface {
 		if (empty($type) || empty($value)) {
 			return new ecjia_error( 'invalid_parameter', RC_Lang::get ('system::system.invalid_parameter' ));
 		}
-		
+
 		/* 如果进度查询，查询入驻信息是否存在*/
 		if ($validate_type == 'process') {
 			$info_store_preaudit	= RC_DB::table('store_preaudit')->where('contact_mobile', $value)->first();
 			$info_store_franchisee	= RC_DB::table('store_franchisee')->where('contact_mobile', $value)->first();
-			if (empty($info_store_preaudit) || empty($info_store_franchisee)) {
+			if (empty($info_store_preaudit) && empty($info_store_franchisee)) {
 				return new ecjia_error('store_error', '您还未申请入驻！');
 			}
 		}
-		
+
 		if (!empty($validate_code)) {
 			/* 判断校验码*/
 			if ($_SESSION['merchant_validate_code'] != $validate_code) {
@@ -39,7 +39,7 @@ class validate_module extends api_admin implements api_interface {
 			}
 			return array('message' => '校验成功！');
 		}
-		
+
 
 		if ($type == 'mobile') {
 			$result = ecjia_app::validate_application('sms');
@@ -56,7 +56,7 @@ class validate_module extends api_admin implements api_interface {
 // 					} else {
 // 						ecjia_api::$controller->assign('action', '查询入驻审核进度');
 // 					}
-					
+
 					ecjia_api::$controller->assign('code', $code);
 					ecjia_api::$controller->assign('service_phone', ecjia::config('service_phone'));
 
