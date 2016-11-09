@@ -30,16 +30,19 @@
 			<label class="control-label">{t}登录Logo：{/t}</label>
 			<div class="controls">
 				<div class="fileupload {if $config_logo}fileupload-exists{else}fileupload-new{/if}" data-provides="fileupload">
+				<a tabindex="0" role="button" href="javascript:;" class="no-underline cursor_pointor" data-trigger="focus" data-toggle="popover" data-placement="top">	
 					<div class="fileupload-preview thumbnail fileupload-exists" style="width: 50px; height: 50px; line-height: 50px;">
 						<img src="{$config_logoimg}" alt="{t}预览图片{/t}" />
 					</div>
+				</a>
+				<div class="hide" id="content_1"><img class="mh150" src="{$config_logoimg}"></div> 
 					<span class="btn btn-file">
 					<span class="fileupload-new">{t}浏览{/t}</span>
 					<span class="fileupload-exists">{t}修改{/t}</span>
 					<input type="file" name="merchant_admin_login_logo"/>
 					</span>
 					<a class="btn fileupload-exists" data-toggle="removefile" data-msg="{t}您确定要删除该图片吗？{/t}" data-href="{RC_Uri::url('store/admin_config/del')}&type=logo" {if $config_logo}data-removefile="true"{/if}>{t}删除{/t}</a>
-					<span class="help-block">推荐尺寸：230px * 50px</span>
+					<span class="help-block">推荐尺寸：230*50px</span>
 				</div>
 			</div>
 		</div>

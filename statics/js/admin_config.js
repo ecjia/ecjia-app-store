@@ -2,6 +2,12 @@
 ;(function(app, $) {
 	app.admin_config = {
 			init : function() {
+	            $("[data-toggle='popover']").popover({ 
+	            	html: true,
+		    		content: function() {
+		    			return $("#content_1").html();
+		    		},
+	    		});
 				app.admin_config.submit_form();
 			},
 			submit_form : function() {
