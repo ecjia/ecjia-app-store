@@ -121,3 +121,12 @@ function file_upload_info($path, $code, $old_images, $store_id){
         return $img_path;
     }
 }
+
+/**
+* 清除用户购物车
+*/
+function clear_cart_list($store_id){
+	if(empty($store_id)) return false;
+	// 清除所有用户购物车内商家的商品
+	RC_DB::table('cart')->where('store_id', $store_id)->delete();
+}

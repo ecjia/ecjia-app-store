@@ -143,7 +143,10 @@ class admin extends ecjia_admin {
 		        'manage_mode'				=> !empty($_POST['manage_mode'])		? $_POST['manage_mode'] : 'join',
 		        'shop_close'				=> isset($_POST['shop_close'])			? $_POST['shop_close'] : 1,
 		    );
-		    
+
+			if($_POST['shop_close'] == '1'){
+				clear_cart_list($store_id);
+			}
 		    if ($store_info['identity_status'] != 2 && $data['shop_close'] == 0 && ecjia::config('store_identity_certification') == 1) {
 		        $this->showmessage('未认证通过不能开启店铺', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		    }
@@ -307,14 +310,14 @@ class admin extends ecjia_admin {
 	public function store_set() {
 
 	    $this->admin_priv('store_set_manage', ecjia::MSGTYPE_JSON);
-	    
+
         $this->assign('action_link',array('href' => RC_Uri::url('store/admin/init'),'text' => RC_Lang::get('store::store.store_list')));
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('店铺设置'));
         $store_id = intval($_GET['store_id']);
         if (empty($store_id)) {
             $this->showmessage(__('请选择您要操作的店铺'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
-        
+
         $store = RC_DB::table('store_franchisee')->where('store_id', $store_id)->first();
         $this->assign('ur_here', $store['merchants_name'].' - 店铺设置');
         $this->assign('store_name', $store['merchants_name']);
@@ -421,39 +424,39 @@ class admin extends ecjia_admin {
             $this->showmessage('编辑成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin/store_set', array('store_id' => $store_id))));
         }
 	}
-	
+
 	/**
 	 * 资质认证
 	 */
 	public function auth() {
 	    $this->admin_priv('store_auth_manage', ecjia::MSGTYPE_JSON);
-	
+
 	    $this->assign('action_link',array('href' => RC_Uri::url('store/admin/init'),'text' => RC_Lang::get('store::store.store_list')));
 	    ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('资质认证'));
 	    $store_id = intval($_GET['store_id']);
 	    if (empty($store_id)) {
 	        $this->showmessage(__('请选择您要操作的店铺'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 	    }
-	
+
 	    $menu = set_store_menu($store_id, 'auth');
-	
+
 	    $store = RC_DB::table('store_franchisee')->where('store_id', $store_id)->first();
-	
+
 	    $this->assign('ur_here', $store['merchants_name']. ' - 资质认证');
 	    $this->assign('form_action', RC_Uri::url('store/admin/auth_update'));
 	    $this->assign('store', $store);
 	    $this->assign('menu', $menu);
 	    $this->display('store_auth.dwt');
 	}
-	
+
 	public function auth_update() {
 	    $this->admin_priv('store_auth_manage', ecjia::MSGTYPE_JSON);
-	    
+
 	    $store_id = intval($_POST['store_id']);
 	    if(empty($store_id)) {
 	        $this->showmessage('参数错误', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 	    }
-	    
+
 	    //0、待审核，1、审核中，2、审核通过，3、拒绝通过',
 	    $data = array();
 	    if (isset($_POST['check_ing'])) {
@@ -465,7 +468,7 @@ class admin extends ecjia_admin {
 	    if (isset($_POST['check_yes'])) {
 	        $data['identity_status'] = 2;
 	    }
-	    
+
 	    if (RC_DB::table('store_franchisee')->where('store_id', $store_id)->update($data)) {
 	        $this->showmessage('操作成功！', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin/auth', array('store_id' => $store_id))));
 	    } else {
@@ -544,7 +547,7 @@ class admin extends ecjia_admin {
 		}
 
 		RC_DB::table('store_franchisee')->where('store_id', $store_id)->update(array('status' => $status_new));
-
+		clear_cart_list($store_id);
 		$this->showmessage('操作成功！', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin/preview', array('store_id' => $store_id))));
 	}
 
@@ -659,22 +662,22 @@ class admin extends ecjia_admin {
 		$arr['target']  = htmlspecialchars($arr['target']);
 		echo json_encode($arr);
 	}
-	
+
 	//查看配送方式
 	public function shipping() {
 	    $this->admin_priv('store_shipping_manage', ecjia::MSGTYPE_JSON);
-	    
+
 	    RC_Loader::load_app_class('shipping_factory', 'shipping', false);
-	    
+
 	    $this->assign('action_link',array('href' => RC_Uri::url('store/admin/init'),'text' => RC_Lang::get('store::store.store_list')));
 	    ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('配送方式'));
 	    $store_id = intval($_GET['store_id']);
 	    if (empty($store_id)) {
 	        $this->showmessage(__('请选择您要操作的店铺'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 	    }
-	    
+
 	    $menu = set_store_menu($store_id, 'shipping');
-	    
+
 	    //已启用的配送方式
 		$enabled_data = RC_DB::table('shipping as s')
 			->leftJoin('shipping_area as a', function($join) {
@@ -687,11 +690,11 @@ class admin extends ecjia_admin {
 			->where(RC_DB::raw('s.enabled'), 1)
 			->whereNotNull(RC_DB::raw('a.shipping_area_id'))
 			->get();
-			
+
 		$plugins = ecjia_config::instance()->get_addon_config('shipping_plugins', true);
 		/* 插件已经安装了，获得名称以及描述 */
 		$enabled_modules = array();
-		
+
 		//已启用
 		foreach ($enabled_data as $_key => $_value) {
 		    if (isset($plugins[$_value['shipping_code']])) {
@@ -703,11 +706,11 @@ class admin extends ecjia_admin {
 		        $enabled_modules[$_key]['shipping_order'] 	= $_value['shipping_order'];
 		        $enabled_modules[$_key]['insure_fee']  		= $_value['insure'];
 		        $enabled_modules[$_key]['enabled'] 			= $_value['enabled'];
-		        	
+
 		        /* 判断该派送方式是否支持保价 支持报价的允许在页面修改保价费 */
 		        $shipping_handle = new shipping_factory($_value['shipping_code']);
 		        $config          = $shipping_handle->configure_config();
-		
+
 		        /* 只能根据配置判断是否支持保价  只有配置项明确说明不支持保价，才是不支持*/
 		        if (isset($config['insure']) && ($config['insure'] === false)) {
 		            $enabled_modules[$_key]['is_insure'] = false;
@@ -717,16 +720,16 @@ class admin extends ecjia_admin {
 		    }
 		}
 		$this->assign('enabled', $enabled_modules);
-		
+
 		$store = RC_DB::table('store_franchisee')->where('store_id', $store_id)->first();
-	    
+
 	    $this->assign('ur_here', $store['merchants_name'].' - 配送方式');
 	    $this->assign('form_action', RC_Uri::url('store/admin/auth_update'));
 	    $this->assign('store', $store);
 	    $this->assign('store_id', $store_id);
 	    $this->assign('menu', $menu);
 	    $this->display('store_shipping.dwt');
-	    
+
 	}
 
     /**
