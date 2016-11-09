@@ -7,12 +7,16 @@ defined('IN_ECJIA') or exit('No permission resources.');
  */
 class validate_module extends api_admin implements api_interface {
     public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {
-		$this->authadminSession();
 		$type		= $this->requestData('type');
 		$value		= $this->requestData('value');
 		$validate_type	= $this->requestData('validate_type');
 		$validate_code	= $this->requestData('validate_code');
-		if (empty($type) || empty($value) || empty($validate_type)) {
+		$time = RC_Time::gmtime();
+		if (($_SESSION['merchant_validate_expiry'] - 1740) - > $time) {
+			return new ecjia_error('restrict_times', '请在1分钟后获取校验码！');
+		}
+
+		if (empty($type) || empty($value)) {
 			return new ecjia_error( 'invalid_parameter', RC_Lang::get ('system::system.invalid_parameter' ));
 		}
 
