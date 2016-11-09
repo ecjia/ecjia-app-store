@@ -255,6 +255,10 @@ class admin_preaudit extends ecjia_admin {
 				$geohash_code = $geohash->encode($store['latitude'] , $store['longitude']);
 				$geohash_code = substr($geohash_code, 0, 10);
 // 				_dump($store,1);
+
+				if (empty($store['merchants_name'])) {
+				    $this->showmessage('店铺名称不能为空', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+				}
 				$data =array(
 					'cat_id' 					=> $store['cat_id'] ? $store['cat_id'] : 0,
 					'merchants_name'			=> $store['merchants_name'],
@@ -288,6 +292,7 @@ class admin_preaudit extends ecjia_admin {
 				    'geohash'                   =>$geohash_code,
 					'sort_order' 				=> 50,
 				);
+				RC_Logger::getlogger('new_store')->error($data);
 				$store_id = RC_DB::table('store_franchisee')->insertGetId($data);
 				RC_DB::table('store_preaudit')->where('id', $id)->delete();
 
@@ -363,7 +368,7 @@ class admin_preaudit extends ecjia_admin {
 					if($response === true){
 						$this->showmessage('短信发送成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
 					}else{
-						$this->showmessage('短信发送失败', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
+						$this->showmessage('短信发送失败', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 					}
 				};
 
