@@ -384,7 +384,7 @@ class admin_preaudit extends ecjia_admin {
 
 				$this->showmessage(RC_Lang::get('store::store.check_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin_preaudit/init')));
 			} else {
-				//再次审核
+				//再次审核资料
 				$store = RC_DB::table('store_preaudit')->where('store_id', $store_id)->first();
 				$franchisee_info = RC_DB::table('store_franchisee')->where('store_id', $store_id)->first();
 				$data =array(
@@ -397,7 +397,7 @@ class admin_preaudit extends ecjia_admin {
 					'email'						=> $store['email'],
 					'contact_mobile'			=> $store['contact_mobile'],
 					'apply_time'				=> $store['apply_time'],
-					'confirm_time'				=> RC_Time::gmtime(),
+// 					'confirm_time'				=> RC_Time::gmtime(),
 					'identity_type'				=> $store['identity_type'],
 					'identity_number'			=> $store['identity_number'],
 					'identity_pic_front'		=> $store['identity_pic_front'],
