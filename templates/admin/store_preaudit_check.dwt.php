@@ -208,8 +208,8 @@
 						<td><div align="right"><strong>{lang key='store::store.identity_number_lable'}</strong></div></td>
 						<td>
 						{if $log_last.identity_number}
-    						<div>旧值：{$log_last.identity_number.original_data}</div><br>
-    						<div>新值：{$log_last.identity_number.new_data}</div>
+    						<div class="high_light h_info">{$log_last.identity_number.original_data}</div><br>
+    						<div class="high_light h_success">{$log_last.identity_number.new_data}</div>
 						{else}
     						{$store.identity_number}
 						{/if}
