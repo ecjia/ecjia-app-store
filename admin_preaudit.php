@@ -508,7 +508,7 @@ class admin_preaudit extends ecjia_admin {
 
 		$filter_type = $db_store_franchisee
 		->select(RC_DB::raw('count(*) as count_all'),
-		    RC_DB::raw('SUM(store_id = 0) as count_join'),
+		    RC_DB::raw('SUM(store_id = 0 AND check_status <> 3) as count_join'),
 		    RC_DB::raw('SUM(store_id <> 0) as count_edit'),
 		    RC_DB::raw('SUM(check_status = 3) as count_refuse'))
 		    ->first();
@@ -525,7 +525,7 @@ class admin_preaudit extends ecjia_admin {
 		    $db_store_franchisee->where('check_status', '=', 3);
 		    $count = $filter['count_refuse'];
 		} else {
-		    $db_store_franchisee->where('store_id', '=', 0);
+		    $db_store_franchisee->where('store_id', '=', 0)->where('check_status', '<>', 3);
 		    $count = $filter['count_join'];
 		}
 
