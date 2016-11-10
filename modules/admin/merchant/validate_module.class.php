@@ -82,6 +82,7 @@ class validate_module extends api_admin implements api_interface {
             		if (isset($response) && $response === true) {
             			$time = RC_Time::gmtime();
                         $_SESSION['merchant_validate_code'] = $code;
+                        $_SESSION['merchant_validate_mobile'] = $value;
                         $_SESSION['merchant_validate_expiry'] = $time + 1800;//设置有效期30分钟
             			return array('message' => '验证码发送成功！');
             		} else {
