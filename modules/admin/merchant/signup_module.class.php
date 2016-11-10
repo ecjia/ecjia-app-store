@@ -28,6 +28,12 @@ class signup_module extends api_admin implements api_interface {
 			return new ecjia_error( 'invalid_parameter', RC_Lang::get ('system::system.invalid_parameter' ));
 		}
 
+        $preaudit_count = RC_DB::table('store_preaudit')->where('email', '=', $email)->count();
+        $franchisee_count = RC_DB::table('store_franchisee')->where('email', '=', $email)->count();
+        if(!empty($preaudit_count) || !empty($franchisee_count)){
+            return new ecjia_error('validate_email_error', '邮箱地址已经被使用，请填写其他邮箱地址');
+        }
+
 		/* 判断校验码*/
 		if ($_SESSION['merchant_validate_code'] != $validate_code) {
 			return new ecjia_error('validate_code_error', '校验码错误！');
