@@ -906,13 +906,13 @@ class admin extends ecjia_admin {
 					case 5:
 					default:
 						$a_year = RC_Time::gmtime() - (3600 * 24 * 365);
-						$where['log_time'] = array('elt' => $a_year);
                         $staff_log->where('log_time', '<=',$a_year);
 						$deltime = __('一年之前');
 					break;
 				}
 
-				RC_DB::table('staff_log')->where('store_id', $store_id)->delete();
+				$staff_log->where('store_id', $store_id)->delete();
+
                 $this->showmessage(sprintf(__('%s 的日志成功删除。'), $deltime), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin/view_log', array('store_id' => $store_id))));
             }
         }else{
