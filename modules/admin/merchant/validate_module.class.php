@@ -12,9 +12,6 @@ class validate_module extends api_admin implements api_interface {
 		$validate_type	= $this->requestData('validate_type');
 		$validate_code	= $this->requestData('validate_code');
 		$time = RC_Time::gmtime();
-		if (($_SESSION['merchant_validate_expiry'] - 1740) > $time && empty($validate_code)) {
-			return new ecjia_error('restrict_times', '请在1分钟后获取校验码！');
-		}
 
 		if (empty($type) || empty($value)) {
 			return new ecjia_error( 'invalid_parameter', RC_Lang::get ('system::system.invalid_parameter' ));
@@ -47,6 +44,10 @@ class validate_module extends api_admin implements api_interface {
 				return new ecjia_error('validate_code_time_out', '校验码已过期！');
 			}
 			return array('message' => '校验成功！');
+		}
+		
+		if (($_SESSION['merchant_validate_expiry'] - 1740) > $time && empty($validate_code)) {
+		    return new ecjia_error('restrict_times', '您发送验证码的频率过高，请稍等一分钟！');
 		}
 
         // 发送验证码
