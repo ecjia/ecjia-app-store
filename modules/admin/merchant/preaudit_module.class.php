@@ -25,10 +25,21 @@ class preaudit_module extends api_admin implements api_interface {
                 return new ecjia_error('validate_mobile_error', '手机号码错误！');
             }
 
-            // $value = '18265198509';
-            $data = RC_DB::table('store_preaudit')->where('contact_mobile', '=', $value)->first();
-            // _dump($data,1);
-            return array();
+            $data = RC_DB::table('store_preaudit')->select('responsible_person', 'email', 'contact_mobile', 'merchants_name', 'cat_id', 'province', 'city', 'district', 'address', 'longitude', 'latitude')->where('contact_mobile', '=', $value)->first();
+            $data['seller_name'] = $data['merchants_name'];
+            $data['location'] = array(
+                'longitude' => $data['longitude'],
+                'latitude' => $data['latitude'],
+            );
+            $data['mobile'] = $data['contact_mobile'];
+            $data['seller_category'] = $data['cat_id'];
+            unset($data['merchants_name']);
+            unset($data['cat_id']);
+            unset($data['longitude']);
+            unset($data['latitude']);
+            unset($data['contact_mobile']);
+
+            return $data;
 		}
     }
 
