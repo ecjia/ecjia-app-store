@@ -16,22 +16,22 @@ class ordering_module extends api_front implements api_interface {
 		
 		switch ($sort_type) {
 			case 'new' :
-				$order_by = array('sort_order' => 'asc', 'goods_id' => 'desc');
+				$order_by = array('g.sort_order' => 'asc', 'goods_id' => 'desc');
 				break;
 			case 'price_desc' :
-				$order_by = array('shop_price' => 'desc', 'sort_order' => 'asc');
+				$order_by = array('shop_price' => 'desc', 'g.sort_order' => 'asc');
 				break;
 			case 'price_asc' :
-				$order_by = array('shop_price' => 'asc', 'sort_order' => 'asc');
+				$order_by = array('shop_price' => 'asc', 'g.sort_order' => 'asc');
 				break;
 			case 'last_update' :
 				$order_by = array('last_update' => 'desc');
 				break;
 			case 'hot' :
-				$order_by = array('is_hot' => 'desc', 'click_count' => 'desc', 'sort_order' => 'asc');
+				$order_by = array('is_hot' => 'desc', 'click_count' => 'desc', 'g.sort_order' => 'asc');
 				break;
 			default :
-				$order_by = array('sort_order' => 'asc', 'goods_id' => 'desc');
+				$order_by = array('g.sort_order' => 'asc', 'goods_id' => 'desc');
 				break;
 		}
 		
