@@ -866,10 +866,7 @@ class admin extends ecjia_admin {
 				$list[] = $rows;
 			}
 		}
-		$count = RC_DB::table('staff_log')->where('store_id', '0')->count();
-		if(!empty($count)){
-			RC_DB::table('staff_log')->where('store_id', '0')->delete();
-		}
+		
 		return array('list' => $list, 'page' => $page->show(2), 'desc' => $page->page_desc());
 	}
 
