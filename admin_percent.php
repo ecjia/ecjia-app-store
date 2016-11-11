@@ -11,7 +11,7 @@ class admin_percent extends ecjia_admin {
 		RC_Loader::load_app_func('global');
 		assign_adminlog_content();
 		
-		RC_Loader::load_app_func('ecmoban', 'seller');
+		//RC_Loader::load_app_func('ecmoban', 'seller');
 		RC_Script::enqueue_script('jquery-validate');
 		RC_Script::enqueue_script('bootstrap-placeholder');
 		RC_Script::enqueue_script('jquery-validate');

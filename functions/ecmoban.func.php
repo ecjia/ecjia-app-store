@@ -695,7 +695,7 @@ function get_merchants_steps_title_insert_update($fields_steps, $fields_titles, 
 
 //字段循环生成数组
 function get_fields_centent_info($id, $textFields, $fieldsDateType, $fieldsLength, $fieldsNotnull, $fieldsFormName, $fieldsCoding, $fieldsForm, $fields_sort, $will_choose, $webType = 'admin', $shop_id = 0) {
-	RC_Loader::load_app_func('proxy','seller');
+	//RC_Loader::load_app_func('proxy','seller');
 	if (!empty($textFields)) {
 		$textFields 		= explode(',', $textFields);
 		$fieldsDateType 	= explode(',', $fieldsDateType);
