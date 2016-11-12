@@ -824,7 +824,7 @@ class admin extends ecjia_admin {
 		$db_staff_log = RC_DB::table('staff_log as sl')
 						->leftJoin('staff_user as su', RC_DB::raw('sl.user_id'), '=', RC_DB::raw('su.user_id'));
 
-		$user_id  = !empty($args['userid']) ? intval($args['userid']) : 0;
+		$user_id  = !empty($args['user_id']) ? intval($args['user_id']) : 0;
 		$ip = !empty($args['ip']) ? $args['ip'] : '';
 
 
@@ -847,7 +847,7 @@ class admin extends ecjia_admin {
 		if (!empty($user_id)) {
 			$db_staff_log->where(RC_DB::raw('su.user_id'), $user_id);
 		}
-        $db_staff_log->where(RC_DB::raw('su.store_id'), $store_id);
+        $db_staff_log->where(RC_DB::raw('sl.store_id'), $store_id);
 
 		$count = $db_staff_log->count();
 		$page = new ecjia_page($count, 15, 5);
@@ -857,6 +857,7 @@ class admin extends ecjia_admin {
 		->take(10)
 		->skip($page->start_id-1)
 		->get();
+		// _dump($db_staff_log->tosql(),1);
 		/* 获取管理员日志记录 */
 		$list = array();
 		if (!empty($data)) {
@@ -865,7 +866,6 @@ class admin extends ecjia_admin {
 				$list[] = $rows;
 			}
 		}
-
 		return array('list' => $list, 'page' => $page->show(2), 'desc' => $page->page_desc());
 	}
 
@@ -878,6 +878,7 @@ class admin extends ecjia_admin {
         $drop_type_date = isset($_POST['drop_type_date']) ? $_POST['drop_type_date'] : '';
         $staff_log = RC_DB::table('staff_log');
         $store_id = $_GET['store_id'];
+
 		/* 按日期删除日志 */
 		if ($drop_type_date) {
 			if ($_POST['log_date'] > 0) {
