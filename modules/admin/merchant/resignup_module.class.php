@@ -55,12 +55,9 @@ class resignup_module extends api_admin implements api_interface {
         $geohash_code = $geohash->encode($latitude, $longitude);
         $geohash_code = substr($geohash_code, 0, 10);
 
-
-
         $data = array(
             'responsible_person' => $responsible_person,
             'email'              => $email,
-            'mobile'             => $mobile,
             'merchants_name'     => $seller_name,
             'cat_id'             => $seller_category,
             'validate_type'      => $validate_type,
