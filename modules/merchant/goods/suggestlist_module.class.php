@@ -17,9 +17,6 @@ class suggestlist_module extends api_front implements api_interface {
 		$store_id = $this->requestData('seller_id');
 		$action_type = $this->requestData('action_type', '');
 
-        RC_Logger::getLogger('error')->error($type);
-        RC_Logger::getLogger('error')->error($action_type);
-
 		if (!in_array($action_type, $type)) {
 			return new ecjia_error( 'invalid_parameter', RC_Lang::get ('system::system.invalid_parameter' ));
 		}
