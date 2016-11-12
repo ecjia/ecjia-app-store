@@ -56,6 +56,7 @@ class suggestlist_module extends api_front implements api_interface {
 		);
 
 		$result = RC_Api::api('goods', 'goods_list', $options);
+		
 		//更新店铺搜索关键字
 		if (!empty($keyword) && !empty($store_id)) {
 			RC_Api::api('stats', 'update_store_keywords', array('store_id' => $store_id, 'keywords' => $keyword));
@@ -72,8 +73,11 @@ class suggestlist_module extends api_front implements api_interface {
 						'id' => $val['goods_id'],
 						'name' => $val['name'],
 						'market_price' => $val['market_price'],
+				        'unformatted_market_price' => $val['unformatted_market_price'],
 						'shop_price' => $val['shop_price'],
+				        'unformatted_shop_price' => $val['unformatted_shop_price'],
 						'promote_price' => $val['promote_price'],
+				        'unformatted_promote_price' => $val['unformatted_promote_price'],
 						'img' => array(
 								'thumb' => $val['goods_thumb'],
 								'url' => $val['original_img'],
