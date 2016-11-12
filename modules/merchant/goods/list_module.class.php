@@ -68,8 +68,11 @@ class list_module extends api_front implements api_interface {
                     'id' => $val['goods_id'],
                     'name' => $val['name'],
                     'market_price' => $val['market_price'],
+		            'unformatted_market_price' => $val['unformatted_market_price'],
                     'shop_price' => $val['shop_price'],
+		            'unformatted_shop_price' => $val['unformatted_shop_price'],
                     'promote_price' => $val['promote_price'],
+		            'unformatted_promote_price' => $val['unformatted_promote_price'],
                     'img' => array(
                         'thumb' => $val['goods_thumb'],
                         'url' => $val['original_img'],
