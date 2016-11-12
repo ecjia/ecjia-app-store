@@ -1,7 +1,7 @@
 <?php
 defined('IN_ECJIA') or exit('No permission resources.');
 /**
- * 入驻申请等信息获取验证码
+ * 入驻申请信息修改
  * @author
  *
  */
@@ -28,13 +28,13 @@ class resignup_module extends api_admin implements api_interface {
 				return new ecjia_error('validate_code_error', '校验码错误！');
 			} elseif ($_SESSION['merchant_validate_expiry'] < RC_Time::gmtime()) {
 				return new ecjia_error('validate_code_time_out', '校验码已过期！');
-			} elseif ($_SESSION['merchant_validate_mobile'] != $value){
+			} elseif ($_SESSION['merchant_validate_mobile'] != $mobile){
                 return new ecjia_error('validate_mobile_error', '手机号码错误！');
             }
 		}
 
-        /* 如果进度查询，查询入驻信息是否存在*/
-		$info_store_preaudit	= RC_DB::table('store_preaudit')->where('contact_mobile', $value)->first();
+        /* 查询入驻信息是否存在 */
+		$info_store_preaudit = RC_DB::table('store_preaudit')->where('contact_mobile', $mobile)->first();
 		if (empty($info_store_preaudit)) {
 			return new ecjia_error('store_error', '您还未申请入驻！');
 		}
@@ -72,7 +72,7 @@ class resignup_module extends api_admin implements api_interface {
             'geohash'            => $geohash_code
         );
 
-        RC_DB::table('store_preaudit')->where('contact_mobile', '=', $value)->update($data);
+        RC_DB::table('store_preaudit')->where('contact_mobile', '=', $mobile)->update($data);
         return array();
     }
 }
