@@ -857,7 +857,6 @@ class admin extends ecjia_admin {
 		->take(10)
 		->skip($page->start_id-1)
 		->get();
-		// _dump($db_staff_log->tosql(),1);
 		/* 获取管理员日志记录 */
 		$list = array();
 		if (!empty($data)) {
