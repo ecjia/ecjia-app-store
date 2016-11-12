@@ -32,14 +32,14 @@
 				<!-- {else} -->
 				<i class="fontello-icon-angle-circled-right cursor_pointer ecjiafc-blue" style="margin-left:{$cat.level}em" /></i>
 				<!-- {/if} -->
-				<span><!-- <a href='{url path="goods/admin/init" args="cat_id={$cat.cat_id}"}'>{$cat.cat_name}</a> -->{$cat.cat_name}</span>
+				<span><a target="__blank" href='{url path="store/admin/init" args="cat={$cat.cat_id}"}'>{$cat.cat_name}</a></span>
 				<!-- {if $cat.cat_image} -->
 				<img src="../{$cat.cat_image}" border="0" style="vertical-align:middle;" width="60px" height="21px">
 				<!-- {/if} -->
 			</td>
 			<td>{$cat.store_num}</td>
 			<td>
-				<span  class="cursor_pointer" data-trigger="editable" data-url="{url path='store/admin_store_category/edit_sort_order'}" data-name="sort_order" data-pk="{$cat.cat_id}" data-title="编辑排序"> 
+				<span class="cursor_pointer" data-trigger="editable" data-url="{url path='store/admin_store_category/edit_sort_order'}" data-name="sort_order" data-pk="{$cat.cat_id}" data-title="编辑排序"> 
 					<!-- {$cat.sort_order} -->
 				</span>
 			</td>
