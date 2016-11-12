@@ -12,6 +12,10 @@
     overflow: hidden;
 	line-height: 150%;
 }
+
+.wookmark .mode_self {
+	 background: url("../content/apps/store/statics/images/store_self1.png") no-repeat right top;
+}
 .merchants_name {
     font-size:16px;
     margin-top: 32px;
@@ -79,7 +83,7 @@
 		{if $store_list.store_list}
 		  	<ul>
 			<!-- {foreach from=$store_list.store_list item=list} -->
-				<li class="thumbnail">
+				<li class='thumbnail {if $list.manage_mode eq "self"}mode_self{/if}'>
 					<a href='{RC_Uri::url("store/admin/preview", "store_id={$list.store_id}")}'>
 					<div class="bd">
 						<div class="merchants_name">{$list.merchants_name}<br>
