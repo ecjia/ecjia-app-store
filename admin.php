@@ -489,8 +489,7 @@ class admin extends ecjia_admin {
 		$parent_id = $main_staff['user_id'];
         $menu = set_store_menu($store_id, 'view_staff');
 		$staff_list = RC_DB::table('staff_user')->where('parent_id', $parent_id)->get();
-
-        $main_staff['avatar'] = !empty($main_staff['avatar'])? $main_staff['avatar'] : RC_App::apps_url('statics/images/ecjia_avatar.jpg', __FILE__);
+        $main_staff['avatar'] = !empty($main_staff['avatar'])? RC_Upload::upload_url($main_staff['avatar']) : RC_App::apps_url('statics/images/ecjia_avatar.jpg', __FILE__);
         $main_staff['add_time'] = RC_Time::local_date('Y-m-d', $main_staff['add_time']);
         foreach($staff_list as $key => $val){
             $staff_list[$key]['add_time'] = RC_Time::local_date('Y-m-d', $val['add_time']);
@@ -866,7 +865,7 @@ class admin extends ecjia_admin {
 				$list[] = $rows;
 			}
 		}
-		
+
 		return array('list' => $list, 'page' => $page->show(2), 'desc' => $page->page_desc());
 	}
 
