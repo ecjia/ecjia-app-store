@@ -6,8 +6,8 @@ defined('IN_ECJIA') or exit('No permission resources.');
  *
  */
 class suggestlist_module extends api_front implements api_interface {
-    public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {	
-    	
+    public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {
+
     	$this->authSession();
     	$filter = $this->requestData('filter', array());
 		$type = array('new', 'best', 'hot', 'promotion');//推荐类型
@@ -16,14 +16,17 @@ class suggestlist_module extends api_front implements api_interface {
 		$sort_type = $filter['sort_by'];
 		$store_id = $this->requestData('seller_id');
 		$action_type = $this->requestData('action_type', '');
-		
+
+        RC_Logger::getLogger('error')->error($type);
+        RC_Logger::getLogger('error')->error($action_type);
+
 		if (!in_array($action_type, $type)) {
 			return new ecjia_error( 'invalid_parameter', RC_Lang::get ('system::system.invalid_parameter' ));
 		}
 
 		$size = $this->requestData('pagination.count', 15);
 		$page = $this->requestData('pagination.page', 1);
-		
+
 		switch ($sort_type) {
 			case 'new' :
 				$order_by = array('g.sort_order' => 'asc', 'goods_id' => 'desc');
@@ -44,7 +47,7 @@ class suggestlist_module extends api_front implements api_interface {
 				$order_by = array('g.sort_order' => 'asc', 'goods_id' => 'desc');
 				break;
 		}
-		
+
 		$options = array(
 				'store_intro'		=> $action_type,
 				'merchant_cat_id'	=> $category,
@@ -54,7 +57,7 @@ class suggestlist_module extends api_front implements api_interface {
 				'page'				=> $page,
 				'size'				=> $size,
 		);
-		
+
 		$result = RC_Api::api('goods', 'goods_list', $options);
 		//更新店铺搜索关键字
 		if (!empty($keyword) && !empty($store_id)) {
@@ -67,7 +70,7 @@ class suggestlist_module extends api_front implements api_interface {
 				$activity_type = ($val['unformatted_shop_price'] > $val['unformatted_promote_price'] && $val['unformatted_promote_price'] > 0) ? 'PROMOTE_GOODS' : 'GENERAL_GOODS';
 				/* 计算节约价格*/
 				$saving_price = ($val['unformatted_shop_price'] > $val['unformatted_promote_price'] && $val['unformatted_promote_price'] > 0) ? $val['unformatted_shop_price'] - $val['unformatted_promote_price'] : (($val['unformatted_market_price'] > 0 && $val['unformatted_market_price'] > $val['unformatted_shop_price']) ? $val['unformatted_market_price'] - $val['unformatted_shop_price'] : 0);
-			
+
 				$data['list'][] = array(
 						'id' => $val['goods_id'],
 						'name' => $val['name'],
@@ -100,7 +103,7 @@ class suggestlist_module extends api_front implements api_interface {
 // 				$activity_type = ($val['unformatted_shop_price'] > $val['unformatted_promote_price'] && $val['unformatted_promote_price'] > 0) ? 'PROMOTE_GOODS' : 'GENERAL_GOODS';
 // 				/* 计算节约价格*/
 // 				$saving_price = ($val['unformatted_shop_price'] > $val['unformatted_promote_price'] && $val['unformatted_promote_price'] > 0) ? $val['unformatted_shop_price'] - $val['unformatted_promote_price'] : (($val['unformatted_market_price'] > 0 && $val['unformatted_market_price'] > $val['unformatted_shop_price']) ? $val['unformatted_market_price'] - $val['unformatted_shop_price'] : 0);
-					
+
 // 				$mobilebuy_price = $object_id = 0;
 // 				if (!is_ecjia_error($result_mobilebuy) && $is_active) {
 // 					$mobilebuy = $mobilebuy_db->find(array(
@@ -120,7 +123,7 @@ class suggestlist_module extends api_front implements api_interface {
 // 						}
 // 					}
 // 				}
-					
+
 // 				$data['list'][] = array(
 // 						'id'		=> $val['goods_id'],
 // 						'name'			=> $val['name'],
@@ -138,11 +141,11 @@ class suggestlist_module extends api_front implements api_interface {
 // 						'formatted_saving_price' => $saving_price > 0 ? '已省'.$saving_price.'元' : '',
 // 				);
 // 			}
-		
+
 		}
-		
+
 		return array('data' => $data['list'], 'pager' => $data['pager']);
-	}	
+	}
 }
 
 // end
