@@ -597,9 +597,9 @@ class admin extends ecjia_admin {
 		    RC_DB::raw('SUM(status = 2) as count_locking'))
 		    ->first();
 
-		$filter['count_all'] = $filter_type['count_all'];
-		$filter['count_unlock'] = $filter_type['count_unlock'];
-		$filter['count_locking'] = $filter_type['count_locking'];
+		$filter['count_all'] = $filter_type['count_all'] ? $filter_type['count_all'] : 0;
+		$filter['count_unlock'] = $filter_type['count_unlock'] ? $filter_type['count_unlock'] : 0;
+		$filter['count_locking'] = $filter_type['count_locking'] ? $filter_type['count_locking'] : 0;
 		if (!empty($filter['type'])) {
 		    $db_store_franchisee->where('status', $filter['type']);
 		}

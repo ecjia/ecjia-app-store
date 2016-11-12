@@ -76,6 +76,7 @@
 	<div class="span12">
 		<form method="post" action="{$form_action}" name="listForm">
 		<div class="list-div list media_captcha wookmark warehouse" id="listDiv">
+		{if $store_list.store_list}
 		  	<ul>
 			<!-- {foreach from=$store_list.store_list item=list} -->
 				<li class="thumbnail">
@@ -87,8 +88,11 @@
 					</div>
 					</a>
 				</li>
-				<!-- {/foreach} -->
+			<!-- {/foreach} -->
 			</ul>
+		{else}
+		<pre class="sepH_c" style=" background-color: #fbfbfb; height:80px;line-height:80px;">暂无数据！</pre>
+		{/if}
 		</div>
 		</form>
 	</div>
