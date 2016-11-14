@@ -20,7 +20,7 @@ class signup_module extends api_admin implements api_interface {
 		$address			= $this->requestData('address');
 		$longitude			= $this->requestData('location.longitude');
 		$latitude			= $this->requestData('location.latitude');
-		$validate_code		= $this->requestData('validate_code');
+		$validate_code	    = $this->requestData('validate_code');
 
 
 		if (empty($responsible_person) || empty($email) || empty($mobile) || empty($seller_name) || empty($seller_category)
@@ -44,9 +44,12 @@ class signup_module extends api_admin implements api_interface {
 		$info_store_preaudit	= RC_DB::table('store_preaudit')->where(RC_DB::raw('contact_mobile'), $mobile)->first();
 		$info_store_franchisee	= RC_DB::table('store_franchisee')->where(RC_DB::raw('contact_mobile'), $mobile)->first();
 		$info_staff_user		= RC_DB::table('staff_user')->where('mobile', $mobile)->first();
-		if (!empty($info_store_preaudit) || !empty($info_store_franchisee) || !empty($info_staff_user)) {
+		if (!empty($info_store_preaudit) || !empty($info_store_franchisee)) {
 			return new ecjia_error('already_signup', '您已申请请勿重复申请！');
 		}
+        if(!empty($info_staff_user)){
+            return new ecjia_error('already_signup', '您已经成为店铺员工');
+        }
 
 		$merchant_shop_data = array(
 				'responsible_person'	=> $responsible_person,
