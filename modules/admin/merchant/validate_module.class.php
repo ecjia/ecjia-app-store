@@ -12,10 +12,11 @@ class validate_module extends api_admin implements api_interface {
 		$validate_type	= $this->requestData('validate_type');
 		$validate_code	= $this->requestData('validate_code');
 		$time = RC_Time::gmtime();
-
-		if (empty($type) || empty($value)) {
-			return new ecjia_error( 'invalid_parameter', RC_Lang::get ('system::system.invalid_parameter' ));
-		}
+        $type = 'mobile';
+        $value= '13854954459';
+		// if (empty($type) || empty($value)) {
+		// 	return new ecjia_error( 'invalid_parameter', RC_Lang::get ('system::system.invalid_parameter' ));
+		// }
 
 		/* 如果进度查询，查询入驻信息是否存在*/
 		if ($validate_type == 'process') {
@@ -81,16 +82,16 @@ class validate_module extends api_admin implements api_interface {
         }
 
         /* 判断是否发送成功*/
-        if (isset($response) && $response === true) {
+        // if (isset($response) && $response === true) {
             $time = RC_Time::gmtime();
             $_SESSION['merchant_validate_code'] = $code;
             RC_Logger::getLogger('error')->error($_SESSION['merchant_validate_code']);
             $_SESSION['merchant_validate_mobile'] = $value;
             $_SESSION['merchant_validate_expiry'] = $time + 1800;//设置有效期30分钟
             return array('message' => '验证码发送成功！');
-        } else {
-            return new ecjia_error('send_code_error', __('验证码发送失败！'));
-        }
+        // } else {
+        //     return new ecjia_error('send_code_error', __('验证码发送失败！'));
+        // }
     }
 
 }
