@@ -115,13 +115,13 @@ class list_module extends api_front implements api_interface {
 				
 				$goods_list = array();
 				//TODO ::增加商品缓存
-				$store_goods_cache_key = sprintf('%X', crc32('goods_list_store_' . $row['id'] . '_' . $goods_category . '_'. $keywords));
+				$store_goods_cache_key = sprintf('%X', crc32('goods_list_store_' . $row['id'] . '_'. $keywords));
 				$goods_store_data = RC_Cache::app_cache_get($store_goods_cache_key, 'goods');
 				
 				if (!$goods_store_data) {
-					$goods_options = array('store_id' => $row['id'], 'cat_id' => $goods_category, 'keywords' => $keywords, 'page' => 1, 'size' => 10);
+					$goods_options = array('store_id' => $row['id'], 'keywords' => $keywords, 'page' => 1, 'size' => 10);
 					/* 如有查询添加，不限制分页*/
-					if (!empty($goods_category) || !empty($keywords)) {
+					if (!empty($keywords)) {
 						$goods_options['size'] = $goods_options['page'] = 0;
 					}
 					
