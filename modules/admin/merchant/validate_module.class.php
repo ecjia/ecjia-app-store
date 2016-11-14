@@ -36,7 +36,7 @@ class validate_module extends api_admin implements api_interface {
                 return new ecjia_error('merchant_exist', '手机号'.$value.'已被申请请确认该账号是否为本人所有');
             }
             if(!empty($info_staff_user)){
-                return new ecjia_error('already_signup', '您已经成为店铺员工');
+                return new ecjia_error('already_signup', '手机号'.$value.'已被注册为店铺员工');
             }
 		}
 
