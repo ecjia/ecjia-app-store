@@ -45,7 +45,7 @@ class validate_module extends api_admin implements api_interface {
 			}
 			return array('message' => '校验成功！');
 		}
-		
+
 		if (($_SESSION['merchant_validate_expiry'] - 1740) > $time && empty($validate_code)) {
 		    return new ecjia_error('restrict_times', '您发送验证码的频率过高，请稍等一分钟！');
 		}
@@ -84,6 +84,7 @@ class validate_module extends api_admin implements api_interface {
         if (isset($response) && $response === true) {
             $time = RC_Time::gmtime();
             $_SESSION['merchant_validate_code'] = $code;
+            RC_Logger::getLogger('error')->error($_SESSION['merchant_validate_code']);
             $_SESSION['merchant_validate_mobile'] = $value;
             $_SESSION['merchant_validate_expiry'] = $time + 1800;//设置有效期30分钟
             return array('message' => '验证码发送成功！');
