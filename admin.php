@@ -676,49 +676,61 @@ class admin extends ecjia_admin {
 	    }
 
 	    $menu = set_store_menu($store_id, 'shipping');
-
-	    //已启用的配送方式
-		$enabled_data = RC_DB::table('shipping as s')
-			->leftJoin('shipping_area as a', function($join) {
-				$join->on(RC_DB::raw('s.shipping_id'), '=', RC_DB::raw('a.shipping_id'));
-			})
-			->groupBy(RC_DB::raw('s.shipping_id'))
-			->orderBy(RC_DB::raw('s.shipping_order'))
-			->selectRaw('s.*, a.shipping_area_id')
-			->where(RC_DB::raw('a.store_id'), '=', $store_id)
-			->where(RC_DB::raw('s.enabled'), 1)
-			->whereNotNull(RC_DB::raw('a.shipping_area_id'))
-			->get();
-
-		$plugins = ecjia_config::instance()->get_addon_config('shipping_plugins', true);
-		/* 插件已经安装了，获得名称以及描述 */
-		$enabled_modules = array();
-
-		//已启用
-		foreach ($enabled_data as $_key => $_value) {
-		    if (isset($plugins[$_value['shipping_code']])) {
-		        $enabled_modules[$_key]['id']      			= $_value['shipping_id'];
-		        $enabled_modules[$_key]['code']      		= $_value['shipping_code'];
-		        $enabled_modules[$_key]['name']    			= $_value['shipping_name'];
-		        $enabled_modules[$_key]['desc']    			= $_value['shipping_desc'];
-		        $enabled_modules[$_key]['cod']     			= $_value['support_cod'];
-		        $enabled_modules[$_key]['shipping_order'] 	= $_value['shipping_order'];
-		        $enabled_modules[$_key]['insure_fee']  		= $_value['insure'];
-		        $enabled_modules[$_key]['enabled'] 			= $_value['enabled'];
-
-		        /* 判断该派送方式是否支持保价 支持报价的允许在页面修改保价费 */
-		        $shipping_handle = new shipping_factory($_value['shipping_code']);
-		        $config          = $shipping_handle->configure_config();
-
-		        /* 只能根据配置判断是否支持保价  只有配置项明确说明不支持保价，才是不支持*/
-		        if (isset($config['insure']) && ($config['insure'] === false)) {
-		            $enabled_modules[$_key]['is_insure'] = false;
-		        } else {
-		            $enabled_modules[$_key]['is_insure'] = true;
-		        }
-		    }
-		}
-		$this->assign('enabled', $enabled_modules);
+	    
+	    //全部
+	    $shipping_all = RC_DB::table('shipping')
+	    ->orderBy(RC_DB::raw('shipping_order'))
+	    ->where(RC_DB::raw('enabled'), 1)
+	    ->get();
+	    
+	    //本店
+	    $shipping_enable = RC_DB::table('shipping_area')
+	    ->where(RC_DB::raw('store_id'), '=', $store_id)
+	    ->select('shipping_id')
+	    ->groupBy(RC_DB::raw('shipping_id'))
+	    ->get();
+	    $shipping_enable = array_column($shipping_enable, 'shipping_id');
+	    
+	    $plugins = ecjia_config::instance()->get_addon_config('shipping_plugins', true);
+	    
+	    /* 插件已经安装了，获得名称以及描述 */
+	    $enabled_modules = $disabled_modules = array();
+	    
+	    //已启用
+	    foreach ($shipping_all as $_key => $_value) {
+	        if (isset($plugins[$_value['shipping_code']])) {
+	            if (in_array($_value['shipping_id'], $shipping_enable)) {
+	                $enable_disable = 'enabled';
+	            } else {
+	                $enable_disable = 'disabled';
+	            }
+	            
+	            $all_modules[$enable_disable][$_key]['id']      			= $_value['shipping_id'];
+	            $all_modules[$enable_disable][$_key]['code']      		= $_value['shipping_code'];
+	            $all_modules[$enable_disable][$_key]['name']    			= $_value['shipping_name'];
+	            $all_modules[$enable_disable][$_key]['desc']    			= $_value['shipping_desc'];
+	            $all_modules[$enable_disable][$_key]['cod']     			= $_value['support_cod'];
+	            $all_modules[$enable_disable][$_key]['shipping_order'] 	= $_value['shipping_order'];
+	            $all_modules[$enable_disable][$_key]['insure_fee']  		= $_value['insure'];
+	            $all_modules[$enable_disable][$_key]['enabled'] 			= $_value['enabled'];
+	            	
+	            /* 判断该派送方式是否支持保价 支持报价的允许在页面修改保价费 */
+	            $shipping_handle = new shipping_factory($_value['shipping_code']);
+	            $config          = $shipping_handle->configure_config();
+	    
+	            /* 只能根据配置判断是否支持保价  只有配置项明确说明不支持保价，才是不支持*/
+	            if (isset($config['insure']) && ($config['insure'] === false)) {
+	                $all_modules[$enable_disable][$_key]['is_insure'] = false;
+	            } else {
+	                $all_modules[$enable_disable][$_key]['is_insure'] = true;
+	            }
+	        }
+	    }
+// 	    _dump($all_modules,1);
+	    
+	    $this->assign('enabled', $all_modules['enabled']);
+	   
+	    $this->assign('disabled', $all_modules['disabled']);
 
 		$store = RC_DB::table('store_franchisee')->where('store_id', $store_id)->first();
 
