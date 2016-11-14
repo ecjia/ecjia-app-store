@@ -88,9 +88,9 @@ class validate_module extends api_admin implements api_interface {
         if (isset($response) && $response === true) {
             $time = RC_Time::gmtime();
             $_SESSION['merchant_validate_code'] = $code;
-            RC_Logger::getLogger('error')->error($_SESSION['merchant_validate_code']);
             $_SESSION['merchant_validate_mobile'] = $value;
             $_SESSION['merchant_validate_expiry'] = $time + 1800;//设置有效期30分钟
+            // RC_Logger::getLogger('error')->error($_SESSION['merchant_validate_code']);
             return array('message' => '验证码发送成功！');
         } else {
             return new ecjia_error('send_code_error', __('验证码发送失败！'));
