@@ -7,7 +7,7 @@ defined('IN_ECJIA') or exit('No permission resources.');
  */
 class signup_module extends api_admin implements api_interface {
     public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {
-
+        $this->authadminSession();
 		$responsible_person = $this->requestData('responsible_person', '');
 		$email 				= $this->requestData('email', '');
 		$mobile				= $this->requestData('mobile', '');
