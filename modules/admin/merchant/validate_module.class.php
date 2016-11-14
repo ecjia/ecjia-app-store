@@ -12,11 +12,10 @@ class validate_module extends api_admin implements api_interface {
 		$validate_type	= $this->requestData('validate_type');
 		$validate_code	= $this->requestData('validate_code');
 		$time = RC_Time::gmtime();
-        $type = 'mobile';
-        $value= '13854954459';
-		// if (empty($type) || empty($value)) {
-		// 	return new ecjia_error( 'invalid_parameter', RC_Lang::get ('system::system.invalid_parameter' ));
-		// }
+        
+		if (empty($type) || empty($value)) {
+			return new ecjia_error( 'invalid_parameter', RC_Lang::get ('system::system.invalid_parameter' ));
+		}
 
 		/* 如果进度查询，查询入驻信息是否存在*/
 		if ($validate_type == 'process') {
