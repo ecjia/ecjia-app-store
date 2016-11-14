@@ -12,7 +12,7 @@ class validate_module extends api_admin implements api_interface {
 		$validate_type	= $this->requestData('validate_type');
 		$validate_code	= $this->requestData('validate_code');
 		$time = RC_Time::gmtime();
-        
+
 		if (empty($type) || empty($value)) {
 			return new ecjia_error( 'invalid_parameter', RC_Lang::get ('system::system.invalid_parameter' ));
 		}
@@ -29,10 +29,14 @@ class validate_module extends api_admin implements api_interface {
 		if ($type == 'mobile' && $validate_type == 'signup') {
             $info_store_preaudit	= RC_DB::table('store_preaudit')->where('contact_mobile', $value)->count();
 			$info_store_franchisee	= RC_DB::table('store_franchisee')->where('contact_mobile', $value)->first();
+            $info_staff_user		= RC_DB::table('staff_user')->where('mobile', $value)->first();
 			if (!empty($info_store_preaudit)){
                 return new ecjia_error('merchant_checking', '手机号'.$value.'已被申请请确认该账号是否为本人所有');
             }elseif(!empty($info_store_franchisee)){
                 return new ecjia_error('merchant_exist', '手机号'.$value.'已被申请请确认该账号是否为本人所有');
+            }
+            if(!empty($info_staff_user)){
+                return new ecjia_error('already_signup', '您已经成为店铺员工');
             }
 		}
 
