@@ -33,6 +33,7 @@ class info_module extends api_admin implements api_interface {
 	    	  		'seller_telephone'		=> RC_DB::table('merchants_config')->where('store_id', $_SESSION['store_id'])->where('code', 'shop_kf_mobile')->pluck('value'),
 	    	  		'seller_province'		=> $region->where(array('region_id' => $info['province']))->get_field('region_name'),
 	    	  		'seller_city'			=> $region->where(array('region_id' => $info['city']))->get_field('region_name'),
+			        'seller_district'		=> $region->where(array('region_id' => $info['district']))->get_field('region_name'),
 	    	  		'seller_address'		=> $info['address'],
 					'validated_status'		=> $info['identity_status'],
 	    	  		'seller_description'	=> RC_DB::table('merchants_config')->where('store_id', $_SESSION['store_id'])->where('code', 'shop_description')->pluck('value'),
