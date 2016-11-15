@@ -12,8 +12,13 @@ class info_module extends api_admin implements api_interface {
         if ($_SESSION['admin_id'] <= 0 && $_SESSION['staff_id'] <= 0) {
             return new ecjia_error(100, 'Invalid session');
         }
-
-		$merchant_info = RC_DB::table('store_franchisee')->where(RC_DB::raw('store_id'), $_SESSION['store_id'])->first();
+        
+        //判断是否修改（预审核表有无信息）
+        $merchant_info = RC_DB::table('ecjia_store_preaudit')->where(RC_DB::raw('store_id'), $_SESSION['store_id'])->first();
+        if(empty($merchant_info)) {
+            $merchant_info = RC_DB::table('store_franchisee')->where(RC_DB::raw('store_id'), $_SESSION['store_id'])->first();
+        }
+		
 		/* 判断身份正面图片*/
 		if(!file_exists(RC_Upload::upload_path($merchant_info['identity_pic_front']))) {
 			$identity_pic_front = '';

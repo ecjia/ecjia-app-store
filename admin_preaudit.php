@@ -292,7 +292,7 @@ class admin_preaudit extends ecjia_admin {
 				    'geohash'                   =>$geohash_code,
 					'sort_order' 				=> 50,
 				);
-				RC_Logger::getlogger('new_store')->error($data);
+				RC_Logger::getlogger('new_store')->info($data);
 				$store_id = RC_DB::table('store_franchisee')->insertGetId($data);
 				RC_DB::table('store_preaudit')->where('id', $id)->delete();
 
