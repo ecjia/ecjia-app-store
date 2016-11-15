@@ -14,7 +14,7 @@ class info_module extends api_admin implements api_interface {
         }
         
         //判断是否修改（预审核表有无信息）
-        $merchant_info = RC_DB::table('ecjia_store_preaudit')->where(RC_DB::raw('store_id'), $_SESSION['store_id'])->first();
+        $merchant_info = RC_DB::table('store_preaudit')->where(RC_DB::raw('store_id'), $_SESSION['store_id'])->first();
         if(empty($merchant_info)) {
             $merchant_info = RC_DB::table('store_franchisee')->where(RC_DB::raw('store_id'), $_SESSION['store_id'])->first();
         }
