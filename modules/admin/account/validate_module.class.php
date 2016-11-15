@@ -120,7 +120,9 @@ class validate_module extends api_admin implements api_interface {
 		}
 
 		$data['identity_status'] = 1;
-		
+		$data['apply_time'] = RC_Time::gmtime();
+		unset($merchant_info['manage_mode']);unset($merchant_info['status']);unset($merchant_info['shop_close']);unset($merchant_info['apply_time']);
+		unset($merchant_info['confirm_time']);unset($merchant_info['identity_status']);
 		$data = array_merge($data, $merchant_info);
 
 		if ($store_preaudit_info) {
