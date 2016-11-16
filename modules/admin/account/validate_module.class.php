@@ -25,35 +25,30 @@ class validate_module extends api_admin implements api_interface {
 		$responsible_person 		= $this->requestData('responsible_person', '');
 		$identity_type 				= $this->requestData('identity_type', '');
 		$identity_number 			= $this->requestData('identity_number', '');
-
-		$personhand_identity_pic    = $this->requestData('identity_pic', '');
-		$identity_pic_front 		= $this->requestData('identity_pic_front', '');
-		$identity_pic_back  		= $this->requestData('identity_pic_back', '');
-
 		$company_name 				= $this->requestData('company_name', '');
-		$business_licence_pic		= $this->requestData('business_licence_pic', '');
+		
 
 		$data = array();
 
 		if (!empty($responsible_person)) {
 			$data['responsible_person'] = $responsible_person;
+			unset($merchant_info['responsible_person']);
 		}
-		unset($merchant_info['responsible_person']);
 		
 		if (!empty($identity_type)) {
 			$data['identity_type'] = $identity_type;
+			unset($merchant_info['identity_type']);
 		}
-		unset($merchant_info['identity_type']);
 
 		if (!empty($identity_number)) {
 			$data['identity_number'] = $identity_number;
+			unset($merchant_info['identity_number']);
 		}
-		unset($merchant_info['identity_number']);
 
 		if (!empty($company_name)) {
 			$data['company_name'] = $company_name;
+			unset($merchant_info['company_name']);
 		}
-		unset($merchant_info['company_name']);
 
 		$store_preaudit_info = RC_DB::table('store_preaudit')->where(RC_DB::raw('store_id'), $_SESSION['store_id'])->first();
 
@@ -86,7 +81,7 @@ class validate_module extends api_admin implements api_interface {
 				$data['identity_pic_front'] = $identity_pic_front;
 				unset($merchant_info['identity_pic_front']);
 			}
-		}
+		} 
 
 		/* 手持身反面*/
 		if (isset($_FILES['identity_pic_back'])) {
