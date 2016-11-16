@@ -12,8 +12,7 @@ class store_neighbors_store_id_api extends Component_Event_Api {
 	 * @return  array
 	 */
 	public function call (&$options) {
-		if (!is_array($options) || !isset($options['geohash']) || empty($options['geohash'])
-		) {
+		if (!is_array($options) || !isset($options['geohash']) || empty($options['geohash']) ) {
 			return new ecjia_error('invalid_parameter', RC_Lang::get('system::system.invalid_parameter'));
 		}
 
