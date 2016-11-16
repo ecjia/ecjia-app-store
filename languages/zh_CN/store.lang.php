@@ -120,7 +120,7 @@ return array(
 
 	'people_id'			=>	'身份证',
 	'passport'			=>	'护照',
-	'hong_kong_and_macao_pass'			=>	'港澳通行证',
+	'hong_kong_and_macao_pass'			=>	'港澳身份证',
 
     'edit_store'		=>	'编辑商家信息',
 
