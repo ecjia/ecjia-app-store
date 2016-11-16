@@ -20,14 +20,14 @@ class info_module extends api_admin implements api_interface {
         }
 		
 		/* 判断身份正面图片*/
-		if(!file_exists(RC_Upload::upload_path($merchant_info['identity_pic_front']))) {
+		if(!file_exists(RC_Upload::upload_path($merchant_info['identity_pic_front'])) || empty($merchant_info['identity_pic_front'])) {
 			$identity_pic_front = '';
 		} else {
 			$identity_pic_front = RC_Upload::upload_url($merchant_info['identity_pic_front']);
 		}
 
 		/* 判断身份反面图片*/
-		if(!file_exists(RC_Upload::upload_path($merchant_info['identity_pic_back']))) {
+		if(!file_exists(RC_Upload::upload_path($merchant_info['identity_pic_back'])) || empty($merchant_info['identity_pic_back'])) {
 			$identity_pic_back = '';
 		} else {
 			$identity_pic_back = RC_Upload::upload_url($merchant_info['identity_pic_back']);
@@ -36,7 +36,7 @@ class info_module extends api_admin implements api_interface {
 		/* 个人认证*/
 		if ($merchant_info['validate_type'] == 1) {
 			/* 判断手持身份图片*/
-			if(!file_exists(RC_Upload::upload_path($merchant_info['personhand_identity_pic']))) {
+			if(!file_exists(RC_Upload::upload_path($merchant_info['personhand_identity_pic'])) || empty($merchant_info['personhand_identity_pic'])) {
 				$identity_pic = '';
 			} else {
 				$identity_pic = RC_Upload::upload_url($merchant_info['personhand_identity_pic']);
@@ -54,7 +54,7 @@ class info_module extends api_admin implements api_interface {
 			);
 		} else {
 			/* 判断营业执照图片*/
-			if(!file_exists(RC_Upload::upload_path($merchant_info['business_licence_pic']))) {
+			if(!file_exists(RC_Upload::upload_path($merchant_info['business_licence_pic'])) || empty($merchant_info['business_licence_pic'])) {
 				$business_licence_pic = '';
 			} else {
 				$business_licence_pic = RC_Upload::upload_url($merchant_info['business_licence_pic']);
