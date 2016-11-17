@@ -11,10 +11,6 @@ class data_module extends api_front implements api_interface {
     	$this->authSession();
 		$seller_id = $this->requestData('seller_id');
 		$location = $this->requestData('location', array());
-// 		$location = array(
-// 				'latitude'	=> '31.235450744628906',
-// 				'longitude' => '121.41641998291016',
-// 		);
 		if (empty($seller_id)) {
 			return new ecjia_error( 'invalid_parameter', RC_Lang::get ('system::system.invalid_parameter' ));
 		}
@@ -74,52 +70,11 @@ class data_module extends api_front implements api_interface {
 		$city_name = $db_region->where(array('region_id' => $info['city']))->get_field('region_name');
 
 		//TODO ::增加优惠活动缓存
-		$cache_favourable_key = 'favourable_list_store_'. $info['store_id'];
-		$favourable_list = RC_Cache::app_cache_get($cache_favourable_key, 'favourable');
-		if (!$favourable_list) {
-			$db_favourable = RC_Model::model('favourable/favourable_activity_model');
-			$favourable_result = $db_favourable->where(array('store_id' => $info['store_id'], 'start_time' => array('elt' => RC_Time::gmtime()), 'end_time' => array('egt' => RC_Time::gmtime()), 'act_type' => array('neq' => 0)))->select();
-			if (!empty($favourable_result)) {
-				foreach ($favourable_result as $val) {
-					if ($val['act_range'] == '0') {
-						$favourable_list[] = array(
-								'name' => $val['act_name'],
-								'type' => $val['act_type'] == '1' ? 'price_reduction' : 'price_discount',
-								'type_label' => $val['act_type'] == '1' ? __('满减') : __('满折'),
-						);
-					} else {
-						$act_range_ext = explode(',', $val['act_range_ext']);
-						switch ($val['act_range']) {
-							case 1 :
-								$favourable_list[] = array(
-								'name' => $val['act_name'],
-								'type' => $val['act_type'] == '1' ? 'price_reduction' : 'price_discount',
-								'type_label' => $val['act_type'] == '1' ? __('满减') : __('满折'),
-								);
-								break;
-							case 2 :
-								$favourable_list[] = array(
-								'name' => $val['act_name'],
-								'type' => $val['act_type'] == '1' ? 'price_reduction' : 'price_discount',
-								'type_label' => $val['act_type'] == '1' ? __('满减') : __('满折'),
-								);
-								break;
-							case 3 :
-								$favourable_list[] = array(
-								'name' => $val['act_name'],
-								'type' => $val['act_type'] == '1' ? 'price_reduction' : 'price_discount',
-								'type_label' => $val['act_type'] == '1' ? __('满减') : __('满折'),
-								);
-								break;
-							default:
-								break;
-						}
-					}
-				}
-			}
-			RC_Cache::app_cache_set($cache_favourable_key, $favourable_list, 'favourable', 10080);
-		}
-
+		$store_options = array(
+				'store_id' => $info['store_id']
+		);
+		$favourable_list = RC_Api::api('favourable', 'store_favourable_list', $store_options);
+		
 		$info['trade_time'] = !empty($info['shop_trade_time']) ? unserialize($info['shop_trade_time']) : array('start' => '8:00', 'end' => '21:00');
 		$seller_info = array(
 				'id'				=> $info['store_id'],
