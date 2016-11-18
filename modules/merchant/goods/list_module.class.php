@@ -7,8 +7,7 @@ defined('IN_ECJIA') or exit('No permission resources.');
  */
 class list_module extends api_front implements api_interface {
     public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {	
-    	
-    	$this->authSession();	
+    		
 		$filter = $this->requestData('filter', array());
 		
 		$keyword = RC_String::unicode2string($filter['keywords']);
