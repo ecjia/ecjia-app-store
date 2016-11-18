@@ -11,6 +11,7 @@ class data_module extends api_front implements api_interface {
     	$this->authSession();
 		$seller_id = $this->requestData('seller_id');
 		$location = $this->requestData('location', array());
+	
 		if (empty($seller_id)) {
 			return new ecjia_error( 'invalid_parameter', RC_Lang::get ('system::system.invalid_parameter' ));
 		}
@@ -73,7 +74,46 @@ class data_module extends api_front implements api_interface {
 		$store_options = array(
 				'store_id' => $info['store_id']
 		);
-		$favourable_list = RC_Api::api('favourable', 'store_favourable_list', $store_options);
+		$favourable_result = RC_Api::api('favourable', 'store_favourable_list', $store_options);
+		if (!empty($favourable_result)) {
+			$favourable_list = array();
+			foreach ($favourable_result as $val) {
+				if ($val['act_range'] == '0') {
+					$favourable_list[] = array(
+							'name' => $val['act_name'],
+							'type' => $val['act_type'] == '1' ? 'price_reduction' : 'price_discount',
+							'type_label' => $val['act_type'] == '1' ? __('满减') : __('满折'),
+					);
+				} else {
+					$act_range_ext = explode(',', $val['act_range_ext']);
+					switch ($val['act_range']) {
+						case 1 :
+							$favourable_list[] = array(
+							'name' => $val['act_name'],
+							'type' => $val['act_type'] == '1' ? 'price_reduction' : 'price_discount',
+							'type_label' => $val['act_type'] == '1' ? __('满减') : __('满折'),
+							);
+							break;
+						case 2 :
+							$favourable_list[] = array(
+							'name' => $val['act_name'],
+							'type' => $val['act_type'] == '1' ? 'price_reduction' : 'price_discount',
+							'type_label' => $val['act_type'] == '1' ? __('满减') : __('满折'),
+							);
+							break;
+						case 3 :
+							$favourable_list[] = array(
+							'name' => $val['act_name'],
+							'type' => $val['act_type'] == '1' ? 'price_reduction' : 'price_discount',
+							'type_label' => $val['act_type'] == '1' ? __('满减') : __('满折'),
+							);
+							break;
+						default:
+							break;
+					}
+				}
+			}
+		}
 		
 		$info['trade_time'] = !empty($info['shop_trade_time']) ? unserialize($info['shop_trade_time']) : array('start' => '8:00', 'end' => '21:00');
 		$seller_info = array(
