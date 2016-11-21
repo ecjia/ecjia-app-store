@@ -40,7 +40,7 @@ class admin_percent extends ecjia_admin {
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('佣金比例')));
 		
 		$this->assign('ur_here', __('佣金比例')); // 当前导航				
-		$this->assign('add_percent' , array('href' => RC_Uri::url('store/admin_percent/add'), 'text' => __('添加佣金比例')));
+		$this->assign('add_percent', array('href' => RC_Uri::url('store/admin_percent/add'), 'text' => __('添加佣金比例')));
 		
 		$percent_list = $this->get_percent_list();
 		$this->assign('percent_list',$percent_list);
@@ -77,6 +77,9 @@ class admin_percent extends ecjia_admin {
 		}
 		if (!is_numeric($_POST['percent_value'])) {
 			$this->showmessage('奖励额度必须为数字',ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+		}
+		if ($_POST['percent_value'] > 100 || $_POST['percent_value'] < 0) {
+		    $this->showmessage('奖励额度范围为0-100，请修改',ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 		$data = array(
 			'percent_value'	=> trim($_POST['percent_value']),
@@ -139,6 +142,9 @@ class admin_percent extends ecjia_admin {
 		$this->admin_priv('store_percent_update',ecjia::MSGTYPE_JSON);
 		
 		$percent_id = $_POST['id'];
+		if ($_POST['percent_value'] > 100 || $_POST['percent_value'] < 0) {
+		    $this->showmessage('奖励额度范围为0-100，请修改',ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+		}
 		$data = array( 
 			'percent_value' => trim($_POST['percent_value']),
 			'sort_order' => trim($_POST['sort_order'])
