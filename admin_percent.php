@@ -28,6 +28,8 @@ class admin_percent extends ecjia_admin {
 		RC_Lang::load('merchants_percent');
 		RC_Script::enqueue_script('commission', RC_App::apps_url('statics/js/commission.js', __FILE__));
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('佣金比例'),RC_Uri::url('store/admin_percent/init')));
+		
+		ecjia_admin_log::instance()->add_object('merchants_percent', '佣金比例');
 	}
 	
 	/**
@@ -54,7 +56,7 @@ class admin_percent extends ecjia_admin {
 	 * 添加佣金百分比页面
 	 */
 	public function add() {
-		$this->admin_priv('store_percent_add',ecjia::MSGTYPE_JSON);
+		$this->admin_priv('store_percent_add', ecjia::MSGTYPE_JSON);
 
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('添加佣金比例')));		
 		
@@ -110,7 +112,7 @@ class admin_percent extends ecjia_admin {
 	/**
 	 * 佣金百分比编辑页面
 	 */
-	public function edit() {		
+	public function edit() {
 		$this->admin_priv('store_percent_update',ecjia::MSGTYPE_JSON);
 		
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('编辑佣金比例')));
@@ -177,7 +179,7 @@ class admin_percent extends ecjia_admin {
 		$percent_delete = RC_DB::table('store_percent')->where('percent_id', $id)->delete();
 						
 		if ($percent_delete) {
-			ecjia_admin::admin_log($percent_value.'%', 'remove', 'store_percent');
+			ecjia_admin::admin_log($percent_value.'%', 'remove', 'merchants_percent');
 			$this->showmessage('删除成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
 		} else {
 			$this->showmessage('删除失败',ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
@@ -197,7 +199,7 @@ class admin_percent extends ecjia_admin {
 		$percent_delete = RC_DB::table('store_percent')->whereIn('percent_id', $ids)->delete();
 		
 		foreach ($info as $v) {
-			ecjia_admin::admin_log($v['percent_value'].'%', 'batch_remove', 'store_percent');
+			ecjia_admin::admin_log($v['percent_value'].'%', 'batch_remove', 'merchants_percent');
 		}
 		$this->showmessage('批量删除成功！', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin_percent/init')));
 		
