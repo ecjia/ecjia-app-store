@@ -32,7 +32,7 @@ class store_store_list_api extends Component_Event_Api {
 		$where['ssi.store_id'] = array();
 		
 		/* 商家列表缓存key*/
-		$cache_key = 'store-list-'. $_SESSION['user_rank'];
+		$cache_key = 'store-list';
 		
 		/* 商品分类*/
 		if (isset($filter['goods_category']) && !empty($filter['goods_category'])) {
@@ -159,6 +159,8 @@ class store_store_list_api extends Component_Event_Api {
 			}
 			
 			$store_list = array('seller_list' => $seller_list, 'page' => $page_row);
+			
+			
 			$store_franchisee_db->set_cache_item($fomated_cache_key, $store_list, 2880);
 		}
 		
