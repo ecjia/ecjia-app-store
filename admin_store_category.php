@@ -3,7 +3,6 @@
  * 店铺分类管理
  */
 defined('IN_ECJIA') or exit('No permission resources.');
-RC_Loader::load_sys_class('ecjia_admin', false);
 
 class admin_store_category extends ecjia_admin {
 	private $seller_category_db;
@@ -198,7 +197,7 @@ class admin_store_category extends ecjia_admin {
 		$franchisee_count = RC_DB::table('store_franchisee')->where('cat_id', $cat_id)->count();
 		$preaudit_count = RC_DB::table('store_preaudit')->where('cat_id', $cat_id)->count();
 		/* 如果不存在下级子分类和商品，则删除之 */
-		if ($cat_count == 0 && $franchisee_count == 0 && $preaudit_count) {
+		if ($cat_count == 0 && $franchisee_count == 0 && $preaudit_count == 0) {
 			/* 删除分类 */
 			RC_DB::table('store_category')->where('cat_id', $cat_id)->delete();
 			//记录log
