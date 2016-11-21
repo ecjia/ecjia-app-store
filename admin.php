@@ -87,10 +87,10 @@ class admin extends ecjia_admin {
 		$province   = $this->db_region->get_regions(1, 1);
 		$city       = $this->db_region->get_regions(2, $store['province']);
 		$district   = $this->db_region->get_regions(3, $store['city']);
-        if(empty($store['latitude']) || empty($store['longitude'])){
-            $store['latitude'] = '31.235450744628906';
-            $store['longitude'] = '121.41641998291016';
-        }
+//         if(empty($store['latitude']) || empty($store['longitude'])){
+//             $store['latitude'] = '31.235450744628906';
+//             $store['longitude'] = '121.41641998291016';
+//         }
         $this->assign('province', $province);
 		$this->assign('city', $city);
 		$this->assign('district', $district);
@@ -531,16 +531,15 @@ class admin extends ecjia_admin {
 
 		$store_id = $_GET['store_id'];
 		$status   = $_GET['status'];
-		if($status ==1){
-			$this->assign('ur_here','锁定店铺');
+		if($status == 1) {
+			$this->assign('ur_here', '锁定店铺');
 			ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('锁定店铺'));
-			$this->assign('status',$status);
-		}else{
-			$this->assign('ur_here','店铺解锁');
+		} else {
+			$this->assign('ur_here', '店铺解锁');
 			ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('店铺解锁'));
 		}
-
-		$this->assign('form_action',RC_Uri::url('store/admin/status_update', array('store_id' => $store_id, 'status'=>$status)));
+		$this->assign('status', $status);
+		$this->assign('form_action',RC_Uri::url('store/admin/status_update', array('store_id' => $store_id, 'status' => $status)));
 
 		$this->display('store_lock.dwt');
 	}
@@ -556,10 +555,12 @@ class admin extends ecjia_admin {
 
 		if ($status == 1) {
 			$status_new = 2;
+			$status_label = '锁定';
 		} elseif ($status == 2) {
 			$status_new = 1;
+			$status_label = '解锁';
 		}
-		
+		$store_info = RC_DB::table('store_franchisee')->where('store_id', $store_id)->first();
 		RC_DB::table('store_franchisee')->where('store_id', $store_id)->update(array('status' => $status_new));
 		
 		$store_franchisee_db = RC_Model::model('store/orm_store_franchisee_model');
@@ -573,6 +574,7 @@ class admin extends ecjia_admin {
 		}
 		
 		clear_cart_list($store_id);
+		ecjia_admin::admin_log('店铺'.$status_label.' '.RC_Lang::get('store::store.store_title_lable').$store_info['merchants_name'], 'update', 'store');
 		$this->showmessage('操作成功！', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin/preview', array('store_id' => $store_id))));
 	}
 
