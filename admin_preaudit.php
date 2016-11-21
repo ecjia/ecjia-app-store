@@ -454,6 +454,17 @@ class admin_preaudit extends ecjia_admin {
 				    'name' => '管理员',
 				    'info' => '审核通过。'.$remark,
 				);
+				
+				$store_franchisee_db = RC_Model::model('store/orm_store_franchisee_model');
+				/* 释放app缓存*/
+				$store_cache_array = $store_franchisee_db->get_cache_item('store_list_cache_key_array');
+				if (!empty($store_cache_array)) {
+					foreach ($store_cache_array as $val) {
+						$store_franchisee_db->delete_cache_item($val);
+					}
+					$store_franchisee_db->delete_cache_item('store_list_cache_key_array');
+				}
+				
 				RC_Api::api('store', 'add_check_log', $log);
 				$this->showmessage('再次审核成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin_preaudit/init')));
 			}

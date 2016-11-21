@@ -156,17 +156,23 @@ class admin extends ecjia_admin {
             $data['geohash'] = $geohash_code;
 
             set_merchant_config($store_id, 'shop_review_goods', $_POST['shop_review_goods']);
-
+			
+            $store_franchisee_db = RC_Model::model('store/orm_store_franchisee_model');
+            /* 释放app缓存*/
+            $store_cache_array = $store_franchisee_db->get_cache_item('store_list_cache_key_array');
+            if (!empty($store_cache_array)) {
+            	foreach ($store_cache_array as $val) {
+            		$store_franchisee_db->delete_cache_item($val);
+            	}
+            	$store_franchisee_db->delete_cache_item('store_list_cache_key_array');
+            }
+            
 		} else if ($step == 'identity') {
 		    $data = array(
 		        'responsible_person'		=> !empty($_POST['responsible_person']) ? $_POST['responsible_person'] : '',
 		        'company_name'      		=> !empty($_POST['company_name']) 		? $_POST['company_name'] : '',
 		        'identity_type'     		=> !empty($_POST['identity_type']) 		? $_POST['identity_type'] : '',
 		        'identity_number'   		=> !empty($_POST['identity_number']) 	? $_POST['identity_number'] : '',
-		        'identity_pic_front'		=> $identity_pic_front,
-		        'identity_pic_back' 		=> $identity_pic_back,
-		        'personhand_identity_pic' 	=> $personhand_identity_pic,
-		        'business_licence_pic' 		=> $store_info['validate_type']  == 2 ? $business_licence_pic : null,
 		        'business_licence'      	=> !empty($_POST['business_licence']) 		? $_POST['business_licence'] : '',
 		    );
 		} else if ($step == 'bank') {
@@ -419,6 +425,15 @@ class admin extends ecjia_admin {
         }
 
         if(!empty($merchant)){
+        	$store_franchisee_db = RC_Model::model('store/orm_store_franchisee_model');
+        	/* 释放app缓存*/
+        	$store_cache_array = $store_franchisee_db->get_cache_item('store_list_cache_key_array');
+        	if (!empty($store_cache_array)) {
+        		foreach ($store_cache_array as $val) {
+        			$store_franchisee_db->delete_cache_item($val);
+        		}
+        		$store_franchisee_db->delete_cache_item('store_list_cache_key_array');
+        	}
             // 记录日志
             ecjia_admin::admin_log('修改店铺基本信息', 'edit', 'merchant');
             $this->showmessage('编辑成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin/store_set', array('store_id' => $store_id))));
@@ -544,8 +559,19 @@ class admin extends ecjia_admin {
 		} elseif ($status == 2) {
 			$status_new = 1;
 		}
-
+		
 		RC_DB::table('store_franchisee')->where('store_id', $store_id)->update(array('status' => $status_new));
+		
+		$store_franchisee_db = RC_Model::model('store/orm_store_franchisee_model');
+		/* 释放app缓存*/
+		$store_cache_array = $store_franchisee_db->get_cache_item('store_list_cache_key_array');
+		if (!empty($store_cache_array)) {
+			foreach ($store_cache_array as $val) {
+				$store_franchisee_db->delete_cache_item($val);
+			}
+			$store_franchisee_db->delete_cache_item('store_list_cache_key_array');
+		}
+		
 		clear_cart_list($store_id);
 		$this->showmessage('操作成功！', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin/preview', array('store_id' => $store_id))));
 	}
