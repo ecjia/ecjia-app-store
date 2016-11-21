@@ -51,6 +51,7 @@ class validate_module extends api_admin implements api_interface {
 		}
 
 		$store_preaudit_info = RC_DB::table('store_preaudit')->where(RC_DB::raw('store_id'), $_SESSION['store_id'])->first();
+		$store_franchisee_info = RC_DB::table('store_franchisee')->where(RC_DB::raw('store_id'), $_SESSION['store_id'])->first();
 
 		$save_path = 'merchant/'.$_SESSION['store_id'].'/data/identity_pic';
 		$upload = RC_Upload::uploader('image', array('save_path' => $save_path, 'auto_sub_dirs' => true));
@@ -128,6 +129,10 @@ class validate_module extends api_admin implements api_interface {
 		} else {
 			RC_DB::table('store_preaudit')->where(RC_DB::raw('store_id'), $_SESSION['store_id'])->insertGetId($data);
 		}
+		
+		//审核日志
+		RC_Loader::load_app_func('check_log', 'franchisee');
+		add_check_log($data, $store_franchisee_info);
 
 		return array();
     }

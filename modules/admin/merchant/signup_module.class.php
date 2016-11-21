@@ -82,8 +82,11 @@ class signup_module extends api_admin implements api_interface {
 				'longitude'				=> $longitude,
 				'latitude'				=> $latitude,
 		);
-
+		
 		$insert_id = RC_DB::table('store_preaudit')->insertGetId($merchant_shop_data);
+		//审核日志
+		RC_Loader::load_app_func('check_log', 'franchisee');
+		add_check_log($merchant_shop_data, '', $insert_id);
 
 		unset($_SESSION['merchant_validate_code']);
 		unset($_SESSION['merchant_validate_expiry']);

@@ -26,7 +26,9 @@ class cancel_module extends api_admin implements api_interface {
                 return new ecjia_error('validate_mobile_error', '手机号码错误！');
             }
 
-            RC_DB::table('store_preaudit')->where('contact_mobile', '=', $value)->delete();
+            $preaudit_id = RC_DB::table('store_preaudit')->where('contact_mobile', '=', $value)->pluck('id');
+            RC_DB::table('store_preaudit')->where('contact_mobile', $value)->delete();
+            RC_DB::table('store_check_log')->where('store_id', $preaudit_id)->delete();
             return array();
 		}
     }

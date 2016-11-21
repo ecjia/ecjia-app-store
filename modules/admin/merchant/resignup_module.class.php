@@ -19,7 +19,7 @@ class resignup_module extends api_admin implements api_interface {
         $address            = $this->requestData('address');
         $longitude          = $this->requestData('longitude');
         $latitude           = $this->requestData('latitude');
-        $validate_cod       = $this->requestData('validate_code');
+        $validate_code      = $this->requestData('validate_code');
 
         // 判断验证码
         if (!empty($validate_code)) {
@@ -70,6 +70,10 @@ class resignup_module extends api_admin implements api_interface {
         );
 
         RC_DB::table('store_preaudit')->where('contact_mobile', '=', $mobile)->update($data);
+        //审核日志
+        RC_Loader::load_app_func('check_log', 'franchisee');
+        add_check_log($data, $info_store_preaudit);
+        
         return array();
     }
 }
