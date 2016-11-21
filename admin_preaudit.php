@@ -30,6 +30,9 @@ class admin_preaudit extends ecjia_admin {
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('store::store.store_preaudit'), RC_Uri::url('store/admin_preaudit/init')));
 
 		RC_Loader::load_app_func('global');
+		
+		ecjia_admin_log::instance()->add_object('merchants_preaudit', '入驻商家');
+		ecjia_admin_log::instance()->add_action('check', '审核');
 	}
 
 	/**
@@ -108,7 +111,7 @@ class admin_preaudit extends ecjia_admin {
 			} else {
 				$this->showmessage($upload->error(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			}
-		}else {
+		} else {
 			$business_licence_pic = $pic_url['business_licence_pic'];
 		}
 
@@ -121,7 +124,7 @@ class admin_preaudit extends ecjia_admin {
 			} else {
 				$this->showmessage($upload->error(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			}
-		}else {
+		} else {
 			$identity_pic_front = $pic_url['identity_pic_front'];
 		}
 
@@ -134,7 +137,7 @@ class admin_preaudit extends ecjia_admin {
 			} else {
 				$this->showmessage($upload->error(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			}
-		}else {
+		} else {
 			$identity_pic_back = $pic_url['identity_pic_back'];
 		}
 
@@ -147,7 +150,7 @@ class admin_preaudit extends ecjia_admin {
 			} else {
 				$this->showmessage($upload->error(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			}
-		}else {
+		} else {
 			$personhand_identity_pic = $pic_url['personhand_identity_pic'];
 		}
 
@@ -184,6 +187,8 @@ class admin_preaudit extends ecjia_admin {
 		$geohash_code = substr($geohash_code, 0, 10);
 		$data['geohash'] = $geohash_code;
 		RC_DB::table('store_preaudit')->where('id', $id)->update($data);
+		
+		ecjia_admin::admin_log($data['merchants_name'], 'edit', 'merchants_preaudit');
 
 		$this->showmessage(RC_Lang::get('store::store.edit_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin_preaudit/edit', array('id' => $id))));
 	}
@@ -231,7 +236,7 @@ class admin_preaudit extends ecjia_admin {
 		}
 
 		$log_rs = get_check_log($log_store_id, $log_type, 1, 3);
-// 		_dump($log_rs,1);
+
 		$this->assign('log_list', $log_rs['list']);
 		$this->assign('log_last', $log_rs['list'][0]['log']);
 
@@ -254,7 +259,6 @@ class admin_preaudit extends ecjia_admin {
 				$geohash = RC_Loader::load_app_class('geohash', 'store');
 				$geohash_code = $geohash->encode($store['latitude'] , $store['longitude']);
 				$geohash_code = substr($geohash_code, 0, 10);
-// 				_dump($store,1);
 
 				if (empty($store['merchants_name'])) {
 				    $this->showmessage('店铺名称不能为空', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
@@ -326,7 +330,7 @@ class admin_preaudit extends ecjia_admin {
 				//审核通过产生一个主员工的资料
 				$password	= rand(100000,999999);
 				$salt = rand(1, 9999);
-				$data = array(
+				$data_staff = array(
 					'mobile' 		=> $store['contact_mobile'],
 					'store_id' 		=> $store_id,
 					'name' 			=> $store['responsible_person'],
@@ -345,7 +349,7 @@ class admin_preaudit extends ecjia_admin {
 					'avatar' 		=> '',
 					'introduction' 	=> '',
 				);
-				RC_DB::table('staff_user')->insertGetId($data);
+				RC_DB::table('staff_user')->insertGetId($data_staff);
 
 				//短信发送通知
 				$tpl_name = 'sms_jion_merchant';
@@ -381,7 +385,7 @@ class admin_preaudit extends ecjia_admin {
 				    'info' => '恭喜您的申请通过审核。'.$remark,
 				);
 				RC_Api::api('store', 'add_check_log', $log);
-
+				ecjia_admin::admin_log($data['merchants_name'].' 通过', 'check', 'merchants_preaudit');
 				$this->showmessage(RC_Lang::get('store::store.check_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin_preaudit/init')));
 			} else {
 				//再次审核资料
@@ -466,9 +470,11 @@ class admin_preaudit extends ecjia_admin {
 				}
 				
 				RC_Api::api('store', 'add_check_log', $log);
+				ecjia_admin::admin_log($data['merchants_name'], 'check', 'merchants_preaudit');
 				$this->showmessage('再次审核成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin_preaudit/init')));
 			}
 		} else if($_POST['check_status'] == 3) {
+		    $store = RC_DB::table('store_preaudit')->where('id', $id)->first();
 		    //不通过
 		    $log = array(
 		        'store_id' => $store_id ? $store_id : $id,
@@ -478,6 +484,8 @@ class admin_preaudit extends ecjia_admin {
 		    );
 		    RC_Api::api('store', 'add_check_log', $log);
 		    RC_DB::table('store_preaudit')->where('id', $id)->update(array('remark' => $remark, 'check_status' => intval($_POST['check_status'])));
+		    
+		    ecjia_admin::admin_log($store['merchants_name'].' 拒绝', 'check', 'merchants_preaudit');
 		    $this->showmessage(RC_Lang::get('store::store.deal_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin_preaudit/init')));
 		} else {
 		    //异常状态
@@ -588,7 +596,6 @@ class admin_preaudit extends ecjia_admin {
 		$arr['target']  = htmlspecialchars($arr['target']);
 		echo json_encode($arr);
 	}
-
 
 }
 
