@@ -35,7 +35,7 @@ class admin_config extends ecjia_admin {
     	
     	$this->assign('config_logoimg', RC_Upload::upload_url(ecjia::config('merchant_admin_login_logo')));
     	$this->assign('config_logo', ecjia::config('merchant_admin_login_logo'));
-
+    	$this->assign('current_code', 'store');
 		$this->assign('form_action', RC_Uri::url('store/admin_config/update'));
 		$this->display('store_config_info.dwt');
 	}
