@@ -75,13 +75,13 @@ class admin_percent extends ecjia_admin {
 		$this->admin_priv('store_percent_add',ecjia::MSGTYPE_JSON);
 		
 		if (empty($_POST['percent_value'])) {
-			$this->showmessage('奖励额度不能为空',ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			return $this->showmessage('奖励额度不能为空',ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 		if (!is_numeric($_POST['percent_value'])) {
-			$this->showmessage('奖励额度必须为数字',ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			return $this->showmessage('奖励额度必须为数字',ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 		if ($_POST['percent_value'] > 100 || $_POST['percent_value'] < 0) {
-		    $this->showmessage('奖励额度范围为0-100，请修改',ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+		    return $this->showmessage('奖励额度范围为0-100，请修改',ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 		$data = array(
 			'percent_value'	=> trim($_POST['percent_value']),
@@ -93,7 +93,7 @@ class admin_percent extends ecjia_admin {
 					->where('percent_value', $data['percent_value'])
 					->get();
 		if (!empty($result)) {
-			$this->showmessage('该奖励额度已存在！',ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			return $this->showmessage('该奖励额度已存在！',ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 			
 		$percent_id = RC_DB::table('store_percent')->insertGetId($data);
@@ -103,9 +103,9 @@ class admin_percent extends ecjia_admin {
 				array('href' => RC_Uri::url('store/admin_percent/init'), 'text' => __('返回佣金比例列表')),
 				array('href' => RC_Uri::url('store/admin_percent/add'), 'text' => __('继续添加佣金比例')),
 			);
-			$this->showmessage('添加佣金比例成功！', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS , array('links' => $links , 'pjaxurl' => RC_Uri::url('store/admin_percent/edit',array('id' => $percent_id))));	
+			return $this->showmessage('添加佣金比例成功！', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS , array('links' => $links , 'pjaxurl' => RC_Uri::url('store/admin_percent/edit',array('id' => $percent_id))));	
 		} else {
-			$this->showmessage('添加佣金比例失败！', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			return $this->showmessage('添加佣金比例失败！', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 	}
 	
@@ -145,7 +145,7 @@ class admin_percent extends ecjia_admin {
 		
 		$percent_id = $_POST['id'];
 		if ($_POST['percent_value'] > 100 || $_POST['percent_value'] < 0) {
-		    $this->showmessage('奖励额度范围为0-100，请修改',ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+		    return $this->showmessage('奖励额度范围为0-100，请修改',ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 		$data = array( 
 			'percent_value' => trim($_POST['percent_value']),
@@ -161,13 +161,13 @@ class admin_percent extends ecjia_admin {
 					->where('percent_id', '<>', $percent_id)
 					->first();
 		if (!empty($is_only)) {
-			$this->showmessage('该奖励额度已存在！',ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			return $this->showmessage('该奖励额度已存在！',ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 		/* 保存奖励额度信息 */
 		$percent_update = RC_DB::table('store_percent')->where('percent_id', $percent_id)->update($data);
 		/* 提示信息 */
 		ecjia_admin::admin_log($_POST['percent_value'].'%', 'edit', 'merchants_percent');
-		$this->showmessage('编辑成功！', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS , array('pjaxurl' => RC_Uri::url('store/admin_percent/edit',array('id' => $percent_id))));
+		return $this->showmessage('编辑成功！', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS , array('pjaxurl' => RC_Uri::url('store/admin_percent/edit',array('id' => $percent_id))));
 	}
 	
 	//删除佣金百分比
@@ -180,9 +180,9 @@ class admin_percent extends ecjia_admin {
 						
 		if ($percent_delete) {
 			ecjia_admin::admin_log($percent_value.'%', 'remove', 'merchants_percent');
-			$this->showmessage('删除成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
+			return $this->showmessage('删除成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
 		} else {
-			$this->showmessage('删除失败',ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			return $this->showmessage('删除失败',ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 	}
 	
@@ -201,7 +201,7 @@ class admin_percent extends ecjia_admin {
 		foreach ($info as $v) {
 			ecjia_admin::admin_log($v['percent_value'].'%', 'batch_remove', 'merchants_percent');
 		}
-		$this->showmessage('批量删除成功！', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin_percent/init')));
+		return $this->showmessage('批量删除成功！', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin_percent/init')));
 		
 	}
 	

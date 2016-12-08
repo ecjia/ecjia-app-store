@@ -92,7 +92,7 @@ class admin_commission extends ecjia_admin {
 		$suppliers_desc		= isset($_POST['suppliers_desc']) 		? trim($_POST['suppliers_desc']) 		: '';
 
 		if (empty($_POST['suppliers_percent'])) {
-			$this->showmessage('请选择佣金比例！',ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			return $this->showmessage('请选择佣金比例！',ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 		$data = array (
 			'user_id'			=> $user_id,
@@ -107,9 +107,9 @@ class admin_commission extends ecjia_admin {
 			$percent = $this->mpdb->where(array('percent_id' => $suppliers_percent))->get_field('percent_value');
 			ecjia_admin::admin_log('商家名是 '.$user_name.'，'.'佣金比例是 '.$percent.'%', 'add', 'store_commission');
 
-			$this->showmessage('设置商家佣金成功！',ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl'=>RC_Uri::url('store/admin_commission/edit',array('id'=>$server_id, 'user_id'=>$user_id))));
+			return $this->showmessage('设置商家佣金成功！',ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl'=>RC_Uri::url('store/admin_commission/edit',array('id'=>$server_id, 'user_id'=>$user_id))));
 		} else {
-			$this->showmessage('设置商家佣金失败！',ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			return $this->showmessage('设置商家佣金失败！',ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 	}
 
@@ -157,7 +157,7 @@ class admin_commission extends ecjia_admin {
 		);
 
 		if (empty($_POST['percent_id'])) {
-			$this->showmessage('请选择佣金比例！',ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			return $this->showmessage('请选择佣金比例！',ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 
 		RC_DB::table('store_franchisee')
@@ -169,7 +169,7 @@ class admin_commission extends ecjia_admin {
 		$percent = RC_DB::table('store_percent')->where(RC_DB::raw('percent_id'), '=', $_POST['percent_id'])->pluck('percent_value');
 		ecjia_admin::admin_log('商家名是 '.$merchants_name.'，'.'佣金比例是 '.$percent.'%', 'edit', 'store_commission');
 
-		$this->showmessage('编辑成功！', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS , array('pjaxurl' => RC_Uri::url('store/admin_commission/edit',array('id' => $id, 'store_id' => $store_id))));
+		return $this->showmessage('编辑成功！', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS , array('pjaxurl' => RC_Uri::url('store/admin_commission/edit',array('id' => $id, 'store_id' => $store_id))));
 	}
 
 	public function remove(){
@@ -204,9 +204,9 @@ class admin_commission extends ecjia_admin {
 
 			ecjia_admin::admin_log('商家名是 '.$merchants_name.'，'.'佣金比例是 '.$percent.'%', 'remove', 'store_commission');
 
-			$this->showmessage('删除成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
+			return $this->showmessage('删除成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
 		} else {
-			$this->showmessage('删除失败', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			return $this->showmessage('删除失败', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 	}
 
@@ -233,9 +233,9 @@ class admin_commission extends ecjia_admin {
 				ecjia_admin::admin_log('商家名是 '.$v['merchants_name'].'，'.'佣金比例是 '.$v['percent_value'].'%', 'batch_remove', 'store_commission');
 			}
 
-			$this->showmessage('批量删除成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin_commission/init')));
+			return $this->showmessage('批量删除成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin_commission/init')));
 		} else {
-			$this->showmessage('批量删除失败', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			return $this->showmessage('批量删除失败', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 	}
 
@@ -299,9 +299,9 @@ class admin_commission extends ecjia_admin {
 			} else {
 				ecjia_admin::admin_log('商家名是 '.$merchants_name.'，'.'订单编号是 '.$order_sn.'，'.'未结算', 'setup', 'store_commission_status');
 			}
-			$this->showmessage('结算状态修改成功！',ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin_commission/order_list',array('id' => $_GET['id']))));
+			return $this->showmessage('结算状态修改成功！',ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin_commission/order_list',array('id' => $_GET['id']))));
 // 		} else {
-// 			$this->showmessage('结算状态修改失败！',ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+// 			return $this->showmessage('结算状态修改失败！',ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 // 		}
 	}
 
@@ -323,7 +323,7 @@ class admin_commission extends ecjia_admin {
 			'value' => $user['shoprz_brandName'],
 			'text'  => $user['shopNameSuffix']
 		);
-		$this->showmessage('', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('content' => $opt));
+		return $this->showmessage('', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('content' => $opt));
 	}
 
 	/**

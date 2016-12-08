@@ -52,7 +52,7 @@ class admin_mobileconfig extends ecjia_admin {
 		ecjia_config::instance()->write_config('mobile_store_home_adsense', $_POST['mobile_store_home_adsense']);
 
 		ecjia_admin::admin_log('店铺街移动应用>店铺街首页配置', 'setup', 'store_mobileconfig');
-		$this->showmessage(__('更新店铺街首页配置设置成功！'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS,array('pjaxurl' => RC_Uri::url('store/admin_mobileconfig/init')));
+		return $this->showmessage(__('更新店铺街首页配置设置成功！'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS,array('pjaxurl' => RC_Uri::url('store/admin_mobileconfig/init')));
 	}
 	
 }

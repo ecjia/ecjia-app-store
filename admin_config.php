@@ -65,7 +65,7 @@ class admin_config extends ecjia_admin {
 		}
 		
 		ecjia_admin::admin_log('商家入驻>后台设置', 'setup', 'config');
-		$this->showmessage(__('更新后台设置成功！'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin_config/init')));
+		return $this->showmessage(__('更新后台设置成功！'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin_config/init')));
 	}
 	
 	/**
@@ -82,7 +82,7 @@ class admin_config extends ecjia_admin {
 				ecjia_config::instance()->write_config('merchant_admin_login_logo', '');
 			}
 		}
-		$this->showmessage(__('删除图片成功！'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin_config/init')));
+		return $this->showmessage(__('删除图片成功！'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin_config/init')));
 	}
 }
 

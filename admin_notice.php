@@ -73,7 +73,7 @@ class admin_notice extends ecjia_admin {
  			->count();
  			
 		if ($is_only != 0) {
-			$this->showmessage(sprintf(RC_Lang::get('article::shopinfo.title_exist'), stripslashes($title)), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			return $this->showmessage(sprintf(RC_Lang::get('article::shopinfo.title_exist'), stripslashes($title)), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 		
 		$file_name = '';
@@ -87,7 +87,7 @@ class admin_notice extends ecjia_admin {
 			if (!empty($image_info)) {
 				$file_name = $upload->get_position($image_info);
 			} else {
-				$this->showmessage($upload->error(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+				return $this->showmessage($upload->error(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			}
 		}
 		$cat_id = RC_DB::table('article_cat')->where('cat_type', 6)->pluck('cat_id');
@@ -104,7 +104,7 @@ class admin_notice extends ecjia_admin {
 		$id = RC_DB::table('article')->insertGetId($data);
 
 		ecjia_admin::admin_log($title, 'add', 'merchant_notice');
-		$this->showmessage(sprintf(RC_Lang::get('article::shopinfo.articleadd_succeed'), stripslashes($title)), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin_notice/edit', array('id' => $id))));
+		return $this->showmessage(sprintf(RC_Lang::get('article::shopinfo.articleadd_succeed'), stripslashes($title)), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin_notice/edit', array('id' => $id))));
 	}
 	
 	/**
@@ -154,7 +154,7 @@ class admin_notice extends ecjia_admin {
 			->count();
 		
 		if ($is_only != 0) {
-			$this->showmessage(sprintf(RC_Lang::get('article::shopinfo.title_exist'), stripslashes($title)), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			return $this->showmessage(sprintf(RC_Lang::get('article::shopinfo.title_exist'), stripslashes($title)), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 		
 		$old_file_name = RC_DB::table('article')->where('article_id', $id)->pluck('file_url');
@@ -170,7 +170,7 @@ class admin_notice extends ecjia_admin {
 				$file_name = $upload->get_position($image_info);
 				$upload->remove($old_file_name);
 			} else {
-				$this->showmessage($upload->error(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+				return $this->showmessage($upload->error(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			}
 		} else {
 			$file_name = $old_file_name;
@@ -188,7 +188,7 @@ class admin_notice extends ecjia_admin {
 		RC_DB::table('article')->where('article_id', $id)->update($data);
 		ecjia_admin::admin_log($title, 'edit', 'merchant_notice');
 		
-		$this->showmessage(sprintf(RC_Lang::get('article::shopinfo.articleedit_succeed'), stripslashes($title)), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('links' => $links, 'pjaxurl' => RC_Uri::url('store/admin_notice/edit', array('id' => $id))));
+		return $this->showmessage(sprintf(RC_Lang::get('article::shopinfo.articleedit_succeed'), stripslashes($title)), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('links' => $links, 'pjaxurl' => RC_Uri::url('store/admin_notice/edit', array('id' => $id))));
 	}
 	
 	/**
@@ -207,7 +207,7 @@ class admin_notice extends ecjia_admin {
 			}
 			ecjia_admin::admin_log(addslashes($info['title']), 'remove', 'merchant_notice');
 		}
-		$this->showmessage(sprintf(RC_Lang::get('article::shopinfo.remove_success'), $info['title']), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
+		return $this->showmessage(sprintf(RC_Lang::get('article::shopinfo.remove_success'), $info['title']), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
 	}
 	
 	/**
@@ -227,7 +227,7 @@ class admin_notice extends ecjia_admin {
 		);
 		RC_DB::table('article')->where('article_id', $id)->update($data);
 	
-		$this->showmessage(RC_Lang::get('article::article.drop_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin_notice/edit', array('id' => $id))));
+		return $this->showmessage(RC_Lang::get('article::article.drop_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin_notice/edit', array('id' => $id))));
 	}
 	
 	/**

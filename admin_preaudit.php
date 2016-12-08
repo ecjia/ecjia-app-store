@@ -109,7 +109,7 @@ class admin_preaudit extends ecjia_admin {
 				$business_licence_pic = $upload->get_position($info);
 				$upload->remove($pic_url['business_licence_pic']);
 			} else {
-				$this->showmessage($upload->error(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+				return $this->showmessage($upload->error(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			}
 		} else {
 			$business_licence_pic = $pic_url['business_licence_pic'];
@@ -122,7 +122,7 @@ class admin_preaudit extends ecjia_admin {
 				$identity_pic_front = $upload->get_position($info);
 				$upload->remove($pic_url['identity_pic_front']);
 			} else {
-				$this->showmessage($upload->error(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+				return $this->showmessage($upload->error(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			}
 		} else {
 			$identity_pic_front = $pic_url['identity_pic_front'];
@@ -135,7 +135,7 @@ class admin_preaudit extends ecjia_admin {
 				$identity_pic_back = $upload->get_position($info);
 				$upload->remove($pic_url['identity_pic_back']);
 			} else {
-				$this->showmessage($upload->error(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+				return $this->showmessage($upload->error(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			}
 		} else {
 			$identity_pic_back = $pic_url['identity_pic_back'];
@@ -148,7 +148,7 @@ class admin_preaudit extends ecjia_admin {
 				$personhand_identity_pic = $upload->get_position($info);
 				$upload->remove($pic_url['personhand_identity_pic']);
 			} else {
-				$this->showmessage($upload->error(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+				return $this->showmessage($upload->error(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			}
 		} else {
 			$personhand_identity_pic = $pic_url['personhand_identity_pic'];
@@ -190,7 +190,7 @@ class admin_preaudit extends ecjia_admin {
 		
 		ecjia_admin::admin_log($data['merchants_name'], 'edit', 'merchants_preaudit');
 
-		$this->showmessage(RC_Lang::get('store::store.edit_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin_preaudit/edit', array('id' => $id))));
+		return $this->showmessage(RC_Lang::get('store::store.edit_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin_preaudit/edit', array('id' => $id))));
 	}
 
 	/**
@@ -212,7 +212,7 @@ class admin_preaudit extends ecjia_admin {
 		$info = RC_DB::table('store_preaudit')->where('id', $id)->first();
 
 		if (empty($info)) {
-		    $this->showmessage('信息不存在或已处理完成', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR,  array('pjaxurl' => RC_Uri::url('store/admin_preaudit/init')));
+		    return $this->showmessage('信息不存在或已处理完成', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR,  array('pjaxurl' => RC_Uri::url('store/admin_preaudit/init')));
 		}
 		$info['province'] = RC_DB::table('region')->where('region_id', $info['province'])->pluck('region_name');
 
@@ -261,7 +261,7 @@ class admin_preaudit extends ecjia_admin {
 				$geohash_code = substr($geohash_code, 0, 10);
 
 				if (empty($store['merchants_name'])) {
-				    $this->showmessage('店铺名称不能为空', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+				    return $this->showmessage('店铺名称不能为空', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 				}
 				$data =array(
 					'cat_id' 					=> $store['cat_id'] ? $store['cat_id'] : 0,
@@ -370,9 +370,9 @@ class admin_preaudit extends ecjia_admin {
 					$response = RC_Api::api('sms', 'sms_send', $options);
 
 					if($response === true){
-						$this->showmessage('短信发送成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
+						return $this->showmessage('短信发送成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
 					}else{
-						$this->showmessage('短信发送失败', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+						return $this->showmessage('短信发送失败', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 					}
 				};
 
@@ -386,7 +386,7 @@ class admin_preaudit extends ecjia_admin {
 				);
 				RC_Api::api('store', 'add_check_log', $log);
 				ecjia_admin::admin_log($data['merchants_name'].' 通过', 'check', 'merchants_preaudit');
-				$this->showmessage(RC_Lang::get('store::store.check_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin_preaudit/init')));
+				return $this->showmessage(RC_Lang::get('store::store.check_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin_preaudit/init')));
 			} else {
 				//再次审核资料
 				$store = RC_DB::table('store_preaudit')->where('store_id', $store_id)->first();
@@ -471,7 +471,7 @@ class admin_preaudit extends ecjia_admin {
 				
 				RC_Api::api('store', 'add_check_log', $log);
 				ecjia_admin::admin_log($data['merchants_name'], 'check', 'merchants_preaudit');
-				$this->showmessage('再次审核成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin_preaudit/init')));
+				return $this->showmessage('再次审核成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin_preaudit/init')));
 			}
 		} else if($_POST['check_status'] == 3) {
 		    $store = RC_DB::table('store_preaudit')->where('id', $id)->first();
@@ -486,10 +486,10 @@ class admin_preaudit extends ecjia_admin {
 		    RC_DB::table('store_preaudit')->where('id', $id)->update(array('remark' => $remark, 'check_status' => intval($_POST['check_status'])));
 		    
 		    ecjia_admin::admin_log($store['merchants_name'].' 拒绝', 'check', 'merchants_preaudit');
-		    $this->showmessage(RC_Lang::get('store::store.deal_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin_preaudit/init')));
+		    return $this->showmessage(RC_Lang::get('store::store.deal_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin_preaudit/init')));
 		} else {
 		    //异常状态
-			$this->showmessage('操作异常，请检查', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			return $this->showmessage('操作异常，请检查', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 	}
 
@@ -504,7 +504,7 @@ class admin_preaudit extends ecjia_admin {
 	    $info = RC_DB::table('store_preaudit')->where('id', $id)->first();
 
 	    if (empty($info)) {
-	        $this->showmessage('信息不存在或已处理完成', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR,  array('pjaxurl' => RC_Uri::url('store/admin_preaudit/init')));
+	        return $this->showmessage('信息不存在或已处理完成', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR,  array('pjaxurl' => RC_Uri::url('store/admin_preaudit/init')));
 	    }
 	    $log_store_id = $info['store_id'] ? $info['store_id'] : $info['id'];
 	    $log_type = $info['store_id'] ? 2 : 1;
