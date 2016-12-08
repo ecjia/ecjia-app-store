@@ -35,7 +35,7 @@ class admin extends ecjia_admin {
 		RC_Script::enqueue_script('store_log', RC_App::apps_url('statics/js/store_log.js', __FILE__));
 		RC_Script::enqueue_script('commission_info',RC_App::apps_url('statics/js/commission.js' , __FILE__));
 		RC_Script::enqueue_script('region',RC_Uri::admin_url('statics/lib/ecjia-js/ecjia.region.js'));
-		RC_Script::enqueue_script('map', 'http://api.map.baidu.com/api?v=2.0&ak=P4C6rokKFWHjXELjOnogw3zbxC0VYubo');
+		RC_Script::enqueue_script('map', 'https://api.map.baidu.com/api?v=2.0&ak=P4C6rokKFWHjXELjOnogw3zbxC0VYubo');
 
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('store::store.store'), RC_Uri::url('store/admin/init')));
 	}
@@ -584,7 +584,7 @@ class admin extends ecjia_admin {
 	public function get_longitude() {
 		$detail_address = $_POST['detail_address'];
 		$store_id = $_GET['store_id'];
-		$store_point = file_get_contents("http://api.map.baidu.com/geocoder/v2/?address='".$detail_address."'&output=json&ak=E70324b6f5f4222eb1798c8db58a017b");
+		$store_point = file_get_contents("https://api.map.baidu.com/geocoder/v2/?address='".$detail_address."'&output=json&ak=E70324b6f5f4222eb1798c8db58a017b");
 		$store_point = (array)json_decode($store_point);
 		$store_point['result'] = (array)$store_point['result'];
 		$location = (array)$store_point['result']['location'];
@@ -983,7 +983,7 @@ class admin extends ecjia_admin {
         $city_name = RC_DB::table('region')->where('region_id', $shop_city)->pluck('region_name');
         $city_district = RC_DB::table('region')->where('region_id', $shop_district)->pluck('region_name');
         $address = $city_name.'市'.$shop_address;
-        $shop_point = file_get_contents("http://api.map.baidu.com/geocoder/v2/?address='".$address."&output=json&ak=E70324b6f5f4222eb1798c8db58a017b");
+        $shop_point = file_get_contents("https://api.map.baidu.com/geocoder/v2/?address='".$address."&output=json&ak=E70324b6f5f4222eb1798c8db58a017b");
         $shop_point = (array)json_decode($shop_point);
         $shop_point['result'] = (array)$shop_point['result'];
         $location = (array)$shop_point['result']['location'];

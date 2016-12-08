@@ -102,11 +102,11 @@
 						<td>
 						{if $log_last.longitude || $log_last.latitude}
     						<div class="high_light h_info">{$log_last.longitude.original_data}&nbsp;{$log_last.latitude.original_data}</div>
-    						{if $log_last.longitude.original_data && $log_last.latitude.original_data}&nbsp;&nbsp;<a href="http://api.map.baidu.com/marker?location={$log_last.latitude.original_data},{$log_last.longitude.original_data}&title=我的位置&content={$store.merchants_name}&output=html&src=ecjiacityo2o" title="查看地图" target="_blank">[查看地图]</a>{/if}<br>
+    						{if $log_last.longitude.original_data && $log_last.latitude.original_data}&nbsp;&nbsp;<a href="https://api.map.baidu.com/marker?location={$log_last.latitude.original_data},{$log_last.longitude.original_data}&title=我的位置&content={$store.merchants_name}&output=html&src=ecjiacityo2o" title="查看地图" target="_blank">[查看地图]</a>{/if}<br>
     						<div class="high_light h_success">{$log_last.longitude.new_data}&nbsp;{$log_last.latitude.new_data}</div>
-    						{if $log_last.longitude.new_data && $log_last.latitude.new_data}&nbsp;&nbsp;<a href="http://api.map.baidu.com/marker?location={$log_last.latitude.new_data},{$log_last.longitude.new_data}&title=我的位置&content={$store.merchants_name}&output=html&src=ecjiacityo2o" title="查看地图" target="_blank">[查看地图]</a>{/if}
+    						{if $log_last.longitude.new_data && $log_last.latitude.new_data}&nbsp;&nbsp;<a href="https://api.map.baidu.com/marker?location={$log_last.latitude.new_data},{$log_last.longitude.new_data}&title=我的位置&content={$store.merchants_name}&output=html&src=ecjiacityo2o" title="查看地图" target="_blank">[查看地图]</a>{/if}
 						{else}
-    						{$store.longitude}&nbsp;&nbsp;{$store.latitude}{if $store.longitude && $store.latitude}&nbsp;&nbsp;<a href="http://api.map.baidu.com/marker?location={$store.latitude},{$store.longitude}&title=我的位置&content={$store.merchants_name}&output=html&src=ecjiacityo2o" title="查看地图" target="_blank">[查看地图]</a>{/if}
+    						{$store.longitude}&nbsp;&nbsp;{$store.latitude}{if $store.longitude && $store.latitude}&nbsp;&nbsp;<a href="https://api.map.baidu.com/marker?location={$store.latitude},{$store.longitude}&title=我的位置&content={$store.merchants_name}&output=html&src=ecjiacityo2o" title="查看地图" target="_blank">[查看地图]</a>{/if}
 						{/if}
 						</td>
 					</tr>

@@ -106,7 +106,7 @@ function getgeohash($city, $address){
     $city_name = RC_DB::table('region')->where('region_id', $shop_city)->pluck('region_name');
     $city_district = RC_DB::table('region')->where('region_id', $shop_district)->pluck('region_name');
     $address = $city_name.'市'.$shop_address;
-    $shop_point = file_get_contents("http://api.map.baidu.com/geocoder/v2/?address='".$address."&output=json&ak=E70324b6f5f4222eb1798c8db58a017b");
+    $shop_point = file_get_contents("https://api.map.baidu.com/geocoder/v2/?address='".$address."&output=json&ak=E70324b6f5f4222eb1798c8db58a017b");
     $shop_point = (array)json_decode($shop_point);
     $shop_point['result'] = (array)$shop_point['result'];
     $location = (array)$shop_point['result']['location'];
