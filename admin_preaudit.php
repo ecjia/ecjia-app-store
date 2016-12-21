@@ -317,7 +317,8 @@ class admin_preaudit extends ecjia_admin {
 					'shop_trade_time' ,           // 营业时间
 					'shop_description' ,          // 店铺描述
 					'shop_notice'   ,             // 店铺公告
-					'shop_review_goods',         // 店铺商品审核状态，平台开启审核时店铺优先级高于平台设置
+					'shop_review_goods',          // 店铺商品审核状态，平台开启审核时店铺优先级高于平台设置
+					'express_assign_auto',		  // o2o配送自动派单开关	
 				);
 				$merchants_config = RC_DB::table('merchants_config');
 				foreach ($merchant_config as $val) {
