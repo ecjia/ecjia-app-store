@@ -277,7 +277,7 @@ class order_query extends order {
         foreach (array('order_sn', 'consignee', 'email', 'address', 'zipcode', 'tel', 'user_name') AS $val) {
             $filter[$val] = stripslashes($filter[$val]);
         }
-		RC_Loader::load_app_func('common','goods');
+		RC_Loader::load_app_func('global', 'goods');
 	    /* 格式话数据 */
 	    if(!empty($row)) {
 	        foreach ($row AS $key => $value) {
