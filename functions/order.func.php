@@ -609,7 +609,7 @@ function order_refund($order, $refund_type, $refund_note, $refund_amount = 0) {
 	/* 检查参数 */
 	$user_id = $order['user_id'];
 	if ($user_id == 0 && $refund_type == 1) {
-		ecjia_admin::$controller->showmessage(__('匿名用户不能返回退款到帐户余额！') , ecjia_admin::MSGTYPE_JSON | ecjia_admin::MSGSTAT_ERROR);
+		return ecjia_admin::$controller->showmessage(__('匿名用户不能返回退款到帐户余额！') , ecjia_admin::MSGTYPE_JSON | ecjia_admin::MSGSTAT_ERROR);
 	}
 
 	$amount = $refund_amount > 0 ? $refund_amount : $order['money_paid'];
@@ -618,7 +618,7 @@ function order_refund($order, $refund_type, $refund_note, $refund_amount = 0) {
 	}
 
 	if (!in_array($refund_type, array(1, 2, 3))) {
-		ecjia_admin::$controller->showmessage(__('操作有误！请重新操作！') , ecjia_admin::MSGTYPE_JSON | ecjia_admin::MSGSTAT_ERROR);
+		return ecjia_admin::$controller->showmessage(__('操作有误！请重新操作！') , ecjia_admin::MSGTYPE_JSON | ecjia_admin::MSGSTAT_ERROR);
 	}
 
 	/* 备注信息 */
@@ -2144,7 +2144,7 @@ function EM_order_query_sql($type = 'finished', $alias = '') {
 // 		return " AND {$alias}order_status = '" . OS_CONFIRMED . "'" .
 // 		" AND {$alias}shipping_status " . db_create_in(array(SS_SHIPPED, SS_RECEIVED)) . " ";
 // 	} else {
-// 		ecjia_admin::$controller->showmessage(__('操作有误！请重新操作！') , ecjia_admin::MSGTYPE_HTML | ecjia_admin::MSGSTAT_ERROR);
+// 		return ecjia_admin::$controller->showmessage(__('操作有误！请重新操作！') , ecjia_admin::MSGTYPE_HTML | ecjia_admin::MSGSTAT_ERROR);
 // 	}
 // }
 
