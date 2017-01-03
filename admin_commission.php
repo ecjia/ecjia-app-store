@@ -25,8 +25,9 @@ class admin_commission extends ecjia_admin {
 		RC_Script::enqueue_script('bootstrap-editable.min',RC_Uri::admin_url('statics/lib/x-editable/bootstrap-editable/js/bootstrap-editable.min.js'));
 
 		RC_Script::enqueue_script('media-editor',RC_Uri::vendor_url('tinymce/tinymce.min.js'));
-		RC_Script::enqueue_script('commission',RC_App::apps_url('statics/js/commission.js' , __FILE__));
-
+		RC_Script::enqueue_script('store', RC_App::apps_url('statics/js/store.js', __FILE__));
+		RC_Script::enqueue_script('commission_info', RC_App::apps_url('statics/js/commission.js' , __FILE__));
+		
 		RC_Loader::load_app_func('admin_ecmoban', 'store');
 		RC_Loader::load_app_func('admin_order', 'store');
 
