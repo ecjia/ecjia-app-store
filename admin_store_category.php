@@ -14,7 +14,7 @@ class admin_store_category extends ecjia_admin {
 		RC_Loader::load_app_func('global');
 		assign_adminlog_content();
 		
-		RC_Loader::load_app_func('store_category','store');
+		RC_Loader::load_app_func('merchant_store_category', 'store');
 		
 		//全局JS和CSS
 		RC_Script::enqueue_script('smoke');

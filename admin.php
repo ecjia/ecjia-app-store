@@ -11,7 +11,7 @@ class admin extends ecjia_admin {
 
 		$this->db_region = RC_Model::model('store/region_model');
 		RC_Loader::load_app_func('global');
-		RC_Loader::load_app_func('store_merchant');
+		RC_Loader::load_app_func('merchant_store');
 		assign_adminlog_content();
 
 		//全局JS和CSS

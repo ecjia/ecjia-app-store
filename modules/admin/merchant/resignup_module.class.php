@@ -71,7 +71,7 @@ class resignup_module extends api_admin implements api_interface {
 
         RC_DB::table('store_preaudit')->where('contact_mobile', '=', $mobile)->update($data);
         //审核日志
-        RC_Loader::load_app_func('check_log', 'franchisee');
+        RC_Loader::load_app_func('merchant_franchisee', 'franchisee');
         add_check_log($data, $info_store_preaudit);
         
         return array();

@@ -85,7 +85,7 @@ class signup_module extends api_admin implements api_interface {
 		
 		$insert_id = RC_DB::table('store_preaudit')->insertGetId($merchant_shop_data);
 		//审核日志
-		RC_Loader::load_app_func('check_log', 'franchisee');
+		RC_Loader::load_app_func('merchant_franchisee', 'franchisee');
 		add_check_log($merchant_shop_data, '', $insert_id);
 
 		unset($_SESSION['merchant_validate_code']);
