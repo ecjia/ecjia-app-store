@@ -10,6 +10,7 @@ defined('IN_ECJIA') or exit('No permission resources.');
  *
  * @return  boolean
  */
+ 
 function cat_exists($cat_name, $parent_cat, $exclude = 0) {
 
 	$db = RC_DB::table('store_category');
@@ -141,7 +142,7 @@ function cat_list($cat_id = 0, $selected = 0, $re_type = true, $level = 0, $is_s
 			$end_level = $level;
 		} else {
 			$first_item = reset ( $options ); // 获取第一个元素
-			$end_level = $first_item ['level'] + $level;
+			$end_level  = $first_item ['level'] + $level;
 		}
 
 		/* 保留level小于end_level的部分 */
@@ -208,10 +209,10 @@ function cat_options($spec_cat_id, $arr) {
 							break;
 						}
 						
-						$options [$cat_id] = $value;
-						$options [$cat_id] ['level'] = $level;
-						$options [$cat_id] ['id'] = $cat_id;
-						$options [$cat_id] ['name'] = $value ['cat_name'];
+						$options [$cat_id]            = $value;
+						$options [$cat_id] ['level']  = $level;
+						$options [$cat_id] ['id']     = $cat_id;
+						$options [$cat_id] ['name']   = $value ['cat_name'];
 						unset ( $arr [$key] );
 						
 						if ($value ['has_children'] == 0) {
@@ -226,19 +227,19 @@ function cat_options($spec_cat_id, $arr) {
 					}
 					
 					if ($value ['parent_id'] == $last_cat_id) {
-						$options [$cat_id] = $value;
-						$options [$cat_id] ['level'] = $level;
-						$options [$cat_id] ['id'] = $cat_id;
-						$options [$cat_id] ['name'] = $value ['cat_name'];
+						$options [$cat_id]            = $value;
+						$options [$cat_id] ['level']  = $level;
+						$options [$cat_id] ['id']     = $cat_id;
+						$options [$cat_id] ['name']   = $value ['cat_name'];
 						unset ( $arr [$key] );
 						
 						if ($value ['has_children'] > 0) {
 							if (end ( $cat_id_array ) != $last_cat_id) {
 								$cat_id_array [] = $last_cat_id;
 							}
-							$last_cat_id = $cat_id;
-							$cat_id_array [] = $cat_id;
-							$level_array [$last_cat_id] = ++ $level;
+							$last_cat_id                 = $cat_id;
+							$cat_id_array []             = $cat_id;
+							$level_array [$last_cat_id]  = ++ $level;
 						}
 					} elseif ($value ['parent_id'] > $last_cat_id) {
 						break;
@@ -252,8 +253,8 @@ function cat_options($spec_cat_id, $arr) {
 					if ($last_cat_id != end ( $cat_id_array )) {
 						$last_cat_id = end ( $cat_id_array );
 					} else {
-						$level = 0;
-						$last_cat_id = 0;
+						$level        = 0;
+						$last_cat_id  = 0;
 						$cat_id_array = array ();
 						continue;
 					}
@@ -315,6 +316,5 @@ function cat_options($spec_cat_id, $arr) {
 function get_children($cat = 0) {
 	return array_unique(array_merge(array($cat), array_keys(cat_list($cat, 0, false ))));
 }
-
 
 // end

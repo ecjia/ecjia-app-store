@@ -1,10 +1,12 @@
 <?php
 defined('IN_ECJIA') or exit('No permission resources.');
+
 /**
  * 后台入驻商管理
  * @author songqian
  *
  */
+ 
 class store_admin_menu_api extends Component_Event_Api {
 
     public function call(&$options) {

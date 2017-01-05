@@ -1,8 +1,9 @@
 <?php
+defined('IN_ECJIA') or exit('No permission resources.');
+
 /**
  * 商家店铺后台设置
  */
-defined('IN_ECJIA') or exit('No permission resources.');
 
 class admin_commission extends ecjia_admin {
 
@@ -88,7 +89,7 @@ class admin_commission extends ecjia_admin {
 	public function insert() {
 		$this->admin_priv('store_commission_add',ecjia::MSGTYPE_JSON);
 
-		$user_id			= isset($_POST['user_id']) 		? intval($_POST['user_id']) 		: 0;
+		$user_id			= isset($_POST['user_id']) 		        ? intval($_POST['user_id']) 		    : 0;
 		$suppliers_percent	= isset($_POST['suppliers_percent']) 	? intval($_POST['suppliers_percent']) 	: 0;
 		$suppliers_desc		= isset($_POST['suppliers_desc']) 		? trim($_POST['suppliers_desc']) 		: '';
 
@@ -104,8 +105,8 @@ class admin_commission extends ecjia_admin {
 		$server_id = $this->msdb->insert($data);
 
 		if ($server_id) {
-			$user_name = $this->user_db->where(array('user_id' => $user_id))->get_field('user_name');
-			$percent = $this->mpdb->where(array('percent_id' => $suppliers_percent))->get_field('percent_value');
+			$user_name   = $this->user_db->where(array('user_id' => $user_id))->get_field('user_name');
+			$percent     = $this->mpdb->where(array('percent_id' => $suppliers_percent))->get_field('percent_value');
 			ecjia_admin::admin_log('商家名是 '.$user_name.'，'.'佣金比例是 '.$percent.'%', 'add', 'store_commission');
 
 			return $this->showmessage('设置商家佣金成功！',ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl'=>RC_Uri::url('store/admin_commission/edit',array('id'=>$server_id, 'user_id'=>$user_id))));
@@ -150,7 +151,7 @@ class admin_commission extends ecjia_admin {
 	public function update() {
 		$this->admin_priv('store_commission_update',ecjia::MSGTYPE_JSON);
 
-		$id = $_POST['id'];
+		$id       = $_POST['id'];
 		$store_id = $_POST['store_id'];
 
 		$data = array (
@@ -162,10 +163,12 @@ class admin_commission extends ecjia_admin {
 		}
 
 		RC_DB::table('store_franchisee')
-				->where(RC_DB::raw('store_id'), '=', $store_id)->update($data);
+				->where(RC_DB::raw('store_id'), '=', $store_id)
+		        ->update($data);
 
 		$merchants_name = RC_DB::table('store_franchisee')
-							->where(RC_DB::raw('store_id'), '=', $store_id)->pluck('merchants_name');
+							  ->where(RC_DB::raw('store_id'), '=', $store_id)
+		                      ->pluck('merchants_name');
 
 		$percent = RC_DB::table('store_percent')->where(RC_DB::raw('percent_id'), '=', $_POST['percent_id'])->pluck('percent_value');
 		ecjia_admin::admin_log('商家名是 '.$merchants_name.'，'.'佣金比例是 '.$percent.'%', 'edit', 'store_commission');
@@ -177,8 +180,7 @@ class admin_commission extends ecjia_admin {
 		$this->admin_priv('store_commission_delete',ecjia::MSGTYPE_JSON);
 
 		$id = $_GET['id'];
-		//$info = $this->msdb->where(array('server_id'=>$id))->find();
-		$info = RC_DB::table('store_commission')->where(RC_DB::raw('id'), '=', $id)->first();
+		$info     = RC_DB::table('store_commission')->where(RC_DB::raw('id'), '=', $id)->first();
 		$srore_id = $info['store_id'];
 		if ($info) {
 			//判断是否存在订单
@@ -199,7 +201,7 @@ class admin_commission extends ecjia_admin {
 			//$percent = $this->mpdb->where(array('percent_id' => intval($info['suppliers_percent'])))->get_field('percent_value');
 			//$this->msdb->where(array('server_id' => $id))->delete();
 			$merchants_name = RC_DB::table('store_franchisee')->where(RC_DB::raw('store_id'), $srore_id)->pluck('merchants_name');
-			$percent = RC_DB::table('store_percent')->where(RC_DB::raw('percent_id'), '=', intval($info['percent_id']))->pluck('percent_value');
+			$percent        = RC_DB::table('store_percent')->where(RC_DB::raw('percent_id'), '=', intval($info['percent_id']))->pluck('percent_value');
 
 			RC_DB::table('store_commission')->where(RC_DB::raw('id'), $id)->delete();
 
@@ -217,15 +219,14 @@ class admin_commission extends ecjia_admin {
 	public function batch() {
 		$this->admin_priv('store_commission_delete',ecjia::MSGTYPE_JSON);
 
-		$id = $_POST['id'];
+		$id     = $_POST['id'];
 		$id_new = explode(',', $id);
 
-		//$info = $this->ms_viewdb->join(array('users','merchants_percent'))->in(array('server_id' => $id))->field('u.user_name,mp.percent_value')->select();
 		$info = RC_DB::table('store_commission as sc')
 				 ->leftJoin('store_franchisee as sf', RC_DB::raw('sc.store_id'), '=', RC_DB::raw('sf.store_id'))
 				 ->leftJoin('store_percent as sp', RC_DB::raw('sc.percent_id'), '=', RC_DB::raw('sp.percent_id'))
-				 ->selectRaw('sf.merchants_name, sp.percent_value')->get();
-		//$server_delete = $this->msdb->in(array('server_id' => $id))->delete();
+				 ->selectRaw('sf.merchants_name, sp.percent_value')
+		         ->get();
 
 		$server_delete = RC_DB::table('store_commission')->whereIn(RC_DB::raw('id'), $id_new)->delete();
 
@@ -266,9 +267,9 @@ class admin_commission extends ecjia_admin {
 		//$percent_id = get_table_date('store_commission', "store_id = '$store_id' ", $date, $sqlType = 2);
 		//$date = array('percent_value');
 		//$percent_value = get_table_date('store_commission', "percent_id = '$percent_id'", $date, $sqlType = 2) . '%';
-		$percent_id = RC_DB::table('store_commission')
-						->where(RC_DB::raw('store_id'), $store_id)
-						->pluck(RC_DB::raw('percent_id'));
+		$percent_id    = RC_DB::table('store_commission')
+    					   ->where(RC_DB::raw('store_id'), $store_id)
+    					   ->pluck(RC_DB::raw('percent_id'));
 		$percent_value = RC_DB::table('store_percent')
 						   ->where(RC_DB::raw('percent_id'), $percent_id)
 						   ->pluck(RC_DB::raw('percent_value'));
@@ -286,11 +287,10 @@ class admin_commission extends ecjia_admin {
 	 */
 	public function toggle_state()
 	{
-		$order_id       = intval($_POST['id']);
-		$order_sn       = $_GET['order_sn'];
+		$order_id             = intval($_POST['id']);
+		$order_sn             = $_GET['order_sn'];
 		$arr['is_settlement'] = intval($_POST['val']);
 
-		//$update = $this->oidb->where(array('order_id'=>$order_id))->update($arr);
 		RC_DB::table('order_info')->where(RC_DB::raw('order_id'), $order_id)->update($arr);
 // 		if ($update) {
 			//$user_name = $this->user_db->where(array('user_id' => $_GET['id']))->get_field('user_name');
@@ -310,9 +310,9 @@ class admin_commission extends ecjia_admin {
 		$filter = $_GET['JSON'];
 		$filter = (object)$filter;
 
-		$user_id = $filter->user_id;
-		$date = array('shoprz_brandName, shopNameSuffix');
-		$user = get_table_date('merchants_shop_information', "user_id = '$user_id'", $date);
+		$user_id  = $filter->user_id;
+		$date     = array('shoprz_brandName, shopNameSuffix');
+		$user     = get_table_date('merchants_shop_information', "user_id = '$user_id'", $date);
 		if (empty($user['shoprz_brandName'])) {
 			$user['shoprz_brandName'] = '';
 		}
@@ -334,13 +334,8 @@ class admin_commission extends ecjia_admin {
 		$filter['sort_by'] = empty($_GET['sort_by']) ?  RC_DB::raw('sc.id') : trim($_GET['sort_by']);
 		$filter['sort_order'] = empty($_GET['sort_order']) ? 'ASC' : trim($_GET['sort_order']);
 
-		//$count = $this->msdb->count();
 		$count = RC_DB::table('store_commission')->count();
 		$page = new ecjia_page($count,10,5);
-
-		//$data = $this->ms_viewdb->join(array('merchants_shop_information','users','merchants_steps_fields'))
-		//->field('u.user_name, mis.*, msf.*, s.server_id, s.user_id, s.suppliers_desc, s.suppliers_percent')
-		//->order(array($filter['sort_by'] => $filter['sort_order']))->group(array('s.user_id'))->limit($page->limit())->select();
 
 		$dbview = RC_DB::table('store_commission as sc')
 				 ->leftJoin('store_franchisee as sf', RC_DB::raw('sc.store_id'), '=', RC_DB::raw('sf.store_id'))
@@ -349,7 +344,10 @@ class admin_commission extends ecjia_admin {
 		$data =  $dbview
 				 ->selectRaw('sf.merchants_name, sf.contact_mobile, sf.store_id, sc.percent_id, sp.percent_value, sc.id')
 				 ->orderBy($filter['sort_by'], $filter['sort_order'])
-				 ->groupBy(RC_DB::raw('sc.store_id'))->take(10)->skip($page->start_id-1)->get();
+				 ->groupBy(RC_DB::raw('sc.store_id'))
+        		 ->take(10)
+        		 ->skip($page->start_id-1)
+        		 ->get();
 
 		if (!empty($data)) {
 			foreach ($data as $key => $val) {
@@ -372,7 +370,8 @@ class admin_commission extends ecjia_admin {
 	private function get_suppliers_percent() {
 		$res = RC_DB::table('store_percent')
 				 ->select(RC_DB::raw('percent_id'), RC_DB::raw('percent_value'))
-				 ->orderBy('sort_order', 'asc')->get();
+				 ->orderBy('sort_order', 'asc')
+		         ->get();
 
 		return $res;
 	}
@@ -407,12 +406,12 @@ class admin_commission extends ecjia_admin {
 			$order_query = RC_Loader::load_app_class('order_query', 'store');
 			$where = $order_query->order_finished('o.');
 		}
-		$total_fee = "SUM(" . order_amount_field('o.', $store_id) . ") AS total_fee ";
+		$total_fee  = "SUM(" . order_amount_field('o.', $store_id) . ") AS total_fee ";
 		$order_info = RC_Loader::load_app_model('order_info_viewmodel', 'store');
 
 		$where = array_merge($where, array('store_id' => $store_id));
 
-		$res = $order_info->join(array('order_goods', 'order_info'))->field($total_fee)->where($where)->group('o.order_id')->find();
+		$res   = $order_info->join(array('order_goods', 'order_info'))->field($total_fee)->where($where)->group('o.order_id')->find();
 		return $res;
 	}
 
@@ -507,20 +506,16 @@ class admin_commission extends ecjia_admin {
 	 */
 	private function store_order_list($store_id = 0) {
 
-		$filter['sort_by'] = empty($_GET['sort_by']) ? RC_DB::raw('o.order_id') : trim($_GET['sort_by']);
+		$filter['sort_by']    = empty($_GET['sort_by']) ? RC_DB::raw('o.order_id') : trim($_GET['sort_by']);
 		$filter['sort_order'] = empty($_GET['sort_order']) ? 'DESC' : trim($_GET['sort_order']);
 
 		$filter['start_time'] = empty($_GET['start_time']) ? '' : RC_Time::local_strtotime(trim($_GET['start_time']));
-		$filter['end_time'] = empty($_GET['end_time']) ? '' : RC_Time::local_strtotime(trim($_GET['end_time']));
+		$filter['end_time']   = empty($_GET['end_time']) ? '' : RC_Time::local_strtotime(trim($_GET['end_time']));
 
-		$where = '1';
-		//$count = $this->oidb->field('count(*)')->select();
-		//$string = $this->oidb->last_sql();
-		$count = RC_DB::table('order_info')->select(RC_DB::raw('count(*)'))->get();
+		$where  = '1';
+		$count  = RC_DB::table('order_info')->select(RC_DB::raw('count(*)'))->get();
 		$string = RC_DB::table('order_info')->toSql();
 
-		//$where .= " AND ($string as oi2 where oi2.main_order_id = o.order_id) = 0 ";
-		//$where .= " AND o.is_delete = 0 AND o.store_id = '$store_id' group by o.order_id ";
 
 		$where .= " AND o.is_delete = 0 AND o.store_id = '$store_id' ";
 		if (!empty($filter['start_time'])) {
@@ -571,15 +566,12 @@ class admin_commission extends ecjia_admin {
 			$row[$i]['formated_total_fee'] 		= price_format($row[$i]['total_fee']);
 			$row[$i]['short_order_time'] 		= RC_Time::local_date('Y-m-d H:i', $row[$i]['add_time']);
 
-			//$date = array('suppliers_percent');
-			//$percent_id = get_table_date('merchants_server', "user_id = '" .$row[$i]['ru_id']. "' ", $date, $sqlType = 2);
-			//$date = array('percent_value');
-			//$percent_value = get_table_date('merchants_percent', "percent_id = '$percent_id'", $date, $sqlType = 2);
-
 			$percent_id = RC_DB::table('store_commission')
-							->where(RC_DB::raw('store_id'), $row[$i]['store_id'])->pluck(RC_DB::raw('percent_id'));
+							->where(RC_DB::raw('store_id'), $row[$i]['store_id'])
+			                ->pluck(RC_DB::raw('percent_id'));
 			$percent_value = RC_DB::table('store_percent')
-							   ->where(RC_DB::raw('percent_id'), $percent_id)->pluck(RC_DB::raw('percent_value'));
+							   ->where(RC_DB::raw('percent_id'), $percent_id)
+			                   ->pluck(RC_DB::raw('percent_value'));
 
 			if ($percent_value == 0) {
 				$percent_value = 1;

@@ -1,5 +1,6 @@
 <?php
 defined('IN_ECJIA') or exit('No permission resources.');
+
 /**
 * ECJIA 购物流程函数库
 */
@@ -12,6 +13,7 @@ defined('IN_ECJIA') or exit('No permission resources.');
 * @param   string	   $cfg
 * @return  void
 */
+
 function unserialize_config($cfg) {
 	if (is_string($cfg) && ($arr = unserialize($cfg)) !== false) {
 		$config = array();
@@ -88,7 +90,7 @@ function pay_fee($payment_id, $order_amount, $cod_fee=null) {
 	$payment_method = RC_Loader::load_app_class('payment_method','payment');
 	$pay_fee = 0;
 	$payment = $payment_method->payment_info($payment_id);
-	$rate	= ($payment['is_cod'] && !is_null($cod_fee)) ? $cod_fee : $payment['pay_fee'];
+	$rate	 = ($payment['is_cod'] && !is_null($cod_fee)) ? $cod_fee : $payment['pay_fee'];
 
 	if (strpos($rate, '%') !== false) {
 		/* 支付费用是一个比例 */
@@ -112,7 +114,7 @@ function order_info($order_id, $order_sn = '') {
 	$db = RC_Loader::load_app_model('order_info_model','orders');
 	/* 计算订单各种费用之和的语句 */
 	$total_fee = " (goods_amount - discount + tax + shipping_fee + insure_fee + pay_fee + pack_fee + card_fee) AS total_fee ";
-	$order_id = intval($order_id);
+	$order_id  = intval($order_id);
 	if ($order_id > 0) {
 		$order = $db->field('*,'.$total_fee)->find(array('order_id' => $order_id, 'extension_code' => '', 'extension_id' => 0, 'is_delete' => 0));
 	} else {
@@ -264,7 +266,7 @@ function order_fee($order, $goods, $consignee) {
             $total['real_goods_count']++;
         }
 
-        $total['goods_price']  += $val['goods_price'] * $val['goods_number'];
+        $total['goods_price']  += $val['goods_price']  * $val['goods_number'];
         $total['market_price'] += $val['market_price'] * $val['goods_number'];
     }
 
@@ -327,8 +329,8 @@ function order_fee($order, $goods, $consignee) {
     /* 线下红包 */
     if (!empty($order['bonus_kill'])) {
 
-        $bonus  = bonus_info(0,$order['bonus_kill']);
-        $total['bonus_kill'] = $order['bonus_kill'];
+        $bonus                        = bonus_info(0,$order['bonus_kill']);
+        $total['bonus_kill']          = $order['bonus_kill'];
         $total['bonus_kill_formated'] = price_format($total['bonus_kill'], false);
     }
 
@@ -340,7 +342,7 @@ function order_fee($order, $goods, $consignee) {
         $region['city']     = $consignee['city'];
         $region['district'] = $consignee['district'];
 
-        $shipping_method = RC_Loader::load_app_class('shipping_method', 'shipping');
+        $shipping_method    = RC_Loader::load_app_class('shipping_method', 'shipping');
         $shipping_info 		= $shipping_method->shipping_area_info($order['shipping_id'], $region);
 
         if (!empty($shipping_info)) {
@@ -855,7 +857,7 @@ function send_order_bonus($order_id) {
 			/* 修改用户红包 */
 			$data = array(
 				'bonus_type_id' => $bonus['type_id'],
-				'user_id'	   => $user['user_id']
+				'user_id'	    => $user['user_id']
 				);
 
 			for ($i = 0; $i < $bonus['number']; $i++) {
@@ -974,7 +976,7 @@ function get_delivery_sn() {
  */
 function order_action($order_sn, $order_status, $shipping_status, $pay_status, $note = '', $username = null, $place = 0) {
 	$db_action = RC_Loader::load_app_model ( 'order_action_model', 'orders' );
-	$db_info = RC_Loader::load_app_model ( 'order_info_model', 'orders' );
+	$db_info   = RC_Loader::load_app_model ( 'order_info_model', 'orders' );
 	if (is_null ( $username )) {
 		$username = $_SESSION ['admin_name'];
 	}
@@ -1166,8 +1168,8 @@ function judge_package_stock($package_id, $package_num = 1) {
  */
 function get_order_detail ($order_id, $user_id = 0)
 {
-    $db = RC_Loader::load_app_model('shipping_model', 'shipping');
-    $dbview = RC_Loader::load_app_model('package_goods_viewmodel', 'goods');
+    $db         = RC_Loader::load_app_model('shipping_model', 'shipping');
+    $dbview     = RC_Loader::load_app_model('package_goods_viewmodel', 'goods');
     $pay_method = RC_Loader::load_app_class('payment_method', 'payment');
 
     $order_id = intval($order_id);
@@ -1234,10 +1236,10 @@ function get_order_detail ($order_id, $user_id = 0)
                 foreach ($goods_list as $goods) {
                     $dbview->view = array(
                         'goods' => array(
-                            'type' => Component_Model_View::TYPE_LEFT_JOIN,
+                            'type'  => Component_Model_View::TYPE_LEFT_JOIN,
                             'alias' => 'g',
                             'field' => 'g.goods_id',
-                            'on' => 'pg.goods_id = g.goods_id'
+                            'on'    => 'pg.goods_id = g.goods_id'
                         )
                     );
 
@@ -1247,9 +1249,9 @@ function get_order_detail ($order_id, $user_id = 0)
                             $info = virtual_card_result($order['order_sn'], $val);
                             if ($info) {
                                 $virtual_card[] = array(
-                                    'goods_id' => $goods['goods_id'],
-                                    'goods_name' => $goods['goods_name'],
-                                    'info' => $info
+                                    'goods_id'      => $goods['goods_id'],
+                                    'goods_name'    => $goods['goods_name'],
+                                    'info'          => $info
                                 );
                             }
                         }
@@ -1302,17 +1304,17 @@ function virtual_card_result($order_sn, $goods) {
 		foreach ( $res as $row ) {
 			/* 卡号和密码解密 */
 			if ($row ['crc32'] == 0 || $row ['crc32'] == crc32 ( $auth_key )) {
-				$row ['card_sn'] = RC_Crypt::decrypt ( $row ['card_sn'] );
-				$row ['card_password'] = RC_Crypt::decrypt ( $row ['card_password'] );
+				$row ['card_sn']        = RC_Crypt::decrypt ( $row ['card_sn'] );
+				$row ['card_password']  = RC_Crypt::decrypt ( $row ['card_password'] );
 			}  else {
-				$row ['card_sn'] = '***';
-				$row ['card_password'] = '***';
+				$row ['card_sn']        = '***';
+				$row ['card_password']  = '***';
 			}
 
 			$cards [] = array (
-					'card_sn' => $row ['card_sn'],
-					'card_password' => $row ['card_password'],
-					'end_date' => date ( ecjia::config('date_format'), $row ['end_date'] )
+					'card_sn'          => $row ['card_sn'],
+					'card_password'    => $row ['card_password'],
+					'end_date'         => date ( ecjia::config('date_format'), $row ['end_date'] )
 			);
 		}
 	}

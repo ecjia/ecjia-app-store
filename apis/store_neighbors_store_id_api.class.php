@@ -1,10 +1,12 @@
 <?php
 defined('IN_ECJIA') or exit('No permission resources.');
+
 /**
  * 店铺列表接口
  * @author
  *
  */
+ 
 class store_neighbors_store_id_api extends Component_Event_Api {
 	/**
 	 *
@@ -49,6 +51,5 @@ class store_neighbors_store_id_api extends Component_Event_Api {
 // 		$geohash_code = substr($geohash_code, 0, 5);
 	}
 }
-
 
 // end

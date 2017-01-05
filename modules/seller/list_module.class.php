@@ -1,10 +1,12 @@
 <?php
 defined('IN_ECJIA') or exit('No permission resources.');
+
 /**
  * 店铺街列表
  * @author will.chen
  *
  */
+ 
 class list_module extends api_front implements api_interface {
     public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {
 		$seller_categroy	= $this->requestData('category_id', 0);
@@ -21,7 +23,7 @@ class list_module extends api_front implements api_interface {
 			);
 			return array('data' => $seller_list, 'pager' => $page);
 		} else {
-            $geohash = RC_Loader::load_app_class('geohash', 'store');
+            $geohash      = RC_Loader::load_app_class('geohash', 'store');
             $geohash_code = $geohash->encode($location['latitude'] , $location['longitude']);
             $geohash_code = substr($geohash_code, 0, 7);
         }
@@ -31,12 +33,12 @@ class list_module extends api_front implements api_interface {
 		
 		$options = array(
 				'seller_category'	=> $seller_categroy,
-				'keywords'		=> $keywords,
-				'size'			=> $size,
-				'page'			=> $page,
-				'geohash'		=> $geohash_code,
-				'sort'			=> array('sort_order' => 'asc'),
-				'limit'			=> 'all'
+				'keywords'		    => $keywords,
+				'size'			    => $size,
+				'page'			    => $page,
+				'geohash'		    => $geohash_code,
+				'sort'			    => array('sort_order' => 'asc'),
+				'limit'			    => 'all'
 		);
 		
 // 		$cache_id = sprintf('%X', crc32($seller_categroy .'-' . $_SESSION['user_rank']. '-' .
@@ -189,21 +191,20 @@ class list_module extends api_front implements api_interface {
  */
 function getDistance($lat1, $lng1, $lat2, $lng2, $len_type = 1, $decimal = 1)
 {
-	$EARTH_RADIUS = 6378.137;
-	$PI = 3.1415926;
-	$radLat1 = $lat1 * $PI / 180.0;
-	$radLat2 = $lat2 * $PI / 180.0;
-	$a = $radLat1 - $radLat2;
-	$b = ($lng1 * $PI / 180.0) - ($lng2 * $PI / 180.0);
-	$s = 2 * asin(sqrt(pow(sin($a/2),2) + cos($radLat1) * cos($radLat2) * pow(sin($b/2),2)));
-	$s = $s * $EARTH_RADIUS;
-	$s = round($s * 1000);
+	$EARTH_RADIUS  = 6378.137;
+	$PI            = 3.1415926;
+	$radLat1       = $lat1 * $PI / 180.0;
+	$radLat2       = $lat2 * $PI / 180.0;
+	$a             = $radLat1 - $radLat2;
+	$b             = ($lng1 * $PI / 180.0) - ($lng2 * $PI / 180.0);
+	$s             = 2 * asin(sqrt(pow(sin($a/2),2) + cos($radLat1) * cos($radLat2) * pow(sin($b/2),2)));
+	$s             = $s * $EARTH_RADIUS;
+	$s             = round($s * 1000);
 	if ($len_type > 1) {
 		$s /= 1000;
 	}
 
 	return round($s, $decimal);
 }
-
 
 // end

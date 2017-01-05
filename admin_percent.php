@@ -1,8 +1,9 @@
 <?php
+defined('IN_ECJIA') or exit('No permission resources.');
+
 /**
  * 商家佣金设置
  */
-defined('IN_ECJIA') or exit('No permission resources.');
 
 class admin_percent extends ecjia_admin {
 	public function __construct() {
@@ -225,4 +226,5 @@ class admin_percent extends ecjia_admin {
 		return array('item' => $data, 'filter'=>$filter, 'page' => $page->show(2), 'desc' => $page->page_desc(), 'current_page' => $page->current_page);
 	}
 }
+
 //end

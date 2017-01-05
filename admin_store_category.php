@@ -1,8 +1,9 @@
 <?php
+defined('IN_ECJIA') or exit('No permission resources.');
+
 /**
  * 店铺分类管理
  */
-defined('IN_ECJIA') or exit('No permission resources.');
 
 class admin_store_category extends ecjia_admin {
 	private $seller_category_db;
@@ -72,12 +73,12 @@ class admin_store_category extends ecjia_admin {
 	public function insert() {
 		$this->admin_priv('store_category_manage', ecjia::MSGTYPE_JSON);
 		
-		$cat['cat_name']     = !empty($_POST['cat_name'])     ? trim($_POST['cat_name'])     : '';
+		$cat['cat_name']     = !empty($_POST['cat_name'])     ? trim($_POST['cat_name'])        : '';
 		$cat['parent_id'] 	 = !empty($_POST['store_cat_id']) ? intval($_POST['store_cat_id'])  : 0;
-		$cat['sort_order']   = !empty($_POST['sort_order'])   ? intval($_POST['sort_order']) : 0;
-		$cat['is_show'] 	 = isset($_POST['is_show']) ? 1 : 0;
-		$cat['keywords']     = !empty($_POST['keywords'])     ? trim($_POST['keywords'])     : '';
-		$cat['cat_desc']     = !empty($_POST['cat_desc'])     ? $_POST['cat_desc']           : '';
+		$cat['sort_order']   = !empty($_POST['sort_order'])   ? intval($_POST['sort_order'])    : 0;
+		$cat['is_show'] 	 = isset($_POST['is_show'])       ? 1                               : 0;
+		$cat['keywords']     = !empty($_POST['keywords'])     ? trim($_POST['keywords'])        : '';
+		$cat['cat_desc']     = !empty($_POST['cat_desc'])     ? $_POST['cat_desc']              : '';
 	
 		if (cat_exists($cat['cat_name'], $cat['parent_id'])) {
 			return $this->showmessage('已存在相同的分类名称!', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
@@ -139,15 +140,15 @@ class admin_store_category extends ecjia_admin {
 	public function update() {
 		$this->admin_priv('store_category_manage', ecjia::MSGTYPE_JSON);
 		
-		$cat_id              = !empty($_POST['cat_id'])       ? intval($_POST['cat_id'])     : 0;
-		$cat['cat_name']     = !empty($_POST['cat_name'])     ? trim($_POST['cat_name'])     : '';
-		$cat['parent_id']	 = !empty($_POST['store_cat_id'])    ? intval($_POST['store_cat_id'])  : 0;
-		$cat['sort_order']   = !empty($_POST['sort_order'])   ? intval($_POST['sort_order']) : 0;
-		$cat['is_show'] 	 = isset($_POST['is_show']) ? 1 : 0;
-		$cat['keywords']     = !empty($_POST['keywords'])     ? trim($_POST['keywords'])     : '';
-		$cat['cat_desc']     = !empty($_POST['cat_desc'])     ? $_POST['cat_desc']           : '';
+		$cat_id              = !empty($_POST['cat_id'])       ? intval($_POST['cat_id'])        : 0;
+		$cat['cat_name']     = !empty($_POST['cat_name'])     ? trim($_POST['cat_name'])        : '';
+		$cat['parent_id']	 = !empty($_POST['store_cat_id']) ? intval($_POST['store_cat_id'])  : 0;
+		$cat['sort_order']   = !empty($_POST['sort_order'])   ? intval($_POST['sort_order'])    : 0;
+		$cat['is_show'] 	 = isset($_POST['is_show'])       ? 1                               : 0;
+		$cat['keywords']     = !empty($_POST['keywords'])     ? trim($_POST['keywords'])        : '';
+		$cat['cat_desc']     = !empty($_POST['cat_desc'])     ? $_POST['cat_desc']              : '';
 		
-		$old_cat_name     	= !empty($_POST['old_cat_name '])     ? trim($_POST['old_cat_name '])     : '';
+		$old_cat_name     	 = !empty($_POST['old_cat_name '])     ? trim($_POST['old_cat_name '])     : '';
 		
 		/* 判断分类名是否重复 */
 		if ($cat['cat_name'] != $old_cat_name) {
@@ -193,9 +194,11 @@ class admin_store_category extends ecjia_admin {
 
 		/* 当前分类下是否有子分类 */
 		$cat_count = RC_DB::table('store_category')->where('parent_id', $cat_id)->count();
+		
 		/* 当前分类下是否存在店铺 */
 		$franchisee_count = RC_DB::table('store_franchisee')->where('cat_id', $cat_id)->count();
-		$preaudit_count = RC_DB::table('store_preaudit')->where('cat_id', $cat_id)->count();
+		$preaudit_count   = RC_DB::table('store_preaudit')->where('cat_id', $cat_id)->count();
+		
 		/* 如果不存在下级子分类和商品，则删除之 */
 		if ($cat_count == 0 && $franchisee_count == 0 && $preaudit_count == 0) {
 			/* 删除分类 */
@@ -233,8 +236,8 @@ class admin_store_category extends ecjia_admin {
 	public function edit_sort_order() {
 		$this->admin_priv('store_category_manage', ecjia::MSGTYPE_JSON);
 	
-		$id = intval($_POST['pk']);
-		$val = intval($_POST['value']);
+		$id       = intval($_POST['pk']);
+		$val      = intval($_POST['value']);
 		$cat_name = RC_DB::table('store_category')->where('cat_id', $id)->pluck('cat_name');
 		if (cat_update($id, array('sort_order' => $val))) {
 			//记录log

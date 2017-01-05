@@ -1,8 +1,9 @@
 <?php
+defined('IN_ECJIA') or exit('No permission resources.');
+
 /**
  * 入驻商家管理
  */
-defined('IN_ECJIA') or exit('No permission resources.');
 
 class admin extends ecjia_admin {
 	private $db_region;
@@ -52,7 +53,7 @@ class admin extends ecjia_admin {
 	    $this->assign('ur_here', RC_Lang::get('store::store.store_list'));
 
 	    $store_list = $this->store_list();
-	    $cat_list = $this->get_cat_select_list();
+	    $cat_list   = $this->get_cat_select_list();
 
 	    $this->assign('cat_list', $cat_list);
 	    $this->assign('store_list', $store_list);
@@ -73,8 +74,8 @@ class admin extends ecjia_admin {
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('编辑入驻商'));
 
 		$store_id = intval($_GET['store_id']);
-        $menu = set_store_menu($store_id);
-		$store = RC_DB::table('store_franchisee')->where('store_id', $store_id)->first();
+        $menu     = set_store_menu($store_id);
+		$store    = RC_DB::table('store_franchisee')->where('store_id', $store_id)->first();
 		$store['apply_time']	= RC_Time::local_date(ecjia::config('time_format'), $store['apply_time']);
 		$store['confirm_time']	= RC_Time::local_date(ecjia::config('time_format'), $store['confirm_time']);
 		$cat_list = $this->get_cat_select_list();
@@ -116,7 +117,7 @@ class admin extends ecjia_admin {
 		$this->admin_priv('store_affiliate_update', ecjia::MSGTYPE_JSON);
 
 		$store_id = intval($_POST['store_id']);
-		$step = trim($_POST['step']);
+		$step     = trim($_POST['step']);
 		if (! in_array($step, array('base', 'identity', 'bank', 'pic'))) {
 		    return $this->showmessage('操作异常，请检查', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
@@ -129,19 +130,19 @@ class admin extends ecjia_admin {
 
 		if ($step == 'base') {
 		    $data = array(
-		        'cat_id'   	   				=> !empty($_POST['store_cat']) 		    ? $_POST['store_cat'] : '',
-		        'merchants_name'   			=> !empty($_POST['merchants_name'])     ? $_POST['merchants_name'] : '',
-		        'shop_keyword'      		=> !empty($_POST['shop_keyword']) 	    ? $_POST['shop_keyword'] : '',
-		        'email'      				=> !empty($_POST['email']) 				? $_POST['email'] : '',
-		        'contact_mobile'    		=> !empty($_POST['contact_mobile']) 	? $_POST['contact_mobile'] : '',
-		        'address'      				=> !empty($_POST['address']) 			? $_POST['address'] : '',
-		        'province'					=> !empty($_POST['province'])			? $_POST['province'] : '',
-		        'city'						=> !empty($_POST['city'])				? $_POST['city'] : '',
-		        'district'					=> !empty($_POST['district'])			? $_POST['district'] : '',
-		        'longitude'					=> !empty($_POST['longitude'])			? $_POST['longitude'] : '',
-		        'latitude'					=> !empty($_POST['latitude'])			? $_POST['latitude'] : '',
-		        'manage_mode'				=> !empty($_POST['manage_mode'])		? $_POST['manage_mode'] : 'join',
-		        'shop_close'				=> isset($_POST['shop_close'])			? $_POST['shop_close'] : 1,
+		        'cat_id'   	   				=> !empty($_POST['store_cat']) 		    ? $_POST['store_cat']          : '',
+		        'merchants_name'   			=> !empty($_POST['merchants_name'])     ? $_POST['merchants_name']     : '',
+		        'shop_keyword'      		=> !empty($_POST['shop_keyword']) 	    ? $_POST['shop_keyword']       : '',
+		        'email'      				=> !empty($_POST['email']) 				? $_POST['email']              : '',
+		        'contact_mobile'    		=> !empty($_POST['contact_mobile']) 	? $_POST['contact_mobile']     : '',
+		        'address'      				=> !empty($_POST['address']) 			? $_POST['address']            : '',
+		        'province'					=> !empty($_POST['province'])			? $_POST['province']           : '',
+		        'city'						=> !empty($_POST['city'])				? $_POST['city']               : '',
+		        'district'					=> !empty($_POST['district'])			? $_POST['district']           : '',
+		        'longitude'					=> !empty($_POST['longitude'])			? $_POST['longitude']          : '',
+		        'latitude'					=> !empty($_POST['latitude'])			? $_POST['latitude']           : '',
+		        'manage_mode'				=> !empty($_POST['manage_mode'])		? $_POST['manage_mode']        : 'join',
+		        'shop_close'				=> isset($_POST['shop_close'])			? $_POST['shop_close']         : 1,
 		    );
 
 			if($_POST['shop_close'] == '1'){
@@ -150,9 +151,9 @@ class admin extends ecjia_admin {
 		    if ($store_info['identity_status'] != 2 && $data['shop_close'] == 0 && ecjia::config('store_identity_certification') == 1) {
 		        return $this->showmessage('未认证通过不能开启店铺', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		    }
-            $geohash = RC_Loader::load_app_class('geohash', 'store');
-			$geohash_code = $geohash->encode($_POST['latitude'] , $_POST['longitude']);
-            $geohash_code = substr($geohash_code, 0, 10);
+            $geohash         = RC_Loader::load_app_class('geohash', 'store');
+			$geohash_code    = $geohash->encode($_POST['latitude'] , $_POST['longitude']);
+            $geohash_code    = substr($geohash_code, 0, 10);
             $data['geohash'] = $geohash_code;
 
             set_merchant_config($store_id, 'shop_review_goods', $_POST['shop_review_goods']);
@@ -169,19 +170,19 @@ class admin extends ecjia_admin {
             
 		} else if ($step == 'identity') {
 		    $data = array(
-		        'responsible_person'		=> !empty($_POST['responsible_person']) ? $_POST['responsible_person'] : '',
-		        'company_name'      		=> !empty($_POST['company_name']) 		? $_POST['company_name'] : '',
-		        'identity_type'     		=> !empty($_POST['identity_type']) 		? $_POST['identity_type'] : '',
-		        'identity_number'   		=> !empty($_POST['identity_number']) 	? $_POST['identity_number'] : '',
-		        'business_licence'      	=> !empty($_POST['business_licence']) 		? $_POST['business_licence'] : '',
+		        'responsible_person'		=> !empty($_POST['responsible_person'])     ? $_POST['responsible_person']   : '',
+		        'company_name'      		=> !empty($_POST['company_name']) 		    ? $_POST['company_name']         : '',
+		        'identity_type'     		=> !empty($_POST['identity_type']) 		    ? $_POST['identity_type']        : '',
+		        'identity_number'   		=> !empty($_POST['identity_number']) 	    ? $_POST['identity_number']      : '',
+		        'business_licence'      	=> !empty($_POST['business_licence']) 		? $_POST['business_licence']     : '',
 		    );
 		} else if ($step == 'bank') {
 		    $data = array(
-		        'bank_account_name'  		=> !empty($_POST['bank_account_name']) 	? $_POST['bank_account_name'] : '',
-		        'bank_name'      	  	 	=> !empty($_POST['bank_name']) 				? $_POST['bank_name'] : '',
-		        'bank_branch_name'     		=> !empty($_POST['bank_branch_name']) 		? $_POST['bank_branch_name'] : '',
-		        'bank_account_number'  		=> !empty($_POST['bank_account_number'])	? $_POST['bank_account_number'] : '',
-		        'bank_address'         		=> !empty($_POST['bank_address']) 			? $_POST['bank_address'] : '',
+		        'bank_account_name'  		=> !empty($_POST['bank_account_name']) 	    ? $_POST['bank_account_name']    : '',
+		        'bank_name'      	  	 	=> !empty($_POST['bank_name']) 				? $_POST['bank_name']            : '',
+		        'bank_branch_name'     		=> !empty($_POST['bank_branch_name']) 		? $_POST['bank_branch_name']     : '',
+		        'bank_account_number'  		=> !empty($_POST['bank_account_number'])	? $_POST['bank_account_number']  : '',
+		        'bank_address'         		=> !empty($_POST['bank_address']) 			? $_POST['bank_address']         : '',
 		    );
 		} else if ($step == 'pic') {
 		    if (!empty($_FILES['one']['name'])) {
@@ -293,13 +294,13 @@ class admin extends ecjia_admin {
 
         $menu = set_store_menu($store_id, 'preview');
 
-		$store = RC_DB::table('store_franchisee')->where('store_id', $store_id)->first();
+		$store                  = RC_DB::table('store_franchisee')->where('store_id', $store_id)->first();
 		$store['apply_time']	= RC_Time::local_date(ecjia::config('time_format'), $store['apply_time']);
 		$store['confirm_time']	= RC_Time::local_date(ecjia::config('time_format'), $store['confirm_time']);
 
-		$store['province'] = RC_DB::table('region')->where('region_id', $store['province'])->pluck('region_name');
-		$store['city'] = RC_DB::table('region')->where('region_id', $store['city'])->pluck('region_name');
-		$store['district'] = RC_DB::table('region')->where('region_id', $store['district'])->pluck('region_name');
+		$store['province']      = RC_DB::table('region')->where('region_id', $store['province'])->pluck('region_name');
+		$store['city']          = RC_DB::table('region')->where('region_id', $store['city'])->pluck('region_name');
+		$store['district']      = RC_DB::table('region')->where('region_id', $store['district'])->pluck('region_name');
 
 		$this->assign('ur_here', $store['merchants_name']);
 		$store['cat_name'] = RC_DB::table('store_category')->where('cat_id', $store['cat_id'])->select('cat_name')->pluck();
@@ -364,7 +365,7 @@ class admin extends ecjia_admin {
         }
         $shop_kf_mobile         = ($_POST['shop_kf_mobile'] == get_merchant_config($store_id, 'shop_kf_mobile'))       ? '' : htmlspecialchars($_POST['shop_kf_mobile']);
         $shop_description       = ($_POST['shop_description'] == get_merchant_config($store_id, 'shop_description'))   ? '' : htmlspecialchars($_POST['shop_description']);
-        $shop_trade_time        = empty($_POST['shop_trade_time'])                                          ? '' : htmlspecialchars($_POST['shop_trade_time']);
+        $shop_trade_time        = empty($_POST['shop_trade_time'])                                                     ? '' : htmlspecialchars($_POST['shop_trade_time']);
         $shop_notice            = ($_POST['shop_notice'] == get_merchant_config($store_id, 'shop_notice'))             ? '' : htmlspecialchars($_POST['shop_notice']);
 
         $merchant_config = array();
@@ -498,12 +499,13 @@ class admin extends ecjia_admin {
 		$this->admin_priv('store_staff_manage', ecjia::MSGTYPE_JSON);
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('store::store.view_staff')));
 
-		$store_id = intval($_GET['store_id']);
-		$main_staff = RC_DB::table('staff_user')->where('store_id', $store_id)->where('parent_id', 0)->first();
-		$store = RC_DB::table('store_franchisee')->where('store_id', $store_id)->first();
-		$parent_id = $main_staff['user_id'];
-        $menu = set_store_menu($store_id, 'view_staff');
-		$staff_list = RC_DB::table('staff_user')->where('parent_id', $parent_id)->get();
+		$store_id     = intval($_GET['store_id']);
+		$main_staff   = RC_DB::table('staff_user')->where('store_id', $store_id)->where('parent_id', 0)->first();
+		$store        = RC_DB::table('store_franchisee')->where('store_id', $store_id)->first();
+		$parent_id    = $main_staff['user_id'];
+        $menu         = set_store_menu($store_id, 'view_staff');
+		$staff_list   = RC_DB::table('staff_user')->where('parent_id', $parent_id)->get();
+		
         $main_staff['avatar'] = !empty($main_staff['avatar'])? RC_Upload::upload_url($main_staff['avatar']) : RC_App::apps_url('statics/images/ecjia_avatar.jpg', __FILE__);
         $main_staff['add_time'] = RC_Time::local_date('Y-m-d', $main_staff['add_time']);
         foreach($staff_list as $key => $val){
@@ -583,9 +585,9 @@ class admin extends ecjia_admin {
 	 */
 	public function get_longitude() {
 		$detail_address = $_POST['detail_address'];
-		$store_id = $_GET['store_id'];
-		$store_point = file_get_contents("https://api.map.baidu.com/geocoder/v2/?address='".$detail_address."'&output=json&ak=E70324b6f5f4222eb1798c8db58a017b");
-		$store_point = (array)json_decode($store_point);
+		$store_id       = $_GET['store_id'];
+		$store_point    = file_get_contents("https://api.map.baidu.com/geocoder/v2/?address='".$detail_address."'&output=json&ak=E70324b6f5f4222eb1798c8db58a017b");
+		$store_point    = (array)json_decode($store_point);
 		$store_point['result'] = (array)$store_point['result'];
 		$location = (array)$store_point['result']['location'];
 		$longitude = $location['lng'];
@@ -620,10 +622,10 @@ class admin extends ecjia_admin {
 		}
 
 		$filter_type = $db_store_franchisee
-		->select(RC_DB::raw('count(*) as count_all'),
-		    RC_DB::raw('SUM(status = 1) as count_unlock'),
-		    RC_DB::raw('SUM(status = 2) as count_locking'))
-		    ->first();
+            		->select(RC_DB::raw('count(*) as count_all'),
+            		    RC_DB::raw('SUM(status = 1) as count_unlock'),
+            		    RC_DB::raw('SUM(status = 2) as count_locking'))
+        		    ->first();
 
 		$filter['count_all'] = $filter_type['count_all'] ? $filter_type['count_all'] : 0;
 		$filter['count_unlock'] = $filter_type['count_unlock'] ? $filter_type['count_unlock'] : 0;
@@ -642,12 +644,12 @@ class admin extends ecjia_admin {
 		$page = new ecjia_page($count, 20, 5);
 
 		$data = $db_store_franchisee
-		->leftJoin('store_category as sc', RC_DB::raw('sf.cat_id'), '=', RC_DB::raw('sc.cat_id'))
-		->selectRaw('sf.store_id,sf.merchants_name,sf.manage_mode,sf.contact_mobile,sf.responsible_person,sf.confirm_time,sf.company_name,sf.sort_order,sc.cat_name,sf.status')
-		->orderby('store_id', 'asc')
-		->take($page->page_size)
-		->skip($page->start_id-1)
-		->get();
+        		->leftJoin('store_category as sc', RC_DB::raw('sf.cat_id'), '=', RC_DB::raw('sc.cat_id'))
+        		->selectRaw('sf.store_id,sf.merchants_name,sf.manage_mode,sf.contact_mobile,sf.responsible_person,sf.confirm_time,sf.company_name,sf.sort_order,sc.cat_name,sf.status')
+        		->orderby('store_id', 'asc')
+        		->take($page->page_size)
+        		->skip($page->start_id-1)
+        		->get();
 
 		$res = array();
 		if (!empty($data)) {
@@ -665,9 +667,9 @@ class admin extends ecjia_admin {
 	 */
 	private function get_cat_select_list() {
 		$data = RC_DB::table('store_category')
-		->select('cat_id', 'cat_name')
-		->orderBy('cat_id', 'desc')
-		->get();
+        		->select('cat_id', 'cat_name')
+        		->orderBy('cat_id', 'desc')
+        		->get();
 		$cat_list = array();
 		if (!empty($data)) {
 			foreach ($data as $row ) {
@@ -681,8 +683,8 @@ class admin extends ecjia_admin {
 	 * 获取指定地区的子级地区
 	 */
 	public function get_region(){
-		$type      = !empty($_GET['type'])   ? intval($_GET['type'])   : 0;
-		$parent        = !empty($_GET['parent']) ? intval($_GET['parent']) : 0;
+		$type           = !empty($_GET['type'])   ? intval($_GET['type'])               : 0;
+		$parent         = !empty($_GET['parent']) ? intval($_GET['parent'])             : 0;
 		$arr['regions'] = $this->db_region->get_regions($type, $parent);
 		$arr['type']    = $type;
 		$arr['target']  = !empty($_GET['target']) ? stripslashes(trim($_GET['target'])) : '';
@@ -707,16 +709,16 @@ class admin extends ecjia_admin {
 	    
 	    //全部
 	    $shipping_all = RC_DB::table('shipping')
-	    ->orderBy(RC_DB::raw('shipping_order'))
-	    ->where(RC_DB::raw('enabled'), 1)
-	    ->get();
+                	    ->orderBy(RC_DB::raw('shipping_order'))
+                	    ->where(RC_DB::raw('enabled'), 1)
+                	    ->get();
 	    
 	    //本店
 	    $shipping_enable = RC_DB::table('shipping_area')
-	    ->where(RC_DB::raw('store_id'), '=', $store_id)
-	    ->select('shipping_id')
-	    ->groupBy(RC_DB::raw('shipping_id'))
-	    ->get();
+                	        ->where(RC_DB::raw('store_id'), '=', $store_id)
+                    	    ->select('shipping_id')
+                    	    ->groupBy(RC_DB::raw('shipping_id'))
+                    	    ->get();
 	    $shipping_enable = array_column($shipping_enable, 'shipping_id');
 	    
 	    $plugins = ecjia_config::instance()->get_addon_config('shipping_plugins', true);
@@ -734,11 +736,11 @@ class admin extends ecjia_admin {
 	            }
 	            
 	            $all_modules[$enable_disable][$_key]['id']      			= $_value['shipping_id'];
-	            $all_modules[$enable_disable][$_key]['code']      		= $_value['shipping_code'];
+	            $all_modules[$enable_disable][$_key]['code']      		    = $_value['shipping_code'];
 	            $all_modules[$enable_disable][$_key]['name']    			= $_value['shipping_name'];
 	            $all_modules[$enable_disable][$_key]['desc']    			= $_value['shipping_desc'];
 	            $all_modules[$enable_disable][$_key]['cod']     			= $_value['support_cod'];
-	            $all_modules[$enable_disable][$_key]['shipping_order'] 	= $_value['shipping_order'];
+	            $all_modules[$enable_disable][$_key]['shipping_order'] 	    = $_value['shipping_order'];
 	            $all_modules[$enable_disable][$_key]['insure_fee']  		= $_value['insure'];
 	            $all_modules[$enable_disable][$_key]['enabled'] 			= $_value['enabled'];
 	            	
@@ -865,7 +867,7 @@ class admin extends ecjia_admin {
 						->leftJoin('staff_user as su', RC_DB::raw('sl.user_id'), '=', RC_DB::raw('su.user_id'));
 
 		$user_id  = !empty($args['user_id']) ? intval($args['user_id']) : 0;
-		$ip = !empty($args['ip']) ? $args['ip'] : '';
+		$ip       = !empty($args['ip']) ? $args['ip'] : '';
 
 
 		$filter = array();
@@ -892,11 +894,11 @@ class admin extends ecjia_admin {
 		$count = $db_staff_log->count();
 		$page = new ecjia_page($count, 15, 5);
 		$data = $db_staff_log
-		->selectRaw('sl.log_id,sl.log_time,sl.log_info,sl.ip_address,sl.ip_location,su.name')
-		->orderby($filter['sort_by'], $filter['sort_order'])
-		->take(10)
-		->skip($page->start_id-1)
-		->get();
+        		->selectRaw('sl.log_id,sl.log_time,sl.log_info,sl.ip_address,sl.ip_location,su.name')
+        		->orderby($filter['sort_by'], $filter['sort_order'])
+        		->take(10)
+        		->skip($page->start_id-1)
+        		->get();
 		/* 获取管理员日志记录 */
 		$list = array();
 		if (!empty($data)) {
@@ -915,8 +917,8 @@ class admin extends ecjia_admin {
         $this->admin_priv('store_log_delete', ecjia::MSGTYPE_JSON);
 
         $drop_type_date = isset($_POST['drop_type_date']) ? $_POST['drop_type_date'] : '';
-        $staff_log = RC_DB::table('staff_log');
-        $store_id = $_GET['store_id'];
+        $staff_log      = RC_DB::table('staff_log');
+        $store_id       = $_GET['store_id'];
 
 		/* 按日期删除日志 */
 		if ($drop_type_date) {
@@ -980,13 +982,13 @@ class admin extends ecjia_admin {
         if(empty($shop_address)){
             return $this->showmessage('请填写详细地址', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR, array('element' => 'address'));
         }
-        $city_name = RC_DB::table('region')->where('region_id', $shop_city)->pluck('region_name');
-        $city_district = RC_DB::table('region')->where('region_id', $shop_district)->pluck('region_name');
-        $address = $city_name.'市'.$shop_address;
-        $shop_point = file_get_contents("https://api.map.baidu.com/geocoder/v2/?address='".$address."&output=json&ak=E70324b6f5f4222eb1798c8db58a017b");
-        $shop_point = (array)json_decode($shop_point);
-        $shop_point['result'] = (array)$shop_point['result'];
-        $location = (array)$shop_point['result']['location'];
+        $city_name              = RC_DB::table('region')->where('region_id', $shop_city)->pluck('region_name');
+        $city_district          = RC_DB::table('region')->where('region_id', $shop_district)->pluck('region_name');
+        $address                = $city_name.'市'.$shop_address;
+        $shop_point             = file_get_contents("https://api.map.baidu.com/geocoder/v2/?address='".$address."&output=json&ak=E70324b6f5f4222eb1798c8db58a017b");
+        $shop_point             = (array)json_decode($shop_point);
+        $shop_point['result']   = (array)$shop_point['result'];
+        $location               = (array)$shop_point['result']['location'];
         echo json_encode($location);
     }
 

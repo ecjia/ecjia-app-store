@@ -1,8 +1,9 @@
 <?php
+defined('IN_ECJIA') or exit('No permission resources.');
+
 /**
  * ECJIA 商家公告
  */
-defined('IN_ECJIA') or exit('No permission resources.');
 
 class admin_notice extends ecjia_admin {
 	
@@ -67,10 +68,10 @@ class admin_notice extends ecjia_admin {
 		$file		= !empty($_FILES['file']) 		? $_FILES['file'] 				: '';
 		
  		$is_only = RC_DB::table('article as a')
- 			->leftJoin('article_cat as ac', RC_DB::raw('a.cat_id'), '=', RC_DB::raw('ac.cat_id'))
- 			->where('title', $title)
- 			->where(RC_DB::raw('ac.cat_type'), 6)
- 			->count();
+     			->leftJoin('article_cat as ac', RC_DB::raw('a.cat_id'), '=', RC_DB::raw('ac.cat_id'))
+     			->where('title', $title)
+     			->where(RC_DB::raw('ac.cat_type'), 6)
+     			->count();
  			
 		if ($is_only != 0) {
 			return $this->showmessage(sprintf(RC_Lang::get('article::shopinfo.title_exist'), stripslashes($title)), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
@@ -118,7 +119,7 @@ class admin_notice extends ecjia_admin {
 		$this->assign('ur_here', '编辑商家公告');
 		$this->assign('action_link', array('text' => '商家公告', 'href'=> RC_Uri::url('store/admin_notice/init')));
 		
-		$id = intval($_GET['id']);
+		$id   = intval($_GET['id']);
 		$info = RC_DB::table('article')->where('article_id', $id)->first();
 
 		if (!empty($info['content'])) {
@@ -197,7 +198,7 @@ class admin_notice extends ecjia_admin {
 	public function remove() {
 		$this->admin_priv('notice_delete', ecjia::MSGTYPE_JSON);
 		
-		$id = intval($_GET['id']);
+		$id   = intval($_GET['id']);
 		$info = RC_DB::table('article')->where('article_id', $id)->first();
 		
 		if (RC_DB::table('article')->where('article_id', $id)->delete()) {
@@ -235,9 +236,9 @@ class admin_notice extends ecjia_admin {
 	 */
 	private function get_notice_list($cat_id = 0) {
 	    $data = RC_DB::table('article as a')
- 			->leftJoin('article_cat as ac', RC_DB::raw('a.cat_id'), '=', RC_DB::raw('ac.cat_id'))
- 			->where(RC_DB::raw('ac.cat_type'), 6)
- 			->get();
+     			->leftJoin('article_cat as ac', RC_DB::raw('a.cat_id'), '=', RC_DB::raw('ac.cat_id'))
+     			->where(RC_DB::raw('ac.cat_type'), 6)
+     			->get();
 	    
 	    $list = array();
 	    if (!empty($data)) {

@@ -1,10 +1,9 @@
 <?php
 defined('IN_ECJIA') or exit('No permission resources.');
+
 /**
  * ECJIA 店铺街分类类文件
  */
-
-defined('IN_ECJIA') or exit('No permission resources.');
 
 class store_category {
 
@@ -18,7 +17,6 @@ class store_category {
 	 * @return array
 	 */
 	public static function get_categories_tree($where) {
-        // $db_category = RC_Loader::load_app_model ('seller_category_shopinfo_viewmodel', 'seller');
 		$db_category = RC_Model::model('store/store_franchisee_viewmodel');
 		if (!empty($where['sc.cat_id']) && is_array($where['sc.cat_id'])) {
 			foreach ($where['sc.cat_id'] as $val) {
@@ -38,7 +36,6 @@ class store_category {
 		 * 如果不是取当前分类及其下的子分类
 		 */
 
-		// $count = $db_category->join('store_category')->where(array('c.parent_id' => $parent_id, 'is_show' => 1))->count('s.cat_id');
 		$count = $db_category->join('store_category')->where(array('sc.parent_id' => $parent_id, 'is_show' => 1))->count('sc.cat_id');
 
 		if ($count || $parent_id == 0) {
@@ -60,7 +57,6 @@ class store_category {
 	}
 
 	public static function get_child_tree($tree_id = 0, $geohash) {
-		// $db_category = RC_Loader::load_app_model ('seller_category_shopinfo_viewmodel', 'seller');
 		$db_category = RC_Model::model('store/store_franchisee_viewmodel');
 		$three_arr = array ();
 

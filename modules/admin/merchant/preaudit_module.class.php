@@ -1,14 +1,16 @@
 <?php
 defined('IN_ECJIA') or exit('No permission resources.');
+
 /**
  * 入驻申请等信息获取验证码
  * @author
  *
  */
+ 
 class preaudit_module extends api_admin implements api_interface {
     public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {
         $this->authadminSession();
-		$value		= $this->requestData('mobile');
+		$value		    = $this->requestData('mobile');
 		$validate_code	= $this->requestData('validate_code');
 
 		if (empty($validate_code) || empty($value)) {
@@ -25,13 +27,17 @@ class preaudit_module extends api_admin implements api_interface {
                 return new ecjia_error('validate_mobile_error', '手机号码错误！');
             }
 
-            $data = RC_DB::table('store_preaudit')->select('responsible_person', 'email', 'contact_mobile', 'validate_type', 'merchants_name', 'cat_id', 'province', 'city', 'district', 'address', 'longitude', 'latitude')->where('contact_mobile', '=', $value)->first();
+            $data = RC_DB::table('store_preaudit')
+                    ->select('responsible_person', 'email', 'contact_mobile', 'validate_type', 'merchants_name', 'cat_id', 'province', 'city', 'district', 'address', 'longitude', 'latitude')
+                    ->where('contact_mobile', '=', $value)
+                    ->first();
+            
             $data['seller_name'] = $data['merchants_name'];
-            $data['location'] = array(
-                'longitude' => $data['longitude'],
-                'latitude' => $data['latitude'],
+            $data['location']    = array(
+                        'longitude' => $data['longitude'],
+                        'latitude'  => $data['latitude'],
             );
-            $data['mobile'] = $data['contact_mobile'];
+            $data['mobile']          = $data['contact_mobile'];
             $data['seller_category'] = $data['cat_id'];
             unset($data['merchants_name']);
             unset($data['cat_id']);
@@ -44,3 +50,5 @@ class preaudit_module extends api_admin implements api_interface {
     }
 
 }
+
+//end

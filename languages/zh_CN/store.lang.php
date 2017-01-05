@@ -36,7 +36,7 @@ return array(
 
 
 	//待审核商家入驻列表
-	'store_preaudit'			=>	'待审核入驻商',
+	'store_preaudit'		=>	'待审核入驻商',
 	'store_preaudit_list'	=>	'待审核入驻商列表',
 	'check'					=>	'审核',
 	'check_view'		    =>	'审核商家',
@@ -61,7 +61,7 @@ return array(
 	'label_city'			=>	'所在城市： ',
 	'label_district'		=>	'所在市区： ',
 
-	'address_lable'			=>	'通讯地址：',
+	'address_lable'			        =>	'通讯地址：',
 	'identity_type_lable'			=>	'证件类型：',
 	'identity_number_lable'			=>	'证件号码：',
 	'identity_pic_front_lable'		=>	'证件正面：',
@@ -81,23 +81,23 @@ return array(
 	'apply_time_lable'	=>	'申请时间：',
 	'browse'			=> '浏览',
 	'modify'			=> '修改',
-	'change_image'			=> '更换图片',
-	'file_address'			=> '文件地址：',
+	'change_image'		=> '更换图片',
+	'file_address'		=> '文件地址：',
 	'edit_success' 		=> 	'编辑成功',
 	'deal_success'	 	=>	'处理成功',
 	'check_success'	 	=>	'审核成功',
-	'open'	 	=>	'开启',
-	'close'	 	=>	'关闭',
-	'personal'	=>	'个人',
-	'personal_name'	=>	'个人名称：',
-	'company'	=>	'企业',
-	'no_upload' =>  '还未上传',
-	'apply_time'=>	'申请时间',
-	'person'    =>	'法定代表人',
-	'companyname'	=>	'公司名称',
-	'confirm_time'=>'审核通过时间',
+	'open'	 	        =>	'开启',
+	'close'	 	        =>	'关闭',
+	'personal'	        =>	'个人',
+	'personal_name'	    =>	'个人名称：',
+	'company'	        =>	'企业',
+	'no_upload'         =>  '还未上传',
+	'apply_time'        =>	'申请时间',
+	'person'            =>	'法定代表人',
+	'companyname'	    =>	'公司名称',
+	'confirm_time'      =>'审核通过时间',
 	'del_store_cat_img_ok' =>'删除店铺分类图片成功！',
-	'anonymous'	 => '匿名用户',
+	'anonymous'	        => '匿名用户',
 	'set_commission' 	=> '设置佣金',
 
     'preaudit_list'     => '全部',
@@ -113,7 +113,7 @@ return array(
 	'email'				=>	'邮箱',
 	'main_add_time'		=>	'加入时间：',
 	'add_time'			=>	'加入时间',
-	'main_introduction'		=>	'介绍：',
+	'main_introduction'	=>	'介绍：',
 	'introduction'		=>	'描述',
 	'shopowner'			=>	'店长：',
 	'mobile'			=>	'联系方式：',
@@ -131,7 +131,7 @@ return array(
 	'log_time'	=>'操作日期',
     'log_ip'	=>'IP地址',
 	'log_info'	=>'操作记录',
-    'js_lang' => array(
+    'js_lang'   => array(
 			'choose_delet_time' => '请先选择删除日志的时间！',
 			'delet_ok_1' 		=> '确定删除',
 			'delet_ok_2' 		=> '的日志吗？',
@@ -139,8 +139,8 @@ return array(
 			'cancel' 			=> '取消',
 	),
 	
-	'store_lock'=>'锁定商家',
-	'store_check' =>'审核入驻商'
+	'store_lock'   =>'锁定商家',
+	'store_check'  =>'审核入驻商'
 );
 
 //end

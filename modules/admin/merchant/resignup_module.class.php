@@ -1,10 +1,12 @@
 <?php
 defined('IN_ECJIA') or exit('No permission resources.');
+
 /**
  * 入驻申请信息修改
  * @author
  *
  */
+ 
 class resignup_module extends api_admin implements api_interface {
     public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {
 
@@ -47,11 +49,11 @@ class resignup_module extends api_admin implements api_interface {
         // 获取定位信息
 
         if(empty($longitude) || empty($latitude)){
-            $location = getgeohash($city, $address);
-            $latitude = $location['lat'];
+            $location  = getgeohash($city, $address);
+            $latitude  = $location['lat'];
             $longitude = $location['lng'];
         }
-        $geohash = RC_Loader::load_app_class('geohash', 'store');
+        $geohash      = RC_Loader::load_app_class('geohash', 'store');
         $geohash_code = $geohash->encode($latitude, $longitude);
         $geohash_code = substr($geohash_code, 0, 10);
 
@@ -86,12 +88,14 @@ function getgeohash($city, $address){
     $shop_city          = !empty($city)        ? intval($city)               : 0;
     $shop_address       = !empty($address)     ? htmlspecialchars($address)  : 0;
 
-    $city_name = RC_DB::table('region')->where('region_id', $shop_city)->pluck('region_name');
-    $city_district = RC_DB::table('region')->where('region_id', $shop_district)->pluck('region_name');
-    $address = $city_name.'市'.$shop_address;
-    $shop_point = file_get_contents("https://api.map.baidu.com/geocoder/v2/?address='".$address."&output=json&ak=E70324b6f5f4222eb1798c8db58a017b");
-    $shop_point = (array)json_decode($shop_point);
-    $shop_point['result'] = (array)$shop_point['result'];
-    $location = (array)$shop_point['result']['location'];
+    $city_name              = RC_DB::table('region')->where('region_id', $shop_city)->pluck('region_name');
+    $city_district          = RC_DB::table('region')->where('region_id', $shop_district)->pluck('region_name');
+    $address                = $city_name.'市'.$shop_address;
+    $shop_point             = file_get_contents("https://api.map.baidu.com/geocoder/v2/?address='".$address."&output=json&ak=E70324b6f5f4222eb1798c8db58a017b");
+    $shop_point             = (array)json_decode($shop_point);
+    $shop_point['result']   = (array)$shop_point['result'];
+    $location               = (array)$shop_point['result']['location'];
     return $location;
 }
+
+//end

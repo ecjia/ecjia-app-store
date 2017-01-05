@@ -1,10 +1,12 @@
 <?php
 defined('IN_ECJIA') or exit('No permission resources.');
+
 /**
  * 店铺列表接口
  * @author
  *
  */
+ 
 class store_store_list_api extends Component_Event_Api {
 	/**
 	 *
@@ -71,25 +73,25 @@ class store_store_list_api extends Component_Event_Api {
 		/* 关键字*/
 		if (!empty($filter['keywords'])) {
 			$cache_key .= '-keywords-' . $filter['keywords'];
-			$where[] = '(merchants_name like "%'.$filter['keywords'].'%" or goods_name like "%'.$filter['keywords'].'%")';
+			$where[]    = '(merchants_name like "%'.$filter['keywords'].'%" or goods_name like "%'.$filter['keywords'].'%")';
 		}
 
 		/* 店铺分类*/
 		if (isset($filter['seller_category']) && !empty($filter['seller_category'])) {
-			$cache_key .= '-seller_category-' . $filter['seller_category'];
-			$where['ssi.cat_id'] = $filter['seller_category'];
+			$cache_key           .= '-seller_category-' . $filter['seller_category'];
+			$where['ssi.cat_id']  = $filter['seller_category'];
 		}
 
 
 		/* 获取当前经纬度周边的geohash值*/
 		if (isset($filter['geohash']) && !empty($filter['geohash'])) {
 			/* 载入geohash类*/
-			$geohash	  = RC_Loader::load_app_class('geohash', 'store');
-			$geohash_code = substr($filter['geohash'], 0, 5);
-			$geohash_group = $geohash->geo_neighbors($geohash_code);
-			$store_geohash = array_merge(array($geohash_code), $geohash_group);
-			$where['left(geohash, 5)'] = $store_geohash;
-			$cache_key .= '-geohash-' . $filter['geohash'];
+			$geohash	                 = RC_Loader::load_app_class('geohash', 'store');
+			$geohash_code                = substr($filter['geohash'], 0, 5);
+			$geohash_group               = $geohash->geo_neighbors($geohash_code);
+			$store_geohash               = array_merge(array($geohash_code), $geohash_group);
+			$where['left(geohash, 5)']   = $store_geohash;
+			$cache_key                   .= '-geohash-' . $filter['geohash'];
 		}
 
 		$where['shop_close'] = '0';
@@ -160,14 +162,10 @@ class store_store_list_api extends Component_Event_Api {
 			
 			$store_list = array('seller_list' => $seller_list, 'page' => $page_row);
 			
-			
 			$store_franchisee_db->set_cache_item($fomated_cache_key, $store_list, 2880);
 		}
-		
 		return $store_list;
-        
 	}
 }
-
 
 // end

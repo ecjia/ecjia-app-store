@@ -1,4 +1,6 @@
 <?php
+defined('IN_ECJIA') or exit('No permission resources.');
+
 /**
  * Geohash generation class
  * http://blog.dixo.net/downloads/
@@ -128,7 +130,7 @@ class Geohash
 		$blong	= $this->binEncode($long, -180, 180, $longbits);
 		
 		//merge lat and long together
-		$binary	= "";
+		$binary	    = "";
 		$uselong	= 1;
 		while (strlen($blat) + strlen($blong)) {
 			if ($uselong) {
@@ -254,7 +256,7 @@ class Geohash
 	private function precision($number)
 	{
 		$precision = 0;
-		$pt = strpos($number,'.');
+		$pt        = strpos($number,'.');
 		if ($pt!==false) {
 			$precision=-(strlen($number)-$pt-1);
 		}

@@ -1,11 +1,11 @@
 <?php
+defined('IN_ECJIA') or exit('No permission resources.');
 
 /**
  * 入驻商管理
  * @author songqian
  */
 
-defined('IN_ECJIA') or exit('No permission resources.');
 
 return array(
 	'identifier' 	=> 'ecjia.store',

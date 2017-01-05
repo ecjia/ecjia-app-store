@@ -1,18 +1,20 @@
 <?php
 defined('IN_ECJIA') or exit('No permission resources.');
+
 /**
  * 店铺街列表
  * @author will.chen
  *
  */
+ 
 class search_module extends api_front implements api_interface {
     public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {
 
     	$this->authSession();
 		$seller_categroy = $this->requestData('category_id');
-		$goods_category = $this->requestData('goods_category');
-		$keywords	 = $this->requestData('keywords');
-		$location	 = $this->requestData('location', array());
+		$goods_category  = $this->requestData('goods_category');
+		$keywords	     = $this->requestData('keywords');
+		$location	     = $this->requestData('location', array());
 		/*经纬度为空判断*/
 		if (!is_array($location) || empty($location['longitude']) || empty($location['latitude'])) {
 			$seller_list = array();
@@ -28,12 +30,12 @@ class search_module extends api_front implements api_interface {
 		$page = $this->requestData('pagination.page', 1);
 
 		$options = array(
-				'location'		=> $location,
-				'category_id'	=> $seller_categroy,
-				'goods_category' => $goods_category,
-				'keywords'		=> $keywords,
-				'size'			=> $size,
-				'page'			=> $page,
+				'location'		   => $location,
+				'category_id'	   => $seller_categroy,
+				'goods_category'   => $goods_category,
+				'keywords'		   => $keywords,
+				'size'			   => $size,
+				'page'			   => $page,
 		);
 
 		$result = RC_Api::api('store', 'store_list', $options);
@@ -41,7 +43,7 @@ class search_module extends api_front implements api_interface {
 		$seller_list = array();
 		if (!empty($result['seller_list'])) {
 			$db_goods_view = RC_Model::model('goods/comment_viewmodel');
-			$max_goods = 0;
+			$max_goods     = 0;
 // 			$mobilebuy_db = RC_Model::model('goods/goods_activity_model');
 			/* 手机专享*/
 // 			$result_mobilebuy = ecjia_app::validate_application('mobilebuy');
@@ -54,14 +56,14 @@ class search_module extends api_front implements api_interface {
 				//$comment = $db_goods_view->join(null)->field($field)->where(array('c.seller_id' => $row['id'], 'comment_type' => 0, 'parent_id' => 0, 'status' => 1))->find();
 				
 				$favourable_result = $db_favourable->where(array('store_id' => $row['id'], 'start_time' => array('elt' => RC_Time::gmtime()), 'end_time' => array('egt' => RC_Time::gmtime()), 'act_type' => array('neq' => 0)))->select();
-				$favourable_list = array();
+				$favourable_list   = array();
 				
 				if (!empty($favourable_result)) {
 					foreach ($favourable_result as $val) {
 						if ($val['act_range'] == '0') {
 							$favourable_list[] = array(
-									'name' => $val['act_name'],
-									'type' => $val['act_type'] == '1' ? 'price_reduction' : 'price_discount',
+									'name'       => $val['act_name'],
+									'type'       => $val['act_type'] == '1' ? 'price_reduction' : 'price_discount',
 									'type_label' => $val['act_type'] == '1' ? __('满减') : __('满折'),
 							);
 						} else {
@@ -69,22 +71,22 @@ class search_module extends api_front implements api_interface {
 							switch ($val['act_range']) {
 								case 1 :
 									$favourable_list[] = array(
-											'name' => $val['act_name'],
-											'type' => $val['act_type'] == '1' ? 'price_reduction' : 'price_discount',
+											'name'       => $val['act_name'],
+											'type'       => $val['act_type'] == '1' ? 'price_reduction' : 'price_discount',
 											'type_label' => $val['act_type'] == '1' ? __('满减') : __('满折'),
 									);
 									break;
 								case 2 :
 									$favourable_list[] = array(
-											'name' => $val['act_name'],
-											'type' => $val['act_type'] == '1' ? 'price_reduction' : 'price_discount',
+											'name'       => $val['act_name'],
+											'type'       => $val['act_type'] == '1' ? 'price_reduction' : 'price_discount',
 											'type_label' => $val['act_type'] == '1' ? __('满减') : __('满折'),
 									);
 									break;
 								case 3 :
 									$favourable_list[] = array(
-											'name' => $val['act_name'],
-											'type' => $val['act_type'] == '1' ? 'price_reduction' : 'price_discount',
+											'name'       => $val['act_name'],
+											'type'       => $val['act_type'] == '1' ? 'price_reduction' : 'price_discount',
 											'type_label' => $val['act_type'] == '1' ? __('满减') : __('满折'),
 									);
 									break;
@@ -105,10 +107,10 @@ class search_module extends api_front implements api_interface {
 				if (!empty($goods_result['list'])) {
 					foreach ($goods_result['list'] as $val) {
 						/* 判断是否有促销价格*/
-						$price = ($val['unformatted_shop_price'] > $val['unformatted_promote_price'] && $val['unformatted_promote_price'] > 0) ? $val['unformatted_promote_price'] : $val['unformatted_shop_price'];
-						$activity_type = ($val['unformatted_shop_price'] > $val['unformatted_promote_price'] && $val['unformatted_promote_price'] > 0) ? 'PROMOTE_GOODS' : 'GENERAL_GOODS';
+						$price            = ($val['unformatted_shop_price'] > $val['unformatted_promote_price'] && $val['unformatted_promote_price'] > 0) ? $val['unformatted_promote_price'] : $val['unformatted_shop_price'];
+						$activity_type    = ($val['unformatted_shop_price'] > $val['unformatted_promote_price'] && $val['unformatted_promote_price'] > 0) ? 'PROMOTE_GOODS' : 'GENERAL_GOODS';
 						/* 计算节约价格*/
-						$saving_price = ($val['unformatted_shop_price'] > $val['unformatted_promote_price'] && $val['unformatted_promote_price'] > 0) ? $val['unformatted_shop_price'] - $val['unformatted_promote_price'] : (($val['unformatted_market_price'] > 0 && $val['unformatted_market_price'] > $val['unformatted_shop_price']) ? $val['unformatted_market_price'] - $val['unformatted_shop_price'] : 0);
+						$saving_price     = ($val['unformatted_shop_price'] > $val['unformatted_promote_price'] && $val['unformatted_promote_price'] > 0) ? $val['unformatted_shop_price'] - $val['unformatted_promote_price'] : (($val['unformatted_market_price'] > 0 && $val['unformatted_market_price'] > $val['unformatted_shop_price']) ? $val['unformatted_market_price'] - $val['unformatted_shop_price'] : 0);
 
 						/* $mobilebuy_price = $object_id = 0;
 						if (!is_ecjia_error($result_mobilebuy) && $is_active) {
@@ -190,6 +192,5 @@ class search_module extends api_front implements api_interface {
 		return array('data' => $seller_list, 'pager' => $page);
 	}
 }
-
 
 // end

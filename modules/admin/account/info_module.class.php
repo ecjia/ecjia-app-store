@@ -1,10 +1,12 @@
 <?php
 defined('IN_ECJIA') or exit('No permission resources.');
+
 /**
  * 认证申请
  * @author will.chen
  *
  */
+ 
 class info_module extends api_admin implements api_interface {
     public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {
 
@@ -60,7 +62,7 @@ class info_module extends api_admin implements api_interface {
 				$business_licence_pic = RC_Upload::upload_url($merchant_info['business_licence_pic']);
 			}
 			return array(
-					'validate_type'		=> $merchant_info['validate_type'],
+					'validate_type'		    => $merchant_info['validate_type'],
 					'responsible_person'	=> $merchant_info['responsible_person'],
 					'company_name'			=> $merchant_info['company_name'],
 					'business_licence_pic'	=> $business_licence_pic,
@@ -71,3 +73,5 @@ class info_module extends api_admin implements api_interface {
 		}
     }
 }
+
+//end

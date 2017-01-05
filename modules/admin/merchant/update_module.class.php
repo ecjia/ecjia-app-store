@@ -1,10 +1,12 @@
 <?php
 defined('IN_ECJIA') or exit('No permission resources.');
+
 /**
  * 店铺update信息
  * @author 
  *
  */
+ 
 class update_module extends api_admin implements api_interface {
     public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) 
     { 
@@ -65,7 +67,6 @@ class update_module extends api_admin implements api_interface {
 	    	return true;
 	    	
 		} else {
-			//$result = $ecjia->admin_priv('shop_config');
 			$result = $this->admin_priv('shop_config');
 			if (is_ecjia_error($result)) {
 				return $result;
@@ -89,5 +90,6 @@ class update_module extends api_admin implements api_interface {
 			return true;
 		}
     }	
-    
 }
+
+//end

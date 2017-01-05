@@ -1,10 +1,12 @@
 <?php
 defined('IN_ECJIA') or exit('No permission resources.');
+
 /**
  * 店铺信息
  * @author luchongchong
  *
  */
+ 
 class info_module extends api_admin implements api_interface {
     
     public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {
@@ -72,5 +74,6 @@ class info_module extends api_admin implements api_interface {
 		}
 		return array('data' => $seller_info, 'privilege' => $privilege);
     }
-    
 }
+
+//end

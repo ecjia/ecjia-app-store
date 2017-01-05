@@ -1,10 +1,12 @@
 <?php
 defined('IN_ECJIA') or exit('No permission resources.');
+
 /**
  * 认证申请
  * @author will.chen
  *
  */
+ 
 class validate_module extends api_admin implements api_interface {
     public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {
     	$this->authadminSession();
@@ -50,7 +52,7 @@ class validate_module extends api_admin implements api_interface {
 			unset($merchant_info['company_name']);
 		}
 
-		$store_preaudit_info = RC_DB::table('store_preaudit')->where(RC_DB::raw('store_id'), $_SESSION['store_id'])->first();
+		$store_preaudit_info   = RC_DB::table('store_preaudit')->where(RC_DB::raw('store_id'), $_SESSION['store_id'])->first();
 		$store_franchisee_info = RC_DB::table('store_franchisee')->where(RC_DB::raw('store_id'), $_SESSION['store_id'])->first();
 
 		$save_path = 'merchant/'.$_SESSION['store_id'].'/data/identity_pic';
@@ -138,3 +140,5 @@ class validate_module extends api_admin implements api_interface {
     }
 
 }
+
+//end

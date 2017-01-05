@@ -1,17 +1,19 @@
 <?php
 defined('IN_ECJIA') or exit('No permission resources.');
+
 /**
  * 入驻申请等信息获取验证码
  * @author
  *
  */
+ 
 class validate_module extends api_admin implements api_interface {
     public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {
-		$type		= $this->requestData('type');
-		$value		= $this->requestData('value');
+		$type		    = $this->requestData('type');
+		$value		    = $this->requestData('value');
 		$validate_type	= $this->requestData('validate_type');
 		$validate_code	= $this->requestData('validate_code');
-		$time = RC_Time::gmtime();
+		$time           = RC_Time::gmtime();
 
 		if (empty($type) || empty($value)) {
 			return new ecjia_error( 'invalid_parameter', RC_Lang::get ('system::system.invalid_parameter' ));
@@ -59,9 +61,9 @@ class validate_module extends api_admin implements api_interface {
         /* 判断是否有短信app*/
         if (!is_ecjia_error($result)) {
             //发送短信
-            $code = rand(100000, 999999);
+            $code     = rand(100000, 999999);
             $tpl_name = 'sms_get_validate';
-            $tpl   = RC_Api::api('sms', 'sms_template', $tpl_name);
+            $tpl      = RC_Api::api('sms', 'sms_template', $tpl_name);
             /* 判断短信模板是否存在*/
             if (!empty($tpl)) {
 // 					if ($validate_type == 'signup') {
@@ -79,7 +81,7 @@ class validate_module extends api_admin implements api_interface {
                         'msg'			=> $content,
                         'template_id' 	=> $tpl['template_id'],
                 );
-                $time = RC_Time::gmtime();
+                $time     = RC_Time::gmtime();
                 $response = RC_Api::api('sms', 'sms_send', $options);
             }
         }
@@ -98,3 +100,5 @@ class validate_module extends api_admin implements api_interface {
     }
 
 }
+
+//end

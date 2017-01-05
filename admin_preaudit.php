@@ -1,8 +1,9 @@
 <?php
+defined('IN_ECJIA') or exit('No permission resources.');
+
 /**
  * 入驻商家待审核列表
  */
-defined('IN_ECJIA') or exit('No permission resources.');
 
 class admin_preaudit extends ecjia_admin {
 	private $db_region;
@@ -66,7 +67,7 @@ class admin_preaudit extends ecjia_admin {
 		}
 		$this->assign('action_link',array('href' => $action_link_href, 'text' => RC_Lang::get('store::store.store_preaudit')));
 
-		$id = intval($_GET['id']);
+		$id    = intval($_GET['id']);
 		$store = RC_DB::table('store_preaudit')->where('id', $id)->first();
 
 		$province   = $this->db_region->get_regions(1, 1);
@@ -116,8 +117,8 @@ class admin_preaudit extends ecjia_admin {
 		}
 
 		if (!empty($_FILES['two']['name'])) {
-			$upload = RC_Upload::uploader('image', array('save_path' => 'data/store', 'auto_sub_dirs' => false));
-			$info = $upload->upload($_FILES['two']);
+			$upload  = RC_Upload::uploader('image', array('save_path' => 'data/store', 'auto_sub_dirs' => false));
+			$info    = $upload->upload($_FILES['two']);
 			if (!empty($info)) {
 				$identity_pic_front = $upload->get_position($info);
 				$upload->remove($pic_url['identity_pic_front']);
@@ -130,7 +131,7 @@ class admin_preaudit extends ecjia_admin {
 
 		if (!empty($_FILES['three']['name'])) {
 			$upload = RC_Upload::uploader('image', array('save_path' => 'data/store', 'auto_sub_dirs' => false));
-			$info = $upload->upload($_FILES['three']);
+			$info   = $upload->upload($_FILES['three']);
 			if (!empty($info)) {
 				$identity_pic_back = $upload->get_position($info);
 				$upload->remove($pic_url['identity_pic_back']);
@@ -155,31 +156,31 @@ class admin_preaudit extends ecjia_admin {
 		}
 
 		$data = array(
-			'cat_id'   	   				=> !empty($_POST['store_cat']) 		? $_POST['store_cat'] : '',
-			'merchants_name'   			=> !empty($_POST['merchants_name']) ? $_POST['merchants_name'] : '',
-			'shop_keyword'      		=> !empty($_POST['shop_keyword']) 	? $_POST['shop_keyword'] : '',
-			'responsible_person'		=> !empty($_POST['responsible_person']) ? $_POST['responsible_person'] : '',
-			'company_name'      		=> !empty($_POST['company_name']) 		? $_POST['company_name'] : '',
-			'email'      				=> !empty($_POST['email']) 				? $_POST['email'] : '',
-			'contact_mobile'    		=> !empty($_POST['contact_mobile']) 	? $_POST['contact_mobile'] : '',
-			'address'      				=> !empty($_POST['address']) 			? $_POST['address'] : '',
-			'identity_type'     		=> !empty($_POST['identity_type']) 		? $_POST['identity_type'] : '',
-			'identity_number'   		=> !empty($_POST['identity_number']) 	? $_POST['identity_number'] : '',
+			'cat_id'   	   				=> !empty($_POST['store_cat']) 		        ? $_POST['store_cat']           : '',
+			'merchants_name'   			=> !empty($_POST['merchants_name'])         ? $_POST['merchants_name']      : '',
+			'shop_keyword'      		=> !empty($_POST['shop_keyword']) 	        ? $_POST['shop_keyword']        : '',
+			'responsible_person'		=> !empty($_POST['responsible_person'])     ? $_POST['responsible_person']  : '',
+			'company_name'      		=> !empty($_POST['company_name']) 		    ? $_POST['company_name']        : '',
+			'email'      				=> !empty($_POST['email']) 				    ? $_POST['email']               : '',
+			'contact_mobile'    		=> !empty($_POST['contact_mobile']) 	    ? $_POST['contact_mobile']      : '',
+			'address'      				=> !empty($_POST['address']) 			    ? $_POST['address']             : '',
+			'identity_type'     		=> !empty($_POST['identity_type']) 		    ? $_POST['identity_type']       : '',
+			'identity_number'   		=> !empty($_POST['identity_number']) 	    ? $_POST['identity_number']     : '',
 			'identity_pic_front'		=> $identity_pic_front,
 			'identity_pic_back' 		=> $identity_pic_back,
 			'personhand_identity_pic'	=> $personhand_identity_pic,
-			'business_licence'  		=> !empty($_POST['business_licence']) 		? $_POST['business_licence'] : '',
+			'business_licence'  		=> !empty($_POST['business_licence']) 		? $_POST['business_licence']    : '',
 			'business_licence_pic' 		=> $business_licence_pic,
-			'bank_name'      	   		=> !empty($_POST['bank_name']) 				? $_POST['bank_name'] : '',
-			'bank_branch_name'     		=> !empty($_POST['bank_branch_name']) 		? $_POST['bank_branch_name'] : '',
-			'bank_account_name' 	 	=> !empty($_POST['bank_account_name'])		? $_POST['bank_account_name'] : '',
+			'bank_name'      	   		=> !empty($_POST['bank_name']) 				? $_POST['bank_name']           : '',
+			'bank_branch_name'     		=> !empty($_POST['bank_branch_name']) 		? $_POST['bank_branch_name']    : '',
+			'bank_account_name' 	 	=> !empty($_POST['bank_account_name'])		? $_POST['bank_account_name']   : '',
 			'bank_account_number' 	 	=> !empty($_POST['bank_account_number'])	? $_POST['bank_account_number'] : '',
-			'province'					=> !empty($_POST['province'])				? $_POST['province'] : '',
-			'city'						=> !empty($_POST['city'])					? $_POST['city'] : '',
-			'district'					=> !empty($_POST['district'])				? $_POST['district'] : '',
-			'bank_address'         		=> !empty($_POST['bank_address']) 			? $_POST['bank_address'] : '',
-			'longitude'         		=> !empty($_POST['longitude']) 				? $_POST['longitude'] : '',
-			'latitude'         			=> !empty($_POST['latitude']) 				? $_POST['latitude'] : '',
+			'province'					=> !empty($_POST['province'])				? $_POST['province']            : '',
+			'city'						=> !empty($_POST['city'])					? $_POST['city']                : '',
+			'district'					=> !empty($_POST['district'])				? $_POST['district']            : '',
+			'bank_address'         		=> !empty($_POST['bank_address']) 			? $_POST['bank_address']        : '',
+			'longitude'         		=> !empty($_POST['longitude']) 				? $_POST['longitude']           : '',
+			'latitude'         			=> !empty($_POST['latitude']) 				? $_POST['latitude']            : '',
 		);
 		$geohash = RC_Loader::load_app_class('geohash', 'store');
 		if(!empty($_POST['latitude']) && !empty($_POST['longitude']))
@@ -255,8 +256,8 @@ class admin_preaudit extends ecjia_admin {
 		//通过
 		if($_POST['check_status'] == 2) {
 			if($store_id == 0) {//首次审核
-				$store = RC_DB::table('store_preaudit')->where('id', $id)->first();
-				$geohash = RC_Loader::load_app_class('geohash', 'store');
+				$store        = RC_DB::table('store_preaudit')->where('id', $id)->first();
+				$geohash      = RC_Loader::load_app_class('geohash', 'store');
 				$geohash_code = $geohash->encode($store['latitude'] , $store['longitude']);
 				$geohash_code = substr($geohash_code, 0, 10);
 
@@ -455,9 +456,9 @@ class admin_preaudit extends ecjia_admin {
 				RC_DB::table('store_preaudit')->where('store_id', $store_id)->delete();
 				$log = array(
 				    'store_id' => $store_id ? $store_id : $id,
-				    'type' => $store_id ? 2 : 1,
-				    'name' => '管理员',
-				    'info' => '审核通过。'.$remark,
+				    'type'     => $store_id ? 2 : 1,
+				    'name'     => '管理员',
+				    'info'     => '审核通过。'.$remark,
 				);
 				
 				$store_franchisee_db = RC_Model::model('store/orm_store_franchisee_model');
@@ -508,7 +509,7 @@ class admin_preaudit extends ecjia_admin {
 	        return $this->showmessage('信息不存在或已处理完成', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR,  array('pjaxurl' => RC_Uri::url('store/admin_preaudit/init')));
 	    }
 	    $log_store_id = $info['store_id'] ? $info['store_id'] : $info['id'];
-	    $log_type = $info['store_id'] ? 2 : 1;
+	    $log_type     = $info['store_id'] ? 2 : 1;
 
 	    $log = get_check_log($log_store_id, $log_type, 1, 15);
 
@@ -520,22 +521,22 @@ class admin_preaudit extends ecjia_admin {
 	private function store_preaudit_list($page_size = 15) {
 		$db_store_franchisee = RC_DB::table('store_preaudit as sp');
 
-		$filter['keywords'] = empty($_GET['keywords']) ? '' : trim($_GET['keywords']);
-		$filter['type'] = empty($_GET['type']) ? 'join' : trim($_GET['type']);
+		$filter['keywords'] = empty($_GET['keywords']) ? ''     : trim($_GET['keywords']);
+		$filter['type']     = empty($_GET['type'])     ? 'join' : trim($_GET['type']);
 		if ($filter['keywords']) {
 			$db_store_franchisee->where('merchants_name', 'like', '%'.mysql_like_quote($filter['keywords']).'%');
 		}
 
 		$filter_type = $db_store_franchisee
-		->select(RC_DB::raw('count(*) as count_all'),
-		    RC_DB::raw('SUM(store_id = 0 AND check_status <> 3) as count_join'),
-		    RC_DB::raw('SUM(store_id <> 0) as count_edit'),
-		    RC_DB::raw('SUM(check_status = 3) as count_refuse'))
-		    ->first();
+                		->select(RC_DB::raw('count(*) as count_all'),
+                		    RC_DB::raw('SUM(store_id = 0 AND check_status <> 3) as count_join'),
+                		    RC_DB::raw('SUM(store_id <> 0) as count_edit'),
+                		    RC_DB::raw('SUM(check_status = 3) as count_refuse'))
+                		->first();
 
-		$filter['count_all'] = $filter_type['count_all'] ? $filter_type['count_all'] : 0;
-		$filter['count_join'] = $filter_type['count_join'] ? $filter_type['count_join'] : 0;
-		$filter['count_edit'] = $filter_type['count_edit'] ? $filter_type['count_edit'] : 0;
+		$filter['count_all']    = $filter_type['count_all']    ? $filter_type['count_all']    : 0;
+		$filter['count_join']   = $filter_type['count_join']   ? $filter_type['count_join']   : 0;
+		$filter['count_edit']   = $filter_type['count_edit']   ? $filter_type['count_edit']   : 0;
 		$filter['count_refuse'] = $filter_type['count_refuse'] ? $filter_type['count_refuse'] : 0;
 
 		if ($filter['type'] == 'edit') {
@@ -551,11 +552,11 @@ class admin_preaudit extends ecjia_admin {
 
 		$page = new ecjia_page($count, $page_size, 5);
 		$data = $db_store_franchisee
-		->leftJoin('store_category as sc', RC_DB::raw('sp.cat_id'), '=', RC_DB::raw('sc.cat_id'))
-		->selectRaw('sp.id,sp.merchants_name,sp.merchants_name,sp.responsible_person,sp.apply_time,sp.company_name,sc.cat_name')
-		->orderby('id', 'asc')
-		->take($page->page_size)
-		->get();
+        		->leftJoin('store_category as sc', RC_DB::raw('sp.cat_id'), '=', RC_DB::raw('sc.cat_id'))
+        		->selectRaw('sp.id,sp.merchants_name,sp.merchants_name,sp.responsible_person,sp.apply_time,sp.company_name,sc.cat_name')
+        		->orderby('id', 'asc')
+        		->take($page->page_size)
+        		->get();
 		$res = array();
 		if (!empty($data)) {
 			foreach ($data as $row) {
@@ -572,9 +573,9 @@ class admin_preaudit extends ecjia_admin {
 	 */
 	private function get_cat_select_list() {
 		$data = RC_DB::table('store_category')
-			->select('cat_id', 'cat_name')
-			->orderBy('cat_id', 'desc')
-			->get();
+    			->select('cat_id', 'cat_name')
+    			->orderBy('cat_id', 'desc')
+    			->get();
 		$cat_list = array();
 		if (!empty($data)) {
 			foreach ($data as $row ) {
@@ -589,15 +590,14 @@ class admin_preaudit extends ecjia_admin {
 	 * 获取指定地区的子级地区
 	 */
 	public function get_region(){
-		$type      = !empty($_GET['type'])   ? intval($_GET['type'])   : 0;
-		$parent        = !empty($_GET['parent']) ? intval($_GET['parent']) : 0;
+		$type           = !empty($_GET['type'])   ? intval($_GET['type'])               : 0;
+		$parent         = !empty($_GET['parent']) ? intval($_GET['parent'])             : 0;
 		$arr['regions'] = $this->db_region->get_regions($type, $parent);
 		$arr['type']    = $type;
 		$arr['target']  = !empty($_GET['target']) ? stripslashes(trim($_GET['target'])) : '';
 		$arr['target']  = htmlspecialchars($arr['target']);
 		echo json_encode($arr);
 	}
-
 }
 
 //end

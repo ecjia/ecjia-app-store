@@ -1,7 +1,10 @@
 <?php
+defined('IN_ECJIA') or exit('No permission resources.');
+
 /**
 * 添加管理员记录日志操作对象
 */
+
 function assign_adminlog_content() {
 	ecjia_admin_log::instance()->add_object('store_commission','佣金结算');
 	ecjia_admin_log::instance()->add_object('store_commission_status','佣金结算状态');
@@ -78,8 +81,8 @@ function set_store_menu($store_id, $key){
     );
     foreach($arr as $k => $val){
         if($key == $val['name']){
-            $arr[$k]['active'] = 1;
-            $arr[$k]['url'] = "#tab".($k+1);
+            $arr[$k]['active']  = 1;
+            $arr[$k]['url']     = "#tab".($k+1);
         }
     }
     return $arr;
@@ -89,33 +92,33 @@ function set_store_menu($store_id, $key){
 function get_check_log ($store_id, $type, $page = 1, $page_size = 10) {
      
     $db_log = RC_DB::table('store_check_log')->where('store_id', $store_id)->where('type', $type);
-    $count = $db_log->count();
-    $page = new ecjia_page($count, $page_size, 5);
+    $count  = $db_log->count();
+    $page   = new ecjia_page($count, $page_size, 5);
     $log_rs = $db_log->orderBy('id', 'desc')->take($page->page_size)->skip($page->start_id-1)->get();
      
     if (empty($log_rs)) {
         return false;
     }
     foreach ($log_rs as &$val) {
-        $val['log'] = null;
-        $new_data = unserialize($val['new_data']);
-        $original_data = unserialize($val['original_data']);
+        $val['log']     = null;
+        $new_data       = unserialize($val['new_data']);
+        $original_data  = unserialize($val['original_data']);
         if ($original_data) {
             foreach ($original_data as $key => $original_data) {
                 if (in_array($key, array('identity_pic_front', 'identity_pic_back', 'personhand_identity_pic', 'business_licence_pic'))) {
                     // 	                    $val['log'] .= '<br><code>'.$original_data['name'] . '</code>，旧图为<a href="'. $original_data['value'].'" target="_blank"><img class="w120 h70 thumbnail ecjiaf-ib" src="'. $original_data['value'].'"/></a>，新图为<a href="'. $new_data[$key]['value'].'" target="_blank"><img class="w120 h70 thumbnail ecjiaf-ib" src="'.$new_data[$key]['value'].'"/></a>；';
                     $val['log'][$key] = array(
-                        'name' => $original_data['name'],
+                        'name'          => $original_data['name'],
                         'original_data' => '<a href="'. $original_data['value'].'" title="点击查看大图" target="_blank"><img class="w120 h70 thumbnail ecjiaf-ib" src="'. $original_data['value'].'"/></a>',
-                        'new_data' => '<a href="'. $new_data[$key]['value'].'" title="点击查看大图" target="_blank"><img class="w120 h70 thumbnail ecjiaf-ib" src="'.$new_data[$key]['value'].'"/></a>',
-                        'is_img' => 1
+                        'new_data'      => '<a href="'. $new_data[$key]['value'].'" title="点击查看大图" target="_blank"><img class="w120 h70 thumbnail ecjiaf-ib" src="'.$new_data[$key]['value'].'"/></a>',
+                        'is_img'        => 1
                     );
                 } else {
                     // 	                    $val['log'] .= '<br><code>'.$original_data['name'] . '</code>，旧值为<code>'. $original_data['value'].'</code>，新值为<code>'.$new_data[$key]['value'].'</code>；';
                     $val['log'][$key] = array(
-                        'name' => $original_data['name'],
+                        'name'          => $original_data['name'],
                         'original_data' => $original_data['value'],
-                        'new_data' => $new_data[$key]['value'],
+                        'new_data'      => $new_data[$key]['value'],
                     );
                 }
                  

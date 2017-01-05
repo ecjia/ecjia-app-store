@@ -1,4 +1,6 @@
 <?php
+defined('IN_ECJIA') or exit('No permission resources.');
+
 /**
  * ECMOBAN 公用函数库
  * ============================================================================
@@ -23,7 +25,7 @@ function get_ip_area_name($ip = '') {
 
     $Http = new Http();
     $data = $Http->doGet($url);//调用淘宝接口获取信息
-    $str = json_decode($data,true);
+    $str  = json_decode($data,true);
 
     if ($str['data']['county'] != '') { //市级
         $region = $str['data']['county'];
@@ -506,22 +508,22 @@ function get_merchants_steps_fields_admin($table, $date, $dateType, $length, $no
 	$arr = array();
 	for ($i=0;$i<count($date); $i++) {
 		if (!empty($date[$i])) {
-			$arr[$i]['date'] = $date[$i];
-			$arr[$i]['dateType'] = $dateType[$i];
-			$arr[$i]['length'] = $length[$i];
-			$arr[$i]['notnull'] = $notnull[$i];
-			$arr[$i]['formName'] = $formName[$i];
-			$arr[$i]['coding'] = $coding[$i];
-			$arr[$i]['fields_sort'] = $fields_sort[$i];
+			$arr[$i]['date']         = $date[$i];
+			$arr[$i]['dateType']     = $dateType[$i];
+			$arr[$i]['length']       = $length[$i];
+			$arr[$i]['notnull']      = $notnull[$i];
+			$arr[$i]['formName']     = $formName[$i];
+			$arr[$i]['coding']       = $coding[$i];
+			$arr[$i]['fields_sort']  = $fields_sort[$i];
 			
-			$arr['textFields'] .= $date[$i] . ',';
-			$arr['fieldsDateType'] .= $dateType[$i] . ',';
-			$arr['fieldsLength'] .= $length[$i] . ',';
-			$arr['fieldsNotnull'] .= $notnull[$i] . ',';
-			$arr['fieldsFormName'] .= $formName[$i] . ',';
-			$arr['fieldsCoding'] .= $coding[$i] . ',';
-			$arr['fields_sort'] .= $fields_sort[$i] . ',';
-			$arr['will_choose'] .= $_POST['will_choose_' . $i] . ',';
+			$arr['textFields']       .= $date[$i] . ',';
+			$arr['fieldsDateType']   .= $dateType[$i] . ',';
+			$arr['fieldsLength']     .= $length[$i] . ',';
+			$arr['fieldsNotnull']    .= $notnull[$i] . ',';
+			$arr['fieldsFormName']   .= $formName[$i] . ',';
+			$arr['fieldsCoding']     .= $coding[$i] . ',';
+			$arr['fields_sort']      .= $fields_sort[$i] . ',';
+			$arr['will_choose']      .= $_POST['will_choose_' . $i] . ',';
 			
 			if ($dateType[$i] == 'INT' || $dateType[$i] == 'TINYINT' || $dateType[$i] == 'DECIMAL' || $dateType[$i] == 'MEDIUMINT' || $dateType[$i] == 'SMALLINT') {
 				$arr[$i]['coding'] = '';
@@ -553,14 +555,14 @@ function get_merchants_steps_fields_admin($table, $date, $dateType, $length, $no
 		}
 	}
 	
-	$arr['textFields'] = substr($arr['textFields'], 0, -1);
-	$arr['fieldsDateType'] = substr($arr['fieldsDateType'], 0, -1);
-	$arr['fieldsLength'] = substr($arr['fieldsLength'], 0, -1);
-	$arr['fieldsNotnull'] = substr($arr['fieldsNotnull'], 0, -1);
-	$arr['fieldsFormName'] = substr($arr['fieldsFormName'], 0, -1);
-	$arr['fieldsCoding'] = substr($arr['fieldsCoding'], 0, -1);
-	$arr['fields_sort'] = substr($arr['fields_sort'], 0, -1);
-	$arr['will_choose'] = substr($arr['will_choose'], 0, -1);
+	$arr['textFields']         = substr($arr['textFields'], 0, -1);
+	$arr['fieldsDateType']     = substr($arr['fieldsDateType'], 0, -1);
+	$arr['fieldsLength']       = substr($arr['fieldsLength'], 0, -1);
+	$arr['fieldsNotnull']      = substr($arr['fieldsNotnull'], 0, -1);
+	$arr['fieldsFormName']     = substr($arr['fieldsFormName'], 0, -1);
+	$arr['fieldsCoding']       = substr($arr['fieldsCoding'], 0, -1);
+	$arr['fields_sort']        = substr($arr['fields_sort'], 0, -1);
+	$arr['will_choose']        = substr($arr['will_choose'], 0, -1);
 	
 	return $arr;
 }
@@ -625,16 +627,16 @@ function get_formType_arr($formType, $rc_sort, $type = 0) {
 function get_merchants_steps_fields_centent_insert_update($textFields, $fieldsDateType, $fieldsLength, $fieldsNotnull, $fieldsFormName, $fieldsCoding, $fields_sort, $will_choose, $chooseForm, $tid) {
 	
 	$parent = array(
-				'tid' => $tid,
-				'textFields' => $textFields,
-				'fieldsDateType' => $fieldsDateType,
-				'fieldsLength' => $fieldsLength,
-				'fieldsNotnull' => $fieldsNotnull,
-				'fieldsFormName' => $fieldsFormName,
-				'fieldsCoding' => $fieldsCoding,
-				'fields_sort' => $fields_sort,
-				'will_choose' => $will_choose,
-				'fieldsForm' => $chooseForm
+				'tid'               => $tid,
+				'textFields'        => $textFields,
+				'fieldsDateType'    => $fieldsDateType,
+				'fieldsLength'      => $fieldsLength,
+				'fieldsNotnull'     => $fieldsNotnull,
+				'fieldsFormName'    => $fieldsFormName,
+				'fieldsCoding'      => $fieldsCoding,
+				'fields_sort'       => $fields_sort,
+				'will_choose'       => $will_choose,
+				'fieldsForm'        => $chooseForm
 			);	
 	
 	$sql = "select id from " .$GLOBALS['ecs']->table('merchants_steps_fields_centent'). " where tid = '$tid'";
@@ -669,12 +671,12 @@ function get_merchants_steps_title_insert_update($fields_steps, $fields_titles, 
 		return false;
 	} else {	
 		$parent = array(
-					'fields_steps' => $fields_steps,
-					'fields_titles' => $fields_titles,
-					'titles_annotation' => $titles_annotation,
-					'steps_style' => $steps_style,
-					'fields_special' => $fields_special,
-					'special_type' => $special_type
+					'fields_steps'         => $fields_steps,
+					'fields_titles'        => $fields_titles,
+					'titles_annotation'    => $titles_annotation,
+					'steps_style'          => $steps_style,
+					'fields_special'       => $fields_special,
+					'special_type'         => $special_type
 				);
 		
 		if ($handler_type == 'update') {
@@ -775,7 +777,7 @@ function get_fields_centent_info($id, $textFields, $fieldsDateType, $fieldsLengt
 						if (!empty($arr[$i+1]['textAreaForm'])) {
 							$arr[$i+1]['province_list'] = get_regions(1,$arr[$i+1]['textAreaForm']['country']);
 							$arr[$i+1]['province_list'] = get_regions(1,$arr[$i+1]['textAreaForm']['country']);
-							$arr[$i+1]['city_list'] = get_regions(2,$arr[$i+1]['textAreaForm']['province']);
+							$arr[$i+1]['city_list']     = get_regions(2,$arr[$i+1]['textAreaForm']['province']);
 							$arr[$i+1]['district_list'] = get_regions(3,$arr[$i+1]['textAreaForm']['city']);
 						}
 					}
@@ -1045,9 +1047,9 @@ function get_root_steps_process_list($sid) {
 	
 	$arr = array();
 	foreach ($res as $key=>$row) {
-		$arr[$key]['id'] = $row['id'];
-		$arr[$key]['process_title'] = $row['process_title'];
-		$arr[$key]['fields_next'] = $row['fields_next'];
+		$arr[$key]['id']              = $row['id'];
+		$arr[$key]['process_title']   = $row['process_title'];
+		$arr[$key]['fields_next']     = $row['fields_next'];
 	}
 	
 	return $arr;
@@ -1076,75 +1078,75 @@ function get_root_merchants_steps_title($pid, $user_id) {
 	$arr = array();
 	foreach ($res as $key=>$row) {
 
-		$arr[$key]['tid'] = $row['tid'];
-		$arr[$key]['fields_titles'] = $row['fields_titles'];
-		$arr[$key]['titles_annotation'] = $row['titles_annotation'];
-		$arr[$key]['steps_style'] = $row['steps_style'];
-		$arr[$key]['fields_special'] = $row['fields_special'];
-		$arr[$key]['special_type'] = $row['special_type'];
+		$arr[$key]['tid']                 = $row['tid'];
+		$arr[$key]['fields_titles']       = $row['fields_titles'];
+		$arr[$key]['titles_annotation']   = $row['titles_annotation'];
+		$arr[$key]['steps_style']         = $row['steps_style'];
+		$arr[$key]['fields_special']      = $row['fields_special'];
+		$arr[$key]['special_type']        = $row['special_type'];
 		
-		$sql = "select * from " .$GLOBALS['ecs']->table('merchants_steps_fields_centent'). " where tid = '" .$row['tid']. "'"; 
-		$centent = $GLOBALS['db']->getRow($sql);
-		$cententFields = get_fields_centent_info($centent['id'],$centent['textFields'],$centent['fieldsDateType'],$centent['fieldsLength'],$centent['fieldsNotnull'],$centent['fieldsFormName'],$centent['fieldsCoding'],$centent['fieldsForm'],$centent['fields_sort'],$centent['will_choose'], 'root', $user_id);	
-		$arr[$key]['cententFields'] = get_array_sort($cententFields, 'fields_sort');
+		$sql                              = "select * from " .$GLOBALS['ecs']->table('merchants_steps_fields_centent'). " where tid = '" .$row['tid']. "'"; 
+		$centent                          = $GLOBALS['db']->getRow($sql);
+		$cententFields                    = get_fields_centent_info($centent['id'],$centent['textFields'],$centent['fieldsDateType'],$centent['fieldsLength'],$centent['fieldsNotnull'],$centent['fieldsFormName'],$centent['fieldsCoding'],$centent['fieldsForm'],$centent['fields_sort'],$centent['will_choose'], 'root', $user_id);	
+		$arr[$key]['cententFields']       = get_array_sort($cententFields, 'fields_sort');
 		
 		//自定义表单数据插入 start
-		$ec_shop_bid = isset($_REQUEST['ec_shop_bid']) ? trim($_REQUEST['ec_shop_bid']) : '';
-		$ec_shoprz_type = isset($_POST['ec_shoprz_type']) ? intval($_POST['ec_shoprz_type']) : 0;
-		$ec_subShoprz_type = isset($_POST['ec_subShoprz_type']) ? intval($_POST['ec_subShoprz_type']) : 0;
-		$ec_shop_expireDateStart = isset($_POST['ec_shop_expireDateStart']) ? trim($_POST['ec_shop_expireDateStart']) : '';
-		$ec_shop_expireDateEnd = isset($_POST['ec_shop_expireDateEnd']) ? trim($_POST['ec_shop_expireDateEnd']) : '';
-		$ec_shop_permanent = isset($_POST['ec_shop_permanent']) ? intval($_POST['ec_shop_permanent']) : 0;
-		$ec_shop_categoryMain = isset($_POST['ec_shop_categoryMain']) ? intval($_POST['ec_shop_categoryMain']) : 0;
+		$ec_shop_bid              = isset($_REQUEST['ec_shop_bid']) ? trim($_REQUEST['ec_shop_bid']) : '';
+		$ec_shoprz_type           = isset($_POST['ec_shoprz_type']) ? intval($_POST['ec_shoprz_type']) : 0;
+		$ec_subShoprz_type        = isset($_POST['ec_subShoprz_type']) ? intval($_POST['ec_subShoprz_type']) : 0;
+		$ec_shop_expireDateStart  = isset($_POST['ec_shop_expireDateStart']) ? trim($_POST['ec_shop_expireDateStart']) : '';
+		$ec_shop_expireDateEnd    = isset($_POST['ec_shop_expireDateEnd']) ? trim($_POST['ec_shop_expireDateEnd']) : '';
+		$ec_shop_permanent        = isset($_POST['ec_shop_permanent']) ? intval($_POST['ec_shop_permanent']) : 0;
+		$ec_shop_categoryMain     = isset($_POST['ec_shop_categoryMain']) ? intval($_POST['ec_shop_categoryMain']) : 0;
 		
 		//品牌基本信息
-		$bank_name_letter = isset($_POST['ec_bank_name_letter']) ? trim($_POST['ec_bank_name_letter']) : '';
-		$brandName = isset($_POST['ec_brandName']) ? trim($_POST['ec_brandName']) : '';
-		$brandFirstChar = isset($_POST['ec_brandFirstChar']) ? trim($_POST['ec_brandFirstChar']) : '';
-		$brandLogo = isset($_FILES['ec_brandLogo']) ? $_FILES['ec_brandLogo'] : '';
-		$brandLogo = $image->upload_image($brandLogo, 'septs_Image');  //图片存放地址 -- data/septs_Image
-		$brandType = isset($_POST['ec_brandType']) ? intval($_POST['ec_brandType']) : 0;
-		$brand_operateType = isset($_POST['ec_brand_operateType']) ? intval($_POST['ec_brand_operateType']) : 0;
-		$brandEndTime = isset($_POST['ec_brandEndTime']) ? intval($_POST['ec_brandEndTime']) : '';
-		$brandEndTime_permanent = isset($_POST['ec_brandEndTime_permanent']) ? intval($_POST['ec_brandEndTime_permanent']) : 0;
+		$bank_name_letter         = isset($_POST['ec_bank_name_letter']) ? trim($_POST['ec_bank_name_letter']) : '';
+		$brandName                = isset($_POST['ec_brandName']) ? trim($_POST['ec_brandName']) : '';
+		$brandFirstChar           = isset($_POST['ec_brandFirstChar']) ? trim($_POST['ec_brandFirstChar']) : '';
+		$brandLogo                = isset($_FILES['ec_brandLogo']) ? $_FILES['ec_brandLogo'] : '';
+		$brandLogo                = $image->upload_image($brandLogo, 'septs_Image');  //图片存放地址 -- data/septs_Image
+		$brandType                = isset($_POST['ec_brandType']) ? intval($_POST['ec_brandType']) : 0;
+		$brand_operateType        = isset($_POST['ec_brand_operateType']) ? intval($_POST['ec_brand_operateType']) : 0;
+		$brandEndTime             = isset($_POST['ec_brandEndTime']) ? intval($_POST['ec_brandEndTime']) : '';
+		$brandEndTime_permanent   = isset($_POST['ec_brandEndTime_permanent']) ? intval($_POST['ec_brandEndTime_permanent']) : 0;
 		
 		//品牌资质证件
-		$qualificationNameInput = isset($_POST['ec_qualificationNameInput']) ? $_POST['ec_qualificationNameInput'] : array();
-		$qualificationImg = isset($_FILES['ec_qualificationImg']) ? $_FILES['ec_qualificationImg'] : array();
-		$expiredDateInput = isset($_POST['ec_expiredDateInput']) ? $_POST['ec_expiredDateInput'] : array();
-		$b_fid = isset($_POST['b_fid']) ? $_POST['b_fid'] : array();
+		$qualificationNameInput   = isset($_POST['ec_qualificationNameInput']) ? $_POST['ec_qualificationNameInput'] : array();
+		$qualificationImg         = isset($_FILES['ec_qualificationImg']) ? $_FILES['ec_qualificationImg'] : array();
+		$expiredDateInput         = isset($_POST['ec_expiredDateInput']) ? $_POST['ec_expiredDateInput'] : array();
+		$b_fid                    = isset($_POST['b_fid']) ? $_POST['b_fid'] : array();
 		
 		//店铺命名信息
-		$ec_shoprz_brandName = isset($_POST['ec_shoprz_brandName']) ? $_POST['ec_shoprz_brandName'] : '';
-		$ec_shop_class_keyWords = isset($_POST['ec_shop_class_keyWords']) ? $_POST['ec_shop_class_keyWords'] : '';
-		$ec_shopNameSuffix = isset($_POST['ec_shopNameSuffix']) ? $_POST['ec_shopNameSuffix'] : '';
-		$ec_rz_shopName = isset($_POST['ec_rz_shopName']) ? $_POST['ec_rz_shopName'] : '';
-		$ec_hopeLoginName = isset($_POST['ec_hopeLoginName']) ? $_POST['ec_hopeLoginName'] : '';
+		$ec_shoprz_brandName      = isset($_POST['ec_shoprz_brandName']) ? $_POST['ec_shoprz_brandName'] : '';
+		$ec_shop_class_keyWords   = isset($_POST['ec_shop_class_keyWords']) ? $_POST['ec_shop_class_keyWords'] : '';
+		$ec_shopNameSuffix        = isset($_POST['ec_shopNameSuffix']) ? $_POST['ec_shopNameSuffix'] : '';
+		$ec_rz_shopName           = isset($_POST['ec_rz_shopName']) ? $_POST['ec_rz_shopName'] : '';
+		$ec_hopeLoginName         = isset($_POST['ec_hopeLoginName']) ? $_POST['ec_hopeLoginName'] : '';
 		
-		$shop_info = get_merchants_septs_custom_info('merchants_shop_information'); //店铺类型、 可经营类目---信息表
-		$brand_info = get_merchants_septs_custom_info('merchants_shop_brand', 'pingpai', $ec_shop_bid); //品牌表
+		$shop_info    = get_merchants_septs_custom_info('merchants_shop_information'); //店铺类型、 可经营类目---信息表
+		$brand_info   = get_merchants_septs_custom_info('merchants_shop_brand', 'pingpai', $ec_shop_bid); //品牌表
 		
-		$sql = "select shop_id from " .$GLOBALS['ecs']->table('merchants_shop_information'). " where user_id = '" .$_SESSION['user_id']. "'";
-		$shop_id = $GLOBALS['db']->getOne($sql);
+		$sql      = "select shop_id from " .$GLOBALS['ecs']->table('merchants_shop_information'). " where user_id = '" .$_SESSION['user_id']. "'";
+		$shop_id  = $GLOBALS['db']->getOne($sql);
 		
 		if ($row['steps_style'] == 1) {
 			
-			$ec_authorizeFile = $image->upload_image($_FILES['ec_authorizeFile'], 'septs_Image');  //图片存放地址 -- data/septs_Image
-			$ec_authorizeFile = empty($ec_authorizeFile) ? $shop_info['authorizeFile'] : $ec_authorizeFile;
+			$ec_authorizeFile        = $image->upload_image($_FILES['ec_authorizeFile'], 'septs_Image');  //图片存放地址 -- data/septs_Image
+			$ec_authorizeFile        = empty($ec_authorizeFile) ? $shop_info['authorizeFile'] : $ec_authorizeFile;
 			$ec_shop_hypermarketFile = $image->upload_image($_FILES['ec_shop_hypermarketFile'], 'septs_Image');  //图片存放地址 -- data/septs_Image
 			$ec_shop_hypermarketFile = empty($ec_shop_hypermarketFile) ? $shop_info['shop_hypermarketFile'] : $ec_shop_hypermarketFile;
 			
 			if ($ec_shop_permanent != 1) {
 				$ec_shop_expireDateStart = empty($ec_shop_expireDateStart) ? local_date("Y-m-d H:i", $shop_info['shop_expireDateStart']) : $ec_shop_expireDateStart;
-				$ec_shop_expireDateEnd = empty($ec_shop_expireDateEnd) ? local_date("Y-m-d H:i", $shop_info['shop_expireDateEnd']) : $ec_shop_expireDateEnd;
+				$ec_shop_expireDateEnd   = empty($ec_shop_expireDateEnd)   ? local_date("Y-m-d H:i", $shop_info['shop_expireDateEnd'])   : $ec_shop_expireDateEnd;
 
 				if (!empty($ec_shop_expireDateStart) || !empty($ec_shop_expireDateEnd)) {
 					$ec_shop_expireDateStart = local_strtotime($ec_shop_expireDateStart);
-					$ec_shop_expireDateEnd = local_strtotime($ec_shop_expireDateEnd);
+					$ec_shop_expireDateEnd   = local_strtotime($ec_shop_expireDateEnd);
 				}
 			} else {
 				$ec_shop_expireDateStart = '';
-				$ec_shop_expireDateEnd = '';
+				$ec_shop_expireDateEnd   = '';
 			}
 			
 			//判断数据是否存在，如果存在则引用 start
@@ -1160,15 +1162,15 @@ function get_root_merchants_steps_title($pid, $user_id) {
 			//判断数据是否存在，如果存在则引用 end
 			
 			$parent = array(  //店铺类型数据插入
-						'user_id' => $_SESSION['user_id'],
-						'shoprz_type' => $ec_shoprz_type,
-						'subShoprz_type' => $ec_subShoprz_type,
-						'shop_expireDateStart' => $ec_shop_expireDateStart,
-						'shop_expireDateEnd' => $ec_shop_expireDateEnd,
-						'shop_permanent' => $ec_shop_permanent,
-						'authorizeFile' => $ec_authorizeFile,
-						'shop_hypermarketFile' => $ec_shop_hypermarketFile,
-						'shop_categoryMain' => $ec_shop_categoryMain
+						'user_id'                 => $_SESSION['user_id'],
+						'shoprz_type'             => $ec_shoprz_type,
+						'subShoprz_type'          => $ec_subShoprz_type,
+						'shop_expireDateStart'    => $ec_shop_expireDateStart,
+						'shop_expireDateEnd'      => $ec_shop_expireDateEnd,
+						'shop_permanent'          => $ec_shop_permanent,
+						'authorizeFile'           => $ec_authorizeFile,
+						'shop_hypermarketFile'    => $ec_shop_hypermarketFile,
+						'shop_categoryMain'       => $ec_shop_categoryMain
 					);	
 					
 			if ($_SESSION['user_id'] > 0) {
@@ -1186,9 +1188,9 @@ function get_root_merchants_steps_title($pid, $user_id) {
 						$parent['shop_permanent'] = 0;
 					} else {
 						if ($parent['shop_expireDateStart'] == '' || $parent['shop_expireDateEnd'] == '') {
-							$parent['shop_permanent'] = 1;
-							$parent['shop_expireDateStart'] = '';
-							$parent['shop_expireDateEnd'] = '';
+							$parent['shop_permanent']        = 1;
+							$parent['shop_expireDateStart']  = '';
+							$parent['shop_expireDateEnd']    = '';
 						}
 					}
 					
@@ -1212,8 +1214,8 @@ function get_root_merchants_steps_title($pid, $user_id) {
 			//2014-11-19 start
 			if ($_SESSION['user_id'] > 0) {
 				if ($shop_id < 1) {
-					$parent['user_id'] = $_SESSION['user_id'];
-					$parent['shop_categoryMain'] = $ec_shop_categoryMain;
+					$parent['user_id']             = $_SESSION['user_id'];
+					$parent['shop_categoryMain']   = $ec_shop_categoryMain;
 					$GLOBALS['db']->autoExecute($GLOBALS['ecs']->table('merchants_shop_information'), $parent, 'INSERT');
 				}
 			}
@@ -1226,7 +1228,7 @@ function get_root_merchants_steps_title($pid, $user_id) {
 			
 			//2014-11-19 start
 			if ($ec_shop_categoryMain == 0) {
-				$ec_shop_categoryMain = $shop_info['shop_categoryMain'];
+				$ec_shop_categoryMain        = $shop_info['shop_categoryMain'];
 				$parent['shop_categoryMain'] = $ec_shop_categoryMain;
 			}
 			$parent['shop_categoryMain'] = $ec_shop_categoryMain;
@@ -1244,14 +1246,14 @@ function get_root_merchants_steps_title($pid, $user_id) {
 
 			if ($ec_shop_bid > 0) { //更新品牌数据
 			
-				$bank_name_letter = empty($bank_name_letter) ? $brand_info['bank_name_letter'] : $bank_name_letter;
-				$brandName = empty($brandName) ? $brand_info['brandName'] : $brandName;
-				$brandFirstChar = empty($brandFirstChar) ? $brand_info['brandFirstChar'] : $brandFirstChar;
-				$brandLogo = empty($brandLogo) ? $brand_info['brandLogo'] : $brandLogo;
-				$brandType = empty($brandType) ? $brand_info['brandType'] : $brandType;
-				$brand_operateType = empty($brand_operateType) ? $brand_info['brand_operateType'] : $brand_operateType;
-				$brandEndTime = empty($brandEndTime) ? $brand_info['brandEndTime'] : local_strtotime($brandEndTime);
-				$brandEndTime_permanent = empty($brandEndTime_permanent) ? $brand_info['brandEndTime_permanent'] : $brandEndTime_permanent;
+				$bank_name_letter       = empty($bank_name_letter)          ? $brand_info['bank_name_letter']       : $bank_name_letter;
+				$brandName              = empty($brandName)                 ? $brand_info['brandName']              : $brandName;
+				$brandFirstChar         = empty($brandFirstChar)            ? $brand_info['brandFirstChar']         : $brandFirstChar;
+				$brandLogo              = empty($brandLogo)                 ? $brand_info['brandLogo']              : $brandLogo;
+				$brandType              = empty($brandType)                 ? $brand_info['brandType']              : $brandType;
+				$brand_operateType      = empty($brand_operateType)         ? $brand_info['brand_operateType']      : $brand_operateType;
+				$brandEndTime           = empty($brandEndTime)              ? $brand_info['brandEndTime']           : local_strtotime($brandEndTime);
+				$brandEndTime_permanent = empty($brandEndTime_permanent)    ? $brand_info['brandEndTime_permanent'] : $brandEndTime_permanent;
 			
 				$brandfile_list = get_shop_brandfile_list($ec_shop_bid);
 				$arr[$key]['brandfile_list'] = $brandfile_list;
@@ -1324,15 +1326,15 @@ function get_root_merchants_steps_title($pid, $user_id) {
 			}
 		} elseif ($row['steps_style'] == 4) {
 			
-			$sql = "select bid, brandName from " .$GLOBALS['ecs']->table('merchants_shop_brand'). " where user_id = '" .$_SESSION['user_id']. "'";
-			$brand_list = $GLOBALS['db']->getAll($sql);
+			$sql                     = "select bid, brandName from " .$GLOBALS['ecs']->table('merchants_shop_brand'). " where user_id = '" .$_SESSION['user_id']. "'";
+			$brand_list              = $GLOBALS['db']->getAll($sql);
 			$arr[$key]['brand_list'] = $brand_list;
 			
-			$ec_shoprz_brandName = empty($ec_shoprz_brandName) ? $shop_info['shoprz_brandName'] : $ec_shoprz_brandName;
-			$ec_shop_class_keyWords = empty($ec_shop_class_keyWords) ? $shop_info['shop_class_keyWords'] : $ec_shop_class_keyWords;
-			$ec_shopNameSuffix = empty($ec_shopNameSuffix) ? $shop_info['shopNameSuffix'] : $ec_shopNameSuffix;
-			$ec_rz_shopName = empty($ec_rz_shopName) ? $shop_info['rz_shopName'] : $ec_rz_shopName;
-			$ec_hopeLoginName = empty($ec_hopeLoginName) ? $shop_info['hopeLoginName'] : $ec_hopeLoginName;
+			$ec_shoprz_brandName     = empty($ec_shoprz_brandName)       ? $shop_info['shoprz_brandName']    : $ec_shoprz_brandName;
+			$ec_shop_class_keyWords  = empty($ec_shop_class_keyWords)    ? $shop_info['shop_class_keyWords'] : $ec_shop_class_keyWords;
+			$ec_shopNameSuffix       = empty($ec_shopNameSuffix)         ? $shop_info['shopNameSuffix']      : $ec_shopNameSuffix;
+			$ec_rz_shopName          = empty($ec_rz_shopName)            ? $shop_info['rz_shopName']         : $ec_rz_shopName;
+			$ec_hopeLoginName        = empty($ec_hopeLoginName)          ? $shop_info['hopeLoginName']       : $ec_hopeLoginName;
 			
 			if (!empty($ec_rz_shopName)) {
 				$parent = array(
@@ -1355,7 +1357,7 @@ function get_root_merchants_steps_title($pid, $user_id) {
 			$parent['shoprz_type'] = $shop_info['shoprz_type'];
 		}
 		
-		$parent['brandEndTime'] = $arr[$key]['parentType']['brandEndTime']; //品牌使用时间
+		$parent['brandEndTime']  = $arr[$key]['parentType']['brandEndTime']; //品牌使用时间
 		$arr[$key]['parentType'] = $parent; //自定义显示
 		//自定义表单数据插入 end
 	}
@@ -1371,17 +1373,17 @@ function get_update_temporarydate_isAdd($catId_array, $type = 0) {
 	if ($type == 0) {
 		for ($i=0; $i<count($catId_array); $i++) {
 			$parentChild = explode(':', $catId_array[$i]);
-			$arr[$i] = explode(',',$parentChild[1]);
+			$arr[$i]     = explode(',',$parentChild[1]);
 			
 			for ($j=0; $j<count($arr[$i]); $j++) {
 				$mctdb->where(array('cat_id'=>$arr[$i][$j]))->update(array('is_add'=>1));
 			}
 		}
 	} else {
-		$cat_id = isset($_POST['permanentCat_id']) ? $_POST['permanentCat_id'] : array();
-		$dt_id = isset($_POST['permanent_title']) ? $_POST['permanent_title'] : array();
-		$permanentFiles = !empty($_FILES['permanentFile']) ? $_FILES['permanentFile'] : array();
-		$permanent_date = isset($_POST['categoryId_date']) ? $_POST['categoryId_date'] : array();
+		$cat_id               = isset($_POST['permanentCat_id'])      ? $_POST['permanentCat_id']      : array();
+		$dt_id                = isset($_POST['permanent_title'])      ? $_POST['permanent_title']      : array();
+		$permanentFiles       = !empty($_FILES['permanentFile'])      ? $_FILES['permanentFile']       : array();
+		$permanent_date       = isset($_POST['categoryId_date'])      ? $_POST['categoryId_date']      : array();
 		$cate_title_permanent = isset($_POST['categoryId_permanent']) ? $_POST['categoryId_permanent'] : array();
 		
 		foreach ($permanentFiles as $k => $v) {
@@ -1431,13 +1433,13 @@ function get_merchants_dt_file_insert_update($cat_id, $dt_id, $permanentFile, $p
 		}
 		
 		$parent = array(
-			'cat_id' => intval($cat_id[$i]),
-			'dt_id' => intval($dt_id[$i]),
-			//'user_id' => $_SESSION['user_id'],
-			'shop_id'	=> $_SESSION['shop_id'],
-			'permanent_file' => $pFile,
-			'permanent_date' => $permanent_date[$i],
-			'cate_title_permanent' => $catPermanent
+			'cat_id'                 => intval($cat_id[$i]),
+			'dt_id'                  => intval($dt_id[$i]),
+			//'user_id'              => $_SESSION['user_id'],
+			'shop_id'	             => $_SESSION['shop_id'],
+			'permanent_file'         => $pFile,
+			'permanent_date'         => $permanent_date[$i],
+			'cate_title_permanent'   => $catPermanent
 		);
 
 		if ($row['dtf_id'] > 0) {
@@ -1455,7 +1457,11 @@ function get_septs_shop_brand_list($shop_id = 0) {
 	$seller_shopinfo = RC_Loader::load_app_model('seller_shopinfo_model', 'seller');
 	if ($shop_id > 0) {
 		$seller_id = $seller_shopinfo-> where(array('shop_id' => $shop_id))->get_field('id');
-		$res = $msb_db->field('bid, bank_name_letter, brandName, brandFirstChar, brandLogo, brandType, brand_operateType, brandEndTime')->where(array('seller_id' => $seller_id))->order('bid asc')->select();
+		$res = $msb_db
+    		->field('bid, bank_name_letter, brandName, brandFirstChar, brandLogo, brandType, brand_operateType, brandEndTime')
+    		->where(array('seller_id' => $seller_id))
+    		->order('bid asc')
+    		->select();
 	}
 	$arr = array();
 	$no_picture = RC_Uri::admin_url('statics/images/nopic.png');
@@ -1572,9 +1578,9 @@ function get_steps_title_insert_form($pid = 0) {
 
 //返回插入基本信息字段数据
 function get_setps_form_insert_date($formName, $shop_id) {
-	$upload = RC_Upload::uploader('image', array('save_path' => 'data/septs_Image', 'auto_sub_dirs' => true));
-	$msf_db = RC_Loader::load_app_model('merchants_steps_fields_model','seller');
-	$formName = explode(',', $formName);
+	$upload    = RC_Upload::uploader('image', array('save_path' => 'data/septs_Image', 'auto_sub_dirs' => true));
+	$msf_db    = RC_Loader::load_app_model('merchants_steps_fields_model','seller');
+	$formName  = explode(',', $formName);
 	
 	$arr = array();
 	for ($i=0; $i<count($formName); $i++) {
@@ -1664,8 +1670,8 @@ function get_add_childCategory_info($cat_id,$shop_id) {
 	$arr = array();
 	foreach ($res as $key=>$row) {
 		$key = $key + 1;
-		$arr[$key]['cat_id'] = $row['cat_id'];
-		$arr[$key]['cat_name'] = $row['cat_name'];
+		$arr[$key]['cat_id']      = $row['cat_id'];
+		$arr[$key]['cat_name']    = $row['cat_name'];
 		$arr[$key]['parent_name'] = $catdb->field('cat_name')->where(array('cat_id'=>$row['parent_id']))->find();
 		$parent = array(
 			//'user_id' 		=> $user_id,
@@ -1702,11 +1708,11 @@ function get_fine_category_info($cat_id, $shop_id) {
 	if (!empty ($res)) {
 		foreach ($res as $key=>$row) {
 			$key = $key + 1;
-			$arr[$key]['ct_id'] = $row['ct_id'];
-			$arr[$key]['cat_id'] = $row['cat_id'];
-			$arr[$key]['cat_name'] = $row['cat_name'];
-			$arr[$key]['parent_name'] = $row['parent_name'];
-			$arr[$key]['parent_id'] = $row['parent_id'];
+			$arr[$key]['ct_id']          = $row['ct_id'];
+			$arr[$key]['cat_id']         = $row['cat_id'];
+			$arr[$key]['cat_name']       = $row['cat_name'];
+			$arr[$key]['parent_name']    = $row['parent_name'];
+			$arr[$key]['parent_id']      = $row['parent_id'];
 		}
 	}
 	return $arr;
@@ -1752,11 +1758,11 @@ function get_explode_array($arr) {
 
 //查询类目证件标题列表
 function get_category_permanent_list($shop_id) {
-	$md_db = RC_Loader::load_app_model('merchants_documenttitle_model','seller');
-	$mdf_db = RC_Loader::load_app_model('merchants_dt_file_model','seller');
-	$res = get_permanent_parent_cat_id($shop_id, 1);
-	$c_db = RC_Loader::load_app_model('category_model', 'seller');
-	$arr = array();
+	$md_db     = RC_Loader::load_app_model('merchants_documenttitle_model','seller');
+	$mdf_db    = RC_Loader::load_app_model('merchants_dt_file_model','seller');
+	$res       = get_permanent_parent_cat_id($shop_id, 1);
+	$c_db      = RC_Loader::load_app_model('category_model', 'seller');
+	$arr       = array();
 	$arr['parentId'] = '';
 	if (!empty($res)) {
 		foreach ($res as $key=>$row) {
@@ -1778,10 +1784,10 @@ function get_category_permanent_list($shop_id) {
 	$arr = array();
 	if (!empty($res)) {
 		foreach ($res as $key=>$row) {
-			$arr[$key]['dt_id'] = $row['dt_id'];
-			$arr[$key]['dt_title'] = $row['dt_title'];
-			$arr[$key]['cat_id'] = $row['cat_id'];
-			$arr[$key]['cat_name'] = $c_db->where(array('cat_id' => $row['cat_id']))->get_field('cat_name');
+			$arr[$key]['dt_id']      = $row['dt_id'];
+			$arr[$key]['dt_title']   = $row['dt_title'];
+			$arr[$key]['cat_id']     = $row['cat_id'];
+			$arr[$key]['cat_name']   = $c_db->where(array('cat_id' => $row['cat_id']))->get_field('cat_name');
 		
 			$row = $mdf_db->field('permanent_file, permanent_date, cate_title_permanent,dtf_id')->find(array('cat_id'	=> $row['cat_id'],'dt_id'=> $row['dt_id'],'shop_id' 	=> $shop_id));
 		
@@ -1804,10 +1810,10 @@ function get_category_permanent_list($shop_id) {
 function get_temporarydate_ctId_catParent($ct_id) {
 	$mctdb = RC_Loader::load_app_model('merchants_category_temporarydate_model','seller');
 	
-	$parent_id = $mctdb->where(array('ct_id'=>$ct_id))->get_field('parent_id');
-	$num = $mctdb->field('ct_id')->where(array('parent_id'=>$parent_id))->count();
-	$arr['parent_id'] = $parent_id;
-	$arr['num'] = $num;
+	$parent_id         = $mctdb->where(array('ct_id'=>$ct_id))->get_field('parent_id');
+	$num               = $mctdb->field('ct_id')->where(array('parent_id'=>$parent_id))->count();
+	$arr['parent_id']  = $parent_id;
+    $arr['num']        = $num;
 	
 	
 	return $arr;
@@ -1831,10 +1837,10 @@ function get_merchants_shop_info($table = '', $user_id = 0) {
 function get_license_comp_adress($steps_adress) {
 	$adress = explode(',', $steps_adress);
 	
-	$arr['province'] = '';
-	$arr['city'] = '';
-	$arr['province'] = get_goods_region_name($adress[1]);
-	$arr['city'] = get_goods_region_name($adress[2]);
+	$arr['province']   = '';
+	$arr['city']       = '';
+	$arr['province']   = get_goods_region_name($adress[1]);
+	$arr['city']       = get_goods_region_name($adress[2]);
 	
 	if (!empty($arr['city'])) {
 		$arr['city'] = $arr['city'] . '市';
@@ -1870,14 +1876,14 @@ function area_warehouse_list($region_id)
 
         //$area_arr[] = $row;
 		
-		$area_arr[$i]['region_id'] = $row['region_id'];
-		$area_arr[$i]['regionId'] = $row['regionId'];
-		$area_arr[$i]['parent_id'] = $row['parent_id'];
-		$area_arr[$i]['region_name'] = $row['region_name'];
-		$area_arr[$i]['region_type'] = $row['region_type'];
-		$area_arr[$i]['agency_id'] = $row['agency_id'];
-		$area_arr[$i]['type'] = $row['type'];
-		$area_arr[$i]['child'] = get_child_region($row['regionId']);
+		$area_arr[$i]['region_id']    = $row['region_id'];
+		$area_arr[$i]['regionId']     = $row['regionId'];
+		$area_arr[$i]['parent_id']    = $row['parent_id'];
+		$area_arr[$i]['region_name']  = $row['region_name'];
+		$area_arr[$i]['region_type']  = $row['region_type'];
+		$area_arr[$i]['agency_id']    = $row['agency_id'];
+		$area_arr[$i]['type']         = $row['type'];
+		$area_arr[$i]['child']        = get_child_region($row['regionId']);
 		$area_arr[$i]['region_child'] = area_warehouse_list($row['region_id']);
 		
 		$i++;
@@ -1901,7 +1907,7 @@ function warehouse_shipping_list($goods = array(), $region_id = 0, $number = 1, 
 
         $arr = array();
         foreach ($res as $key=>$row) {
-            $arr[$key]['shipping_id'] = $row['shipping_id'];
+            $arr[$key]['shipping_id']   = $row['shipping_id'];
             $arr[$key]['shipping_name'] = $row['shipping_name'];
             
             if ($region_id > 0) {
@@ -1949,7 +1955,7 @@ function get_warehouse_province($type = 'root', $ra_id = 0) {
 //	print_r($res);
 	$arr = array();
 	foreach ($res as $key=>$row) {
-		$arr[$key]['region_id'] = $row['regionId'];
+		$arr[$key]['region_id']   = $row['regionId'];
 		$arr[$key]['region_name'] = $row['region_name'];
 		
 		$where = '';
@@ -1971,9 +1977,9 @@ function get_warehouse_province($type = 'root', $ra_id = 0) {
 			}
 			
 			if ($ra_id > 0) {
-				$where = "ra_id = '$ra_id' and " . "region_id = '" .$row['regionId']. "'";
-				$date = array('region_id');
-				$region_id = get_table_date('merchants_region_info', $where, $date);
+				$where      = "ra_id = '$ra_id' and " . "region_id = '" .$row['regionId']. "'";
+				$date       = array('region_id');
+				$region_id  = get_table_date('merchants_region_info', $where, $date);
 				
 				if ($region_id > 0) {
 					$arr[$key]['checked'] = 1;
@@ -2116,18 +2122,18 @@ function get_goods_freight($goods, $warehouse_id = 0, $goods_region = array(), $
     $shipping_cfg = sc_unserialize_config($configure);
 	$configure_price = goods_shipping_fee($shipping_code,$configure, $goods['weight'], $goods['goods_price'], $goods['number']);
 	
-	$arr['shipping_fee'] = $configure_price;
-	$arr['configure_price'] = price_format($configure_price, false);
-	$arr['shipping_name'] = $shipping['shipping_name'];	
+	$arr['shipping_fee']       = $configure_price;
+	$arr['configure_price']    = price_format($configure_price, false);
+	$arr['shipping_name']      = $shipping['shipping_name'];	
 	
-	$arr['item_fee'] = price_format($shipping_cfg['item_fee'], false); /* 单件商品的配送价格（默认） */
-	$arr['base_fee'] = price_format($shipping_cfg['base_fee'], false); /* N(500或1000克)克以内的价格 */
-	$arr['step_fee'] = price_format($shipping_cfg['step_fee'], false); /* 续重每N(500或1000克)克增加的价格 */
-	$arr['free_money'] = price_format($shipping_cfg['free_money'], false); //免费额度
-	$arr['fee_compute_mode'] = $shipping_cfg['fee_compute_mode']; //费用计算方式
-	@$arr['pay_fee'] = price_format($shipping_cfg['pay_fee'], false); //货到付款支付费用
+	$arr['item_fee']           = price_format($shipping_cfg['item_fee'], false); /* 单件商品的配送价格（默认） */
+	$arr['base_fee']           = price_format($shipping_cfg['base_fee'], false); /* N(500或1000克)克以内的价格 */
+	$arr['step_fee']           = price_format($shipping_cfg['step_fee'], false); /* 续重每N(500或1000克)克增加的价格 */
+	$arr['free_money']         = price_format($shipping_cfg['free_money'], false); //免费额度
+	$arr['fee_compute_mode']   = $shipping_cfg['fee_compute_mode']; //费用计算方式
+	@$arr['pay_fee']           = price_format($shipping_cfg['pay_fee'], false); //货到付款支付费用
 	
-	$arr['warehouse_id'] = $warehouse_id;
+	$arr['warehouse_id']       = $warehouse_id;
         
 	return $arr;
 }
@@ -2242,11 +2248,11 @@ function get_warehouse_area_goods_list($goods_id = 0) {
 function get_produts_warehouse_list($goods_list) {
 	$arr = array();
 	for ($i=0;$i<count($goods_list);$i++) {
-		$arr[$i]['goods_id'] = get_products_name($goods_list[$i]['goods_name'],'goods');
-		$arr[$i]['warehouse_id'] = get_products_name($goods_list[$i]['warehouse_id'],'region_warehouse');
-		$arr[$i]['goods_attr'] = $goods_list[$i]['goods_attr'];
-		$arr[$i]['product_sn'] = $goods_list[$i]['product_sn'];
-		$arr[$i]['product_number'] = $goods_list[$i]['product_number'];
+		$arr[$i]['goods_id']          = get_products_name($goods_list[$i]['goods_name'],'goods');
+		$arr[$i]['warehouse_id']      = get_products_name($goods_list[$i]['warehouse_id'],'region_warehouse');
+		$arr[$i]['goods_attr']        = $goods_list[$i]['goods_attr'];
+		$arr[$i]['product_sn']        = $goods_list[$i]['product_sn'];
+		$arr[$i]['product_number']    = $goods_list[$i]['product_number'];
 	}
 	
 	return $arr;
@@ -2258,11 +2264,11 @@ function get_insert_produts_warehouse($goods_list) {
 	for ($i=0;$i<count($goods_list);$i++) {
 		
 		if ($goods_list[$i]['goods_id'] > 0) {
-			$other['goods_id'] = $goods_list[$i]['goods_id'];
-			$goods_attr = get_produts_warehouse_attr_list($goods_list[$i]['goods_attr'], $goods_list[$i]['goods_id']);
-			$other['goods_attr'] = $goods_attr['goods_attr'];
-			$other['warehouse_id'] = $goods_list[$i]['warehouse_id'];
-			$other['product_sn'] = $goods_list[$i]['product_sn'];
+			$other['goods_id']       = $goods_list[$i]['goods_id'];
+			$goods_attr              = get_produts_warehouse_attr_list($goods_list[$i]['goods_attr'], $goods_list[$i]['goods_id']);
+			$other['goods_attr']     = $goods_attr['goods_attr'];
+			$other['warehouse_id']   = $goods_list[$i]['warehouse_id'];
+			$other['product_sn']     = $goods_list[$i]['product_sn'];
 			$other['product_number'] = $goods_list[$i]['product_number'];
 			
 			
@@ -2291,11 +2297,11 @@ function get_insert_produts_warehouse($goods_list) {
 function get_produts_area_list($goods_list) {
 	$arr = array();
 	for ($i=0;$i<count($goods_list);$i++) {
-		$arr[$i]['goods_id'] = get_products_name($goods_list[$i]['goods_name'],'goods');
-		$arr[$i]['area_id'] = get_products_name($goods_list[$i]['area_id'],'region_warehouse');
-		$arr[$i]['goods_attr'] = $goods_list[$i]['goods_attr'];
-		$arr[$i]['product_sn'] = $goods_list[$i]['product_sn'];
-		$arr[$i]['product_number'] = $goods_list[$i]['product_number'];
+		$arr[$i]['goods_id']          = get_products_name($goods_list[$i]['goods_name'],'goods');
+		$arr[$i]['area_id']           = get_products_name($goods_list[$i]['area_id'],'region_warehouse');
+		$arr[$i]['goods_attr']        = $goods_list[$i]['goods_attr'];
+		$arr[$i]['product_sn']        = $goods_list[$i]['product_sn'];
+		$arr[$i]['product_number']    = $goods_list[$i]['product_number'];
 	}
 	
 	return $arr;
@@ -2307,11 +2313,11 @@ function get_insert_produts_area($goods_list) {
 	for ($i=0;$i<count($goods_list);$i++) {
 		
 		if ($goods_list[$i]['goods_id'] > 0) {
-			$other['goods_id'] = $goods_list[$i]['goods_id'];
-			$goods_attr = get_produts_warehouse_attr_list($goods_list[$i]['goods_attr'], $goods_list[$i]['goods_id']);
-			$other['goods_attr'] = $goods_attr['goods_attr'];
-			$other['area_id'] = $goods_list[$i]['area_id'];
-			$other['product_sn'] = $goods_list[$i]['product_sn'];
+			$other['goods_id']       = $goods_list[$i]['goods_id'];
+			$goods_attr              = get_produts_warehouse_attr_list($goods_list[$i]['goods_attr'], $goods_list[$i]['goods_id']);
+			$other['goods_attr']     = $goods_attr['goods_attr'];
+			$other['area_id']        = $goods_list[$i]['area_id'];
+			$other['product_sn']     = $goods_list[$i]['product_sn'];
 			$other['product_number'] = $goods_list[$i]['product_number'];
 			
 			
@@ -2347,7 +2353,7 @@ function get_produts_warehouse_attr_list($goods_attr = '', $goods_id = 0) {
 		$row = $GLOBALS['db']->getRow($sql);
 
 		$arr[$i]['goods_attr_id'] = $row['goods_attr_id'];
-		$arr[$i]['attr_value'] = $row['attr_value'];
+		$arr[$i]['attr_value']    = $row['attr_value'];
 		
 		$arr['goods_attr'] .= $row['goods_attr_id'] .'|';
 	}
@@ -2382,13 +2388,13 @@ function get_goods_bacth_warehouse_list($goods_list) {
 		$where_goods = "goods_name = '" .$goods_list[$i]['goods_name']. "'";
 		$where_region = "region_name = '" .$goods_list[$i]['warehouse_name']. "'";
 		
-		$arr[$i]['user_id'] = get_table_date('goods', $where_goods, array('user_id'), 2);
-		$arr[$i]['goods_id'] = get_table_date('goods', $where_goods, array('goods_id'), 2);
-		$arr[$i]['region_id'] = get_table_date('region_warehouse', $where_region, array('region_id'), 2);
-		$arr[$i]['region_number'] = $goods_list[$i]['warehouse_number'];
-		$arr[$i]['warehouse_price'] = $goods_list[$i]['warehouse_price'];
-		$arr[$i]['warehouse_promote_price'] = $goods_list[$i]['warehouse_promote_price'];
-		$arr[$i]['add_time'] = gmtime();
+		$arr[$i]['user_id']                   = get_table_date('goods', $where_goods, array('user_id'), 2);
+		$arr[$i]['goods_id']                  = get_table_date('goods', $where_goods, array('goods_id'), 2);
+		$arr[$i]['region_id']                 = get_table_date('region_warehouse', $where_region, array('region_id'), 2);
+		$arr[$i]['region_number']             = $goods_list[$i]['warehouse_number'];
+		$arr[$i]['warehouse_price']           = $goods_list[$i]['warehouse_price'];
+		$arr[$i]['warehouse_promote_price']   = $goods_list[$i]['warehouse_promote_price'];
+		$arr[$i]['add_time']                  = gmtime();
 	}
 	
 	return $arr;
@@ -2407,13 +2413,13 @@ function get_insert_bacth_warehouse($goods_list) {
 				$goods_list[$i]['warehouse_promote_price'] = 0;
 			}
 			
-			$other['user_id'] = $goods_list[$i]['user_id'];
-			$other['goods_id'] = $goods_list[$i]['goods_id'];
-			$other['region_id'] = $goods_list[$i]['region_id'];
-			$other['region_number'] = $goods_list[$i]['region_number'];
-			$other['warehouse_price'] = $goods_list[$i]['warehouse_price'];
-			$other['warehouse_promote_price'] = $goods_list[$i]['warehouse_promote_price'];
-			$other['add_time'] = $goods_list[$i]['add_time'];
+			$other['user_id']                    = $goods_list[$i]['user_id'];
+			$other['goods_id']                   = $goods_list[$i]['goods_id'];
+			$other['region_id']                  = $goods_list[$i]['region_id'];
+			$other['region_number']              = $goods_list[$i]['region_number'];
+			$other['warehouse_price']            = $goods_list[$i]['warehouse_price'];
+			$other['warehouse_promote_price']    = $goods_list[$i]['warehouse_promote_price'];
+			$other['add_time']                   = $goods_list[$i]['add_time'];
 			
 			$sql = "select w_id from " .$GLOBALS['ecs']->table('warehouse_goods'). " where user_id = '" . $other['user_id'] ."' and goods_id = '" . $other['goods_id'] ."'". 
 					" and region_id = '" . $other['region_id'] ."'";
@@ -2440,17 +2446,17 @@ function get_goods_bacth_area_list($goods_list) {
 	$arr = array();
 	for ($i=0;$i<count($goods_list);$i++) {
 		
-		$where_goods = "goods_name = '" .$goods_list[$i]['goods_name']. "'";
+		$where_goods  = "goods_name = '" .$goods_list[$i]['goods_name']. "'";
 		$where_region = "region_name = '" .$goods_list[$i]['area_name']. "'";
 		
-		$arr[$i]['user_id'] = get_table_date('goods', $where_goods, array('user_id'), 2);
-		$arr[$i]['goods_id'] = get_table_date('goods', $where_goods, array('goods_id'), 2);
-		$arr[$i]['region_id'] = get_table_date('region_warehouse', $where_region, array('region_id'), 2);
-		$arr[$i]['region_number'] = $goods_list[$i]['region_number'];
-		$arr[$i]['region_price'] = $goods_list[$i]['region_price'];
-		$arr[$i]['region_promote_price'] = $goods_list[$i]['region_promote_price'];
-		$arr[$i]['add_time'] = gmtime();
-		$arr[$i]['region_sort'] = $goods_list[$i]['region_sort'];
+		$arr[$i]['user_id']               = get_table_date('goods', $where_goods, array('user_id'), 2);
+		$arr[$i]['goods_id']              = get_table_date('goods', $where_goods, array('goods_id'), 2);
+		$arr[$i]['region_id']             = get_table_date('region_warehouse', $where_region, array('region_id'), 2);
+		$arr[$i]['region_number']         = $goods_list[$i]['region_number'];
+		$arr[$i]['region_price']          = $goods_list[$i]['region_price'];
+		$arr[$i]['region_promote_price']  = $goods_list[$i]['region_promote_price'];
+		$arr[$i]['add_time']              = gmtime();
+		$arr[$i]['region_sort']           = $goods_list[$i]['region_sort'];
 	}
 	
 	return $arr;
@@ -2470,14 +2476,14 @@ function get_insert_bacth_area($goods_list) {
 				$goods_list[$i]['region_promote_price'] = 0;
 			}
 			
-			$other['user_id'] = $goods_list[$i]['user_id'];
-			$other['goods_id'] = $goods_list[$i]['goods_id'];
-			$other['region_id'] = $goods_list[$i]['region_id'];
-			$other['region_number'] = $goods_list[$i]['region_number'];
-			$other['region_price'] = $goods_list[$i]['region_price'];
-			$other['region_promote_price'] = $goods_list[$i]['region_promote_price'];
-			$other['add_time'] = $goods_list[$i]['add_time'];
-			$other['region_sort'] = $goods_list[$i]['region_sort'];
+			$other['user_id']                = $goods_list[$i]['user_id'];
+			$other['goods_id']               = $goods_list[$i]['goods_id'];
+			$other['region_id']              = $goods_list[$i]['region_id'];
+			$other['region_number']          = $goods_list[$i]['region_number'];
+			$other['region_price']           = $goods_list[$i]['region_price'];
+			$other['region_promote_price']   = $goods_list[$i]['region_promote_price'];
+			$other['add_time']               = $goods_list[$i]['add_time'];
+			$other['region_sort']            = $goods_list[$i]['region_sort'];
 			
 			$sql = "select a_id from " .$GLOBALS['ecs']->table('warehouse_area_goods'). " where user_id = '" . $other['user_id'] ."' and goods_id = '" . $other['goods_id'] ."'". 
 					" and region_id = '" . $other['region_id'] ."'";
@@ -2514,11 +2520,11 @@ function get_goods_bacth_area_attr_list($goods_list) {
 		$where_region = "region_name = '" .$goods_list[$i]['area_name']. "'";
 		$where_attr = "attr_value = '" .$goods_list[$i]['attr_name']. "'";
 		
-		$arr[$i]['goods_id'] = get_table_date('goods', $where_goods, array('goods_id'), 2);
-		$arr[$i]['area_id'] = get_table_date('region_warehouse', $where_region, array('region_id'), 2);
+		$arr[$i]['goods_id']      = get_table_date('goods', $where_goods, array('goods_id'), 2);
+		$arr[$i]['area_id']       = get_table_date('region_warehouse', $where_region, array('region_id'), 2);
 		$arr[$i]['goods_attr_id'] = get_table_date('goods_attr', $where_attr, array('goods_attr_id'), 2);
-		$arr[$i]['attr_price'] = $goods_list[$i]['attr_price'];
-		$arr[$i]['attr_number'] = $goods_list[$i]['attr_number'];
+		$arr[$i]['attr_price']    = $goods_list[$i]['attr_price'];
+		$arr[$i]['attr_number']   = $goods_list[$i]['attr_number'];
 	}
 	
 	return $arr;
@@ -2533,11 +2539,11 @@ function get_insert_bacth_area_attr($goods_list) {
 				$goods_list[$i]['attr_price'] = 0;
 			}
 			
-			$other['goods_id'] = $goods_list[$i]['goods_id'];
-			$other['area_id'] = $goods_list[$i]['area_id'];
-			$other['goods_attr_id'] = $goods_list[$i]['goods_attr_id'];
-			$other['attr_price'] = $goods_list[$i]['attr_price'];
-			$other['attrNumber'] = $goods_list[$i]['attr_number'];
+			$other['goods_id']       = $goods_list[$i]['goods_id'];
+			$other['area_id']        = $goods_list[$i]['area_id'];
+			$other['goods_attr_id']  = $goods_list[$i]['goods_attr_id'];
+			$other['attr_price']     = $goods_list[$i]['attr_price'];
+			$other['attrNumber']     = $goods_list[$i]['attr_number'];
 			
 			$sql = "select id from " .$GLOBALS['ecs']->table('warehouse_area_attr'). " where goods_id = '" . $other['goods_id'] ."' and area_id = '" . $other['area_id'] ."'". 
 					" and goods_attr_id = '" . $other['goods_attr_id'] ."'";
@@ -2600,9 +2606,9 @@ function get_goods_order_shipping_fee($goods = array(), $region = '', $shipping_
 	$arr['shipping_fee'] = 0;
 	
 	//订单总运费计算
-	$cart_goods = get_warehouse_cart_goods_info($goods, 1, $region, $shipping_code);
-	$arr['shipping_fee'] = $cart_goods['shipping']['shipping_fee'];
-	$arr['ru_list'] = $cart_goods['ru_list'];
+	$cart_goods            = get_warehouse_cart_goods_info($goods, 1, $region, $shipping_code);
+	$arr['shipping_fee']   = $cart_goods['shipping']['shipping_fee'];
+	$arr['ru_list']        = $cart_goods['ru_list'];
 	return $arr;
 }
 
@@ -2647,10 +2653,10 @@ function get_new_goods_attribute($goods_id, $_attribute = array()) {
 	
 	$arr = array();
 	foreach ($_attribute as $key=>$row) {
-		$arr[$key] = $row;
-		$arr[$key]['attr_valuesId'] = get_goods_attr_values_id($row['attr_values'], $row['goods_attr_id']);
-		$arr[$key]['goods_attr'] = get_attribute_goods_attr($row['attr_id']);
-		$arr[$key]['goods_attr'] = product_list($goods_id, '', $arr[$key]['goods_attr']['goods_attr_id']);
+		$arr[$key]                    = $row;
+		$arr[$key]['attr_valuesId']   = get_goods_attr_values_id($row['attr_values'], $row['goods_attr_id']);
+		$arr[$key]['goods_attr']      = get_attribute_goods_attr($row['attr_id']);
+		$arr[$key]['goods_attr']      = product_list($goods_id, '', $arr[$key]['goods_attr']['goods_attr_id']);
 	}
 	
 	return $arr;
@@ -2677,7 +2683,7 @@ function get_goods_attr_values_id($attr_values = array(), $goods_attr_id = array
 	
 	$arr = array();
 	for ($i=0; $i<count($attr_values); $i++) {
-		$arr[$i]['attr_value'] = $attr_values[$i];
+		$arr[$i]['attr_value']    = $attr_values[$i];
 		$arr[$i]['goods_attr_id'] = $goods_attr_id[$i];
 	}
 
@@ -2722,10 +2728,10 @@ function get_area_attr_price_insert($area_name, $goods_id, $goods_attr_id) {
 		if (!empty($area_name[$i])) {
 			
 			$parent = array(
-					'goods_id' => $goods_id,
-					'goods_attr_id' => $goods_attr_id,
-					'area_id' => $area_name[$i],
-					'attr_price' => $_POST['attrPrice_' . $area_name[$i]]
+					'goods_id'         => $goods_id,
+					'goods_attr_id'    => $goods_attr_id,
+					'area_id'          => $area_name[$i],
+					'attr_price'       => $_POST['attrPrice_' . $area_name[$i]]
 				);
 			
 			$sql = "select id from " .$GLOBALS['ecs']->table('warehouse_area_attr'). " where goods_id = '$goods_id' and goods_attr_id = '$goods_attr_id' and area_id = '" .$area_name[$i]. "'";
@@ -2750,9 +2756,9 @@ function get_fine_warehouse_all($parent_id = 0, $goods_id = 0, $goods_attr_id = 
 	
 	$arr = array();
 	foreach ($res as $key=>$row) {
-		$arr[$key]['region_id'] = $row['region_id'];
+		$arr[$key]['region_id']   = $row['region_id'];
 		$arr[$key]['region_name'] = $row['region_name'];	
-		$arr[$key]['attr_price'] = $row['attr_price'];	
+		$arr[$key]['attr_price']  = $row['attr_price'];	
 	}
 	
 	return $arr;
@@ -2766,10 +2772,10 @@ function get_warehouse_attr_price_insert($warehouse_name, $goods_id, $goods_attr
 		if (!empty($warehouse_name[$i])) {
 			
 			$parent = array(
-					'goods_id' => $goods_id,
-					'goods_attr_id' => $goods_attr_id,
-					'warehouse_id' => $warehouse_name[$i],
-					'attr_price' => $_POST['attr_price_' . $warehouse_name[$i]]
+					'goods_id'         => $goods_id,
+					'goods_attr_id'    => $goods_attr_id,
+					'warehouse_id'     => $warehouse_name[$i],
+					'attr_price'       => $_POST['attr_price_' . $warehouse_name[$i]]
 				);
 			
 			$sql = "select id from " .$GLOBALS['ecs']->table('warehouse_attr'). " where goods_id = '$goods_id' and goods_attr_id = '$goods_attr_id' and warehouse_id = '" .$warehouse_name[$i]. "'";
@@ -2822,11 +2828,11 @@ function get_main_order_info($order_id = 0, $type = 0) {
 		$row['all_ruId'] = get_main_order_goods_info($order_id, 1); //订单中所有商品所属商家ID,0代表自营商品，其它商家商品
 		$ru_id = explode(",", $row['all_ruId']['ru_id']);
 		if (count($ru_id) > 1) {
-			$row['order_goods'] = get_main_order_goods_info($order_id);
-			$row['newInfo'] = get_new_ru_goods_info($row['all_ruId'], $row['order_goods']);
-			$row['newOrder'] = get_new_order_info($row['newInfo']);
-			$row['orderBonus'] = get_new_order_info($row['newInfo'],1, $row['bonus_id']); //处理商家分单红包
-			$row['orderFavourable'] = get_new_order_info($row['newInfo'],2); //处理商家分单优惠活动
+			$row['order_goods']      = get_main_order_goods_info($order_id);
+			$row['newInfo']          = get_new_ru_goods_info($row['all_ruId'], $row['order_goods']);
+			$row['newOrder']         = get_new_order_info($row['newInfo']);
+			$row['orderBonus']       = get_new_order_info($row['newInfo'],1, $row['bonus_id']); //处理商家分单红包
+			$row['orderFavourable']  = get_new_order_info($row['newInfo'],2); //处理商家分单优惠活动
 		}
 	}
 	
@@ -2936,18 +2942,18 @@ function get_new_order_info($newInfo, $type = 0, $bonus_id = 0) {
 
 //分单插入数据
 function get_insert_order_goods_single($orderInfo, $row, $order_id) {
-	$newOrder = $orderInfo['newOrder'];
-	$orderBonus = $orderInfo['orderBonus'];
-	$newInfo = $orderInfo['newInfo'];
-	$orderFavourable = $orderInfo['orderFavourable'];
-	$surplus = $row['surplus'];//余额
-	$integral_money = $row['integral_money'];//积分
-        $use_bonus = 0;
-        
-        $bonus_id = $row['bonus_id'];//红包ID
-        $bonus = $row['bonus'];//红包金额
-        
-        $usebonus_type = get_bonus_all_goods($bonus_id); //全场通用红包 val:1
+	$newOrder          = $orderInfo['newOrder'];
+	$orderBonus        = $orderInfo['orderBonus'];
+	$newInfo           = $orderInfo['newInfo'];
+	$orderFavourable   = $orderInfo['orderFavourable'];
+	$surplus           = $row['surplus'];//余额
+	$integral_money    = $row['integral_money'];//积分
+    $use_bonus         = 0;
+    
+    $bonus_id          = $row['bonus_id'];//红包ID
+    $bonus             = $row['bonus'];//红包金额
+    
+    $usebonus_type     = get_bonus_all_goods($bonus_id); //全场通用红包 val:1
 	
 	$arr = array();
 	foreach ($newInfo as $key=>$info) {
@@ -2959,13 +2965,13 @@ function get_insert_order_goods_single($orderInfo, $row, $order_id) {
 		$error_no = 0;
 		do
 		{
-			$row['order_sn'] = get_order_child_sn(); //获取新订单号
-			$row['main_order_id'] = $order_id; //获取主订单ID
-			$row['goods_amount'] = $newOrder[$key]['goods_amount']; //商品总金额
+			$row['order_sn']         = get_order_child_sn(); //获取新订单号
+			$row['main_order_id']    = $order_id; //获取主订单ID
+			$row['goods_amount']     = $newOrder[$key]['goods_amount']; //商品总金额
 			
-			$row['discount'] = $orderFavourable[$key]['compute_discount']['discount']; //折扣金额
-			$row['shipping_fee'] = $newOrder[$key]['shopping_fee']; //运费金额
-			$row['order_amount'] = $newOrder[$key]['goods_amount'] - $row['discount'] + $row['shipping_fee']; //订单应付金额
+			$row['discount']         = $orderFavourable[$key]['compute_discount']['discount']; //折扣金额
+			$row['shipping_fee']     = $newOrder[$key]['shopping_fee']; //运费金额
+			$row['order_amount']     = $newOrder[$key]['goods_amount'] - $row['discount'] + $row['shipping_fee']; //订单应付金额
                         
                         // 减去红包 start
                         if ($usebonus_type == 1) {       
@@ -3002,12 +3008,12 @@ function get_insert_order_goods_single($orderInfo, $row, $order_id) {
 			//余额 start
 			if ($surplus > 0) {
 				if ($surplus >= $row['order_amount']) {
-					$surplus = $surplus - $row['order_amount'];
-					$row['surplus'] = $row['order_amount']; //订单金额等于当前使用余额
-					$row['order_amount'] = 0;
+					$surplus               = $surplus - $row['order_amount'];
+					$row['surplus']        = $row['order_amount']; //订单金额等于当前使用余额
+					$row['order_amount']   = 0;
 				} else {
-					$row['order_amount'] = $row['order_amount'] - $surplus;
-					$row['surplus'] = $surplus;
+					$row['order_amount']   = $row['order_amount'] - $surplus;
+					$row['surplus']        = $surplus;
 					$surplus = 0;
 				}
 			} else {
@@ -3018,19 +3024,19 @@ function get_insert_order_goods_single($orderInfo, $row, $order_id) {
 			//积分 start
 			if ($integral_money > 0) {
 				if ($integral_money >= $row['order_amount']) {
-					$integral_money = $integral_money - $row['order_amount'];
+					$integral_money        = $integral_money - $row['order_amount'];
 					$row['integral_money'] = $row['order_amount']; //订单金额等于当前使用余额
-					$row['integral'] = $row['order_amount'];
-					$row['order_amount'] = 0;
+					$row['integral']       = $row['order_amount'];
+					$row['order_amount']   = 0;
 				} else {
-					$row['order_amount'] = $row['order_amount'] - $integral_money;
+					$row['order_amount']   = $row['order_amount'] - $integral_money;
 					$row['integral_money'] = $integral_money;
-					$row['integral'] = $integral_money;
+					$row['integral']       = $integral_money;
 					$integral_money = 0;
 				}
 			} else {
-				$row['integral_money'] = 0;
-				$row['integral'] = 0;
+				$row['integral_money']  = 0;
+				$row['integral']        = 0;
 			}
 			//积分 end
                         
@@ -3141,9 +3147,9 @@ function get_child_order_info($order_id) {
 	
 	$arr = array();
 	foreach ($res as $key=>$row) {
-		$arr[$key]['order_sn'] = $row['order_sn'];
-		$arr[$key]['order_id'] = $row['order_id'];
-                $arr[$key]['order_amount'] = price_format($row['order_amount'], false);
+		$arr[$key]['order_sn']     = $row['order_sn'];
+		$arr[$key]['order_id']     = $row['order_id'];
+        $arr[$key]['order_amount'] = price_format($row['order_amount'], false);
 		$arr[$key]['shipping_fee'] = price_format($row['shipping_fee'], false);
 	}
 	
@@ -3209,10 +3215,10 @@ function get_user_store_category($ru_id) {
 			
 	$arr = array();
 	foreach ($res as $key=>$row) {
-		$arr[$key] = $row;
-		$arr[$key]['url'] = build_uri('merchants_store', array('cid' => $row['cat_id'], 'urid' => $ru_id), $row['cat_name']);
+		$arr[$key]            = $row;
+		$arr[$key]['url']     = build_uri('merchants_store', array('cid' => $row['cat_id'], 'urid' => $ru_id), $row['cat_name']);
 		$arr[$key]['opennew'] = 0;
-		$arr[$key]['child'] = get_store_category_child($row['cat_id'], $ru_id);
+		$arr[$key]['child']   = get_store_category_child($row['cat_id'], $ru_id);
 	}
 	
 	$navigator_list = get_merchants_navigator($ru_id);
@@ -3229,10 +3235,10 @@ function get_store_category_child($parent_id, $ru_id) {
 	
 	$arr = array();
 	foreach ($res as $key=>$row) {
-		$arr[$key]['cat_id'] = $row['cat_id'];
-		$arr[$key]['cat_name'] = $row['cat_name'];
-		$arr[$key]['url'] = build_uri('merchants_store', array('cid' => $row['cat_id'], 'urid' => $ru_id), $row['cat_name']);
-		$arr[$key]['child'] = get_store_category_child($row['cat_id']);
+		$arr[$key]['cat_id']      = $row['cat_id'];
+		$arr[$key]['cat_name']    = $row['cat_name'];
+		$arr[$key]['url']         = build_uri('merchants_store', array('cid' => $row['cat_id'], 'urid' => $ru_id), $row['cat_name']);
+		$arr[$key]['child']       = get_store_category_child($row['cat_id']);
 	}
 	
 	return $arr;
@@ -3284,8 +3290,8 @@ function get_oneTwo_category($parent_id = 0) {
   
 //通过地区ID查询地区名称
 function get_order_region_name($region_id = 0) {
-	$where = "region_id = '$region_id'";
-	$date = array('region_name');
+	$where  = "region_id = '$region_id'";
+	$date   = array('region_name');
 	$region = get_table_date('region', $where, $date);
 	
 	return $region;
@@ -3324,7 +3330,7 @@ function get_all_area_list($parent_id = 0, $region_type = 1) {
 	
 	$arr = array();
 	foreach ($res as $key=>$row) {
-		$arr[$key]['region_id'] = $row['region_id'];
+		$arr[$key]['region_id']   = $row['region_id'];
 		$arr[$key]['region_name'] = $row['region_name'];
 	}
 	
@@ -3485,20 +3491,20 @@ function get_unset_null_array($arr = array(), $type = 0) {
 function get_choose_goods_combo_cart($fittings) {
     $arr = array();
 
-    $arr['fittings_min'] = 0;
-    $arr['fittings_max'] = 0;
-    $arr['market_min'] = 0;
-    $arr['market_max'] = 0;
-    $arr['save_price'] = '';
-    $arr['collocation_number'] = 0;
-    $arr['save_minPrice'] = 0;
-    $arr['save_maxPrice'] = 0;
-    $arr['fittings_price'] = 0;
-    $arr['fittings_market_price'] = 0;
-    $arr['save_price_amount'] = 0;
-    $arr['groupId'] = 0;
-    $arr['all_price_ori'] = 0;
-    $arr['return_attr'] = 0;
+    $arr['fittings_min']            = 0;
+    $arr['fittings_max']            = 0;
+    $arr['market_min']              = 0;
+    $arr['market_max']              = 0;
+    $arr['save_price']              = '';
+    $arr['collocation_number']      = 0;
+    $arr['save_minPrice']           = 0;
+    $arr['save_maxPrice']           = 0;
+    $arr['fittings_price']          = 0;
+    $arr['fittings_market_price']   = 0;
+    $arr['save_price_amount']       = 0;
+    $arr['groupId']                 = 0;
+    $arr['all_price_ori']           = 0;
+    $arr['return_attr']             = 0;
 
     if ($fittings) {
         foreach ($fittings as $key=>$row) {
@@ -3522,8 +3528,8 @@ function get_choose_goods_combo_cart($fittings) {
                 $arr[$key]['price_ori']	= $row['fittings_price_ori'] + $row['attr_price'];
             }
             
-            $arr['save_price_amount'] += $row['spare_price_ori']; //配件商品节省总金额
-            $arr['fittings_price'] += $arr[$key]['price_ori']; //配件商品总金额
+            $arr['save_price_amount']     += $row['spare_price_ori']; //配件商品节省总金额
+            $arr['fittings_price']        += $arr[$key]['price_ori']; //配件商品总金额
             $arr['fittings_market_price'] += $row['market_price']; //配件商品市场价总金额
 
             $arr['save_price'] .= $row['spare_price_ori'] . ",";
@@ -3549,14 +3555,14 @@ function get_choose_goods_combo_cart($fittings) {
         
         $minmax_values = get_min_or_max_values($arr);
         
-        $arr['fittings_min'] = $minmax_values['fittings_minPrice'];
-        $arr['fittings_max'] = $minmax_values['fittings_maxPrice'];
-        $arr['market_min'] = $minmax_values['market_minPrice'];
-        $arr['market_max'] = $minmax_values['market_maxPrice'];
+        $arr['fittings_min']        = $minmax_values['fittings_minPrice'];
+        $arr['fittings_max']        = $minmax_values['fittings_maxPrice'];
+        $arr['market_min']          = $minmax_values['market_minPrice'];
+        $arr['market_max']          = $minmax_values['market_maxPrice'];
         
-        $arr['return_attr'] = $minmax_values['return_attr']; //判断配件商品是否有属性
-        $arr['all_price_ori'] = $minmax_values['all_price_ori'];
-        $arr['all_market_price'] = $minmax_values['all_market_price'];
+        $arr['return_attr']         = $minmax_values['return_attr']; //判断配件商品是否有属性
+        $arr['all_price_ori']       = $minmax_values['all_price_ori'];
+        $arr['all_market_price']    = $minmax_values['all_market_price'];
     }
     
     return $arr;
@@ -3575,13 +3581,13 @@ function get_min_or_max_values($arr) {
     $newArr = array();
     $newArr['fittings_minPrice'] = '';
     $newArr['fittings_maxPrice'] = '';
-    $newArr['market_minPrice'] = '';
-    $newArr['market_maxPrice'] = '';
-    $newArr['is_attr'] = '';
-    $shop_price = 0;
-    $market_price = 0;
-    $newArr['all_price_ori'] = 0;
-    $newArr['return_attr'] = 0;
+    $newArr['market_minPrice']  = '';
+    $newArr['market_maxPrice']  = '';
+    $newArr['is_attr']          = '';
+    $shop_price                 = 0;
+    $market_price               = 0;
+    $newArr['all_price_ori']    = 0;
+    $newArr['return_attr']      = 0;
     $newArr['all_market_price'] = 0;
     
     //get_print_r($arr);
@@ -3620,13 +3626,12 @@ function get_min_or_max_values($arr) {
     
     $newArr['fittings_minPrice'] = $arr[0]['fittings_minPrice'] + min(explode(",", substr($newArr['fittings_minPrice'], 0, -1)));
     $newArr['fittings_maxPrice'] = $arr[0]['fittings_maxPrice'] + $newArr['fittings_maxPrice'];
-    $newArr['market_minPrice'] = $arr[0]['market_minPrice'] + min(explode(",", substr($newArr['market_minPrice'], 0, -1)));
-    $newArr['market_maxPrice'] = $arr[0]['market_maxPrice'] + $newArr['market_maxPrice'];
+    $newArr['market_minPrice']   = $arr[0]['market_minPrice'] + min(explode(",", substr($newArr['market_minPrice'], 0, -1)));
+    $newArr['market_maxPrice']   = $arr[0]['market_maxPrice'] + $newArr['market_maxPrice'];
     
-    $newArr['all_price_ori'] = $arr[0]['price_ori'] + $newArr['all_price_ori']; //实际搭配价
-    $newArr['all_market_price'] = $arr[0]['market_price'] + $arr[0]['attr_price'] + $newArr['all_market_price']; //实际搭配市场价
+    $newArr['all_price_ori']     = $arr[0]['price_ori'] + $newArr['all_price_ori']; //实际搭配价
+    $newArr['all_market_price']  = $arr[0]['market_price'] + $arr[0]['attr_price'] + $newArr['all_market_price']; //实际搭配市场价
     
-    //get_print_r($newArr);
     return $newArr;
 }
 

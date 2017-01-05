@@ -7,9 +7,6 @@ class collect_store_model extends Component_Model_Model {
 		$this->table_name = 'collect_store';
 		parent::__construct();
 	}
-
-
-
 }
 
 // end

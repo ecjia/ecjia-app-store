@@ -1,10 +1,10 @@
 <?php
 defined('IN_ECJIA') or exit('No permission resources.');
+
 /**
  * ECJIA 订单查询条件类文件
  */
 
-defined('IN_ECJIA') or exit('No permission resources.');
 RC_Loader::load_app_class('order','store', false);
 
 class order_query extends order {
@@ -26,13 +26,13 @@ class order_query extends order {
 	public function order_await_pay($alias = '') {
 		$payment_method = RC_Loader::load_app_class('payment_method','payment');
 		$payment_id_row = $payment_method->payment_id_list(false);
-		$payment_id = "";
+		$payment_id     = "";
 		foreach ($payment_id_row as $v) {
 			$payment_id .= empty($payment_id) ? $v : ','.$v ;
 		}
 		$payment_id = empty($payment_id) ? "''" : $payment_id;
     	$this->where[$alias.'order_status'] = array(OS_CONFIRMED,OS_SPLITED);
-        $this->where[$alias.'pay_status'] = PS_UNPAYED;
+        $this->where[$alias.'pay_status']   = PS_UNPAYED;
         $this->where[]= "( {$alias}shipping_status in (". SS_SHIPPED .",". SS_RECEIVED .") OR {$alias}pay_id in (" . $payment_id . ") )";
         return $this->where;
 	}
@@ -41,12 +41,12 @@ class order_query extends order {
 	public function order_await_ship($alias = '') {
 		$payment_method = RC_Loader::load_app_class('payment_method','payment');
 		$payment_id_row = $payment_method->payment_id_list(true);
-		$payment_id = "";
+		$payment_id     = "";
 		foreach ($payment_id_row as $v) {
 			$payment_id .= empty($payment_id) ? $v : ','.$v ;
 		}
 		$payment_id = empty($payment_id) ? "''" : $payment_id;
-    	$this->where[$alias.'order_status'] = array(OS_CONFIRMED, OS_SPLITED, OS_SPLITING_PART);
+    	$this->where[$alias.'order_status']    = array(OS_CONFIRMED, OS_SPLITED, OS_SPLITING_PART);
 		$this->where[$alias.'shipping_status'] = array(SS_UNSHIPPED, SS_PREPARING, SS_SHIPPED_ING);
 		$this->where[] = "( {$alias}pay_status in (" . PS_PAYED .",". PS_PAYING.") OR {$alias}pay_id in (" . $payment_id . "))";
 		return $this->where;
@@ -273,7 +273,7 @@ class order_query extends order {
             )
         );
         $fields = "o.order_id,o.order_sn, o.add_time, o.order_status, o.shipping_status, o.order_amount, o.money_paid,o.pay_status, o.consignee, o.address, o.email, o.tel,o.mobile,o.extension_code, o.extension_id ,(" . $this->order_amount_field('o.') . ") AS total_fee";
-        $row = $dbview->join('users')->where($this->where)->order(array($filter[sort_by] => $filter[sort_order]))->limit($page->limit())->select();
+        $row    = $dbview->join('users')->where($this->where)->order(array($filter[sort_by] => $filter[sort_order]))->limit($page->limit())->select();
         foreach (array('order_sn', 'consignee', 'email', 'address', 'zipcode', 'tel', 'user_name') AS $val) {
             $filter[$val] = stripslashes($filter[$val]);
         }
@@ -308,9 +308,6 @@ class order_query extends order {
 	           " + {$alias}insure_fee + {$alias}pay_fee + {$alias}pack_fee" .
 	           " + {$alias}card_fee ";
 	}
-	
-	
-	 
 }
 
 // end

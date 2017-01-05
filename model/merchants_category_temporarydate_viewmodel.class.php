@@ -15,10 +15,7 @@ class merchants_category_temporarydate_viewmodel extends Component_Model_View {
 						'field' => '',
 						'on'    => 'mct.cat_id = c.cat_id'				
 				),
-				
 		);
-		
-		
 		parent::__construct();
 	}
 }

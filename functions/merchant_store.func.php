@@ -5,6 +5,7 @@ defined('IN_ECJIA') or exit('No permission resources.');
  * 获取店铺基本信息
  * @return  array
  */
+ 
 function get_merchant_info($store_id){
     $data = array(
         'shop_kf_mobile'            => '', // 客服手机号码
@@ -22,9 +23,9 @@ function get_merchant_info($store_id){
         $shop_time = unserialize($data['shop_trade_time']);
         unset($data['shop_trade_time']);
         $sart_time = explode(':', $shop_time['start']);
-        $end_time = explode(':', $shop_time['end']);
-        $s_time = ($sart_time[0]*60)+$sart_time[1];
-        $e_time = ($end_time[0]*60)+$end_time[1];
+        $end_time  = explode(':', $shop_time['end']);
+        $s_time    = ($sart_time[0]*60)+$sart_time[1];
+        $e_time    = ($end_time[0]*60)+$end_time[1];
     }else{
         // 默认时间点 8:00-21:00
         $s_time = 480;
@@ -98,9 +99,9 @@ function set_merchant_config($store_id, $code, $value, $arr){
  *  @param string $old_images 旧图片
  */
 function file_upload_info($path, $code, $old_images, $store_id){
-    $code = empty($code)? $path : $code;
+    $code   = empty($code)? $path : $code;
     $upload = RC_Upload::uploader('image', array('save_path' => 'merchant/'.$store_id.'/data/'.$path, 'auto_sub_dirs' => true));
-    $file = $_FILES[$code];
+    $file   = $_FILES[$code];
 
     if (!empty($file)&&((isset($file['error']) && $file['error'] == 0) || (!isset($file['error']) && $file['tmp_name'] != 'none'))) {
         // 检测图片类型是否符合
@@ -130,3 +131,5 @@ function clear_cart_list($store_id){
 	// 清除所有用户购物车内商家的商品
 	RC_DB::table('cart')->where('store_id', $store_id)->delete();
 }
+
+//end

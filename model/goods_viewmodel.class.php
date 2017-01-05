@@ -10,9 +10,9 @@ class goods_viewmodel extends Component_Model_View {
 		
 		$this->view = array(
 				'member_price' => array(
-						'type' 	=> Component_Model_View::TYPE_LEFT_JOIN,
-						'alias' => 'mp',
-						'on' 	=> "mp.goods_id = g.goods_id and mp.user_rank = '$_SESSION[user_rank]'"
+						'type' 	    => Component_Model_View::TYPE_LEFT_JOIN,
+						'alias'     => 'mp',
+						'on' 	    => "mp.goods_id = g.goods_id and mp.user_rank = '$_SESSION[user_rank]'"
 				),
 				'warehouse_goods' => array(
 				     	'type'		=> Component_Model_View::TYPE_LEFT_JOIN,

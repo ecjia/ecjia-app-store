@@ -7,9 +7,6 @@ class merchants_category_model extends Component_Model_Model {
 		$this->table_name = 'merchants_category';
 		parent::__construct();
 	}
-
-
-
 }
 
 // end

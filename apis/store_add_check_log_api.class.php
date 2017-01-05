@@ -1,10 +1,12 @@
 <?php
 defined('IN_ECJIA') or exit('No permission resources.');
+
 /**
  * 添加审核日志
  * @author
  *
  */
+ 
 class store_add_check_log_api extends Component_Event_Api {
 	/**
 	 *
@@ -21,6 +23,5 @@ class store_add_check_log_api extends Component_Event_Api {
 	}
 
 }
-
 
 // end
