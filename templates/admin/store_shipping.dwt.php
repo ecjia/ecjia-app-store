@@ -26,7 +26,7 @@
 			<div class="tab-content">
 			<div class="tab-pane active">
 			    <h3 class="ecjiaf-fwn">已启用<small class="ecjiaf-ff1">（删除配送区域即可关闭配送方式）</small></h3>
-				<table class="table table-striped">
+				<table class="table table-striped table-hide-edit">
         		    <thead>
         		      <tr>
             		      <th class="w110">{lang key='shipping::shipping.shipping_name'}</th>
@@ -69,7 +69,7 @@
         			</tbody>
         		</table>
         		<h3 class="ecjiaf-fwn">未启用<small class="ecjiaf-ff1">（设置配送区域即可开启配送方式）</small></h3>
-        		<table class="table table-striped">
+        		<table class="table table-striped table-hide-edit">
         		    <thead>
         		      <tr>
             		      <th class="w110">{lang key='shipping::shipping.shipping_name'}</th>
