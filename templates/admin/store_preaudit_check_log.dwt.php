@@ -30,7 +30,7 @@
 			{/if}
 			<div class="tab-content">
 			<div class="tab-pane active">
-				<table class="table">
+				<table class="table table-striped">
         		    <thead>
         		      <tr>
             		      <th class="w120">时间</th>
