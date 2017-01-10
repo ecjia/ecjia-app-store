@@ -49,7 +49,6 @@ defined('IN_ECJIA') or exit('No permission resources.');
 /**
  * 店铺分类管理
  */
-
 class admin_store_category extends ecjia_admin {
 	private $seller_category_db;
 	private $seller_shopinfo_db;

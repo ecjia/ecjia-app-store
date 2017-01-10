@@ -45,10 +45,10 @@
 //  ---------------------------------------------------------------------------------
 //
 defined('IN_ECJIA') or exit('No permission resources.');
+
 /**
  * 商铺商品分类
  * @author will.chen
- *
  */
 class category_module extends api_front implements api_interface {
     public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {
@@ -100,4 +100,5 @@ function get_child_tree($cat_id) {
 	}												
     return $cat_arr;
 }
+
 // end

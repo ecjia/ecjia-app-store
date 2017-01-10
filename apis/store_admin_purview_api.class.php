@@ -49,9 +49,7 @@ defined('IN_ECJIA') or exit('No permission resources.');
 /**
  * 后台权限API
  * @author songqian
- *
  */
- 
 class store_admin_purview_api extends Component_Event_Api {
     
     public function call(&$options) {

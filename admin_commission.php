@@ -49,7 +49,6 @@ defined('IN_ECJIA') or exit('No permission resources.');
 /**
  * 商家店铺后台设置
  */
-
 class admin_commission extends ecjia_admin {
 
 	public function __construct() {

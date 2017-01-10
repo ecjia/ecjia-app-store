@@ -49,9 +49,7 @@ defined('IN_ECJIA') or exit('No permission resources.');
 /**
  * 申请商家入驻
  * @author will.chen
- *
  */
- 
 class signup_module extends api_admin implements api_interface {
     public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {
         $this->authadminSession();

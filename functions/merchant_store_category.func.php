@@ -55,7 +55,6 @@ defined('IN_ECJIA') or exit('No permission resources.');
  *
  * @return  boolean
  */
- 
 function cat_exists($cat_name, $parent_cat, $exclude = 0) {
 
 	$db = RC_DB::table('store_category');

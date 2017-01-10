@@ -49,9 +49,7 @@ defined('IN_ECJIA') or exit('No permission resources.');
 /**
  * 入驻申请等信息获取验证码
  * @author
- *
  */
- 
 class validate_module extends api_admin implements api_interface {
     public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {
 		$type		    = $this->requestData('type');

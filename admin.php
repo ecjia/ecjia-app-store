@@ -49,7 +49,6 @@ defined('IN_ECJIA') or exit('No permission resources.');
 /**
  * 入驻商家管理
  */
-
 class admin extends ecjia_admin {
 	private $db_region;
 	public function __construct() {

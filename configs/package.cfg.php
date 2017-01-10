@@ -50,8 +50,6 @@ defined('IN_ECJIA') or exit('No permission resources.');
  * 入驻商管理
  * @author songqian
  */
-
-
 return array(
 	'identifier' 	=> 'ecjia.store',
 	'directory' 	=> 'store',

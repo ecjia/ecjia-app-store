@@ -49,9 +49,7 @@ defined('IN_ECJIA') or exit('No permission resources.');
 /**
  * 店铺街列表
  * @author will.chen
- *
  */
- 
 class search_module extends api_front implements api_interface {
     public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {
 

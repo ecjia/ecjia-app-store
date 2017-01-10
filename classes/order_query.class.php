@@ -49,7 +49,6 @@ defined('IN_ECJIA') or exit('No permission resources.');
 /**
  * ECJIA 订单查询条件类文件
  */
-
 RC_Loader::load_app_class('order','store', false);
 
 class order_query extends order {

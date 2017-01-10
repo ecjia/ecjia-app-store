@@ -49,7 +49,6 @@ defined('IN_ECJIA') or exit('No permission resources.');
 /**
  * ECJIA 商家公告
  */
-
 class admin_notice extends ecjia_admin {
 	
 	public function __construct() {

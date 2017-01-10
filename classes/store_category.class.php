@@ -49,7 +49,6 @@ defined('IN_ECJIA') or exit('No permission resources.');
 /**
  * ECJIA 店铺街分类类文件
  */
-
 class store_category {
 
 

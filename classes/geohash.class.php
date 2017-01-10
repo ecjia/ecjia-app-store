@@ -352,9 +352,4 @@ class Geohash
 	}
 }
 
-
-
-
-
-
-?>
+//end

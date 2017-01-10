@@ -50,7 +50,6 @@ defined('IN_ECJIA') or exit('No permission resources.');
  * 获取店铺基本信息
  * @return  array
  */
- 
 function get_merchant_info($store_id){
     $data = array(
         'shop_kf_mobile'            => '', // 客服手机号码
