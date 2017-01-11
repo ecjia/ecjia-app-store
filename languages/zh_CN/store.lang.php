@@ -167,7 +167,10 @@ return array(
 	'hong_kong_and_macao_pass'			=>	'港澳身份证',
 
     'edit_store'		=>	'编辑商家信息',
-
+	'order_refund' 		=> '订单退款：%s',
+    'shipping_not_need' =>	'无需使用配送方式',
+    'shipping_time' 	=> '发货时间：',
+    'pay_time' 	        => '付款时间：',
     // 日志
     'log_list'	=>'员工日志记录',
 	'log_id'	=>'编号',

@@ -639,7 +639,7 @@ function order_refund($order, $refund_type, $refund_note, $refund_amount = 0) {
 	if ($refund_note) {
 		$change_desc = $refund_note;
 	} else {
-		$change_desc = sprintf(RC_Lang::lang('order_refund'), $order['order_sn']);
+		$change_desc = sprintf(RC_Lang::get('store::store.order_refund'), $order['order_sn']);
 	}
 
 	/* 处理退款 */
@@ -670,7 +670,7 @@ function order_refund($order, $refund_type, $refund_note, $refund_amount = 0) {
 			'user_note'		=> $refund_note,
 			'process_type'	=> SURPLUS_RETURN,
 			'admin_user'	=> $_SESSION['admin_name'],
-			'admin_note'	=> sprintf(RC_Lang::lang('order_refund'), $order['order_sn']),
+			'admin_note'	=> sprintf(RC_Lang::get('store::store.order_refund'), $order['order_sn']),
 			'is_paid'		=> 0
 		);
 		$db->insert($account);
@@ -1251,7 +1251,7 @@ function get_order_detail ($order_id, $user_id = 0)
 
     $order['user_name'] = $_SESSION['user_name'];
     /* 无配送时的处理 */
-    $order['shipping_id'] == - 1 and $order['shipping_name'] = RC_Lang::lang('shipping_not_need');
+    $order['shipping_id'] == - 1 and $order['shipping_name'] = RC_Lang::get('store::store.shipping_not_need');
 
     /* 其他信息初始化 */
     $order['how_oos_name'] = $order['how_oos'];
@@ -1310,12 +1310,12 @@ function get_order_detail ($order_id, $user_id = 0)
 
     /* 确认时间 支付时间 发货时间 */
     if ($order['confirm_time'] > 0 && ($order['order_status'] == OS_CONFIRMED || $order['order_status'] == OS_SPLITED || $order['order_status'] == OS_SPLITING_PART)) {
-        $order['confirm_time'] = sprintf(RC_Lang::lang('confirm_time'), RC_Time::local_date(ecjia::config('time_format'), $order['confirm_time']));
+        $order['confirm_time'] = sprintf(RC_Lang::get('store::store.confirm_time'), RC_Time::local_date(ecjia::config('time_format'), $order['confirm_time']));
     } else {
         $order['confirm_time'] = '';
     }
     if ($order['pay_time'] > 0 && $order['pay_status'] != PS_UNPAYED) {
-        $order['pay_time'] = sprintf(RC_Lang::lang('pay_time'), RC_Time::local_date(ecjia::config('time_format'), $order['pay_time']));
+        $order['pay_time'] = sprintf(RC_Lang::get('store::store.pay_time'), RC_Time::local_date(ecjia::config('time_format'), $order['pay_time']));
     } else {
         $order['pay_time'] = '';
     }
@@ -1323,7 +1323,7 @@ function get_order_detail ($order_id, $user_id = 0)
         SS_SHIPPED,
         SS_RECEIVED
     ))) {
-        $order['shipping_time'] = sprintf(RC_Lang::lang('shipping_time'), RC_Time::local_date(ecjia::config('time_format'), $order['shipping_time']));
+        $order['shipping_time'] = sprintf(RC_Lang::get('store::store.shipping_time'), RC_Time::local_date(ecjia::config('time_format'), $order['shipping_time']));
     } else {
         $order['shipping_time'] = '';
     }
