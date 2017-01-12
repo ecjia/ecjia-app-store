@@ -75,7 +75,7 @@
         				</div>
 
         				<div class="control-group formSep">
-        					<label class="control-label">{lang key='store::store.contact_lable'}</label>
+        					<label class="control-label">联系手机：</label>
         					<div class="controls">
         						<input class="span6" name="contact_mobile" type="text" value="{$store.contact_mobile}" />
         					</div>

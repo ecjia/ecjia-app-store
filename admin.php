@@ -195,6 +195,28 @@ class admin extends ecjia_admin {
 		    if ($store_info['identity_status'] != 2 && $data['shop_close'] == 0 && ecjia::config('store_identity_certification') == 1) {
 		        return $this->showmessage('未认证通过不能开启店铺', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		    }
+		    if (empty($data['merchants_name'])) {
+		        return $this->showmessage('店铺名称不能为空', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+		    }
+		    if (empty($data['contact_mobile'])) {
+		        return $this->showmessage('联系手机不能为空', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+		    }
+		    if ( empty($data['email'])) {
+		        return $this->showmessage('邮箱不能为空', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+		    }
+		    
+		    $is_exist = RC_DB::table('store_franchisee')->where('store_id', '<>', $store_id)->where('merchants_name', $data['merchants_name'])->get();
+		    if ($is_exist) {
+		        return $this->showmessage('店铺名称已存在，请修改', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+		    }
+		    $is_exist = RC_DB::table('store_franchisee')->where('store_id', '<>', $store_id)->where('contact_mobile', $data['contact_mobile'])->get();
+		    if ($is_exist) {
+		        return $this->showmessage('联系手机已存在，请修改', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+		    }
+		    $is_exist = RC_DB::table('store_franchisee')->where('store_id', '<>', $store_id)->where('email', $data['email'])->get();
+		    if ($is_exist) {
+		        return $this->showmessage('邮箱已存在，请修改', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+		    }
             $geohash         = RC_Loader::load_app_class('geohash', 'store');
 			$geohash_code    = $geohash->encode($_POST['latitude'] , $_POST['longitude']);
             $geohash_code    = substr($geohash_code, 0, 10);
