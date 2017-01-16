@@ -81,7 +81,8 @@
 		},
 		search : function() {
 			$(".start_time,.end_time").datepicker({
-				format: "yyyy-mm-dd"
+				format: "yyyy-mm-dd",
+				container : '.main_content',
 			});
 			$("form[name='searchForm']").on('submit', function(e) {
 				e.preventDefault();
