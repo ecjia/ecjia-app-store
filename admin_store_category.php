@@ -84,7 +84,7 @@ class admin_store_category extends ecjia_admin {
 	 * 店铺分类列表
 	 */
 	public function init() {
-	    $this->admin_priv('store_category_manage',ecjia::MSGTYPE_JSON);
+	    $this->admin_priv('store_category_manage');
 		
 	    ecjia_screen::get_current_screen()->remove_last_nav_here();
 	    ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('店铺分类')));

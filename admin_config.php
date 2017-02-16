@@ -89,7 +89,7 @@ class admin_config extends ecjia_admin {
 	 * 处理后台设置
 	 */
 	public function update() {
-		$this->admin_priv('store_config_manage');
+		$this->admin_priv('store_config_manage', ecjia::MSGTYPE_JSON);
 		
 		$merchant_admin_cpname 	= !empty($_POST['merchant_admin_cpname']) 	? trim($_POST['merchant_admin_cpname']) : '';
 		//后台名称
@@ -117,7 +117,7 @@ class admin_config extends ecjia_admin {
 	 * 删除上传文件
 	 */
 	public function del() {
-		$this->admin_priv('store_config_manage');
+		$this->admin_priv('store_config_manage', ecjia::MSGTYPE_JSON);
 		$type = !empty($_GET['type']) ? $_GET['type'] : '';
 		
 		if (!empty($type)) {

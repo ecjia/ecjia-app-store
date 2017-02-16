@@ -83,7 +83,7 @@ class admin_commission extends ecjia_admin {
 	 * 订单佣金结算页面
 	 */
 	public function init() {
-		$this->admin_priv('store_commission_manage',ecjia::MSGTYPE_JSON);
+		$this->admin_priv('store_commission_manage');
 
 		ecjia_screen::get_current_screen()->remove_last_nav_here();
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('佣金结算')));
@@ -100,7 +100,7 @@ class admin_commission extends ecjia_admin {
 	 * 设置佣金
 	 */
 	public function add() {
-		$this->admin_priv('store_commission_add',ecjia::MSGTYPE_JSON);
+		$this->admin_priv('store_commission_add');
 
 		ecjia_screen::get_current_screen()->remove_last_nav_here();
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here( __('设置商家佣金')));
@@ -131,7 +131,7 @@ class admin_commission extends ecjia_admin {
 	}
 
 	public function insert() {
-		$this->admin_priv('store_commission_add',ecjia::MSGTYPE_JSON);
+		$this->admin_priv('store_commission_add', ecjia::MSGTYPE_JSON);
 
 		$user_id			= isset($_POST['user_id']) 		        ? intval($_POST['user_id']) 		    : 0;
 		$suppliers_percent	= isset($_POST['suppliers_percent']) 	? intval($_POST['suppliers_percent']) 	: 0;
@@ -163,7 +163,7 @@ class admin_commission extends ecjia_admin {
 	 * 订单佣金结算页面
 	 */
 	public function edit()	{
-		$this->admin_priv('store_commission_update',ecjia::MSGTYPE_JSON);
+		$this->admin_priv('store_commission_update');
 
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('入驻商'),RC_Uri::url('store/admin/init')));
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here( __('佣金设置')));
@@ -193,7 +193,7 @@ class admin_commission extends ecjia_admin {
 	 * 订单佣金结算页面
 	 */
 	public function update() {
-		$this->admin_priv('store_commission_update',ecjia::MSGTYPE_JSON);
+		$this->admin_priv('store_commission_update', ecjia::MSGTYPE_JSON);
 
 		$id       = $_POST['id'];
 		$store_id = $_POST['store_id'];
@@ -261,7 +261,7 @@ class admin_commission extends ecjia_admin {
 	 * 批量操作
 	 */
 	public function batch() {
-		$this->admin_priv('store_commission_delete',ecjia::MSGTYPE_JSON);
+		$this->admin_priv('store_commission_delete', ecjia::MSGTYPE_JSON);
 
 		$id     = $_POST['id'];
 		$id_new = explode(',', $id);
@@ -286,7 +286,7 @@ class admin_commission extends ecjia_admin {
 	}
 
 	public function order_list() {
-		$this->admin_priv('store_order_manage',ecjia::MSGTYPE_JSON);
+		$this->admin_priv('store_order_manage');
 
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('商家订单列表')));
 // 		ecjia_screen::get_current_screen()->add_help_tab(array(
@@ -329,8 +329,9 @@ class admin_commission extends ecjia_admin {
 	/**
 	 * 修改结算状态
 	 */
-	public function toggle_state()
-	{
+	public function toggle_state() {
+		$this->admin_priv('store_commission_update', ecjia::MSGTYPE_JSON);
+		
 		$order_id             = intval($_POST['id']);
 		$order_sn             = $_GET['order_sn'];
 		$arr['is_settlement'] = intval($_POST['val']);

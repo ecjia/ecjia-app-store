@@ -92,7 +92,7 @@ class admin_mobileconfig extends ecjia_admin {
 	 * 处理后台设置
 	 */
 	public function update() {
-		$this->admin_priv('store_mobileconfig_manage');
+		$this->admin_priv('store_mobileconfig_manage', ecjia::MSGTYPE_JSON);
 		
 		ecjia_config::instance()->write_config('mobile_store_home_adsense', $_POST['mobile_store_home_adsense']);
 

@@ -89,7 +89,7 @@ class admin extends ecjia_admin {
 	 * 入驻商家列表
 	 */
 	public function init() {
-	    $this->admin_priv('store_affiliate_manage',ecjia::MSGTYPE_JSON);
+	    $this->admin_priv('store_affiliate_manage');
 
 	    ecjia_screen::get_current_screen()->remove_last_nav_here();
 	    ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('入驻商'));
@@ -112,7 +112,7 @@ class admin extends ecjia_admin {
 	 * 编辑入驻商
 	 */
 	public function edit() {
-		$this->admin_priv('store_affiliate_update', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('store_affiliate_update');
 
 		$this->assign('action_link',array('href' => RC_Uri::url('store/admin/init'),'text' => RC_Lang::get('store::store.store_list')));
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('编辑入驻商'));
@@ -132,10 +132,7 @@ class admin extends ecjia_admin {
 		$province   = $this->db_region->get_regions(1, 1);
 		$city       = $this->db_region->get_regions(2, $store['province']);
 		$district   = $this->db_region->get_regions(3, $store['city']);
-//         if(empty($store['latitude']) || empty($store['longitude'])){
-//             $store['latitude'] = '31.235450744628906';
-//             $store['longitude'] = '121.41641998291016';
-//         }
+
         $this->assign('province', $province);
 		$this->assign('city', $city);
 		$this->assign('district', $district);
@@ -349,7 +346,7 @@ class admin extends ecjia_admin {
 	 * 查看商家详细信息
 	 */
 	public function preview() {
-		$this->admin_priv('store_affiliate_manage', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('store_affiliate_manage');
 
 		$this->assign('action_link',array('href' => RC_Uri::url('store/admin/init'),'text' => RC_Lang::get('store::store.store_list')));
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('基本信息'));
@@ -381,8 +378,7 @@ class admin extends ecjia_admin {
 
 	//店铺设置
 	public function store_set() {
-
-	    $this->admin_priv('store_set_manage', ecjia::MSGTYPE_JSON);
+	    $this->admin_priv('store_set_manage');
 
         $this->assign('action_link',array('href' => RC_Uri::url('store/admin/init'),'text' => RC_Lang::get('store::store.store_list')));
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('店铺设置'));
@@ -404,7 +400,7 @@ class admin extends ecjia_admin {
 
 	//店铺设置修改
 	public function store_set_edit() {
-	    $this->admin_priv('store_set_update', ecjia::MSGTYPE_JSON);
+	    $this->admin_priv('store_set_update');
 
         $this->assign('action_link',array('href' => RC_Uri::url('store/admin/store_set', array('store_id' => $_GET['store_id'])),'text' => '店铺设置'));
         ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('编辑入驻商'));
@@ -511,7 +507,7 @@ class admin extends ecjia_admin {
 	 * 资质认证
 	 */
 	public function auth() {
-	    $this->admin_priv('store_auth_manage', ecjia::MSGTYPE_JSON);
+	    $this->admin_priv('store_auth_manage');
 
 	    $this->assign('action_link',array('href' => RC_Uri::url('store/admin/init'),'text' => RC_Lang::get('store::store.store_list')));
 	    ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('资质认证'));
@@ -562,7 +558,7 @@ class admin extends ecjia_admin {
 	 * 查看员工
 	 */
 	public function view_staff() {
-		$this->admin_priv('store_staff_manage', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('store_staff_manage');
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('store::store.view_staff')));
 
 		$store_id     = intval($_GET['store_id']);
@@ -583,7 +579,6 @@ class admin extends ecjia_admin {
 		$this->assign('main_staff', $main_staff);
 		$this->assign('staff_list', $staff_list);
 
-
 		$this->assign('store', $store);
 		$this->assign('menu', $menu);
 		$this->display('store_staff.dwt');
@@ -593,7 +588,7 @@ class admin extends ecjia_admin {
 	 * 锁定商家
 	 */
 	public function status() {
-		$this->admin_priv('store_affiliate_lock', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('store_affiliate_lock');
 
 		$this->assign('action_link',array('href' => RC_Uri::url('store/admin/init'),'text' => RC_Lang::get('store::store.store_list')));
 
@@ -760,7 +755,7 @@ class admin extends ecjia_admin {
 
 	//查看配送方式
 	public function shipping() {
-	    $this->admin_priv('store_shipping_manage', ecjia::MSGTYPE_JSON);
+	    $this->admin_priv('store_shipping_manage');
 
 	    RC_Loader::load_app_class('shipping_factory', 'shipping', false);
 
@@ -822,7 +817,6 @@ class admin extends ecjia_admin {
 	            }
 	        }
 	    }
-// 	    _dump($all_modules,1);
 	    
 	    $this->assign('enabled', $all_modules['enabled']);
 	   
@@ -843,7 +837,8 @@ class admin extends ecjia_admin {
 	 * 查看店铺日志
 	 */
     public function view_log(){
-        $this->admin_priv('store_log_manage', ecjia::MSGTYPE_JSON);
+        $this->admin_priv('store_log_manage');
+
         $this->assign('action_link',array('href' => RC_Uri::url('store/admin/init'),'text' => RC_Lang::get('store::store.store_list')));
         ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('查看日志'));
         $store_id = intval($_GET['store_id']);
@@ -896,14 +891,13 @@ class admin extends ecjia_admin {
 
 		$this->assign('logs', $logs);
 		$this->assign('menu', $menu);
-		$this->assign('ip_list',   $ip_list);
-		$this->assign('user_list',   $user_list);
+		$this->assign('ip_list', $ip_list);
+		$this->assign('user_list', $user_list);
         $this->display('staff_log.dwt');
     }
 
     public function check_log() {
-
-        $this->admin_priv('store_preaudit_check_log', ecjia::MSGTYPE_JSON);
+        $this->admin_priv('store_preaudit_check_log');
 
         $store_id = intval($_GET['store_id']);
 
@@ -920,7 +914,6 @@ class admin extends ecjia_admin {
         $menu = set_store_menu($store_id, 'check_log');
         $this->assign('menu', $menu);
         $this->display('store_preaudit_check_log.dwt');
-
     }
 
     /**
@@ -1023,7 +1016,7 @@ class admin extends ecjia_admin {
 
                 return $this->showmessage(sprintf(__('%s 的日志成功删除。'), $deltime), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin/view_log', array('store_id' => $store_id))));
             }
-        }else{
+        } else {
             return $this->showmessage(__('请选择日期'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
     }

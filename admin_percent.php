@@ -80,7 +80,7 @@ class admin_percent extends ecjia_admin {
 	 * 商家佣金列表
 	 */
 	public function init() {
-		$this->admin_priv('store_percent_manage',ecjia::MSGTYPE_JSON);
+		$this->admin_priv('store_percent_manage');
 		
 		ecjia_screen::get_current_screen()->remove_last_nav_here();
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('佣金比例')));
@@ -100,7 +100,7 @@ class admin_percent extends ecjia_admin {
 	 * 添加佣金百分比页面
 	 */
 	public function add() {
-		$this->admin_priv('store_percent_add', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('store_percent_add');
 
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('添加佣金比例')));		
 		
@@ -116,7 +116,7 @@ class admin_percent extends ecjia_admin {
 	 * 添加佣金百分比加载
 	 */
 	public function insert() {
-		$this->admin_priv('store_percent_add',ecjia::MSGTYPE_JSON);
+		$this->admin_priv('store_percent_add', ecjia::MSGTYPE_JSON);
 		
 		if (empty($_POST['percent_value'])) {
 			return $this->showmessage('奖励额度不能为空',ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
@@ -157,7 +157,7 @@ class admin_percent extends ecjia_admin {
 	 * 佣金百分比编辑页面
 	 */
 	public function edit() {
-		$this->admin_priv('store_percent_update',ecjia::MSGTYPE_JSON);
+		$this->admin_priv('store_percent_update');
 		
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('编辑佣金比例')));
 		
@@ -185,7 +185,7 @@ class admin_percent extends ecjia_admin {
 	 * 佣金百分比 编辑 加载
 	 */
 	public function update() {
-		$this->admin_priv('store_percent_update',ecjia::MSGTYPE_JSON);
+		$this->admin_priv('store_percent_update', ecjia::MSGTYPE_JSON);
 		
 		$percent_id = $_POST['id'];
 		if ($_POST['percent_value'] > 100 || $_POST['percent_value'] < 0) {
@@ -216,7 +216,7 @@ class admin_percent extends ecjia_admin {
 	
 	//删除佣金百分比
 	public function remove() {
-		$this->admin_priv('store_percent_delete',ecjia::MSGTYPE_JSON);
+		$this->admin_priv('store_percent_delete', ecjia::MSGTYPE_JSON);
 		
 		$id = $_GET['id'];
 		$percent_value = RC_DB::table('store_percent')->where('percent_id', $id)->pluck('percent_value');
@@ -232,7 +232,7 @@ class admin_percent extends ecjia_admin {
 	
 	//批量删除佣金百分比
 	public function batch() {
-		$this->admin_priv('store_percent_delete',ecjia::MSGTYPE_JSON);
+		$this->admin_priv('store_percent_delete', ecjia::MSGTYPE_JSON);
 		
 		/* 对批量操作进行权限检查  END */
 		$id = $_POST['id'];

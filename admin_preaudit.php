@@ -84,7 +84,7 @@ class admin_preaudit extends ecjia_admin {
 	 * 入驻商家预审核列表
 	 */
 	public function init() {
-	    $this->admin_priv('store_preaudit_manage',ecjia::MSGTYPE_JSON);
+	    $this->admin_priv('store_preaudit_manage');
 
 	    $this->assign('ur_here', RC_Lang::get('store::store.store_preaudit_list'));
 
@@ -100,7 +100,7 @@ class admin_preaudit extends ecjia_admin {
 	 * 编辑入驻商
 	 */
 	public function edit() {
-		$this->admin_priv('store_preaudit_update', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('store_preaudit_update');
 
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('store::store.store_update')));
 		$this->assign('ur_here',RC_Lang::get('store::store.store_update'));
@@ -242,7 +242,7 @@ class admin_preaudit extends ecjia_admin {
 	 * 审核入驻商
 	 */
 	public function check() {
-		$this->admin_priv('store_preaudit_check', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('store_preaudit_check');
 
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('store::store.check_view')));
 		$this->assign('ur_here',RC_Lang::get('store::store.check_view'));
@@ -540,7 +540,7 @@ class admin_preaudit extends ecjia_admin {
 	}
 
 	public function view_log() {
-	    $this->admin_priv('store_preaudit_check_log', ecjia::MSGTYPE_JSON);
+	    $this->admin_priv('store_preaudit_check_log');
 
 	    $this->assign('ur_here','查看日志');
 	    $id = intval($_GET['id']);

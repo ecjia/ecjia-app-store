@@ -74,7 +74,7 @@ class admin_notice extends ecjia_admin {
 	 * 商家公告文章列表
 	 */
 	public function init() {
-		$this->admin_priv('store_notice_manage', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('store_notice_manage');
 		
 		ecjia_screen::get_current_screen()->remove_last_nav_here();
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('商家公告'));
@@ -90,7 +90,7 @@ class admin_notice extends ecjia_admin {
 	 * 添加商家公告
 	 */
 	public function add() {
-		$this->admin_priv('store_notice_update', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('store_notice_update');
 		
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('发布商家公告'));
 		
@@ -155,7 +155,7 @@ class admin_notice extends ecjia_admin {
 	 * 编辑商家公告
 	 */
 	public function edit() {
-		$this->admin_priv('store_notice_update', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('store_notice_update');
 	
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('编辑商家公告'));
 		
