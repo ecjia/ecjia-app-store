@@ -71,8 +71,8 @@ class update_module extends api_admin implements api_interface {
 		
 		
 		if ($_SESSION['store_id'] > 0) {
-			$result1 = $this->admin_priv('franchisee_manage', ecjia::MSGTYPE_JSON);
-			$result2 = $this->admin_priv('merchant_manage', ecjia::MSGTYPE_JSON);
+			$result1 = $this->admin_priv('franchisee_manage');
+			$result2 = $this->admin_priv('merchant_manage');
 			
 			if (is_ecjia_error($result1) || is_ecjia_error($result2)) {
 				return $result1;
@@ -110,7 +110,7 @@ class update_module extends api_admin implements api_interface {
 	    	return true;
 	    	
 		} else {
-			$result = $this->admin_priv('shop_config', ecjia::MSGTYPE_JSON);
+			$result = $this->admin_priv('shop_config');
 			if (is_ecjia_error($result)) {
 				return $result;
 			}

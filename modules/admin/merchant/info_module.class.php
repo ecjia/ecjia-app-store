@@ -85,7 +85,7 @@ class info_module extends api_admin implements api_interface {
 					'seller_notice'			=> RC_DB::table('merchants_config')->where('store_id', $_SESSION['store_id'])->where('code', 'shop_notice')->pluck('value'),
 					'trade_time'			=> $shop_trade_time
 			);
-			$result = $this->admin_priv('franchisee_manage', ecjia::MSGTYPE_JSON);
+			$result = $this->admin_priv('franchisee_manage');
 			if (is_ecjia_error($result)) {
 				$privilege = 1;
 // 				Read & Write   3
@@ -108,7 +108,7 @@ class info_module extends api_admin implements api_interface {
 	    	  		'seller_address'		=> ecjia::config('shop_address'),
 	    	  		'seller_description'	=> strip_tags(ecjia::config('shop_notice'))
 			);
-			$result = $this->admin_priv('shop_config', ecjia::MSGTYPE_JSON);
+			$result = $this->admin_priv('shop_config');
 			if (is_ecjia_error($result)) {
 				$privilege = 1;
 			} else {
