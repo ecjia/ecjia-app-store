@@ -400,6 +400,7 @@ class admin_preaudit extends ecjia_admin {
 				//短信发送通知
 				$tpl_name = 'sms_jion_merchant';
 				$tpl = RC_Api::api('sms', 'sms_template', $tpl_name);
+				$message = '';
 				if (!empty($tpl)) {
 					$this->assign('user_name', $store['responsible_person']);
 					$this->assign('shop_name', ecjia::config('shop_name'));
@@ -414,11 +415,8 @@ class admin_preaudit extends ecjia_admin {
 						'template_id' 	=> $tpl['template_id'],
 					);
 					$response = RC_Api::api('sms', 'sms_send', $options);
-
-					if($response === true){
-						return $this->showmessage('短信发送成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
-					}else{
-						return $this->showmessage('短信发送失败', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+					if($response !== true){
+					    $message = '通知短信发送失败，请检查。';
 					}
 				};
 
@@ -432,7 +430,7 @@ class admin_preaudit extends ecjia_admin {
 				);
 				RC_Api::api('store', 'add_check_log', $log);
 				ecjia_admin::admin_log($data['merchants_name'].' 通过', 'check', 'merchants_preaudit');
-				return $this->showmessage(RC_Lang::get('store::store.check_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin_preaudit/init')));
+				return $this->showmessage(RC_Lang::get('store::store.check_success').$message, ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin_preaudit/init')));
 			} else {
 				//再次审核资料
 				$store = RC_DB::table('store_preaudit')->where('store_id', $store_id)->first();
