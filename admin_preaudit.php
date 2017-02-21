@@ -368,7 +368,7 @@ class admin_preaudit extends ecjia_admin {
 				$merchants_config = RC_DB::table('merchants_config');
 				foreach ($merchant_config as $val) {
 					$count= $merchants_config->where(RC_DB::raw('store_id'), $store_id)->where(RC_DB::raw('code'), $val)->count();
-					if($count == 0){
+					if ($count == 0) {
 						$merchants_config->insert(array('store_id' => $store_id, 'code' => $val));
 					}
 				}
@@ -386,11 +386,9 @@ class admin_preaudit extends ecjia_admin {
 					'password' 		=> md5(md5($password) . $salt),
 					'salt'			=> $salt,
 					'add_time' 		=> RC_Time::gmtime(),
-					'last_login' 	=> '',
 					'last_ip' 		=> '',
 					'action_list' 	=> 'all',
 					'todolist' 		=> '',
-					'group_id' 		=> '',
 					'parent_id' 	=> 0,
 					'avatar' 		=> '',
 					'introduction' 	=> '',
