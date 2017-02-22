@@ -596,6 +596,7 @@ class admin_preaudit extends ecjia_admin {
         		->selectRaw('sp.id,sp.merchants_name,sp.merchants_name,sp.responsible_person,sp.apply_time,sp.company_name,sc.cat_name')
         		->orderby('id', 'asc')
         		->take($page->page_size)
+        		->skip($page->start_id-1)
         		->get();
 		$res = array();
 		if (!empty($data)) {
