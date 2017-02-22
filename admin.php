@@ -425,10 +425,11 @@ class admin extends ecjia_admin {
         if(empty($store_id)){
             return $this->showmessage('参数错误', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
-        $shop_kf_mobile         = ($_POST['shop_kf_mobile'] == get_merchant_config($store_id, 'shop_kf_mobile'))       ? '' : htmlspecialchars($_POST['shop_kf_mobile']);
-        $shop_description       = ($_POST['shop_description'] == get_merchant_config($store_id, 'shop_description'))   ? '' : htmlspecialchars($_POST['shop_description']);
-        $shop_trade_time        = empty($_POST['shop_trade_time'])                                                     ? '' : htmlspecialchars($_POST['shop_trade_time']);
-        $shop_notice            = ($_POST['shop_notice'] == get_merchant_config($store_id, 'shop_notice'))             ? '' : htmlspecialchars($_POST['shop_notice']);
+
+        $shop_kf_mobile         = empty($_POST['shop_kf_mobile'])	? '' : htmlspecialchars($_POST['shop_kf_mobile']);
+        $shop_description       = empty($_POST['shop_description'])	? '' : htmlspecialchars($_POST['shop_description']);
+        $shop_trade_time        = empty($_POST['shop_trade_time'])	? '' : htmlspecialchars($_POST['shop_trade_time']);
+        $shop_notice            = empty($_POST['shop_notice'])		? '' : htmlspecialchars($_POST['shop_notice']);
 
         $merchant_config = array();
 
@@ -452,9 +453,7 @@ class admin extends ecjia_admin {
             return $this->showmessage('请上传店铺LOGO', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
 
-        if(!empty($shop_description)){
-            $merchants_config['shop_description'] = $shop_description;// 店铺描述
-        }
+        $merchants_config['shop_description'] = $shop_description;// 店铺描述
         $time = array();
         if(!empty($shop_trade_time)){
             $shop_time      = explode(',',$shop_trade_time);
@@ -475,19 +474,16 @@ class admin extends ecjia_admin {
                 $merchants_config['shop_trade_time'] = $shop_trade_time;// 营业时间
             }
         }
-        if(!empty($shop_notice)){
-            $merchants_config['shop_notice'] = $shop_notice;// 店铺公告
-        }
-        if(!empty($shop_kf_mobile)){
-            $merchants_config['shop_kf_mobile'] = $shop_kf_mobile;// 客服电话
-        }
-        if(!empty($merchants_config)){
+       	$merchants_config['shop_notice'] = $shop_notice;// 店铺公告
+        $merchants_config['shop_kf_mobile'] = $shop_kf_mobile;// 客服电话
+        
+        if (!empty($merchants_config)) {
             $merchant = set_merchant_config($store_id, '', '', $merchants_config);
-        }else{
+        } else {
             return $this->showmessage('您没有做任何修改', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
 
-        if(!empty($merchant)){
+        if (!empty($merchant)) {
         	$store_franchisee_db = RC_Model::model('store/orm_store_franchisee_model');
         	/* 释放app缓存*/
         	$store_cache_array = $store_franchisee_db->get_cache_item('store_list_cache_key_array');
@@ -499,7 +495,7 @@ class admin extends ecjia_admin {
         	}
             // 记录日志
             ecjia_admin::admin_log('修改店铺基本信息', 'edit', 'merchant');
-            return $this->showmessage('编辑成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin/store_set', array('store_id' => $store_id))));
+            return $this->showmessage('编辑成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin/store_set_edit', array('store_id' => $store_id))));
         }
 	}
 
