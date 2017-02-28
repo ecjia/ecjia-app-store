@@ -116,6 +116,7 @@ class validate_module extends api_admin implements api_interface {
 // 					}
 
                 ecjia_api::$controller->assign('code', $code);
+                ecjia_api::$controller->assign('mobile', $value);
                 ecjia_api::$controller->assign('service_phone', ecjia::config('service_phone'));
 
                 $content = ecjia_api::$controller->fetch_string($tpl['template_content']);
