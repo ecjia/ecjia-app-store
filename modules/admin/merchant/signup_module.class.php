@@ -107,7 +107,7 @@ class signup_module extends api_admin implements api_interface {
 			return new ecjia_error('already_signup', '您已申请请勿重复申请！');
 		}
         if(!empty($info_staff_user)){
-            return new ecjia_error('already_signup', '改手机号码已被注册为店铺员工');
+            return new ecjia_error('already_signup', '该手机号码已被注册为店铺员工');
         }
 
 		$merchant_shop_data = array(

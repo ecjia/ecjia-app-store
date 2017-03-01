@@ -75,6 +75,7 @@ class validate_module extends api_admin implements api_interface {
             $info_store_preaudit	= RC_DB::table('store_preaudit')->where('contact_mobile', $value)->count();
 			$info_store_franchisee	= RC_DB::table('store_franchisee')->where('contact_mobile', $value)->first();
             $info_staff_user		= RC_DB::table('staff_user')->where('mobile', $value)->first();
+			
 			if (!empty($info_store_preaudit)){
                 return new ecjia_error('merchant_checking', '手机号'.$value.'已被申请请确认该账号是否为本人所有');
             }elseif(!empty($info_store_franchisee)){
