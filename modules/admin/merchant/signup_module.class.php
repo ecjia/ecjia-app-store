@@ -89,6 +89,10 @@ class signup_module extends api_admin implements api_interface {
 		} elseif ($_SESSION['merchant_validate_mobile'] != $mobile) {
 			return new ecjia_error('validate_mobile_error', '手机号码已经更改请重新获取验证码');
 		}
+		$count = RC_DB::table('store_franchisee')->where(RC_DB::raw('merchants_name'), $seller_name)->count();
+		if ($count > 0) {
+		    return new ecjia_error('seller_name_exist', '店铺名称已存在，请修改');
+		}
 
         if(empty($longitude) || empty($latitude)){
             $location  = getgeohash($city, $address);
