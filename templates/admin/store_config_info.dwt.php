@@ -52,10 +52,11 @@
     			<div class="controls">
     				<select name="mobile_location_range">
     					<option value='0' {if $mobile_location_range eq '0'}selected="true"{/if}>全城</option>
+    					<option value='3' {if $mobile_location_range eq '3'}selected="true"{/if}>约周边120公里</option>
     					<option value='4' {if $mobile_location_range eq '4'}selected="true"{/if}>约周边30公里</option>
-    					<option value='5' {if $mobile_location_range eq '5'}selected="true"{/if}>约周边5公里</option>
-    					<option value='6' {if $mobile_location_range eq '6'}selected="true"{/if}>约周边2公里</option>
-    					<option value='7' {if $mobile_location_range eq '7'}selected="true"{/if}>约周边300米</option>
+    					<option value='5' {if $mobile_location_range eq '5'}selected="true"{/if}>约周边4公里</option>
+    					<option value='6' {if $mobile_location_range eq '6'}selected="true"{/if}>约周边1公里</option>
+    					<option value='7' {if $mobile_location_range eq '7'}selected="true"{/if}>约周边200米</option>
     				</select>
     			</div>
     		</div>
