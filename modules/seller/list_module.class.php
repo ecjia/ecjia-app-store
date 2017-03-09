@@ -197,11 +197,13 @@ class list_module extends api_front implements api_interface {
 				
 				$distance_list[]	= $distance;
 				$sort_order[]	 	= $row['sort_order'];
+				$seller_notice = RC_DB::table('merchants_config')->where('store_id', $row['id'])->where('code', 'shop_notice')->pluck('value');
 				
 				$seller_list[] = array(
 						'id'				=> $row['id'],
 						'seller_name'		=> $row['seller_name'],
 						'seller_category'	=> $row['seller_category'],
+				        'seller_notice'     => $seller_notice,
 						'manage_mode'		=> $row['manage_mode'],
 						'seller_logo'		=> $row['shop_logo'],
 						'seller_goods'		=> $goods_store_data['goods_list'],
