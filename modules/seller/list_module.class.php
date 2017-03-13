@@ -71,7 +71,7 @@ class list_module extends api_front implements api_interface {
             $geohash_code = substr($geohash_code, 0, 7);
         }
 		/* 获取数量 */
-		$size = $this->requestData('pagination.count', 15);
+		$size = $this->requestData('pagination.count', 8);
 		$page = $this->requestData('pagination.page', 1);
 		
 		$options = array(
@@ -81,7 +81,7 @@ class list_module extends api_front implements api_interface {
 				'page'			    => $page,
 				'geohash'		    => $geohash_code,
 				'sort'			    => array('sort_order' => 'asc'),
-				'limit'			    => 'all'
+				'limit'			    => ''
 		);
 		
 // 		$cache_id = sprintf('%X', crc32($seller_categroy .'-' . $_SESSION['user_rank']. '-' .
@@ -96,7 +96,6 @@ class list_module extends api_front implements api_interface {
 			$store_data = RC_Api::api('store', 'store_list', $options);
 // 			RC_Cache::app_cache_set($cache_key, $store_data, 'store', 10080);
 // 		}
-
 		$seller_list = array();
 		if (!empty($store_data['seller_list'])) {
 			$collect_store_id = RC_DB::table('collect_store')->where('user_id', $_SESSION['user_id'])->lists('store_id');
@@ -188,7 +187,7 @@ class list_module extends api_front implements api_interface {
 						);
 					}
 				}
-					$goods_store_data = array('goods_list' => $goods_list, 'count' => $goods_result['page']->total_records);
+				$goods_store_data = array('goods_list' => $goods_list, 'count' => $goods_result['page']->total_records);
 					
 // 					RC_Cache::app_cache_set($store_goods_cache_key, $goods_store_data, 'goods', 10080);
 // 			}
@@ -217,8 +216,7 @@ class list_module extends api_front implements api_interface {
 			}
 			array_multisort($distance_list, SORT_ASC, $sort_order, SORT_ASC, $seller_list);
 		}
-		
-		$seller_list = array_slice($seller_list, ($page-1)*$size, $size);
+// 		$seller_list = array_slice($seller_list, ($page-1)*$size, $size);
 		$page = array(
 				'total'	=> $store_data['page']->total_records,
 				'count'	=> $store_data['page']->total_records,

@@ -141,6 +141,8 @@ class store_store_list_api extends Component_Event_Api {
 
 		if (isset($filter['limit']) && $filter['limit'] == 'all') {
 			$cache_key .= '-limit-all';
+		} else {
+		    $cache_key .= '-size-' . $filter['size'] . '-page-' . $filter['page'];
 		}
 		
 		$store_franchisee_db = RC_Model::model('store/orm_store_franchisee_model');
@@ -189,7 +191,7 @@ class store_store_list_api extends Component_Event_Api {
 							'id'				 => $result[$k]['store_id'],
 							'seller_name'		 => $result[$k]['merchants_name'],
 							'seller_category'	 => $result[$k]['cat_name'],//后期删除
-							'manage_mode'		 => $result[$k]['manage_mode'],
+							'manage_mode'		 => empty($result[$k]['manage_mode']) ? 'join' : $result[$k]['manage_mode'],
 							'shop_logo'		     => empty($result[$k]['shop_logo']) ?  '' : RC_Upload::upload_url($result[$k]['shop_logo']),//后期增加
 							'seller_logo'		 => empty($result[$k]['shop_logo']) ?  '' : RC_Upload::upload_url($result[$k]['shop_logo']),//后期删除
 							'follower'			 => $result[$k]['follower'],
