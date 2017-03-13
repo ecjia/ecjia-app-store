@@ -145,19 +145,19 @@ class admin_preaudit extends ecjia_admin {
 		$this->admin_priv('store_preaudit_update', ecjia::MSGTYPE_JSON);
 
 		$id = intval($_POST['id']);
-		$pic_url = RC_DB::table('store_preaudit')->where('id', $id)->first();
+		$info = RC_DB::table('store_preaudit')->where('id', $id)->first();
 
 		if (!empty($_FILES['one']['name'])) {
 			$upload = RC_Upload::uploader('image', array('save_path' => 'data/store', 'auto_sub_dirs' => false));
 			$info = $upload->upload($_FILES['one']);
 			if (!empty($info)) {
 				$business_licence_pic = $upload->get_position($info);
-				$upload->remove($pic_url['business_licence_pic']);
+				$upload->remove($info['business_licence_pic']);
 			} else {
 				return $this->showmessage($upload->error(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			}
 		} else {
-			$business_licence_pic = $pic_url['business_licence_pic'];
+			$business_licence_pic = $info['business_licence_pic'];
 		}
 
 		if (!empty($_FILES['two']['name'])) {
@@ -165,12 +165,12 @@ class admin_preaudit extends ecjia_admin {
 			$info    = $upload->upload($_FILES['two']);
 			if (!empty($info)) {
 				$identity_pic_front = $upload->get_position($info);
-				$upload->remove($pic_url['identity_pic_front']);
+				$upload->remove($info['identity_pic_front']);
 			} else {
 				return $this->showmessage($upload->error(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			}
 		} else {
-			$identity_pic_front = $pic_url['identity_pic_front'];
+			$identity_pic_front = $info['identity_pic_front'];
 		}
 
 		if (!empty($_FILES['three']['name'])) {
@@ -178,12 +178,12 @@ class admin_preaudit extends ecjia_admin {
 			$info   = $upload->upload($_FILES['three']);
 			if (!empty($info)) {
 				$identity_pic_back = $upload->get_position($info);
-				$upload->remove($pic_url['identity_pic_back']);
+				$upload->remove($info['identity_pic_back']);
 			} else {
 				return $this->showmessage($upload->error(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			}
 		} else {
-			$identity_pic_back = $pic_url['identity_pic_back'];
+			$identity_pic_back = $info['identity_pic_back'];
 		}
 
 		if (!empty($_FILES['four']['name'])) {
@@ -191,12 +191,12 @@ class admin_preaudit extends ecjia_admin {
 			$info = $upload->upload($_FILES['four']);
 			if (!empty($info)) {
 				$personhand_identity_pic = $upload->get_position($info);
-				$upload->remove($pic_url['personhand_identity_pic']);
+				$upload->remove($info['personhand_identity_pic']);
 			} else {
 				return $this->showmessage($upload->error(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			}
 		} else {
-			$personhand_identity_pic = $pic_url['personhand_identity_pic'];
+			$personhand_identity_pic = $info['personhand_identity_pic'];
 		}
 
 		$data = array(
@@ -226,6 +226,24 @@ class admin_preaudit extends ecjia_admin {
 			'longitude'         		=> !empty($_POST['longitude']) 				? $_POST['longitude']           : '',
 			'latitude'         			=> !empty($_POST['latitude']) 				? $_POST['latitude']            : '',
 		);
+		
+		$franchisee_count = 0;
+		if ($info['store_id']) {
+		    $franchisee_count = RC_DB::table('store_franchisee')->where('email', '=', $data['email'])->where('store_id', '!=', $info['store_id'])->count();
+		}
+		$preaudit_count   = RC_DB::table('store_preaudit')->where('email', '=', $data['email'])->where('id', '!=', $id)->count();
+		if ($franchisee_count || $preaudit_count) {
+		    return $this->showmessage('该邮箱已经使用，请填写其他邮箱地址', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+		}
+		$franchisee_count = 0;
+		if ($info['store_id']) {
+		    $franchisee_count = RC_DB::table('store_franchisee')->where('contact_mobile', '=', $data['contact_mobile'])->where('store_id', '!=', $info['store_id'])->count();
+		}
+		$preaudit_count   = RC_DB::table('store_preaudit')->where('contact_mobile', '=', $data['contact_mobile'])->where('id', '!=', $id)->count();
+		if ($franchisee_count || $preaudit_count) {
+		    return $this->showmessage('该手机号已经使用，请填写其他联系方式', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+		}
+		
 		$geohash = RC_Loader::load_app_class('geohash', 'store');
 		if(!empty($_POST['latitude']) && !empty($_POST['longitude']))
 		$geohash_code = $geohash->encode($_POST['latitude'] , $_POST['longitude']);
