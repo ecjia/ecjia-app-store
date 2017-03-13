@@ -573,7 +573,10 @@ class admin_preaudit extends ecjia_admin {
 		$filter['keywords'] = empty($_GET['keywords']) ? ''     : trim($_GET['keywords']);
 		$filter['type']     = empty($_GET['type'])     ? 'join' : trim($_GET['type']);
 		if ($filter['keywords']) {
-			$db_store_franchisee->where('merchants_name', 'like', '%'.mysql_like_quote($filter['keywords']).'%');
+			$db_store_franchisee->where(function ($query) use ( $filter) {
+			    $query->where('merchants_name', 'like', '%'.mysql_like_quote($filter['keywords']).'%')
+			    ->orWhere('contact_mobile', 'like', '%'.mysql_like_quote($filter['keywords']).'%');
+			});
 		}
 
 		$filter_type = $db_store_franchisee
@@ -602,7 +605,7 @@ class admin_preaudit extends ecjia_admin {
 		$page = new ecjia_page($count, $page_size, 5);
 		$data = $db_store_franchisee
         		->leftJoin('store_category as sc', RC_DB::raw('sp.cat_id'), '=', RC_DB::raw('sc.cat_id'))
-        		->selectRaw('sp.id,sp.merchants_name,sp.merchants_name,sp.responsible_person,sp.apply_time,sp.company_name,sc.cat_name')
+        		->selectRaw('sp.id,sp.merchants_name,sp.merchants_name,sp.responsible_person,sp.apply_time,sp.company_name,sp.contact_mobile,sc.cat_name')
         		->orderby('id', 'asc')
         		->take($page->page_size)
         		->skip($page->start_id-1)

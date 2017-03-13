@@ -75,7 +75,7 @@ return array(
 	'view'			=>	'查看详情',
 	'lock'			=>	'锁定',
 	'unlock'		=> '解锁',
-	'pls_name'		=>	'请输入店铺名称',
+	'pls_name'		=>	'请输入店铺名称或手机号',
 	'serach'		=>	'搜索',
 
 
