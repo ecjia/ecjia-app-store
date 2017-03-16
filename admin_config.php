@@ -78,7 +78,7 @@ class admin_config extends ecjia_admin {
 
 		/* 判断定位范围设置code是否存在，如果不存在则插入*/
 		if (!ecjia::config('mobile_location_range', ecjia::CONFIG_CHECK)) {
-        	ecjia_config::instance()->insert_config('mobile', 'mobile_location_range', 0, array('type' => 'text'));
+        	ecjia_config::instance()->insert_config('mobile', 'mobile_location_range', 3, array('type' => 'text'));
         }
 //     	$this->assign('config_cpname', ecjia::config('merchant_admin_cpname')); //需删除
     	
