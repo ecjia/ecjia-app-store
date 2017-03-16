@@ -131,7 +131,7 @@ class suggestlist_module extends api_front implements api_interface {
 								'small' => $val['goods_img']
 						),
     				    'properties' => $properties['pro'],
-    				    'specification' => $properties['spe'],
+    				    'specification' => array_values($properties['spe']),
 						'activity_type' => $activity_type,
 						'object_id' => 0,
 						'saving_price' => $saving_price,
