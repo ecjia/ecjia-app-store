@@ -74,12 +74,11 @@ class store_neighbors_store_id_api extends Component_Event_Api {
 	 */
 	private function neighbors_store($geohash_code, $city_id = 0)
 	{
-		$mobile_location_range = ecjia::config('mobile_location_range');
-		if ($city_id) {
+		/* 判断是否有定位范围，如没有设置默认值*/
+		$mobile_location_range = ecjia::config('mobile_location_range', ecjia::CONFIG_CHECK) ? ecjia::config('mobile_location_range') : 3;
+		if ($city_id && $mobile_location_range == 0) {
 			$group_store_id = RC_DB::table('store_franchisee')->where('city', $city_id)->where('shop_close', '0')->lists('store_id');
 		} else {
-			/* 判断是否有定位范围，如没有设置默认值*/
-			$mobile_location_range = $mobile_location_range > 0 ? $mobile_location_range : 3; 
 			$geohash_code = substr($geohash_code, 0, $mobile_location_range);
 			/* 载入geohash类*/
 			$geohash	  = RC_Loader::load_app_class('geohash', 'store');
