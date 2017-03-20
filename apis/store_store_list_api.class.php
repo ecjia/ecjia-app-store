@@ -217,6 +217,7 @@ class store_store_list_api extends Component_Event_Api {
 									'longitude' => $result[$k]['longitude'],
 							),
 							'label_trade_time'	 => $result[$k]['trade_time']['start'] . ' - '. $result[$k]['trade_time']['end'],
+					        'seller_notice'      => $result[$k]['shop_notice'],
 					);
 				}
 			}
