@@ -74,7 +74,7 @@ class store_store_list_api extends Component_Event_Api {
 	{
 		$where = array();
 		$where['ssi.status'] = 1;
-		$where['ssi.store_id'] = array(0);
+		//$where['ssi.store_id'] = array(0);
 		
 		/* 商家列表缓存key*/
 		$cache_key = 'store-list';
@@ -105,6 +105,7 @@ class store_store_list_api extends Component_Event_Api {
 									->get_field('store_id', true);
 
 			if (!empty($seller_group)) {
+				$seller_group = array_merge(array(0), $seller_group);
 				$where['ssi.store_id'] = $seller_group = array_unique($seller_group);
 			} else {
 				$where['ssi.store_id'] = array(0);
@@ -139,6 +140,7 @@ class store_store_list_api extends Component_Event_Api {
 		
 		/* 店铺条件*/
 		if (isset($filter['store_id']) && !empty($filter['store_id'])) {
+			$filter['store_id'] = array_merge(array(0), $filter['store_id']);
 			if (!empty($where['ssi.store_id'])) {
 				$where['ssi.store_id'] = array_intersect($where['ssi.store_id'], $filter['store_id']);
 			} else {
