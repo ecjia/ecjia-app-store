@@ -113,9 +113,15 @@ class update_module extends api_admin implements api_interface {
 			//$count_category = $msi_category_db->where($where1)->update($data_category);
 			//$count_shopinfo = $ssi_db->where($where2)->update($data_shopinfo);
 // 			RC_DB::table('store_franchisee')->where(RC_DB::raw('store_id'), $_SESSION['store_id'])->update($data_franchisee);
-			RC_DB::table('merchants_config')->where(RC_DB::raw('store_id'), $_SESSION['store_id'])->where(RC_DB::raw('code'), 'shop_kf_mobile')->update(array('value' => $seller_telephone));
-			RC_DB::table('merchants_config')->where(RC_DB::raw('store_id'), $_SESSION['store_id'])->where(RC_DB::raw('code'), 'shop_description')->update(array('value' => $seller_description));
-			RC_DB::table('merchants_config')->where(RC_DB::raw('store_id'), $_SESSION['store_id'])->where(RC_DB::raw('code'), 'shop_notice')->update(array('value' => $seller_notice));
+			if (!empty($seller_telephone)) {
+			    RC_DB::table('merchants_config')->where(RC_DB::raw('store_id'), $_SESSION['store_id'])->where(RC_DB::raw('code'), 'shop_kf_mobile')->update(array('value' => $seller_telephone));
+			}
+			if (!empty($seller_description)) {
+			    RC_DB::table('merchants_config')->where(RC_DB::raw('store_id'), $_SESSION['store_id'])->where(RC_DB::raw('code'), 'shop_description')->update(array('value' => $seller_description));
+			}
+			if (!empty($seller_notice)) {
+			    RC_DB::table('merchants_config')->where(RC_DB::raw('store_id'), $_SESSION['store_id'])->where(RC_DB::raw('code'), 'shop_notice')->update(array('value' => $seller_notice));
+			}
 			
 // 			ecjia_merchant::admin_log('店铺设置>基本信息设置【来源掌柜】', 'edit', 'config');
 			RC_Api::api('merchant', 'admin_log', array('text'=>'店铺设置>基本信息设置【来源掌柜】', 'action'=>'edit', 'object'=>'config'));
