@@ -83,6 +83,7 @@ class info_module extends api_admin implements api_interface {
 				'validated_status'		=> $info['identity_status'],
     	  		'seller_description'	=> RC_DB::table('merchants_config')->where('store_id', $_SESSION['store_id'])->where('code', 'shop_description')->pluck('value'),
 				'seller_notice'			=> RC_DB::table('merchants_config')->where('store_id', $_SESSION['store_id'])->where('code', 'shop_notice')->pluck('value'),
+			    'seller_keyword'        => $info['shop_keyword'],
 				'trade_time'			=> $shop_trade_time,
 			    'manage_mode'           => $info['manage_mode'],//是否自营
 			    'open_time'             => RC_Time::local_date('Y-m-d', $info['confirm_time']),//入驻时间
