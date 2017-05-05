@@ -98,6 +98,18 @@ class update_module extends api_admin implements api_interface {
 				RC_DB::table('merchants_config')->where(RC_DB::raw('store_id'), $_SESSION['store_id'])->where(RC_DB::raw('code'), 'shop_trade_time')->update(array('value' => $seller_trade_time));
 			}
 			
+			/* 上传分类图片 */
+			$upload = RC_Upload::uploader('image', array('save_path' => '/merchant/'.$_SESSION['store_id'].'/data/shop_logo', 'auto_sub_dirs' => true));
+			if (isset($_FILES['seller_logo']) && $upload->check_upload_file($_FILES['seller_logo'])) {
+			    $image_info = $upload->upload($_FILES['seller_logo']);
+			    if (!empty($image_info)) {
+			        $file_name = RC_DB::table('merchants_config')->where(RC_DB::raw('store_id'), $_SESSION['store_id'])->where(RC_DB::raw('code'), 'shop_logo')->pluck('value');
+			        $upload->remove($file_name);
+			        $new_logo = $upload->get_position($image_info);
+			        RC_DB::table('merchants_config')->where(RC_DB::raw('store_id'), $_SESSION['store_id'])->where(RC_DB::raw('code'), 'shop_logo')->update(array('value' => $new_logo));
+			    }
+			}
+			
 			//$count_category = $msi_category_db->where($where1)->update($data_category);
 			//$count_shopinfo = $ssi_db->where($where2)->update($data_shopinfo);
 // 			RC_DB::table('store_franchisee')->where(RC_DB::raw('store_id'), $_SESSION['store_id'])->update($data_franchisee);
