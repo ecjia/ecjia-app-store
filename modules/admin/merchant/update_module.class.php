@@ -57,6 +57,11 @@ class update_module extends api_admin implements api_interface {
     	if ($_SESSION['admin_id'] <= 0 && $_SESSION['staff_id'] <= 0) {
     		return new ecjia_error(100, 'Invalid session');
     	}
+    	
+    	$result = $this->admin_priv('merchant_manage');
+    	if (is_ecjia_error($result)) {
+    	    return $result;
+    	}
     	//$ssi_db				= RC_Loader::load_app_model('seller_shopinfo_model', 'seller');
     	//$msi_category_db 	= RC_Loader::load_app_model('merchants_shop_information_model', 'seller');
 		
