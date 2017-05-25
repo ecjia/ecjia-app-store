@@ -53,18 +53,65 @@ defined('IN_ECJIA') or exit('No permission resources.');
 class category_module extends api_front implements api_interface {
     public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {
     	
-		$device		= $this->device;
+		$device	= $this->device;
 
         $this->authSession();
-		$seller_id = $this->requestData('seller_id');
+		$store_id = $this->requestData('seller_id');
 		$location = $this->requestData('location', array());
 	
-		if (empty($seller_id)) {
+		if (empty($store_id)) {
 			return new ecjia_error( 'invalid_parameter', RC_Lang::get ('system::system.invalid_parameter' ));
 		}
 
+		$options = array('type' => 'seller_goods_cat', 'cat_id' => 0, 'store_id' => $store_id, 'level' => 1);
+		$cat_list = RC_Api::api('goods', 'seller_goods_category', $options);
 		
+		$out = array();
+		foreach ($cat_list as $cat) {
+		    $options_goods = array(
+		        'store_id' => $store_id,
+		        'merchant_cat_id' => $cat['cat_id'],
+		        'store_intro' => 'hot',
+		        'size' => 3,
+		        'page' => 1,
+		    );
+		    $goods = RC_Api::api('goods', 'goods_list', $options_goods);
+		    //热销没有商品使用默认商品
+		    if (empty($goods['list'])) {
+		        $options_goods = array(
+		            'store_id' => $store_id,
+		            'merchant_cat_id' => $cat['cat_id'],
+		            'size' => 3,
+		            'page' => 1,
+		        );
+		        $goods = RC_Api::api('goods', 'goods_list', $options_goods);
+		    }
+		    
+		    $formate_goods = array();
+		    foreach ($goods['list'] as $val) {
+		        $formate_goods[] = array(
+		            'id'                  => $val['goods_id'],
+		            'name'                      => $val['name'],
+		            'market_price'              => $val['market_price'],
+		            'shop_price'                => $val['shop_price'],
+		            'promote_price'             => $val['promote_price'],
+		            'img' => array(
+		                'thumb'   => $val['goods_img'],
+		                'url'     => $val['original_img'],
+		                'small'   => $val['goods_thumb']
+		            ),
+		        );
+	        }
+		    $out[] = array(
+		        'id' => $cat['cat_id'],
+		        'name' => $cat['cat_name'],
+		        'image' => '',
+		        'goods' => $formate_goods,
+		    );
+		}
+// 		_dump($out,1);
 
+		return $out;
 	}
 }
 
