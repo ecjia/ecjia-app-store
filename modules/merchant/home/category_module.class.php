@@ -105,7 +105,7 @@ class category_module extends api_front implements api_interface {
 		    $out[] = array(
 		        'id' => $cat['cat_id'],
 		        'name' => $cat['cat_name'],
-		        'image' => '',
+		        'image' => !empty($cat['cat_image']) ? RC_Upload::upload_url($cat['cat_image']) : '',
 		        'goods' => $formate_goods,
 		    );
 		}
