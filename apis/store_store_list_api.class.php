@@ -218,6 +218,10 @@ class store_store_list_api extends Component_Event_Api {
 									'latitude'  => $result[$k]['latitude'],
 									'longitude' => $result[$k]['longitude'],
 							),
+					        'province' => $result[$k]['province'] ? RC_DB::table('region')->where('region_id', $result[$k]['province'])->pluck('region_name') : '',
+    					    'city' => $result[$k]['city'] ? RC_DB::table('region')->where('region_id', $result[$k]['city'])->pluck('region_name') : '',
+    					    'district' => $result[$k]['district'] ? RC_DB::table('region')->where('region_id', $result[$k]['district'])->pluck('region_name') : '',
+					        'address' => $result[$k]['address'],
 							'label_trade_time'	 => $result[$k]['trade_time']['start'] . ' - '. $result[$k]['trade_time']['end'],
 					        'seller_notice'      => $result[$k]['shop_notice'],
 					);
