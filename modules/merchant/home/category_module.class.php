@@ -56,7 +56,7 @@ class category_module extends api_front implements api_interface {
 		$device	= $this->device;
 
         $this->authSession();
-		$store_id = $this->requestData('seller_id');
+		$store_id = $this->requestData('store_id');
 		$location = $this->requestData('location', array());
 	
 		if (empty($store_id)) {
