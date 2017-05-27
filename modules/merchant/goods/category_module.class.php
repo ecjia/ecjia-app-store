@@ -71,7 +71,7 @@ class category_module extends api_front implements api_interface {
         		$cat_arr[] = array(
         				'id'	=> $val['cat_id'],
         				'name'	=> $val['cat_name'],
-        		        'image' => $val['cat_image'],
+        		        'image' => $val['cat_image'] ? RC_Upload::upload_url($val['cat_image']) : '',
         				'children' => get_child_tree($val['cat_id']),
         		);
         	}
@@ -96,7 +96,7 @@ function get_child_tree($cat_id) {
 			$cat_arr[] = array(
 					'id'	=> $val['cat_id'],
 					'name'	=> $val['cat_name'],
-			        'image' => $val['cat_image'],
+			        'image' => $val['cat_image'] ? RC_Upload::upload_url($val['cat_image']) : '',
 				);
         	}
 	}												
