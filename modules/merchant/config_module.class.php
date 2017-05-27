@@ -55,7 +55,6 @@ class config_module extends api_front implements api_interface {
 
     	$this->authSession();
 		$seller_id = $this->requestData('seller_id');
-		$seller_id = 62;
 		$location = $this->requestData('location', array());
 	
 		if (empty($seller_id)) {
