@@ -82,7 +82,7 @@ function adsense_data($response, $request) {
 	if (!empty($adsense_result)) {
 		foreach ($adsense_result as $val) {
 			if (substr($val['ad_code'], 0, 4) != 'http') {
-				$val['ad_code'] = RC_Upload::upload_url().'/'.$val['ad_code'];
+				$val['ad_code'] = RC_Upload::upload_url($val['ad_code']);
 			}
 			$adsense_data[] = array(
 				'image'	=> $val['ad_code'],
