@@ -61,9 +61,11 @@ class data_module extends api_front implements api_interface {
 			return new ecjia_error( 'invalid_parameter', RC_Lang::get ('system::system.invalid_parameter' ));
 		}
 		$user_id = $_SESSION['user_id'];
+		$api_version = $request->header('api-version');
+		$api_version = empty($api_version) ? $this->requestData('api_version') : '';
 		
 		$api_old = false;
-		if (version_compare($request->header('api-version'), '1.6', '<')) {
+		if (version_compare($api_version, '1.6', '<')) {
 		    $api_old = true;
 		}
 		
