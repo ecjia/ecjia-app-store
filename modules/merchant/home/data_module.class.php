@@ -396,6 +396,18 @@ function mobile_home_adsense_group($response, $request_params) {
     return $response;
 }
 
+function filter_merchant_adsense_group_data($data) {
+    return collect($data)->map(function($item, $key) {
+        return [
+            'image' => $item['ad_img'],
+            'text' => $item['ad_name'],
+            'url' => $item['ad_link'],
+        ];
+    })->toArray();
+}
+RC_Hook::add_filter('filter_merchant_adsense_group_data', 'filter_merchant_adsense_group_data');
+
+
 RC_Hook::add_filter('api_merchant_home_data_runloop', 'cycleimage_data', 10, 2);
 RC_Hook::add_filter('api_merchant_home_data_runloop', 'mobile_menu_data', 10, 2);
 RC_Hook::add_filter('api_merchant_home_data_runloop', 'promote_goods_data', 10, 2);
