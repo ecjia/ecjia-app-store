@@ -863,7 +863,10 @@ class admin extends ecjia_admin {
 		$filter['cat'] = empty($_GET['cat']) ? null : trim($_GET['cat']);
 
 		if ($filter['keywords']) {
-		    $db_store_franchisee->where('merchants_name', 'like', '%'.mysql_like_quote($filter['keywords']).'%');
+		    $db_store_franchisee->where(function ($query) use ( $filter) {
+		        $query->where('merchants_name', 'like', '%'.mysql_like_quote($filter['keywords']).'%')
+		        ->orWhere('contact_mobile', 'like', '%'.mysql_like_quote($filter['keywords']).'%');
+		    });
 		}
 		if ($filter['cat']) {
 		    if ($filter['cat'] == -1) {
