@@ -62,7 +62,7 @@ class data_module extends api_front implements api_interface {
 		}
 		$user_id = $_SESSION['user_id'];
 		$api_version = $request->header('api-version');
-		$api_version = empty($api_version) ? $this->requestData('api_version') : '';
+		$api_version = empty($api_version) ? $this->requestData('api_version') : $api_version;
 		
 		$api_old = false;
 		if (version_compare($api_version, '1.6', '<')) {
