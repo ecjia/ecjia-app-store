@@ -55,6 +55,7 @@ class data_module extends api_front implements api_interface {
 
     	$this->authSession();
 		$seller_id = $this->requestData('seller_id');
+		$city_id = $this->requestData('city_id');
 		$location = $this->requestData('location', array());
 	
 		if (empty($seller_id)) {
@@ -166,6 +167,12 @@ class data_module extends api_front implements api_interface {
 		        }
 		    }
 		    
+		    if (isset($location['latitude']) && !empty($location['latitude']) && isset($location['longitude']) && !empty($location['longitude'])) {
+    			$geohash         = RC_Loader::load_app_class('geohash', 'store');
+    			$geohash_code    = $geohash->encode($location['latitude'] , $location['longitude']);
+    			$store_id_group  = RC_Api::api('store', 'neighbors_store_id', array('geohash' => $geohash_code, 'city_id' => $city_id));
+    		}
+		        
 		    $info['trade_time'] = !empty($info['shop_trade_time']) ? unserialize($info['shop_trade_time']) : array('start' => '8:00', 'end' => '21:00');
 		    $seller_info = array(
 		        'id'				=> $info['store_id'],
@@ -202,6 +209,7 @@ class data_module extends api_front implements api_interface {
 		        ),
 		        'favourable_list'	=> $favourable_list,
 		        'label_trade_time'	=> $info['trade_time']['start'] . ' - '. $info['trade_time']['end'],
+		        'delivery_range'    => in_array($info['store_id'], $store_id_group) ? 'in' : 'out',
 		    );
 		    
 		    return $seller_info;
