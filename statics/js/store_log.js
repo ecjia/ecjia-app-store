@@ -52,12 +52,6 @@
 			});
 		},
 		
-		formatFunc:function(value){
-			var hours = Math.floor( value / 60 );
-			var mins = ( value - hours*60 );
-			return (hours < 10 ? "0"+hours : hours) + ":" + ( mins == 0 ? "00" : mins );
-		},
-		
 		formatTimeLabelFunc:function(value, type) {
         	var hours = String(value).substr(0,2);
         	var mins = String(value).substr(3,2);
@@ -79,9 +73,6 @@
                 from: 0, to: 2880, step:30,
                 scale: ['00:00','04:00','08:00','12:00','16:00','20:00','次日00:00','04:00','08:00','12:00','16:00','20:00','24:00'],
                 format: app.store_log.formatTimeLabelFunc,
-                ondragend: function () {
-                	alert();
-                },
                 width: 800,
                 showLabels: true,
                 isRange : true
