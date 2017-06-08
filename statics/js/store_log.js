@@ -73,7 +73,7 @@
                 from: 0, to: 2880, step:30,
                 scale: ['00:00','04:00','08:00','12:00','16:00','20:00','次日00:00','04:00','08:00','12:00','16:00','20:00','24:00'],
                 format: app.store_log.formatTimeLabelFunc,
-                width: 800,
+                width: 600,
                 showLabels: true,
                 isRange : true
             });
