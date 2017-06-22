@@ -263,7 +263,7 @@ class admin extends ecjia_admin {
         		'event'	 => 'sms_self_merchant',
         		'value'  =>array(
         			'shop_name' => ecjia::config('shop_name'),
-        			'mobile'	=> $data['contact_mobile'],
+        			'account'	=> $data['contact_mobile'],
         			'password'	=> $password,
         			'service_phone'=> ecjia::config('service_phone'),
         		),

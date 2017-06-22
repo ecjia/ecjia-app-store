@@ -442,7 +442,7 @@ class admin_preaudit extends ecjia_admin {
 					'value'  =>array(
 						'user_name' =>$store['responsible_person'],
 						'shop_name' => ecjia::config('shop_name'),
-						'mobile'	=> $store['contact_mobile'],
+						'account'	=> $store['contact_mobile'],
 						'password'	=> $password,
 						'service_phone'=> ecjia::config('service_phone'),
 					),
