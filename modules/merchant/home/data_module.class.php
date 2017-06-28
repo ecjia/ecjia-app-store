@@ -74,6 +74,11 @@ class data_module extends api_front implements api_interface {
 	    if (!$api_old) {
 		    $request_param['seller_id'] = $seller_id;
 		    
+		    $info = RC_DB::table('store_franchisee')->where('store_id', $seller_id)->first();
+		    if ($info['status'] == 2 || $info['shop_close'] == 1) {
+		        return array('shop_close' => 1);
+		    }
+		    
 		    //流程逻辑开始
 		    // runloop 流
 		    $response = array();
