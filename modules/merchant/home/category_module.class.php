@@ -67,6 +67,7 @@ class category_module extends api_front implements api_interface {
 		$cat_list = RC_Api::api('goods', 'seller_goods_category', $options);
 		
 		$out = array();
+		RC_Loader::load_app_func('admin_goods', 'goods');
 		foreach ($cat_list as $cat) {
 		    $options_goods = array(
 		        'store_id' => $store_id,
@@ -89,6 +90,7 @@ class category_module extends api_front implements api_interface {
 		    
 		    $formate_goods = array();
 		    foreach ($goods['list'] as $val) {
+		        $properties = get_goods_properties($val['goods_id']); // 获得商品的规格和属性
 		        $formate_goods[] = array(
 		            'id'                  => $val['goods_id'],
 		            'name'                      => $val['name'],
@@ -100,6 +102,8 @@ class category_module extends api_front implements api_interface {
 		                'url'     => $val['original_img'],
 		                'small'   => $val['goods_thumb']
 		            ),
+		            'properties'      => $properties['pro'],
+		            'specification'   => $properties['spe'],
 		        );
 	        }
 		    $out[] = array(
