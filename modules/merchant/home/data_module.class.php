@@ -337,7 +337,9 @@ function promote_goods_data($response, $request) {
 
     $result = RC_Api::api('goods', 'goods_list', $filter);
     if ( !empty($result['list']) ) {
+        RC_Loader::load_app_func('admin_goods', 'goods');
         foreach ( $result['list'] as $key => $val ) {
+            $properties = get_goods_properties($val['goods_id']); // 获得商品的规格和属性
             $promote_goods_data[] = array(
                 'id'		                => intval($val['goods_id']),
                 'goods_id'	                => intval($val['goods_id']),         
@@ -353,7 +355,9 @@ function promote_goods_data($response, $request) {
                     'small' => $val['goods_thumb'],
                     'thumb' => $val['goods_img'],
                     'url'	=> $val['original_img'],
-                )
+                ),
+                'properties'      => $properties['pro'],
+                'specification'   => $properties['spe'],
             );
         }
     }
@@ -376,7 +380,9 @@ function new_goods_data($response, $request) {
 
     $result = RC_Api::api('goods', 'goods_list', $filter);
     if ( !empty($result['list']) ) {
+        RC_Loader::load_app_func('admin_goods', 'goods');
         foreach ( $result['list'] as $key => $val ) {
+            $properties = get_goods_properties($val['goods_id']); // 获得商品的规格和属性
             $new_goods_data[] = array(
                 'id'            => intval($val['goods_id']),
                 'goods_id'      => intval($val['goods_id']),           //多商铺中不用，后期删除
@@ -389,7 +395,9 @@ function new_goods_data($response, $request) {
                     'small' => $val['goods_thumb'],
                     'thumb' => $val['goods_img'],
                     'url'	=> $val['original_img'],
-                )
+                ),
+                'properties'      => $properties['pro'],
+                'specification'   => $properties['spe'],
             );
         }
     }
