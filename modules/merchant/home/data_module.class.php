@@ -348,6 +348,7 @@ function promote_goods_data($response, $request) {
                 'shop_price'	            => $val['shop_price'],
                 'promote_price'	            => $val['promote_price'],
                 'manage_mode'               => $val['manage_mode'],
+                'unformatted_shop_price' 	=> $val['unformatted_shop_price'],
                 'unformatted_promote_price' => $val['unformatted_promote_price'],
                 'promote_start_date'        => $val['promote_start_date'],
                 'promote_end_date'          => $val['promote_end_date'],
