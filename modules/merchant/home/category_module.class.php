@@ -54,6 +54,7 @@ class category_module extends api_front implements api_interface {
     public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {
     	
 		$device	= $this->device;
+		$device_client = $request->header('device-client');
 
         $this->authSession();
 		$store_id = $this->requestData('store_id');
@@ -69,23 +70,34 @@ class category_module extends api_front implements api_interface {
 		$out = array();
 		RC_Loader::load_app_func('admin_goods', 'goods');
 		foreach ($cat_list as $cat) {
-		    $options_goods = array(
-		        'store_id' => $store_id,
-		        'merchant_cat_id' => $cat['cat_id'],
-		        'store_intro' => 'hot',
-		        'size' => 3,
-		        'page' => 1,
-		    );
-		    $goods = RC_Api::api('goods', 'goods_list', $options_goods);
-		    //热销没有商品使用默认商品
-		    if (empty($goods['list'])) {
+		    //微信小程序首页6个商品，默认普通商品顺序
+		    if ($device_client == 'weapp') {
+	            $options_goods = array(
+	                'store_id' => $store_id,
+	                'merchant_cat_id' => $cat['cat_id'],
+	                'size' => 6,
+	                'page' => 1,
+	            );
+	            $goods = RC_Api::api('goods', 'goods_list', $options_goods);
+		    } else {
 		        $options_goods = array(
 		            'store_id' => $store_id,
 		            'merchant_cat_id' => $cat['cat_id'],
+		            'store_intro' => 'hot',
 		            'size' => 3,
 		            'page' => 1,
 		        );
 		        $goods = RC_Api::api('goods', 'goods_list', $options_goods);
+		        //热销没有商品使用默认商品
+		        if (empty($goods['list'])) {
+		            $options_goods = array(
+		                'store_id' => $store_id,
+		                'merchant_cat_id' => $cat['cat_id'],
+		                'size' => 3,
+		                'page' => 1,
+		            );
+		            $goods = RC_Api::api('goods', 'goods_list', $options_goods);
+		        }
 		    }
 		    
 		    $formate_goods = array();
