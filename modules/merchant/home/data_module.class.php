@@ -389,6 +389,8 @@ function new_goods_data($response, $request) {
                 'goods_id'      => intval($val['goods_id']),           //多商铺中不用，后期删除
                 'name'          => $val['goods_name'],
                 'manage_mode'   => $val['manage_mode'],
+            	'unformatted_shop_price' 	=> $val['unformatted_shop_price'],
+            	'unformatted_promote_price' => $val['unformatted_promote_price'],
                 'market_price'	=> $val['market_price'],
                 'shop_price'	=> $val['shop_price'],
                 'promote_price'	=> $val['promote_price'],
