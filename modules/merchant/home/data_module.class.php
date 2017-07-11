@@ -372,11 +372,12 @@ function new_goods_data($response, $request) {
 
     $order_sort = array('g.sort_order' => 'ASC', 'goods_id' => 'DESC');
     $filter     = array(
-        'intro'	=> 'new',
+        'store_intro'	=> 'new',
+        'store_id' => $request['seller_id'],
         'sort'	=> $order_sort,
         'page'	=> 1,
         'size'	=> 6,
-        'store_id' => $request['seller_id'],
+        
     );
 
     $result = RC_Api::api('goods', 'goods_list', $filter);
