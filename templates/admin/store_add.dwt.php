@@ -6,24 +6,38 @@
 	ecjia.admin.store_edit.init();
 </script>
 <script type="text/javascript">
-    // 百度地图API功能
-    var map = new BMap.Map("allmap");
-    var lat = '31.235278361951';
-    var lng = '121.41618102314';
-    if(lng && lat){
-        var point = new BMap.Point(lng, lat);  // 创建点坐标
-        map.centerAndZoom(point,15);
-        var marker = new BMap.Marker(point);  // 创建标注
-    	map.addOverlay(marker);               // 将标注添加到地图中
-        map.addEventListener("click",function(e){
-            map.removeOverlay(marker);
-            $('input[name="longitude"]').val(e.point.lng)
-            $('input[name="latitude"]').val(e.point.lat)
-            point = new BMap.Point(e.point.lng, e.point.lat);
-            marker = new BMap.Marker(point)
-            map.addOverlay(marker);
-        });
-    }
+	//腾讯地图
+	var map, markersArray = [];
+	var latLng = new qq.maps.LatLng(31.22926, 121.40934);
+	var map = new qq.maps.Map(document.getElementById("allmap"),{
+	    center: latLng,
+	    zoom: 16
+	});
+	$('input[name="longitude"]').val(121.40934);
+    $('input[name="latitude"]').val(31.22926);
+	setTimeout(function(){
+	    var marker = new qq.maps.Marker({
+	        position: latLng, 
+	        map: map
+	      });
+	    markersArray.push(marker);
+	},500);
+	//添加监听事件 获取鼠标单击事件
+	qq.maps.event.addListener(map, 'click', function(event) {
+	    if (markersArray) {
+	        for (i in markersArray) {
+	            markersArray[i].setMap(null);
+	        }
+	        markersArray.length = 0;
+	    }
+	    $('input[name="longitude"]').val(event.latLng.lng)
+	    $('input[name="latitude"]').val(event.latLng.lat)
+	       var marker = new qq.maps.Marker({
+	        position: event.latLng, 
+	        map: map
+	      });
+	    markersArray.push(marker);    
+	});
 </script>
 <!-- {/block} -->
 
@@ -123,9 +137,9 @@
         				<div class="control-group formSep">
         					<label class="control-label">店铺精确位置：</label>
         					<div class="controls" style="overflow:hidden;">
-        						<div class="span6" id="allmap" style="height:320px;"></div>
+        						<div class="span7" id="allmap" style="height:320px;"></div>
         					</div>
-                            <div class="m_t30 controls help-block">点击选择店铺精确位置，双击放大地图，拖动查看地图其他区域</div>
+                            <div class="m_t30 controls help-block">点击选择店铺精确位置，拖动查看地图其他区域</div>
         				</div>
 
 
