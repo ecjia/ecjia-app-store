@@ -137,7 +137,7 @@
         				<div class="control-group formSep">
         					<label class="control-label">店铺精确位置：</label>
         					<div class="controls" style="overflow:hidden;">
-        						<div class="span7" id="allmap" style="height:320px;"></div>
+        						<div class="span6" id="allmap" style="height:320px;"></div>
         					</div>
                             <div class="m_t30 controls help-block">点击选择店铺精确位置，拖动查看地图其他区域</div>
         				</div>
