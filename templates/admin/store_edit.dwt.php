@@ -21,7 +21,7 @@
 	        map: map
 	      });
 	    markersArray.push(marker);
-	},500);
+	}, 500);
 	//添加监听事件 获取鼠标单击事件
 	qq.maps.event.addListener(map, 'click', function(event) {
 	    if (markersArray) {

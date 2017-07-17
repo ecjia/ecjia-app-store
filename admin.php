@@ -843,14 +843,18 @@ class admin extends ecjia_admin {
 	 * 获取商家店铺经纬度
 	 */
 	public function get_longitude() {
-		$detail_address = $_POST['detail_address'];
-		$store_id       = $_GET['store_id'];
-		$store_point    = file_get_contents("https://api.map.baidu.com/geocoder/v2/?address='".$detail_address."'&output=json&ak=E70324b6f5f4222eb1798c8db58a017b");
-		$store_point    = (array)json_decode($store_point);
-		$store_point['result'] = (array)$store_point['result'];
-		$location = (array)$store_point['result']['location'];
-		$longitude = $location['lng'];
-		$latitude = $location['lat'];
+		$detail_address = !empty($_POST['detail_address']) ? urlencode($_POST['detail_address']) : '';
+		$store_id       = !empty($_GET['store_id']) ? intval($_GET['store_id']) : 0;
+		if (empty($detail_address)) {
+			return $this->showmessage('详细地址不能为空', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+		}
+
+		$key 		= ecjia::config('map_qq_key');
+		$location 	= RC_Http::remote_get("https://apis.map.qq.com/ws/geocoder/v1/?address=".$detail_address."&key=".$key);
+        $location  	= json_decode($location['body'], true);
+		$location 	= $location['result']['location'];
+		$longitude 	= $location['lng'];
+		$latitude 	= $location['lat'];
 		//获取geohash值
 		$geohash = RC_Loader::load_app_class('geohash', 'store');
 		$geohash_code = $geohash->encode($location['lat'] , $location['lng']);
