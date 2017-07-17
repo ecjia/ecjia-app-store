@@ -61,9 +61,13 @@
             						</tr>
             						<tr>
             							<td><div align="right"><strong>分成比例：</strong></div></td>
-            							<td>{if $store.percent_value}{$store.percent_value}%{else}未设置，默认100%{/if}&nbsp;&nbsp;<a href='{RC_Uri::url("store/admin_commission/edit","store_id={$smarty.get.store_id}")}' title="编辑">编辑</a></td>
+            							<td colspan="3">{if $store.percent_value}{$store.percent_value}%{else}未设置，默认100%{/if}&nbsp;&nbsp;<a href='{RC_Uri::url("store/admin_commission/edit","store_id={$smarty.get.store_id}")}' title="编辑">编辑</a></td>
+            						</tr>
+            						<tr>
             							<td><div align="right"><strong>开店时间：</strong></div></td>
             							<td>{$store.confirm_time}</td>
+            							<td><div align="right"><strong>到期时间：</strong></div></td>
+            							<td>{$store.expired_time}</td>
             						</tr>
             						<tr>
             							<td><div align="right"><strong>店铺模式：</strong></div></td>

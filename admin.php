@@ -75,6 +75,9 @@ class admin extends ecjia_admin {
 
         RC_Script::enqueue_script('jquery-range', RC_App::apps_url('statics/js/jquery.range.js', __FILE__));
         RC_Style::enqueue_style('range', RC_App::apps_url('statics/css/range.css', __FILE__), array());
+        //时间控件
+        RC_Script::enqueue_script('bootstrap-datepicker', RC_Uri::admin_url('statics/lib/datepicker/bootstrap-datepicker.min.js'));
+        RC_Style::enqueue_style('datepicker', RC_Uri::admin_url('statics/lib/datepicker/datepicker.css'));
 
         RC_Script::enqueue_script('store', RC_App::apps_url('statics/js/store.js', __FILE__));
 		RC_Script::enqueue_script('store_log', RC_App::apps_url('statics/js/store_log.js', __FILE__));
@@ -293,6 +296,7 @@ class admin extends ecjia_admin {
 		$store    = RC_DB::table('store_franchisee')->where('store_id', $store_id)->first();
 		$store['apply_time']	= RC_Time::local_date(ecjia::config('time_format'), $store['apply_time']);
 		$store['confirm_time']	= RC_Time::local_date(ecjia::config('time_format'), $store['confirm_time']);
+		$store['expired_time']	= RC_Time::local_date('Y-m-d', $store['expired_time']);
 		$cat_list = $this->get_cat_select_list();
 		$certificates_list = array(
 				'1' => RC_Lang::get('store::store.people_id'),
@@ -355,6 +359,7 @@ class admin extends ecjia_admin {
 		        'latitude'					=> !empty($_POST['latitude'])			? $_POST['latitude']           : '',
 		        'manage_mode'				=> !empty($_POST['manage_mode'])		? $_POST['manage_mode']        : 'join',
 		        'shop_close'				=> isset($_POST['shop_close'])			? $_POST['shop_close']         : 1,
+		        'expired_time'              => !empty($_POST['expired_time'])		? RC_Time::local_strtotime($_POST['expired_time']) : 0,
 		    );
 
 			if($_POST['shop_close'] == '1'){
@@ -539,6 +544,7 @@ class admin extends ecjia_admin {
 		$store                  = RC_DB::table('store_franchisee')->where('store_id', $store_id)->first();
 		$store['apply_time']	= RC_Time::local_date(ecjia::config('time_format'), $store['apply_time']);
 		$store['confirm_time']	= RC_Time::local_date(ecjia::config('time_format'), $store['confirm_time']);
+		$store['expired_time']	= RC_Time::local_date('Y-m-d', $store['expired_time']);
 
 		$store['province']      = RC_DB::table('region')->where('region_id', $store['province'])->pluck('region_name');
 		$store['city']          = RC_DB::table('region')->where('region_id', $store['city'])->pluck('region_name');

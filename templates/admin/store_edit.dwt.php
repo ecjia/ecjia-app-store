@@ -159,6 +159,12 @@
         					</div>
         					<div class="controls help-block">当商店设置中开启“商家强制认证”后，未认证通过的商家不能开店和显示</div>
         				</div>
+        				<div class="control-group formSep">
+        					<label class="control-label">到期时间：</label>
+        					<div class="controls chk_radio">
+        					    <input class="date" name="expired_time" type="text" placeholder="" value="{$store.expired_time}">
+        					</div>
+        				</div>
 
         				{else if $step eq 'identity'}
         				{if $store.validate_type eq 1}

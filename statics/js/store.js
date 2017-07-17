@@ -15,6 +15,10 @@
         init: function () {
         	app.store_edit.get_longitude();
         	app.store_edit.gethash();
+        	$(".date").datepicker({
+                format: "yyyy-mm-dd",
+                container : '.main_content',
+            });
     		var $form = $("form[name='theForm']");
 			var option = {
 				rules: {

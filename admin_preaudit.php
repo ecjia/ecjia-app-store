@@ -342,6 +342,7 @@ class admin_preaudit extends ecjia_admin {
 					'contact_mobile'			=>$store['contact_mobile'],
 					'apply_time'				=>$store['apply_time'],
 					'confirm_time'				=>RC_Time::gmtime(),
+				    'expired_time'				=>RC_Time::local_strtotime("+1 year"),
 					'address'					=>$store['address'],
 					'identity_type'				=>$store['identity_type'],
 					'identity_number'			=>$store['identity_number'],
