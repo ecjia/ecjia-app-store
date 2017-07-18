@@ -123,7 +123,6 @@ class admin extends ecjia_admin {
 	    ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('添加自营商家'));
 	    $this->assign('ur_here', '添加自营商家');
 	    
-	    
 	    $cat_list = $this->get_cat_select_list();
 	    $province   = $this->db_region->get_regions(1, 1);
 	    $city       = $this->db_region->get_regions(2, $store['province']);
