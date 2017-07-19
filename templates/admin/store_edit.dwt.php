@@ -120,8 +120,11 @@
         					</div>
         				</div>
 
-        				<div class="control-group formSep {if !$store.latitude || !$store.longitude}hide{/if}">
+        				<div class="control-group formSep ">
         					<label class="control-label">店铺精确位置：</label>
+        					{if !$store.latitude || !$store.longitude}
+        					<div class="controls">请先输入地址，然后点击“获取精准坐标”按钮</div>
+        					{/if}
         					<div class="controls" style="overflow:hidden;">
         						<div class="span6" id="allmap" style="height:320px;"></div>
         					</div>
@@ -129,7 +132,7 @@
         				</div>
 
 
-        				<div class="control-group formSep {if !$store.latitude || !$store.longitude}hide{/if}">
+        				<div class="control-group formSep">
         					<label class="control-label">经纬度：</label>
                             <div class="controls">
                                 <div class="l_h30 long f_l"> <input type="text" name="longitude" readonly="true" value="{$store.longitude}"></div>
