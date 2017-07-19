@@ -371,7 +371,7 @@
 					</div>
 				</div>
 
-				<div class="control-group formSep {if !$store.latitude || !$store.longitude}hide{/if}">
+				<div class="control-group formSep location-address {if !$store.latitude || !$store.longitude}hide{/if}">
 					<label class="control-label">店铺精确位置：</label>
 					<div class="controls" style="overflow:hidden;">
 						<div class="span6" id="allmap" style="height:320px;"></div>

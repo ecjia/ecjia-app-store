@@ -94,6 +94,7 @@
 				}
 				ecjia.admin.showmessage(location);
 			} else {
+				$('.location-address').removeClass('hide');
 				var map, markersArray = [];
 				var lat = location.result.location.lat;
 				var lng = location.result.location.lng;

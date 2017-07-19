@@ -1254,6 +1254,7 @@ class admin extends ecjia_admin {
         $city_name    	= RC_DB::table('region')->where('region_id', $shop_city)->pluck('region_name');
         $city_district 	= RC_DB::table('region')->where('region_id', $shop_district)->pluck('region_name');
         $address      	= $city_name.'市'.$city_district.$shop_address;
+        $address		= urlencode($address);
         $shop_point   	= RC_Http::remote_get("https://apis.map.qq.com/ws/geocoder/v1/?address=".$address."&key=".$key);
         $shop_point  	= json_decode($shop_point['body'], true);
 
