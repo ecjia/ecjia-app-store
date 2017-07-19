@@ -91,9 +91,10 @@ class admin_config extends ecjia_admin {
 		
 		$store_model = ecjia::config('store_model');
 		$store_list = array();
-		if ($store_model == 'nearby') {
+		
+		if ($store_model == 'nearby' || empty($store_model)) {
 			$store_model = 0;
-		} else {
+		} else if (!empty($store_model)) {
 			$store_id = $store_model;
 			$store_model = explode(',', $store_model);
 			if (count($store_model) == 1) {
@@ -131,14 +132,14 @@ class admin_config extends ecjia_admin {
 		} elseif ($store_model == 1) {
 			$store_id = !empty($_POST['store']) ? intval($_POST['store']) : 0;
 			if (empty($store_id)) {
-				$this->showmessage('请选择店铺', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+				$this->showmessage('请搜索后选择店铺', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			}	
 			$store_model = $store_id;
 		//多门店
 		} elseif ($store_model == 2) {
 			$store_id = !empty($_POST['store_id']) ? $_POST['store_id'] : '';
 			if (empty($store_id)) {
-				$this->showmessage('请选择店铺', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+				$this->showmessage('请搜索后选择店铺', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			}
 			if (count($store_id) < 2) {
 				$this->showmessage('请至少选择两个店铺', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
@@ -197,9 +198,6 @@ class admin_config extends ecjia_admin {
 		$cat_id = !empty($_POST['cat_id']) ? intval($_POST['cat_id']) : 0;
 		$keywords = !empty($_POST['keywords']) ? trim($_POST['keywords']) : '';
 
-		if (empty($cat_id) && empty($keywords)) {
-			return false;
-		}
 		$db_store_franchisee = RC_DB::table('store_franchisee');
 		if (!empty($cat_id)) {
 			$db_store_franchisee->where('cat_id', $cat_id);
