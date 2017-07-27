@@ -69,6 +69,7 @@
         					<label class="control-label">{lang key='store::store.store_title_lable'}</label>
         					<div class="controls">
         						<input class="span6" name="merchants_name" type="text" value="{$store.merchants_name}" />
+        						<span class="input-must">{lang key='system::system.require_field'}</span>
         					</div>
         				</div>
         			    <div class="control-group formSep" >
@@ -78,6 +79,7 @@
         							<option value="0">{lang key='store::store.select_plz'}</option>
         							<!-- {html_options options=$cat_list selected=$store.cat_id} -->
         						</select>
+        						<span class="input-must">{lang key='system::system.require_field'}</span>
         					</div>
         				</div>
         				<div class="control-group formSep">
@@ -91,6 +93,7 @@
         					<label class="control-label">联系手机：</label>
         					<div class="controls">
         						<input class="span6" name="contact_mobile" type="text" value="{$store.contact_mobile}" />
+        						<span class="input-must">{lang key='system::system.require_field'}</span>
         					</div>
         					<div class="m_t30 controls help-block">请正确填写手机号用于接收商家登录的账号和密码</div>
         				</div>
@@ -98,6 +101,7 @@
         					<label class="control-label">{lang key='store::store.email_lable'}</label>
         					<div class="controls">
         						<input class="span6" name="email" type="text" value="{$store.email}" />
+        						<span class="input-must">{lang key='system::system.require_field'}</span>
         					</div>
         				</div>
         				<!-- 地区 -->
@@ -122,12 +126,14 @@
         							<option value="{$region.region_id}" {if $region.region_id eq $store.district}selected{/if}>{$region.region_name}</option>
         							<!-- {/foreach} -->
         						</select>
+        						<span class="input-must">{lang key='system::system.require_field'}</span>
         					</div>
         				</div>
         				<div class="control-group formSep">
         					<label class="control-label">{lang key='store::store.address_lable'}</label>
         					<div class="controls">
         						<input class="span6" name="address" type="text" value="{$store.address}" />
+        						<span class="input-must">{lang key='system::system.require_field'}</span>
                                 <div class="input-must">
                                     <button class="btn btn-info small-btn" data-toggle="get-gohash" data-url="{url path='store/admin/getgeohash'}">获取精准坐标</button>
                                 </div>
@@ -148,6 +154,7 @@
                             <div class="controls">
                                 <div class="l_h30 long f_l"> <input type="text" name="longitude" readonly="true" value="{$store.longitude}"></div>
             					<div class="l_h30 latd f_l m_l10"><input type="text" name="latitude" readonly="true" value="{$store.latitude}"></div>
+            					<span class="input-must">{lang key='system::system.require_field'}</span>
                             </div>
         				</div>
 
