@@ -452,9 +452,7 @@ class admin_preaudit extends ecjia_admin {
 				if (is_ecjia_error($response)) {
 					return $this->showmessage($response->get_error_message(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 				}
-				
-				
-				
+
 				//审核通过，修改所有日志storeid type
 				RC_DB::table('store_check_log')->where('store_id', $id)->where('type', 1)->update(array('store_id' => $store_id, 'type' => 2));
 				$log = array(
