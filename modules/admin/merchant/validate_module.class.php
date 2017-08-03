@@ -115,7 +115,7 @@ class validate_module extends api_admin implements api_interface {
 
         /* 判断是否发送成功*/
         if (is_ecjia_error($response)) {
-        	return new ecjia_error('send_code_error', __('验证码发送失败！'));
+        	return new ecjia_error('send_code_error', '验证码发送失败！');
         } else {
         	$time = RC_Time::gmtime();
         	$_SESSION['merchant_validate_code'] = $code;
