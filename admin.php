@@ -619,11 +619,11 @@ class admin extends ecjia_admin {
 
         // 店铺导航背景图
         if(!empty($_FILES['shop_nav_background']) && empty($_FILES['error']) && !empty($_FILES['shop_nav_background']['name'])){
-        	$merchants_config['shop_nav_background'] = file_upload_info('shop_nav_background', '', $shop_nav_background, $store_id);
+        	$merchants_config['shop_nav_background'] = store_file_upload_info('shop_nav_background', '', $shop_nav_background, $store_id);
         }
         // 默认店铺页头部LOGO
         if(!empty($_FILES['shop_logo']) && empty($_FILES['error']) && !empty($_FILES['shop_logo']['name'])){
-            $merchants_config['shop_logo'] = file_upload_info('shop_logo', '', $shop_logo, $store_id);
+            $merchants_config['shop_logo'] = store_file_upload_info('shop_logo', '', $shop_logo, $store_id);
             
             //删除生成的店铺二维码
             $disk = RC_Filesystem::disk();
@@ -635,7 +635,7 @@ class admin extends ecjia_admin {
 
         // APPbanner图
         if(!empty($_FILES['shop_banner_pic']) && empty($_FILES['error']) && !empty($_FILES['shop_banner_pic']['name'])){
-            $merchants_config['shop_banner_pic'] = file_upload_info('shop_banner', 'shop_banner_pic', $shop_banner_pic, $store_id);
+            $merchants_config['shop_banner_pic'] = store_file_upload_info('shop_banner', 'shop_banner_pic', $shop_banner_pic, $store_id);
         }
         // 如果没有上传店铺LOGO 提示上传店铺LOGO
         $shop_logo = get_merchant_config($store_id, 'shop_logo');
