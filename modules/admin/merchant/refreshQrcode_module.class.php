@@ -73,7 +73,7 @@ class refreshQrcode_module extends api_admin implements api_interface {
 		if (!empty($shop_logo)) {
 			$store_qrcode = with(new Ecjia\App\Mobile\Qrcode\GenerateMerchant($store_id,  $shop_logo))->getQrcodeUrl();
 		}
-		return array('store_qrcode_url' => $store_qrcode);
+		return array();
     }
 }
 
