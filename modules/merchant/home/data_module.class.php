@@ -172,6 +172,22 @@ class data_module extends api_front implements api_interface {
 		        }
 		    }
 		    
+		    /*店铺闪惠活动列表*/
+		    $quickpay_activity_list = array();
+		    
+		    $quickpay_activity_list = RC_Api::api('quickpay', 'quickpay_activity_list', array('store_id' => $info['store_id']));
+		    $quickpay_activity_list_new = array();
+		    if (!empty($quickpay_activity_list['list'])) {
+		    	foreach($quickpay_activity_list['list'] as $key => $val) {
+		    		$quickpay_activity_list_new[] = array(
+		    				'activity_id' => $val['id'],
+		    				'title' 	  => $val['title'],
+		    				'activity_type' => $val['activity_type'],
+		    				'label_activity_type' => $val['label_activity_type'],
+		    		);
+		    	}	
+		    }
+		    
 		    if (isset($location['latitude']) && !empty($location['latitude']) && isset($location['longitude']) && !empty($location['longitude'])) {
     			$geohash         = RC_Loader::load_app_class('geohash', 'store');
     			$geohash_code    = $geohash->encode($location['latitude'] , $location['longitude']);
@@ -214,6 +230,7 @@ class data_module extends api_front implements api_interface {
 		            'comment_delivery'		=> '100%',
 		        ),
 		        'favourable_list'	=> $favourable_list,
+		    	'quickpay_activity_list' => $quickpay_activity_list_new,
 		        'label_trade_time'	=> $info['trade_time'],
 		        'delivery_range'    => in_array($info['store_id'], $store_id_group) ? 'in' : 'out',
 		    );
