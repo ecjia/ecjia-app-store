@@ -385,7 +385,7 @@ class admin_preaudit extends ecjia_admin {
 				//短信发送通知
 				$options = array(
 					'mobile' => $store['contact_mobile'],
-					'event'	 => 'sms_jion_merchant',
+					'event'	 => 'sms_join_merchant',
 					'value'  =>array(
 						'user_name' => $store['responsible_person'],
 						'shop_name' => ecjia::config('shop_name'),
