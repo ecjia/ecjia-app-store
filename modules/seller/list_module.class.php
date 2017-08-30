@@ -150,6 +150,10 @@ class list_module extends api_front implements api_interface {
 				$quickpay_activity_list = array();
 				$quickpay_activity_list = RC_Api::api('quickpay', 'quickpay_activity_list', array('store_id' => $row['id']));
 				
+				if (is_ecjia_error($quickpay_activity_list)) {
+					return $quickpay_activity_list;
+				}
+				
 				$quickpay_activity_list_new = array();
 				if (!empty($quickpay_activity_list['list'])) {
 					foreach ($quickpay_activity_list['list'] as $v) {
