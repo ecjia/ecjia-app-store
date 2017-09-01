@@ -89,27 +89,50 @@ class admin extends ecjia_admin {
 	}
 
 	/**
-	 * 入驻商家列表
+	 * 自营商家
 	 */
 	public function init() {
-	    $this->admin_priv('store_affiliate_manage');
+	    $this->admin_priv('store_self_manage');
 
 	    ecjia_screen::get_current_screen()->remove_last_nav_here();
-	    ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('入驻商'));
+	    ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('自营店铺'));
 
-	    $this->assign('ur_here', RC_Lang::get('store::store.store_list'));
-
-	    $store_list = $this->store_list();
+	    $this->assign('ur_here', '自营店铺列表');
+		$manage_mode = 'self';
+	    $store_list = $this->store_list($manage_mode);
 	    $cat_list   = $this->get_cat_select_list();
 
 	    $this->assign('cat_list', $cat_list);
 	    $this->assign('store_list', $store_list);
 	    $this->assign('filter', $store_list['filter']);
-	    $this->assign('action_link', array('text' => __('添加自营商家'),'href'=>RC_Uri::url('store/admin/add')));
-
+	    $this->assign('action_link', array('text' => '添加自营商家', 'href'=>RC_Uri::url('store/admin/add')));
+	    
 	    $this->assign('search_action',RC_Uri::url('store/admin/init'));
 
 	    $this->display('store_list.dwt');
+	}
+	
+	/**
+	 * 入驻商家列表
+	 */
+	public function join() {
+		$this->admin_priv('store_affiliate_manage');
+	
+		ecjia_screen::get_current_screen()->remove_last_nav_here();
+		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('入驻商家'));
+		$this->assign('ur_here', '入驻商家列表');
+		
+		$manage_mode = 'join';
+		$store_list = $this->store_list($manage_mode);
+		$cat_list   = $this->get_cat_select_list();
+	
+		$this->assign('cat_list', $cat_list);
+		$this->assign('store_list', $store_list);
+		$this->assign('filter', $store_list['filter']);
+	
+		$this->assign('search_action',RC_Uri::url('store/admin/init'));
+	
+		$this->display('store_list.dwt');
 	}
 
 	
@@ -530,10 +553,15 @@ class admin extends ecjia_admin {
 	 */
 	public function preview() {
 		$this->admin_priv('store_affiliate_manage');
-
+		$store_id = intval($_GET['store_id']);
+		
+		if (!empty($_GET['manage_mode']) && $_SESSION['action_list'] == 'all') {
+			$this->assign('action_link_self',array('href' => RC_Uri::url('store/admin/autologin',array('manage_mode' => $_GET['manage_mode'], 'store_id' => $store_id)),'text' => '进入商家后台'));
+		}
 		$this->assign('action_link',array('href' => RC_Uri::url('store/admin/init'),'text' => RC_Lang::get('store::store.store_list')));
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('基本信息'));
-        $store_id = intval($_GET['store_id']);
+
+       
         if (empty($store_id)) {
             return $this->showmessage(__('请选择您要操作的店铺'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
@@ -557,7 +585,25 @@ class admin extends ecjia_admin {
 
 		$this->assign('store', $store);
 		$this->assign('menu', $menu);
+		
 		$this->display('store_preview.dwt');
+	}
+	
+	//自营商家自动登录
+	public function autologin() {
+		$store_id = intval($_GET['store_id']);
+		if (!empty($_GET['manage_mode']) && $_SESSION['action_list'] == 'all') {
+			$cookie_name = RC_Config::get('session.session_admin_name');
+			$authcode_array = array(
+				'admin_token' => RC_Cookie::get($cookie_name),
+				'store_id'    => $store_id,
+				'time' 		  => RC_Time::gmtime()
+			);
+			$authcode_str = http_build_query($authcode_array);
+			$authcode = RC_Crypt::encrypt($authcode_str);
+			$url = str_replace("index.php","sites/merchant/index.php", RC_Uri::url('staff/privilege/autologin')).'&authcode='.$authcode;
+			return $this->redirect($url);
+		}
 	}
 
 	//店铺设置
@@ -995,13 +1041,15 @@ class admin extends ecjia_admin {
 
 
 	//获取入驻商列表信息
-	private function store_list() {
+	private function store_list($manage_mode) {
 		$db_store_franchisee = RC_DB::table('store_franchisee as sf');
 
 		$filter['keywords'] = empty($_GET['keywords']) ? '' : trim($_GET['keywords']);
 		$filter['type'] = empty($_GET['type']) ? '' : trim($_GET['type']);
 		$filter['cat'] = empty($_GET['cat']) ? null : trim($_GET['cat']);
-
+		
+		$db_store_franchisee->where('manage_mode', $manage_mode);
+		
 		if ($filter['keywords']) {
 		    $db_store_franchisee->where(function ($query) use ( $filter) {
 		        $query->where('merchants_name', 'like', '%'.mysql_like_quote($filter['keywords']).'%')

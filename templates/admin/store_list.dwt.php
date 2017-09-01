@@ -87,7 +87,7 @@
 		  	<ul>
 			<!-- {foreach from=$store_list.store_list item=list} -->
 				<li class='thumbnail {if $list.manage_mode eq "self"}mode_self{/if}'>
-					<a href='{RC_Uri::url("store/admin/preview", "store_id={$list.store_id}")}'>
+					<a href='{RC_Uri::url("store/admin/preview", "store_id={$list.store_id}{if $list.manage_mode eq "self"}&manage_mode={$list.manage_mode}{/if}")}'>
 					<div class="bd">
 						<div class="merchants_name">{$list.merchants_name}<br>
 						<span class="ecjiaf-fs1">{if $list.company_name}{$list.company_name}{else}{$list.responsible_person}{/if}</span>
