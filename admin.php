@@ -106,6 +106,7 @@ class admin extends ecjia_admin {
 	    $this->assign('store_list', $store_list);
 	    $this->assign('filter', $store_list['filter']);
 	    $this->assign('action_link', array('text' => '添加自营商家', 'href'=>RC_Uri::url('store/admin/add')));
+	    $this->assign('manage_mode', $manage_mode);
 	    
 	    $this->assign('search_action',RC_Uri::url('store/admin/init'));
 
@@ -129,8 +130,9 @@ class admin extends ecjia_admin {
 		$this->assign('cat_list', $cat_list);
 		$this->assign('store_list', $store_list);
 		$this->assign('filter', $store_list['filter']);
+		$this->assign('manage_mode', $manage_mode);
 	
-		$this->assign('search_action',RC_Uri::url('store/admin/init'));
+		$this->assign('search_action',RC_Uri::url('store/admin/join'));
 	
 		$this->display('store_list.dwt');
 	}
