@@ -139,7 +139,7 @@ class admin extends ecjia_admin {
 
 	
 	/**
-	 * 添加入驻商
+	 * 添加自营商家
 	 */
 	public function add() {
 	    $this->admin_priv('store_affiliate_add', ecjia::MSGTYPE_JSON);
@@ -164,7 +164,7 @@ class admin extends ecjia_admin {
 	}
 	
 	/**
-	 * 添加入驻商
+	 * 添加自营商家
 	 */
 	public function insert() {
 	    $this->admin_priv('store_affiliate_add', ecjia::MSGTYPE_JSON);
