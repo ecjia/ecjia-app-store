@@ -555,8 +555,9 @@ class admin extends ecjia_admin {
 		$this->admin_priv('store_affiliate_manage');
 		$store_id = intval($_GET['store_id']);
 		
-		if (!empty($_GET['manage_mode']) && $_SESSION['action_list'] == 'all') {
-			$this->assign('action_link_self',array('href' => RC_Uri::url('store/admin/autologin',array('manage_mode' => $_GET['manage_mode'], 'store_id' => $store_id)),'text' => '进入商家后台'));
+		$store = RC_DB::table('store_franchisee')->where('store_id', $store_id)->first();
+		if ($store['manage_mode']== 'self' && $_SESSION['action_list'] == 'all') {
+			$this->assign('action_link_self',array('href' => RC_Uri::url('store/admin/autologin',array('store_id' => $store_id)),'text' => '进入商家后台'));
 		}
 		$this->assign('action_link',array('href' => RC_Uri::url('store/admin/init'),'text' => RC_Lang::get('store::store.store_list')));
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('基本信息'));
@@ -568,7 +569,7 @@ class admin extends ecjia_admin {
 
         $menu = set_store_menu($store_id, 'preview');
 
-		$store                  = RC_DB::table('store_franchisee')->where('store_id', $store_id)->first();
+
 		$store['apply_time']	= RC_Time::local_date(ecjia::config('time_format'), $store['apply_time']);
 		$store['confirm_time']	= RC_Time::local_date(ecjia::config('time_format'), $store['confirm_time']);
 		$store['expired_time']	= RC_Time::local_date('Y-m-d', $store['expired_time']);
@@ -582,7 +583,7 @@ class admin extends ecjia_admin {
 		if ($store['percent_id']) {
 		    $store['percent_value'] = RC_DB::table('store_percent')->where('percent_id', $store['percent_id'])->select('percent_value')->pluck();
 		}
-
+		
 		$this->assign('store', $store);
 		$this->assign('menu', $menu);
 		
@@ -592,7 +593,8 @@ class admin extends ecjia_admin {
 	//自营商家自动登录
 	public function autologin() {
 		$store_id = intval($_GET['store_id']);
-		if (!empty($_GET['manage_mode']) && $_SESSION['action_list'] == 'all') {
+		$store = RC_DB::table('store_franchisee')->where('store_id', $store_id)->first();
+		if ($store['manage_mode']=='self' && $_SESSION['action_list'] == 'all') {
 			$cookie_name = RC_Config::get('session.session_admin_name');
 			$authcode_array = array(
 				'admin_token' => RC_Cookie::get($cookie_name),
