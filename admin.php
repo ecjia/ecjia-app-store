@@ -943,7 +943,8 @@ class admin extends ecjia_admin {
 	        );
 	        $response = RC_Api::api('sms', 'send_event_sms', $options);
 	        if (is_ecjia_error($response)) {
-	            return $this->showmessage($response->get_error_message(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+// 	            return $this->showmessage($response->get_error_message(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+                RC_Logger::get_logger('error')->info('重置员工密码，短信发送失败');
 	        }
 	        
 	        $salt = rand(1, 9999);
