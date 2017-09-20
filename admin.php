@@ -131,8 +131,10 @@ class admin extends ecjia_admin {
 		$this->assign('store_list', $store_list);
 		$this->assign('filter', $store_list['filter']);
 		$this->assign('manage_mode', $manage_mode);
-	
 		$this->assign('search_action',RC_Uri::url('store/admin/join'));
+		
+		$this->assign('bill_progress', array('text' => '结算流程', 'href'=>RC_Uri::url('store/admin/progress', array('type' => 'bill'))));
+		$this->assign('enter_progress', array('text' => '入驻流程', 'href'=>RC_Uri::url('store/admin/progress', array('type' =>'enter'))));
 	
 		$this->display('store_list.dwt');
 	}
@@ -1441,7 +1443,25 @@ class admin extends ecjia_admin {
 		}
         return $this->showmessage('', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, $shop_point);
     }
-
+    
+    public function progress() {
+    	$this->admin_priv('store_self_manage');
+    	$type = trim($_GET['type']);
+    	
+    	$url = RC_App::apps_url('statics/', __FILE__);
+    	if ($type == 'bill') {
+    		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('结算流程'));
+	    	$this->assign('ur_here', '结算流程');
+    	} else {
+    		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('入驻流程'));
+    		$this->assign('ur_here', '入驻流程');
+    	}
+    	$this->assign('action_link',array('href' => RC_Uri::url('store/admin/join'),'text' => RC_Lang::get('store::store.store_list')));
+    	
+    	$this->assign('type', $type);
+    	$this->assign('url', $url);
+    	$this->display('store_progress.dwt');
+    }
 }
 
 //end
