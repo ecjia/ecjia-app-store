@@ -48,8 +48,8 @@
 			<div class="control-group formSep">
     			<label class="control-label">{t}是否关闭入驻商加盟：{/t}</label>
     			<div class="controls l_h30">
-					<input type="radio" name="merchant_join_close" value="1" {if $merchant_join_close eq 1}checked{/if}/>开启
-					<input type="radio" name="merchant_join_close" value="0" {if $merchant_join_close eq 0}checked{/if}/>关闭
+					<input type="radio" name="merchant_join_close" value="1" {if $merchant_join_close eq 1}checked{/if}/>是 
+					<input type="radio" name="merchant_join_close" value="0" {if $merchant_join_close eq 0}checked{/if}/>否
 				</div>
     		</div>
 
