@@ -176,7 +176,7 @@ class data_module extends api_front implements api_interface {
 		    $quickpay_activity_list = array();
 		    
 		    $quickpay_activity_list = RC_Api::api('quickpay', 'quickpay_activity_list', array('store_id' => $info['store_id']));
-		    
+		  
 		    if (is_ecjia_error($quickpay_activity_list)) {
 		    	return $quickpay_activity_list;
 		    }
@@ -185,14 +185,16 @@ class data_module extends api_front implements api_interface {
 		    if (!empty($quickpay_activity_list['list'])) {
 		    	foreach($quickpay_activity_list['list'] as $key => $val) {
 		    		$quickpay_activity_list_new[] = array(
-		    				'activity_id' => $val['id'],
-		    				'title' 	  => $val['title'],
-		    				'activity_type' => $val['activity_type'],
-		    				'label_activity_type' => $val['label_activity_type'],
+		    				'activity_id' 			=> $val['id'],
+		    				'title' 	  			=> $val['title'],
+		    				'activity_type' 		=> $val['activity_type'],
+		    				'label_activity_type' 	=> $val['label_activity_type'],
+		    				'limit_time_weekly'		=> $val['limit_time_weekly'],
+		    				'limit_time_daily'		=> $val['limit_time_daily'],
+		    				'total_order_count' 	=> $val['total_order_count']
 		    		);
 		    	}	
 		    }
-		    
 		    if (isset($location['latitude']) && !empty($location['latitude']) && isset($location['longitude']) && !empty($location['longitude'])) {
     			$geohash         = RC_Loader::load_app_class('geohash', 'store');
     			$geohash_code    = $geohash->encode($location['latitude'] , $location['longitude']);
