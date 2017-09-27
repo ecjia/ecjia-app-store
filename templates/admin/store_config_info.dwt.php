@@ -44,6 +44,15 @@
     				</div>
     			</div>
     		</div>
+
+			<div class="control-group formSep">
+    			<label class="control-label">{t}是否关闭入驻商加盟：{/t}</label>
+    			<div class="controls l_h30">
+					<input type="radio" name="merchant_join_close" value="1" {if $merchant_join_close eq 1}checked{/if}/>开启
+					<input type="radio" name="merchant_join_close" value="0" {if $merchant_join_close eq 0}checked{/if}/>关闭
+				</div>
+    		</div>
+
 		    <h3 class="heading">
 				定位设置
 			</h3>
@@ -67,8 +76,8 @@
 	    	<div class="control-group formSep">
     			<label class="control-label">{t}门店切换模式：{/t}</label>
     			<div class="controls l_h30">
-    				<input type="radio" name="store_model" value="0" {if $model eq 0 || !$model}checked="true"{/if} />附近门店&nbsp;&nbsp;&nbsp;
-    				<input type="radio" name="store_model" value="1" {if $model eq 1}checked="true"{/if} />单门店&nbsp;&nbsp;&nbsp;
+    				<input type="radio" name="store_model" value="0" {if $model eq 0 || !$model}checked="true"{/if} />附近门店
+    				<input type="radio" name="store_model" value="1" {if $model eq 1}checked="true"{/if} />单门店
     				<input type="radio" name="store_model" value="2" {if $model eq 2}checked="true"{/if} />多门店
     				<span class="help-block">设置门店的切换模式，如选择“单门店”则可设置单独的一家门店，如选择“多门店”则可设置多家门店</span>
     			</div>
