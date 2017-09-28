@@ -189,6 +189,7 @@ class data_module extends api_front implements api_interface {
 		    				'title' 	  			=> $val['title'],
 		    				'activity_type' 		=> $val['activity_type'],
 		    				'label_activity_type' 	=> $val['label_activity_type'],
+		    				'limit_time_type'		=> $val['limit_time_type'],
 		    				'limit_time_weekly'		=> $val['limit_time_weekly'],
 		    				'limit_time_daily'		=> $val['limit_time_daily'],
 		    				'total_order_count' 	=> $val['total_order_count']
