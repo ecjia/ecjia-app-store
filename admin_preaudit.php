@@ -91,6 +91,9 @@ class admin_preaudit extends ecjia_admin {
 	    $store_list = $this->store_preaudit_list();
 	    $this->assign('store_list', $store_list);
 
+	    $cat_list   = $this->get_cat_select_list();
+	    
+	    $this->assign('cat_list', $cat_list);
 	    $this->assign('search_action', RC_Uri::url('store/admin_preaudit/init'));
 
 	    $this->display('store_preaudit_list.dwt');
@@ -597,11 +600,15 @@ class admin_preaudit extends ecjia_admin {
 
 		$filter['keywords'] = empty($_GET['keywords']) ? ''     : trim($_GET['keywords']);
 		$filter['type']     = empty($_GET['type'])     ? 'join' : trim($_GET['type']);
+		$filter['cat_id']     = empty($_GET['cat_id']) ? '' : trim($_GET['cat_id']);
 		if ($filter['keywords']) {
 			$db_store_franchisee->where(function ($query) use ( $filter) {
 			    $query->where('merchants_name', 'like', '%'.mysql_like_quote($filter['keywords']).'%')
 			    ->orWhere('contact_mobile', 'like', '%'.mysql_like_quote($filter['keywords']).'%');
 			});
+		}
+		if ($filter['cat_id']) {
+		    $db_store_franchisee->where(RC_DB::raw('sp.cat_id'), $filter['cat_id']);
 		}
 
 		$filter_type = $db_store_franchisee
