@@ -55,6 +55,7 @@ class category_module extends api_front implements api_interface {
 
     	$this->authSession();
 		$seller_id = $this->requestData('seller_id');
+		$store_id = empty($store_id) ? $_SESSION['store_id'] : $store_id;
 		if (empty($seller_id)) {
 			return new ecjia_error('invalid_parameter', RC_Lang::get ('system::system.invalid_parameter' ));
 		}
