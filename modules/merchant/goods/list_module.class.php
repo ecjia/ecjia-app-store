@@ -113,6 +113,7 @@ class list_module extends api_front implements api_interface {
 		        $data['list'][] = array(
                     'id' => $val['goods_id'],
                     'name' => $val['name'],
+		        	'goods_sn' => $val['goods_sn'],
                     'market_price' => $val['market_price'],
 		            'unformatted_market_price' => $val['unformatted_market_price'],
                     'shop_price' => $val['shop_price'],
