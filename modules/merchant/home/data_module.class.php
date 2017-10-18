@@ -193,7 +193,6 @@ class data_module extends api_front implements api_interface {
 		    				'limit_time_weekly'		=> $val['limit_time_weekly_str'],
 		    				'limit_time_daily'		=> $val['limit_time_daily_str'],
 		    				'limit_time_exclude'	=> $val['limit_time_exclude'],
-		    				'total_order_count' 	=> $val['total_order_count']
 		    		);
 		    	}	
 		    }
