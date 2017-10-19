@@ -52,7 +52,14 @@ defined('IN_ECJIA') or exit('No permission resources.');
  */
 class list_module extends api_front implements api_interface {
     public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {	
-    		
+
+    	$device = $this->device;
+    	if ($device['code'] == '8001') {
+    		$this->authadminSession();
+    	} else {
+    		$this->authSession();
+    	}
+    	
 		$filter = $this->requestData('filter', array());
 		RC_Logger::getLogger('error')->info('test5555');
 		RC_Logger::getLogger('error')->info($_SESSION);
