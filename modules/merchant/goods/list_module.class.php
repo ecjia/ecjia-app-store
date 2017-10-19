@@ -55,6 +55,10 @@ class list_module extends api_front implements api_interface {
     		
 		$filter = $this->requestData('filter', array());
 		
+		RC_Logger::getLogger('error')->info('test55');
+		RC_Logger::getLogger('error')->info($_SESSION);
+		RC_Logger::getLogger('error')->info('test66');
+		
 		$keyword = RC_String::unicode2string($filter['keywords']);
 		$category = !empty($filter['category_id']) ? intval($filter['category_id']) : 0;
 		$sort_type = $filter['sort_by'];
