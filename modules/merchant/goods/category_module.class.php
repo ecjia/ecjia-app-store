@@ -52,22 +52,10 @@ defined('IN_ECJIA') or exit('No permission resources.');
  */
 class category_module extends api_front implements api_interface {
     public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {
-		
-    	$device = $this->device;
-    	if ($device['code'] == '8001') {
-    		$this->authadminSession();
-    	} else {
-    		$this->authSession();
-    	}
-    	
+
+    	$this->authSession();
 		$seller_id = $this->requestData('seller_id');
 		$seller_id = empty($seller_id) ? $_SESSION['store_id'] : $seller_id;
-		
-		RC_Logger::getLogger('error')->info('test3333');
-		RC_Logger::getLogger('error')->info($_SESSION);
-		RC_Logger::getLogger('error')->info($seller_id);
-		RC_Logger::getLogger('error')->info('test4444');
-		
 		if (empty($seller_id)) {
 			return new ecjia_error('invalid_parameter', RC_Lang::get ('system::system.invalid_parameter' ));
 		}
