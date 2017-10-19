@@ -64,7 +64,7 @@ class list_module extends api_front implements api_interface {
 		$sort_type = $filter['sort_by'];
 		$store_id = $this->requestData('seller_id');
 		$action_type = $this->requestData('action_type', '');
-		$store_id = empty($store_id) ? $_SESSION['store_id'] : $store_id;
+		$store_id = empty($store_id) ? '' : $store_id;
 		if (empty($store_id)) {
 			return new ecjia_error( 'invalid_parameter', RC_Lang::get ('system::system.invalid_parameter' ));
 		}
