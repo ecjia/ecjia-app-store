@@ -207,7 +207,6 @@ class store_store_list_api extends Component_Event_Api {
 					}
 					$seller_list[] = array(
 							'id'				 => $result[$k]['store_id'],
-							'allow_use_quickpay' => RC_DB::table('merchants_config')->where('store_id', $result[$k]['store_id'])->where('code', 'quickpay_enabled')->pluck('value'),
 							'seller_name'		 => $result[$k]['merchants_name'],
 							'seller_category'	 => $result[$k]['cat_name'],//后期删除
 							'manage_mode'		 => empty($result[$k]['manage_mode']) ? 'join' : $result[$k]['manage_mode'],
