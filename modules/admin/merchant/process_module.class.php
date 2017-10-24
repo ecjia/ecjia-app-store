@@ -82,7 +82,7 @@ class process_module  extends api_admin implements api_interface {
     						'mobile'				=> $info_store_preaudit['contact_mobile'],
     						'seller_name'			=> $info_store_preaudit['merchants_name'],
     						'seller_category'		=> RC_DB::table('store_category')->where('cat_id', $info_store_preaudit['cat_id'])->pluck('cat_name'),
-    						'address'				=> RC_DB::table('region')->where('region_id', $info_store_preaudit['province'])->pluck('region_name').RC_DB::table('region')->where('region_id', $info_store_preaudit['city'])->pluck('region_name').RC_DB::table('region')->where('region_id', $info_store_preaudit['district'])->pluck('region_name').$info_store_preaudit['address'],
+    						'address'				=> RC_DB::table('regions')->where('region_id', $info_store_preaudit['province'])->pluck('region_name').RC_DB::table('region')->where('region_id', $info_store_preaudit['city'])->pluck('region_name').RC_DB::table('region')->where('region_id', $info_store_preaudit['district'])->pluck('region_name').$info_store_preaudit['address'],
     				        'remark'                => $info_store_preaudit['remark'],
     				)
     		);
@@ -95,7 +95,7 @@ class process_module  extends api_admin implements api_interface {
     						'mobile'				=> $info_store_franchisee['contact_mobile'],
     						'seller_name'			=> $info_store_franchisee['merchants_name'],
     						'seller_category'		=> RC_DB::table('store_category')->where('cat_id', $info_store_franchisee['cat_id'])->pluck('cat_name'),
-    						'address'				=> RC_DB::table('region')->where('region_id', $info_store_preaudit['province'])->pluck('region_name').RC_DB::table('region')->where('region_id', $info_store_preaudit['city'])->pluck('region_name').RC_DB::table('region')->where('region_id', $info_store_franchisee['district'])->pluck('region_name').$info_store_franchisee['address'],
+    						'address'				=> RC_DB::table('regions')->where('region_id', $info_store_preaudit['province'])->pluck('region_name').RC_DB::table('region')->where('region_id', $info_store_preaudit['city'])->pluck('region_name').RC_DB::table('region')->where('region_id', $info_store_franchisee['district'])->pluck('region_name').$info_store_franchisee['address'],
     				        'remark'                => $info_store_franchisee['remark'],
     				)
     		);

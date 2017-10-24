@@ -136,8 +136,8 @@ function getgeohash($city, $address){
     $shop_city          = !empty($city)        ? intval($city)               : 0;
     $shop_address       = !empty($address)     ? htmlspecialchars($address)  : 0;
 
-    $city_name              = RC_DB::table('region')->where('region_id', $shop_city)->pluck('region_name');
-    $city_district          = RC_DB::table('region')->where('region_id', $shop_district)->pluck('region_name');
+    $city_name              = RC_DB::table('regions')->where('region_id', $shop_city)->pluck('region_name');
+    $city_district          = RC_DB::table('regions')->where('region_id', $shop_district)->pluck('region_name');
     $address                = $city_name.'市'.$shop_address;
 
     //腾讯地图api 地址解析（地址转坐标）
