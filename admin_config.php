@@ -120,7 +120,7 @@ class admin_config extends ecjia_admin {
 		/*热门城市*/
 		$regions = array ();
 		$mobile_recommend_city = explode(',', ecjia::config('mobile_recommend_city'));
-		$region_data           = RC_DB::table('region')->whereIn('region_id', $mobile_recommend_city)->get();
+		$region_data           = RC_DB::table('regions')->whereIn('region_id', $mobile_recommend_city)->get();
 		if (!empty($region_data)) {
 			foreach ( $region_data as $key => $val ) {
 				if ( empty($val['region_name']) ) {
