@@ -171,7 +171,7 @@ function get_store_full_info($store_id) {
     }
     $store_info = RC_DB::table('store_franchisee')->where('store_id', $store_id)->first();
     
-    $region_name = RC_DB::table('region')
+    $region_name = RC_DB::table('regions')
     ->whereIn('region_id', array($store_info['province'], $store_info['city'], $store_info['district']))
     ->get();
     $store_info['province_id']	= $store_info['province'];
