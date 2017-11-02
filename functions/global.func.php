@@ -124,9 +124,8 @@ function set_store_menu($store_id, $key){
         ),
     );
     foreach($arr as $k => $val){
-        if($key == $val['name']){
+        if ($key == $val['name']) {
             $arr[$k]['active']  = 1;
-            $arr[$k]['url']     = "#tab".($k+1);
         }
     }
     return $arr;

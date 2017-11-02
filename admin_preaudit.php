@@ -594,6 +594,8 @@ class admin_preaudit extends ecjia_admin {
 	    if (empty($info)) {
 	        return $this->showmessage('信息不存在或已处理完成', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR,  array('pjaxurl' => RC_Uri::url('store/admin_preaudit/init')));
 	    }
+	    $this->assign('merchants_name', $info['merchants_name']);
+
 	    $log_store_id = $info['store_id'] ? $info['store_id'] : $info['id'];
 	    $log_type     = $info['store_id'] ? 2 : 1;
 

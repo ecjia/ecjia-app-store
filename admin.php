@@ -320,7 +320,7 @@ class admin extends ecjia_admin {
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('编辑入驻商'));
 
 		$store_id = intval($_GET['store_id']);
-        $menu     = set_store_menu($store_id);
+        $menu     = set_store_menu($store_id, 'preview');
 		$store    = RC_DB::table('store_franchisee')->where('store_id', $store_id)->first();
 		$store['apply_time']	= RC_Time::local_date(ecjia::config('time_format'), $store['apply_time']);
 		$store['confirm_time']	= RC_Time::local_date(ecjia::config('time_format'), $store['confirm_time']);
@@ -574,8 +574,7 @@ class admin extends ecjia_admin {
         }
 
         $menu = set_store_menu($store_id, 'preview');
-
-
+        
 		$store['apply_time']	= RC_Time::local_date(ecjia::config('time_format'), $store['apply_time']);
 		$store['confirm_time']	= RC_Time::local_date(ecjia::config('time_format'), $store['confirm_time']);
 		$store['expired_time']	= RC_Time::local_date('Y-m-d', $store['expired_time']);
@@ -851,7 +850,7 @@ class admin extends ecjia_admin {
 	    $this->assign('ur_here',$store['merchants_name'].' - 编辑店长');
 	    
 	    $this->assign('store', $store);
-	    $menu         = set_store_menu($store_id, 'view_staff');
+	    $menu = set_store_menu($store_id, 'view_staff');
 	    $this->assign('menu', $menu);
 	    
 	    if ($main_staff == 1) {
@@ -1242,7 +1241,7 @@ class admin extends ecjia_admin {
 		RC_Script::localize_script('store', 'store', $store_jslang );
 
         $merchants_name = RC_DB::table('store_franchisee')->where('store_id', $store_id)->pluck('merchants_name');
-
+   		$this->assign('merchants_name', $merchants_name);
         $this->assign('ur_here', $merchants_name.' - 查看日志');
 
         $logs = $this->get_admin_logs($_REQUEST,$store_id);
@@ -1288,6 +1287,7 @@ class admin extends ecjia_admin {
         $store_id = intval($_GET['store_id']);
 
         $store = RC_DB::table('store_franchisee')->where('store_id', $store_id)->first();
+        $this->assign('store', $store);
         $this->assign('ur_here',$store['merchants_name'].' - '.'审核申请日志');
 
         ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here($store['merchants_name'], RC_Uri::url('store/admin/preview', array('store_id' => $store_id))));

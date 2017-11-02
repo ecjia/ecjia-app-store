@@ -15,89 +15,88 @@
 	</h3>
 </div>
 
-<!--<div>-->
-<!--	<strong class="f_l span10 m_b10">{lang key='store::store.shopowner'}{t}：{/t}{$main_staff.name}</strong>-->
-<!--</div>-->
-
 <div class="row-fluid">
-	<div class="span12">
-		<div class="tabbable tabs-left">
-			<ul class="nav nav-tabs tab_merchants_nav">
-                <!-- {foreach from=$menu item=val} -->
-                <li {if $val.active}class="active"{/if}><a href="{$val.url}" {if $val.active}data-toggle="tab"{/if}>{$val.menu}</a></li>
-                <!-- {/foreach} -->
-			</ul>
-
-			<div class="tab-content tab_merchants">
-				<div class="tab-pane active" style="min-height:300px;">
-				<div class="row-fluid">
-                	<div class="choose_list" >
-                		<strong class="f_l">{lang key='store::store.shopowner'}{$main_staff.name}</strong>
-                	</div>
+        <div class="span3">
+                <div class="setting-group">
+                        <span class="setting-group-title"><i class="fontello-icon-cog"></i>{$store.merchants_name}</span>
+                        <ul class="nav nav-list m_t10">
+                                <!-- {foreach from=$menu item=val} -->
+                                <li><a class="setting-group-item {if $val.active}llv-active{/if}" href="{$val.url}">{$val.menu}</a></li>
+                                <!-- {/foreach} -->
+                        </ul>
                 </div>
+        </div>
+        <div class="span9">
+                <div class="tab-content tab_merchants">
+                        <div class="tab-pane active" style="min-height:300px;">
+                                <div class="row-fluid">
+                                        <div class="choose_list" >
+                                                <strong class="f_l">{lang key='store::store.shopowner'}{$main_staff.name}</strong>
+                                        </div>
+                                </div>
 
-                <div class="row-fluid goods_preview">
-                	<div class="span12">
-                		<div class="row-fluid">
-                			<div class="span2 left">
-                				{if $main_staff.avatar}
-                				<img alt="{$main_staff.name}" class="span10 thumbnail" src="{$main_staff.avatar}">
-                				{/if}
-                			</div>
-                			<div class="span8">
-                				<p>{lang key='store::store.user_ident'}{$main_staff.user_ident}</p>
-                				<p>{lang key='store::store.main_name'}{$main_staff.name}{if $main_staff.nick_name}（{$main_staff.nick_name}）{/if}</p>
-                				<p>{lang key='store::store.main_email'}{$main_staff.email}</p>
-                				<p>{lang key='store::store.mobile'}{$main_staff.mobile}</p>
-                				<p>{lang key='store::store.main_add_time'}{$main_staff.add_time}</p>
-                				<p>{lang key='store::store.main_introduction'}{$main_staff.introduction}</p>
-                			</div>
-                			{if $store.manage_mode eq 'self'}
-                			<div class="span2 left">
-                			     <p><a class="data-pjax btn" href='{RC_Uri::url("store/admin/edit_staff", "store_id={$store.store_id}&main_staff=1")}'>编辑店长</a></p>
-                			     <p><a class="toggle_view btn" href='{RC_Uri::url("store/admin/reset_staff", "store_id={$store.store_id}&main_staff=1")}' data-msg="重置店长登录密码将发送新密码到店长手机短信，<br>您确定要重置吗？" data-pjax-url="{$current_url}">重置密码</a></p>
-                			</div>
-                			{/if}
-                		</div>
-                	</div>
-                </div>
+                                <div class="row-fluid goods_preview">
+                                        <div class="span12">
+                                                <div class="row-fluid">
+                                                        <div class="span2 left">
+                                                                {if $main_staff.avatar}
+                                                                <img alt="{$main_staff.name}" class="span10 thumbnail" src="{$main_staff.avatar}">
+                                                                {/if}
+                                                        </div>
+                                                        <div class="span8">
+                                                                <p>{lang key='store::store.user_ident'}{$main_staff.user_ident}</p>
+                                                                <p>{lang key='store::store.main_name'}{$main_staff.name}{if $main_staff.nick_name}（{$main_staff.nick_name}）{/if}</p>
+                                                                <p>{lang key='store::store.main_email'}{$main_staff.email}</p>
+                                                                <p>{lang key='store::store.mobile'}{$main_staff.mobile}</p>
+                                                                <p>{lang key='store::store.main_add_time'}{$main_staff.add_time}</p>
+                                                                <p>{lang key='store::store.main_introduction'}{$main_staff.introduction}</p>
+                                                        </div>
+                                                        {if $store.manage_mode eq 'self'}
+                                                        <div class="span2 left">
+                                                             <p><a class="data-pjax btn" href='{RC_Uri::url("store/admin/edit_staff", "store_id={$store.store_id}&main_staff=1")}'>编辑店长</a></p>
+                                                             <p><a class="toggle_view btn" href='{RC_Uri::url("store/admin/reset_staff", "store_id={$store.store_id}&main_staff=1")}' data-msg="重置店长登录密码将发送新密码到店长手机短信，<br>您确定要重置吗？" data-pjax-url="{$current_url}">重置密码</a></p>
+                                                        </div>
+                                                        {/if}
+                                                </div>
+                                        </div>
+                                </div>
 
-                <div class="row-fluid">
-                	<div class="span12">
-                		<table class="table table-striped smpl_tbl table-hide-edit">
-                			<thead>
-	                			<tr>
-	                				<th class="w80">{lang key='store::store.employee_number'}</th>
-	                				<th class="w80">{lang key='store::store.employee_name'}({lang key='store::store.nick_name'})</th>
-	                				<th class="w80">{lang key='store::store.lable_contact_lable'}</th>
-	                				<th class="w80">{lang key='store::store.email'}</th>
-	                				<th class="w80">{lang key='store::store.add_time'}</th>
-	                				<th class="w80">{lang key='store::store.introduction'}</th>
-	                			</tr>
-                			</thead>
-                			<tbody>
-                			{if $staff_list}
-                			<!-- {foreach from=$staff_list item=list} -->
-                			<tr>
-                				<td>{$list.user_ident}</td>
-                				<td>{$list.name}({$list.nick_name})</td>
-                				<td>{$list.mobile}</td>
-                				<td>{$list.email}</td>
-                				<td>{$list.add_time}</td>
-                				<td>{$list.introduction}</td>
-                			</tr>
-                			<!-- {/foreach} -->
-                			{else}
-                			<td class="no-records" colspan="6">{t}没有找到任何记录{/t}</td>
-                			{/if}
-                			</tbody>
-                		</table>
-                		<!-- {$store_list.page} -->
-                	</div>
+                                <div class="row-fluid">
+                                        <div class="span12">
+                                                <table class="table table-striped smpl_tbl table-hide-edit">
+                                                        <thead>
+                                                                <tr>
+                                                                        <th class="w80">{lang key='store::store.employee_number'}</th>
+                                                                        <th class="w80">{lang key='store::store.employee_name'}({lang key='store::store.nick_name'})</th>
+                                                                        <th class="w80">{lang key='store::store.lable_contact_lable'}</th>
+                                                                        <th class="w80">{lang key='store::store.email'}</th>
+                                                                        <th class="w80">{lang key='store::store.add_time'}</th>
+                                                                        <th class="w80">{lang key='store::store.introduction'}</th>
+                                                                </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        {if $staff_list}
+                                                        <!-- {foreach from=$staff_list item=list} -->
+                                                        <tr>
+                                                                <td>{$list.user_ident}</td>
+                                                                <td>{$list.name}({$list.nick_name})</td>
+                                                                <td>{$list.mobile}</td>
+                                                                <td>{$list.email}</td>
+                                                                <td>{$list.add_time}</td>
+                                                                <td>{$list.introduction}</td>
+                                                        </tr>
+                                                        <!-- {/foreach} -->
+                                                        {else}
+                                                        <td class="no-records" colspan="6">{t}没有找到任何记录{/t}</td>
+                                                        {/if}
+                                                        </tbody>
+                                                </table>
+                                                <!-- {$store_list.page} -->
+                                        </div>
+                                </div>
+                        </div>
                 </div>
-				</div>
-			</div>
-		</div>
-	</div>
+        </div>
 </div>
+
 <!-- {/block} -->
