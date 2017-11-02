@@ -585,9 +585,9 @@ class admin extends ecjia_admin {
 		$store['district']      = RC_DB::table('region')->where('region_id', $store['district'])->pluck('region_name');
 
 		$this->assign('ur_here', $store['merchants_name']);
-		$store['cat_name'] = RC_DB::table('store_category')->where('cat_id', $store['cat_id'])->select('cat_name')->pluck();
+		$store['cat_name'] = RC_DB::table('store_category')->where('cat_id', $store['cat_id'])->pluck('cat_name');
 		if ($store['percent_id']) {
-		    $store['percent_value'] = RC_DB::table('store_percent')->where('percent_id', $store['percent_id'])->select('percent_value')->pluck();
+		    $store['percent_value'] = RC_DB::table('store_percent')->where('percent_id', $store['percent_id'])->pluck('percent_value');
 		}
 		
 		$this->assign('store', $store);
