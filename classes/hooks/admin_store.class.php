@@ -51,10 +51,11 @@ defined('IN_ECJIA') or exit('No permission resources.');
 class store_admin_hooks {
 
     public static function display_admin_store_menus() {
-        $menus = ConfigMenu::singleton()->authMenus();
         $screen = ecjia_screen::get_current_screen();
         $store_name = $screen->get_option('store_name');
         $code = $screen->get_option('current_code');
+        
+        $menus = with(new ConfigMenu($store_name, $_SESSION['admin_id']))->authMenus();
 
         echo '<div class="setting-group">'.PHP_EOL;
         echo '<span class="setting-group-title"><i class="fontello-icon-cog"></i>' . $store_name . '</span>'.PHP_EOL;

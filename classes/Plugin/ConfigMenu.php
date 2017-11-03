@@ -52,20 +52,33 @@ use ecjia_app;
 use RC_Cache;
 use RC_Api;
 use admin_menu;
-use Royalcms\Component\Foundation\Object;
 
-class ConfigMenu extends Object
+class ConfigMenu
 {
     
     protected $cacheKey;
     
-    public function __construct()
+    protected $user_id;
+    
+    protected $user_type;
+    
+    
+    /**
+     * 设置用户
+     *
+     * @param string $user_id      用户ID
+     * @param string $user_type    用户类型
+     */
+    public function __construct($store, $user_id, $user_type = 'admin')
     {
         if (defined('RC_SITE')) {
-            $this->cacheKey = 'store_menus' . constant('RC_SITE');
+            $this->cacheKey = 'store_menus' . $store . constant('RC_SITE');
         } else {
-            $this->cacheKey = 'store_menus';
+            $this->cacheKey = 'store_menus' . $store;
         }
+        
+        $this->user_id = $user_id;
+        $this->user_type = $user_type;
     }
     
     /**
@@ -104,7 +117,7 @@ class ConfigMenu extends Object
      */
     public function Menus()
     {
-        $cache_menus = RC_Cache::app_cache_get($this->cacheKey, 'store');
+        $cache_menus = RC_Cache::userdata_cache_get($this->cacheKey, $this->user_id, $this->user_type);
         if (! empty($cache_menus)) {
             return $cache_menus;
         }
@@ -113,7 +126,7 @@ class ConfigMenu extends Object
     
         $menus   = $this->loadMenu($apps, 'store_menu');
     
-        RC_Cache::app_cache_set($this->cacheKey, $menus, 'store');
+        RC_Cache::userdata_cache_set($this->cacheKey, $menus, $this->user_id, $this->user_type);
     
         return $menus;
     }
@@ -192,7 +205,7 @@ class ConfigMenu extends Object
      */
     public function cleanCache() 
     {
-        RC_Cache::app_cache_delete($this->cacheKey, 'store');
+        RC_Cache::userdata_cache_delete($this->cacheKey, $this->user_id, $this->user_type);
     }
     
 }
