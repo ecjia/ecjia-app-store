@@ -574,6 +574,8 @@ class admin extends ecjia_admin
         $this->assign('action_link', array('href' => RC_Uri::url('store/admin/init'), 'text' => RC_Lang::get('store::store.store_list')));
         ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('基本信息'));
         ecjia_screen::get_current_screen()->set_sidebar_display(false);
+        ecjia_screen::get_current_screen()->add_option('store_name', $store['merchants_name']);
+        ecjia_screen::get_current_screen()->add_option('current_code', 'store_preview');
 
         if (empty($store_id)) {
             return $this->showmessage(__('请选择您要操作的店铺'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
