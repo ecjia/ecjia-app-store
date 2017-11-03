@@ -323,11 +323,29 @@ class admin extends ecjia_admin
         $this->admin_priv('store_affiliate_update', ecjia::MSGTYPE_JSON);
 
         $this->assign('action_link', array('href' => RC_Uri::url('store/admin/init'), 'text' => RC_Lang::get('store::store.store_list')));
-        ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('编辑入驻商'));
 
-        $store_id              = intval($_GET['store_id']);
-        $menu                  = set_store_menu($store_id, 'preview');
-        $store                 = RC_DB::table('store_franchisee')->where('store_id', $store_id)->first();
+        $store_id	= intval($_GET['store_id']);
+        $store		= RC_DB::table('store_franchisee')->where('store_id', $store_id)->first();
+        
+        ecjia_screen::get_current_screen()->set_sidebar_display(false);
+        
+        ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here($store['merchants_name'], RC_Uri::url('store/admin/preview', array('store_id' => $store_id))));
+        ecjia_screen::get_current_screen()->add_option('store_name', $store['merchants_name']);
+        
+        $step = trim($_GET['step']);
+        
+        $nav_here = '编辑入驻商';
+        $current_code = 'store_preview';
+        $ur_here = $store['merchants_name'] . ' - ' . RC_Lang::get('store::store.store_update');
+        
+        if ($step == 'identity' || $step == 'pic') {
+        	$nav_here = '编辑资质认证信息';
+        	$current_code = 'store_auth';
+        	$ur_here = $store['merchants_name'].' - 编辑资质认证信息';
+        }
+        ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here($nav_here));
+        ecjia_screen::get_current_screen()->add_option('current_code', $current_code);
+        
         $store['apply_time']   = RC_Time::local_date(ecjia::config('time_format'), $store['apply_time']);
         $store['confirm_time'] = RC_Time::local_date(ecjia::config('time_format'), $store['confirm_time']);
         $store['expired_time'] = RC_Time::local_date('Y-m-d', $store['expired_time']);
@@ -347,15 +365,14 @@ class admin extends ecjia_admin
         $this->assign('district', $district);
 
         $this->assign('cat_list', $cat_list);
-        $this->assign('menu', $menu);
         $this->assign('certificates_list', $certificates_list);
 
         $store['shop_review_goods'] = get_merchant_config($store_id, 'shop_review_goods');
         $this->assign('store', $store);
         $this->assign('form_action', RC_Uri::url('store/admin/update'));
         $this->assign('longitudeForm_action', RC_Uri::url('store/admin/get_longitude'));
-        $this->assign('step', $_GET['step']);
-        $this->assign('ur_here', $store['merchants_name'] . ' - ' . RC_Lang::get('store::store.store_update'));
+        $this->assign('step', $step);
+        $this->assign('ur_here', $ur_here);
 
         $this->display('store_edit.dwt');
     }
@@ -572,7 +589,10 @@ class admin extends ecjia_admin
             $this->assign('action_link_self', array('href' => RC_Uri::url('store/admin/autologin', array('store_id' => $store_id)), 'text' => '进入商家后台'));
         }
         $this->assign('action_link', array('href' => RC_Uri::url('store/admin/init'), 'text' => RC_Lang::get('store::store.store_list')));
+       
+        ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here($store['merchants_name'], RC_Uri::url('store/admin/preview', array('store_id' => $store_id))));
         ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('基本信息'));
+        
         ecjia_screen::get_current_screen()->set_sidebar_display(false);
         ecjia_screen::get_current_screen()->add_option('store_name', $store['merchants_name']);
         ecjia_screen::get_current_screen()->add_option('current_code', 'store_preview');
@@ -580,8 +600,6 @@ class admin extends ecjia_admin
         if (empty($store_id)) {
             return $this->showmessage(__('请选择您要操作的店铺'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
-
-        $menu = set_store_menu($store_id, 'preview');
 
         $store['apply_time']   = RC_Time::local_date(ecjia::config('time_format'), $store['apply_time']);
         $store['confirm_time'] = RC_Time::local_date(ecjia::config('time_format'), $store['confirm_time']);
@@ -596,9 +614,7 @@ class admin extends ecjia_admin
         if ($store['percent_id']) {
             $store['percent_value'] = RC_DB::table('store_percent')->where('percent_id', $store['percent_id'])->pluck('percent_value');
         }
-
         $this->assign('store', $store);
-        $this->assign('menu', $menu);
 
         $this->display('store_preview.dwt');
     }
@@ -630,20 +646,23 @@ class admin extends ecjia_admin
         $this->admin_priv('store_auth_manage');
 
         $this->assign('action_link', array('href' => RC_Uri::url('store/admin/init'), 'text' => RC_Lang::get('store::store.store_list')));
-        ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('资质认证'));
+
         $store_id = intval($_GET['store_id']);
         if (empty($store_id)) {
             return $this->showmessage(__('请选择您要操作的店铺'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
-
-        $menu = set_store_menu($store_id, 'auth');
-
         $store = RC_DB::table('store_franchisee')->where('store_id', $store_id)->first();
+        
+        ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here($store['merchants_name'], RC_Uri::url('store/admin/preview', array('store_id' => $store_id))));
+        ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('资质认证'));
+        
+        ecjia_screen::get_current_screen()->set_sidebar_display(false);
+        ecjia_screen::get_current_screen()->add_option('store_name', $store['merchants_name']);
+        ecjia_screen::get_current_screen()->add_option('current_code', 'store_auth');
 
         $this->assign('ur_here', $store['merchants_name'] . ' - 资质认证');
         $this->assign('form_action', RC_Uri::url('store/admin/auth_update'));
         $this->assign('store', $store);
-        $this->assign('menu', $menu);
         $this->display('store_auth.dwt');
     }
 
@@ -866,12 +885,12 @@ class admin extends ecjia_admin
         $this->admin_priv('store_log_manage');
 
         $this->assign('action_link', array('href' => RC_Uri::url('store/admin/init'), 'text' => RC_Lang::get('store::store.store_list')));
-        ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('查看日志'));
+        
         $store_id = intval($_GET['store_id']);
         if (empty($store_id)) {
             return $this->showmessage(__('请选择您要操作的店铺'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
-        $menu         = set_store_menu($store_id, 'view_log');
+
         $store_jslang = array(
             'choose_delet_time' => __('请先选择删除日志的时间！'),
             'delet_ok_1'        => __('确定删除'),
@@ -914,9 +933,17 @@ class admin extends ecjia_admin
         }
 
         $this->assign('form_search_action', RC_Uri::url('store/admin/view_log', array('store_id' => $store_id)));
+        
+        $store = RC_DB::table('store_franchisee')->where('store_id', $store_id)->first();
+        
+        ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here($store['merchants_name'], RC_Uri::url('store/admin/preview', array('store_id' => $store_id))));
+        ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('查看日志'));
+        
+        ecjia_screen::get_current_screen()->set_sidebar_display(false);
+        ecjia_screen::get_current_screen()->add_option('store_name', $store['merchants_name']);
+        ecjia_screen::get_current_screen()->add_option('current_code', 'store_view_log');
 
         $this->assign('logs', $logs);
-        $this->assign('menu', $menu);
         $this->assign('ip_list', $ip_list);
         $this->assign('user_list', $user_list);
         $this->display('staff_log.dwt');
@@ -927,20 +954,23 @@ class admin extends ecjia_admin
         $this->admin_priv('store_preaudit_check_log');
 
         $store_id = intval($_GET['store_id']);
-
         $store = RC_DB::table('store_franchisee')->where('store_id', $store_id)->first();
+        
         $this->assign('store', $store);
         $this->assign('ur_here', $store['merchants_name'] . ' - ' . '审核申请日志');
 
         ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here($store['merchants_name'], RC_Uri::url('store/admin/preview', array('store_id' => $store_id))));
         ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('审核申请日志'));
+        
+        ecjia_screen::get_current_screen()->set_sidebar_display(false);
+        ecjia_screen::get_current_screen()->add_option('store_name', $store['merchants_name']);
+        ecjia_screen::get_current_screen()->add_option('current_code', 'store_check_log');
+        
         $this->assign('action_link', array('href' => RC_Uri::url('store/admin/init'), 'text' => RC_Lang::get('store::store.store_list')));
 
         $log = get_check_log($store_id, 2, 1, 15);
-
         $this->assign('log_list', $log);
-        $menu = set_store_menu($store_id, 'check_log');
-        $this->assign('menu', $menu);
+        
         $this->display('store_preaudit_check_log.dwt');
     }
 

@@ -165,25 +165,28 @@ class admin_commission extends ecjia_admin {
 		$this->admin_priv('store_commission_update');
 
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('入驻商'),RC_Uri::url('store/admin/init')));
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here( __('佣金设置')));
 		
 		$this->assign('action_link', array('href' =>RC_Uri::url('store/admin/init'), 'text' => __('入驻商列表')));
 		$this->assign('form_action', RC_Uri::url('store/admin_commission/update'));
 
 		$store_id = $_GET['store_id'];
 		$this->assign('store_id', $store_id);
-		$menu = set_store_menu($store_id, 'commission_set');
-		$store_commission = RC_DB::table('store_franchisee')->where(RC_DB::raw('store_id'), $store_id)->first();
-		$this->assign('store_commission', $store_commission);
+		$store = RC_DB::table('store_franchisee')->where(RC_DB::raw('store_id'), $store_id)->first();
+		$this->assign('store_commission', $store);
+		
+		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here($store['merchants_name'], RC_Uri::url('store/admin/preview', array('store_id' => $store_id))));
+		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('佣金设置'));
+		
+		ecjia_screen::get_current_screen()->set_sidebar_display(false);
+		ecjia_screen::get_current_screen()->add_option('store_name', $store['merchants_name']);
+		ecjia_screen::get_current_screen()->add_option('current_code', 'store_commission');
 
-		$this->assign('ur_here', $store_commission['merchants_name'].' - '.__('佣金设置'));
-		$this->assign('merchants_name', $store_commission['merchants_name']);
-		$this->assign('store_id', $store_commission['store_id']);
+		$this->assign('ur_here', $store['merchants_name'].' - '.__('佣金设置'));
+		$this->assign('merchants_name', $store['merchants_name']);
+		$this->assign('store_id', $store['store_id']);
 
 		$store_percent = $this->get_suppliers_percent(); //管理员获取佣金百分比
-
 		$this->assign('store_percent', $store_percent);
-		$this->assign('menu', $menu);
 
 		$this->display('store_commission_info.dwt');
 	}

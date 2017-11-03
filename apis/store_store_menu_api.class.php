@@ -56,15 +56,11 @@ class store_store_menu_api extends Component_Event_Api {
 	    $store_id = royalcms('request')->query('store_id');
 	    
 		$menus = array(
-            ecjia_admin::make_admin_menu('store_preview', '基本信息', RC_Uri::url('store/admin/preview', array('store_id' => $store_id)), 1)->add_purview('shop_config'),
-            ecjia_admin::make_admin_menu('store_set', '店铺设置', RC_Uri::url('store/admin/store_set', array('store_id' => $store_id)), 2)->add_purview('shop_config'),
-            ecjia_admin::make_admin_menu('store_auth', '资质认证', RC_Uri::url('store/admin/auth', array('store_id' => $store_id)), 3)->add_purview('shop_config'),
-            ecjia_admin::make_admin_menu('store_commission', '佣金设置', RC_Uri::url('store/admin_commission/edit', array('store_id' => $store_id)), 4)->add_purview('shop_config'),
-            ecjia_admin::make_admin_menu('store_admin_commission', '结算账单', RC_Uri::url('commission/admin/init', array('store_id' => $store_id, 'refer' => 'store' )), 5)->add_purview('shop_config'),
-            ecjia_admin::make_admin_menu('store_view_staff', '查看员工', RC_Uri::url('store/admin/view_staff', array('store_id' => $store_id)), 6)->add_purview('shop_config'),
-            ecjia_admin::make_admin_menu('store_shipping', '配送方式', RC_Uri::url('store/admin/shipping', array('store_id' => $store_id)), 7)->add_purview('shop_config'),
-            ecjia_admin::make_admin_menu('store_view_log', '查看日志', RC_Uri::url('store/admin/view_log', array('store_id' => $store_id)), 8)->add_purview('shop_config'),
-            ecjia_admin::make_admin_menu('store_check_log', '审核日志', RC_Uri::url('store/admin/check_log', array('store_id' => $store_id)), 9)->add_purview('shop_config'),
+            ecjia_admin::make_admin_menu('store_preview', '基本信息', RC_Uri::url('store/admin/preview', array('store_id' => $store_id)), 1)->add_purview('store_affiliate_manage'),
+			ecjia_admin::make_admin_menu('store_auth', '资质认证', RC_Uri::url('store/admin/auth', array('store_id' => $store_id)), 3)->add_purview('store_auth_manage'),
+            ecjia_admin::make_admin_menu('store_commission', '佣金设置', RC_Uri::url('store/admin_commission/edit', array('store_id' => $store_id)), 4)->add_purview('store_commission_manage'),
+			ecjia_admin::make_admin_menu('store_view_log', '查看日志', RC_Uri::url('store/admin/view_log', array('store_id' => $store_id)), 8)->add_purview('store_log_manage'),
+            ecjia_admin::make_admin_menu('store_check_log', '审核日志', RC_Uri::url('store/admin/check_log', array('store_id' => $store_id)), 9)->add_purview('store_preaudit_check_log'),
         );
         
         return $menus;
