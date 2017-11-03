@@ -71,10 +71,10 @@
                     <table class="table table-striped table-advance table-hover">
                         <thead>
                             <tr>
-                                <th>{lang key='store::store.log_id'}</th>
-                                <th>{lang key='store::store.log_name'}</th>
-                                <th>{lang key='store::store.log_time'}</th>
-                                <th>{lang key='store::store.log_ip'}</th>
+                                <th class="w50">{lang key='store::store.log_id'}</th>
+                                <th class="w120">{lang key='store::store.log_name'}</th>
+                                <th class="w150">{lang key='store::store.log_time'}</th>
+                                <th class="w120">{lang key='store::store.log_ip'}</th>
                                 <th>{lang key='store::store.log_info'}</th>
                             </tr>
                         </thead>
@@ -88,7 +88,7 @@
                                 <td>{$list.log_info}</td>
                             </tr>
                             <!-- {foreachelse} -->
-                               <tr><td class="no-records" colspan="5">{lang key='system::system.no_records'}</td></tr>
+                            <tr><td class="no-records" colspan="5">{lang key='system::system.no_records'}</td></tr>
                             <!-- {/foreach} -->
                         </tbody>
                     </table>
