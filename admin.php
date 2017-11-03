@@ -99,6 +99,7 @@ class admin extends ecjia_admin
 
         ecjia_screen::get_current_screen()->remove_last_nav_here();
         ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('自营店铺'));
+        ecjia_screen::get_current_screen()->set_sidebar_display(true);
 
         $this->assign('ur_here', '自营店铺列表');
         $manage_mode = 'self';
