@@ -86,8 +86,16 @@ class admin extends ecjia_admin
         RC_Script::enqueue_script('commission_info', RC_App::apps_url('statics/js/commission.js', __FILE__));
         RC_Script::enqueue_script('region', RC_Uri::admin_url('statics/lib/ecjia-js/ecjia.region.js'));
         RC_Script::enqueue_script('qq_map', 'https://map.qq.com/api/js?v=2.exp');
-
-        ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('store::store.store'), RC_Uri::url('store/admin/init')));
+        
+        $store_id = intval($_GET['store_id']);
+        $store_info = RC_DB::table('store_franchisee')->where('store_id', $store_id)->first();
+        $nav_here = '入驻商家';
+        $url = RC_Uri::url('store/admin/join');
+        if ($store_info['manage_mode'] == 'self') {
+        	$nav_here = '自营店铺';
+        	$url = RC_Uri::url('store/admin/init');
+        }
+        ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here($nav_here, $url));
     }
 
     /**
@@ -322,16 +330,14 @@ class admin extends ecjia_admin
     {
         $this->admin_priv('store_affiliate_update', ecjia::MSGTYPE_JSON);
 
-        $this->assign('action_link', array('href' => RC_Uri::url('store/admin/init'), 'text' => RC_Lang::get('store::store.store_list')));
-
         $store_id	= intval($_GET['store_id']);
         $store		= RC_DB::table('store_franchisee')->where('store_id', $store_id)->first();
         
         ecjia_screen::get_current_screen()->set_sidebar_display(false);
-        
         ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here($store['merchants_name'], RC_Uri::url('store/admin/preview', array('store_id' => $store_id))));
         ecjia_screen::get_current_screen()->add_option('store_name', $store['merchants_name']);
         
+        $this->assign('action_link', array('href' => RC_Uri::url('store/admin/preview', array('store_id' => $store_id)), 'text' => '基本信息'));
         $step = trim($_GET['step']);
         
         $nav_here = '编辑入驻商';
@@ -391,7 +397,6 @@ class admin extends ecjia_admin
         }
 
         $store_info = RC_DB::table('store_franchisee')->where('store_id', $store_id)->first();
-
         if (!$store_info) {
             return $this->showmessage('店铺信息不存在', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
@@ -588,7 +593,11 @@ class admin extends ecjia_admin
         if ($store['manage_mode'] == 'self' && $_SESSION['action_list'] == 'all') {
             $this->assign('action_link_self', array('href' => RC_Uri::url('store/admin/autologin', array('store_id' => $store_id)), 'text' => '进入商家后台'));
         }
-        $this->assign('action_link', array('href' => RC_Uri::url('store/admin/init'), 'text' => RC_Lang::get('store::store.store_list')));
+        if ($store['manage_mode'] == 'self') {
+        	$this->assign('action_link', array('href' => RC_Uri::url('store/admin/init'), 'text' => '自营店铺列表'));
+        } else {
+        	$this->assign('action_link', array('href' => RC_Uri::url('store/admin/join'), 'text' => RC_Lang::get('store::store.store_list')));
+        }
        
         ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here($store['merchants_name'], RC_Uri::url('store/admin/preview', array('store_id' => $store_id))));
         ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('基本信息'));
@@ -884,8 +893,6 @@ class admin extends ecjia_admin
     {
         $this->admin_priv('store_log_manage');
 
-        $this->assign('action_link', array('href' => RC_Uri::url('store/admin/init'), 'text' => RC_Lang::get('store::store.store_list')));
-        
         $store_id = intval($_GET['store_id']);
         if (empty($store_id)) {
             return $this->showmessage(__('请选择您要操作的店铺'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
@@ -935,6 +942,11 @@ class admin extends ecjia_admin
         $this->assign('form_search_action', RC_Uri::url('store/admin/view_log', array('store_id' => $store_id)));
         
         $store = RC_DB::table('store_franchisee')->where('store_id', $store_id)->first();
+        if ($store['manage_mode'] == 'self') {
+        	$this->assign('action_link', array('href' => RC_Uri::url('store/admin/init'), 'text' => '自营店铺列表'));
+        } else {
+        	$this->assign('action_link', array('href' => RC_Uri::url('store/admin/join'), 'text' => RC_Lang::get('store::store.store_list')));
+        }
         
         ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here($store['merchants_name'], RC_Uri::url('store/admin/preview', array('store_id' => $store_id))));
         ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('查看日志'));
@@ -955,6 +967,11 @@ class admin extends ecjia_admin
 
         $store_id = intval($_GET['store_id']);
         $store = RC_DB::table('store_franchisee')->where('store_id', $store_id)->first();
+        if ($store['manage_mode'] == 'self') {
+        	$this->assign('action_link', array('href' => RC_Uri::url('store/admin/init'), 'text' => '自营店铺列表'));
+        } else {
+        	$this->assign('action_link', array('href' => RC_Uri::url('store/admin/join'), 'text' => RC_Lang::get('store::store.store_list')));
+        }
         
         $this->assign('store', $store);
         $this->assign('ur_here', $store['merchants_name'] . ' - ' . '审核申请日志');
@@ -965,8 +982,6 @@ class admin extends ecjia_admin
         ecjia_screen::get_current_screen()->set_sidebar_display(false);
         ecjia_screen::get_current_screen()->add_option('store_name', $store['merchants_name']);
         ecjia_screen::get_current_screen()->add_option('current_code', 'store_check_log');
-        
-        $this->assign('action_link', array('href' => RC_Uri::url('store/admin/init'), 'text' => RC_Lang::get('store::store.store_list')));
 
         $log = get_check_log($store_id, 2, 1, 15);
         $this->assign('log_list', $log);
@@ -1127,8 +1142,12 @@ class admin extends ecjia_admin
         $from = trim($_GET['from']);
 
         if ($from == 'self') {
+        	ecjia_screen::get_current_screen()->remove_last_nav_here();
+        	ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('自营店铺', RC_Uri::url('store/admin/init')));
             $this->assign('action_link', array('href' => RC_Uri::url('store/admin/init'), 'text' => '自营店铺列表'));
         } else {
+        	ecjia_screen::get_current_screen()->remove_last_nav_here();
+        	ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('store::store.store'), RC_Uri::url('store/admin/join')));
             $this->assign('action_link', array('href' => RC_Uri::url('store/admin/join'), 'text' => RC_Lang::get('store::store.store_list')));
         }
         $url = RC_App::apps_url('statics/', __FILE__);

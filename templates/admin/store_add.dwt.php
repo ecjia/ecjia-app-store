@@ -52,10 +52,7 @@
 </div>
 
 <div class="row-fluid">
-    <div class="span3">
-        <!-- {ecjia:hook id=display_admin_store_menus} -->
-    </div>
-    <div class="span9">
+    <div class="span12">
         <div class="tab-content tab_merchants">
             <div class="tab-pane active " style="min-height:300px;">
                 <form class="form-horizontal" id="form-privilege" name="theForm" action="{$form_action}" method="post" enctype="multipart/form-data" >
