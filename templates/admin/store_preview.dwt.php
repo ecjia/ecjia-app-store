@@ -26,7 +26,6 @@
 <div class="row-fluid">
 	<div class="span3">
         <!-- {ecjia:hook id=display_admin_store_menus} -->
-
 	</div>
 	<div class="span9">
 		<form method="post" class="form-horizontal" action="{$form_action}" name="theForm" enctype="multipart/form-data">
