@@ -135,6 +135,7 @@ class admin extends ecjia_admin
 
         ecjia_screen::get_current_screen()->remove_last_nav_here();
         ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('入驻商家'));
+        ecjia_screen::get_current_screen()->set_sidebar_display(true);
         $this->assign('ur_here', '入驻商家列表');
 
         $manage_mode = 'join';
