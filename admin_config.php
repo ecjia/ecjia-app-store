@@ -65,6 +65,9 @@ class admin_config extends ecjia_admin {
 		RC_Script::enqueue_script('jquery-chosen');
 		RC_Script::enqueue_script('bootstrap-placeholder');
 		
+		RC_Script::enqueue_script('jquery.toggle.buttons', RC_Uri::admin_url('statics/lib/toggle_buttons/jquery.toggle.buttons.js'));
+		RC_Style::enqueue_style('bootstrap-toggle-buttons', RC_Uri::admin_url('statics/lib/toggle_buttons/bootstrap-toggle-buttons.css'));
+		
 		RC_Script::enqueue_script('admin_config', RC_App::apps_url('statics/js/admin_config.js', __FILE__), array(), false, true);
 	}
 					
@@ -81,8 +84,6 @@ class admin_config extends ecjia_admin {
 		if (!ecjia::config('mobile_location_range', ecjia::CONFIG_CHECK)) {
         	ecjia_config::instance()->insert_config('mobile', 'mobile_location_range', 3, array('type' => 'text'));
         }
-//     	$this->assign('config_cpname', ecjia::config('merchant_admin_cpname')); //需删除
-    	
     	$this->assign('config_logoimg', RC_Upload::upload_url(ecjia::config('merchant_admin_login_logo')));
     	$this->assign('config_logo', ecjia::config('merchant_admin_login_logo'));
     	$this->assign('mobile_location_range', ecjia::config('mobile_location_range'));
@@ -111,11 +112,10 @@ class admin_config extends ecjia_admin {
 		$this->assign('cat_list', cat_list(0, 0, true));
 		
 		//是否关闭入驻商加盟
-		$info = RC_DB::table('shop_config')->where('code', 'merchant_join_close')->first();
-		
 		$merchant_join_close = ecjia::config('merchant_join_close');
 		$this->assign('merchant_join_close', $merchant_join_close);
 		
+		$this->assign('printer_display_platform', ecjia::config('printer_display_platform'));
 		$this->display('store_config_info.dwt');
 	}
 		
@@ -125,13 +125,12 @@ class admin_config extends ecjia_admin {
 	public function update() {
 		$this->admin_priv('store_config_manage', ecjia::MSGTYPE_JSON);
 		
-		$merchant_admin_cpname 	= !empty($_POST['merchant_admin_cpname']) 	? trim($_POST['merchant_admin_cpname']) : '';
-		
+		$merchant_admin_cpname 	= !empty($_POST['merchant_admin_cpname']) ? trim($_POST['merchant_admin_cpname']) : '';
 		$mobile_location_range  = isset($_POST['mobile_location_range']) ? intval($_POST['mobile_location_range']) : 0;
-
 		$store_model = !empty($_POST['store_model']) ? intval($_POST['store_model']) : 0;
-		
 		$merchant_join_close = !empty($_POST['merchant_join_close']) ? intval($_POST['merchant_join_close']) : 0;
+		$printer_display_platform = !empty($_POST['printer_display_platform']) ? intval($_POST['printer_display_platform']) : 0;
+		
 		//附近门店
 		if ($store_model == 0) {
 			$store_model = 'nearby';
@@ -179,6 +178,9 @@ class admin_config extends ecjia_admin {
 		
 		//是否关闭入驻商加盟
 		ecjia_config::instance()->write_config('merchant_join_close', $merchant_join_close);
+		
+		//是否打印平台名称
+		ecjia_config::instance()->write_config('printer_display_platform', $printer_display_platform);
 		
 		ecjia_admin::admin_log('商家入驻>后台设置', 'setup', 'config');
 		return $this->showmessage(__('更新商店设置成功！'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin_config/init')));

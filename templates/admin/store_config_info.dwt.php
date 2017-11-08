@@ -137,6 +137,20 @@
 				</div>
     		</div>
     		
+    		<h3 class="heading">
+				打印机设置
+			</h3>
+			
+			<div class="control-group formSep">
+				<label class="control-label">{t}是否打印平台名称：{/t}</label>
+				<div class="controls">
+		            <div class="info-toggle-button">
+		                <input class="nouniform" name="printer_display_platform" type="checkbox"  {if $print_platform_name eq 1}checked{/if}  value="1"/>
+		            </div>
+		            <div class="help-block">此按钮开启之后，在小票打印时，尾部会打印出平台的名称</div>
+				</div>
+			</div>
+    		
     		<div class="control-group">
 				<div class="controls">
 					<input type="submit" value="{lang key='system::system.button_submit'}" class="btn btn-gebo" />
