@@ -145,7 +145,7 @@
 				<label class="control-label">{t}是否打印平台名称：{/t}</label>
 				<div class="controls">
 		            <div class="info-toggle-button">
-		                <input class="nouniform" name="printer_display_platform" type="checkbox"  {if $print_platform_name eq 1}checked{/if}  value="1"/>
+		                <input class="nouniform" name="printer_display_platform" type="checkbox"  {if $printer_display_platform eq 1}checked{/if}  value="1"/>
 		            </div>
 		            <div class="help-block">此按钮开启之后，在小票打印时，尾部会打印出平台的名称</div>
 				</div>
