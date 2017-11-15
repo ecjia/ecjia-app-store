@@ -170,7 +170,7 @@ class admin extends ecjia_admin
 
         $cat_list = $this->get_cat_select_list();
         $provinces = with(new Ecjia\App\Setting\Region)->getProvinces(ecjia::config('shop_country'));//获取当前国家的所有省份
-        $this->assign('provinces', $provinces);
+        $this->assign('province', $provinces);
         
         $this->assign('form_action', RC_Uri::url('store/admin/insert'));
         $this->assign('cat_list', $cat_list);
