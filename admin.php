@@ -154,7 +154,7 @@ class admin extends ecjia_admin {
 	    
 	    $cat_list 	= $this->get_cat_select_list();
 
-	    $provinces = with(new Ecjia\App\Setting\Region)->getProvinces();//获取当前国家的所有省份
+	    $provinces = with(new Ecjia\App\Setting\Region)->getProvinces(ecjia::config('shop_country'));//获取当前国家的所有省份
 	    $this->assign('province', $provinces);
 	    $this->assign('form_action', RC_Uri::url('store/admin/insert'));
 	    
@@ -329,7 +329,7 @@ class admin extends ecjia_admin {
 				'3' => RC_Lang::get('store::store.hong_kong_and_macao_pass')
 		);
 
-		$provinces =   with(new Ecjia\App\Setting\Region)->getProvinces();
+		$provinces =   with(new Ecjia\App\Setting\Region)->getProvinces(ecjia::config('shop_country'));
 		$cities = with(new Ecjia\App\Setting\Region)->getSubarea($store['province']);
 		$districts = with(new Ecjia\App\Setting\Region)->getSubarea($store['city']);
 		$streets = with(new Ecjia\App\Setting\Region)->getSubarea($store['district']);
