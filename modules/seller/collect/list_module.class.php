@@ -94,9 +94,8 @@ class list_module extends api_front implements api_interface {
                 ->get();
         foreach($result as $key => $val){
             $result[$key]['shop_log'] =RC_DB::table('merchants_config')
-                                        ->selectRaw('value')
                                         ->where('store_id', $val['store_id'])
-                                        ->pluck();
+                                        ->pluck('value');
         }
 		$list = array();
 		if ( !empty ($result)) {

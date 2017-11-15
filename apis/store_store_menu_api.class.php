@@ -44,55 +44,27 @@
 //
 //  ---------------------------------------------------------------------------------
 //
-use Ecjia\App\Store\Plugin\ConfigMenu;
-
 defined('IN_ECJIA') or exit('No permission resources.');
 
-class store_admin_hooks {
-
-    public static function display_admin_store_menus() {
-        $screen = ecjia_screen::get_current_screen();
-        $store_name = $screen->get_option('store_name');
-        $code = $screen->get_option('current_code');
-        
-        $menus = with(new ConfigMenu($store_name, $_SESSION['admin_id']))->authMenus();
-
-        echo '<div class="setting-group">'.PHP_EOL;
-        echo '<span class="setting-group-title"><i class="fontello-icon-cog"></i>' . $store_name . '</span>'.PHP_EOL;
-        echo '<ul class="nav nav-list m_t10">'.PHP_EOL; //
-
-        foreach ($menus as $key => $group) {
-            if ($group->action == 'divider') {
-                echo '<li class="divider"></li>';
-            } elseif ($group->action == 'nav-header') {
-                echo '<li class="nav-header">' . $group->name . '</li>';
-            } else {
-                echo '<li><a class="setting-group-item'; //data-pjax
-
-                if ($code == $group->action) {
-                    echo ' llv-active';
-                }
-
-                echo '" href="' . $group->link . '">' . $group->name . '</a></li>'.PHP_EOL;
-            }
-        }
-
-        echo '</ul>'.PHP_EOL;
-        echo '</div>'.PHP_EOL;
-    }
+/**
+ * 后台菜单API
+ * @author royalwang
+ */
+class store_store_menu_api extends Component_Event_Api {
 	
-	public static function append_admin_setting_group($menus)
-	{
-	    $setting = ecjia_admin_setting::singleton();
-	     
-	    $menus[] = ecjia_admin::make_admin_menu('nav-header', '入驻商', '', 20)->add_purview(array('mobile_config_manage'));
-	    $menus[] = ecjia_admin::make_admin_menu('store', '商家设置', RC_Uri::url('store/admin_config/init'), 21)->add_purview('store_config_manage');
-	     
-	    return $menus;
+	public function call(&$options) {	
+	    $store_id = royalcms('request')->query('store_id');
+
+		$menus = array(
+            ecjia_admin::make_admin_menu('store_preview', '基本信息', RC_Uri::url('store/admin/preview', array('store_id' => $store_id)), 1)->add_purview('store_affiliate_manage'),
+			ecjia_admin::make_admin_menu('store_auth', '资质认证', RC_Uri::url('store/admin/auth', array('store_id' => $store_id)), 3)->add_purview('store_auth_manage'),
+            ecjia_admin::make_admin_menu('store_commission', '佣金设置', RC_Uri::url('store/admin_commission/edit', array('store_id' => $store_id)), 4)->add_purview('store_commission_manage'),
+			ecjia_admin::make_admin_menu('store_view_log', '查看日志', RC_Uri::url('store/admin/view_log', array('store_id' => $store_id)), 8)->add_purview('store_log_manage'),
+            ecjia_admin::make_admin_menu('store_check_log', '审核日志', RC_Uri::url('store/admin/check_log', array('store_id' => $store_id)), 9)->add_purview('store_preaudit_check_log'),
+        );
+        
+        return $menus;
 	}
 }
-
-RC_Hook::add_action( 'display_admin_store_menus', array('store_admin_hooks', 'display_admin_store_menus') );
-RC_Hook::add_action( 'append_admin_setting_group', array('store_admin_hooks', 'append_admin_setting_group') );
 
 // end
