@@ -151,7 +151,7 @@
 				<label class="control-label">请选择经营区域：</label>
 				<div class="controls">
 					<div class="ms-container ms-shipping span12" id="ms-custom-navigation">
-						<div class="ms-selectable ms-mobile-selectable span2" style="width: 140px;">
+						<div class="ms-selectable ms-mobile-selectable span2" style="width: 23%;">
 							<div class="search-header">
 								<input class="span12" type="text" placeholder="搜索省份" autocomplete="off" id="selProvinces" />
 							</div>
@@ -164,7 +164,7 @@
 							</ul>
 						</div>
 						
-						<div class="ms-selectable ms-mobile-selectable span2" style="width: 140px;">
+						<div class="ms-selectable ms-mobile-selectable span2" style="width: 23%;">
 							<div class="search-header">
 								<input class="span12" type="text" placeholder="搜索市" autocomplete="off" id="selCities" />
 							</div>
@@ -173,7 +173,7 @@
 							</ul>
 						</div>
 						
-						<div class="ms-selectable ms-mobile-selectable span2" style="width: 140px;">
+						<div class="ms-selectable ms-mobile-selectable span2" style="width: 23%;">
 							<div class="search-header">
 								<input class="span12" type="text" placeholder="搜索区/县" autocomplete="off" id="selDistricts" />
 							</div>
@@ -182,7 +182,7 @@
 							</ul>
 						</div>
 						
-						<div class="ms-selectable ms-mobile-selectable span2" style="width: 140px;">
+						<div class="ms-selectable ms-mobile-selectable span2" style="width: 23%;">
 							<div class="search-header">
 								<input class="span12" type="text" placeholder="搜索区街道/镇" autocomplete="off" id="selTown" />
 							</div>

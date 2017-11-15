@@ -153,13 +153,9 @@ class admin extends ecjia_admin {
 	    $this->assign('ur_here', '添加自营商家');
 	    
 	    $cat_list 	= $this->get_cat_select_list();
-	    $province   = $this->db_region->get_regions(1, 1);
-	    $city       = $this->db_region->get_regions(2, $store['province']);
-	    $district   = $this->db_region->get_regions(3, $store['city']);
-	    
-	    $this->assign('province', $province);
-	    $this->assign('city', $city);
-	    $this->assign('district', $district);
+
+	    $provinces = with(new Ecjia\App\Setting\Region)->getProvinces();//获取当前国家的所有省份
+	    $this->assign('province', $provinces);
 	    $this->assign('form_action', RC_Uri::url('store/admin/insert'));
 	    
 	    $this->assign('cat_list', $cat_list);
@@ -182,9 +178,10 @@ class admin extends ecjia_admin {
 	        'email'      				=> !empty($_POST['email']) 				? $_POST['email']              : '',
 	        'contact_mobile'    		=> !empty($_POST['contact_mobile']) 	? $_POST['contact_mobile']     : '',
 	        'address'      				=> !empty($_POST['address']) 			? $_POST['address']            : '',
-	        'province'					=> !empty($_POST['province'])			? $_POST['province']           : 0,
-	        'city'						=> !empty($_POST['city'])				? $_POST['city']               : 0,
-	        'district'					=> !empty($_POST['district'])			? $_POST['district']           : 0,
+	        'province'					=> !empty($_POST['province'])			? $_POST['province']           : '',
+	        'city'						=> !empty($_POST['city'])				? $_POST['city']               : '',
+	        'district'					=> !empty($_POST['district'])			? $_POST['district']           : '',
+	    	'street'					=> !empty($_POST['street'])				? $_POST['street']             : '',
 	        'longitude'					=> !empty($_POST['longitude'])			? $_POST['longitude']          : '',
 	        'latitude'					=> !empty($_POST['latitude'])			? $_POST['latitude']           : '',
 	        'manage_mode'				=> 'self',
@@ -332,14 +329,16 @@ class admin extends ecjia_admin {
 				'3' => RC_Lang::get('store::store.hong_kong_and_macao_pass')
 		);
 
-		$province   = $this->db_region->get_regions(1, 1);
-		$city       = $this->db_region->get_regions(2, $store['province']);
-		$district   = $this->db_region->get_regions(3, $store['city']);
-
-        $this->assign('province', $province);
-		$this->assign('city', $city);
-		$this->assign('district', $district);
-
+		$provinces =   with(new Ecjia\App\Setting\Region)->getProvinces();
+		$cities = with(new Ecjia\App\Setting\Region)->getSubarea($store['province']);
+		$districts = with(new Ecjia\App\Setting\Region)->getSubarea($store['city']);
+		$streets = with(new Ecjia\App\Setting\Region)->getSubarea($store['district']);
+		
+        $this->assign('province', $provinces);
+		$this->assign('city', $cities);
+		$this->assign('district', $districts);
+		$this->assign('street', $streets);
+		
 		$this->assign('cat_list', $cat_list);
 		$this->assign('menu', $menu);
 		$this->assign('certificates_list', $certificates_list);
@@ -383,6 +382,7 @@ class admin extends ecjia_admin {
 		        'province'					=> !empty($_POST['province'])			? $_POST['province']           : '',
 		        'city'						=> !empty($_POST['city'])				? $_POST['city']               : '',
 		        'district'					=> !empty($_POST['district'])			? $_POST['district']           : '',
+		    	'street'					=> !empty($_POST['street'])				? $_POST['street']             : '',
 		        'longitude'					=> !empty($_POST['longitude'])			? $_POST['longitude']          : '',
 		        'latitude'					=> !empty($_POST['latitude'])			? $_POST['latitude']           : '',
 		        'manage_mode'				=> !empty($_POST['manage_mode'])		? $_POST['manage_mode']        : 'join',
