@@ -1106,10 +1106,10 @@ class admin extends ecjia_admin
      */
     public function getgeohash()
     {
-        $shop_province = !empty($_REQUEST['province']) ? intval($_REQUEST['province']) : 0;
-        $shop_city     = !empty($_REQUEST['city']) ? intval($_REQUEST['city']) : 0;
-        $shop_district = !empty($_REQUEST['district']) ? intval($_REQUEST['district']) : 0;
-        $shop_address  = !empty($_REQUEST['address']) ? urlencode($_REQUEST['address']) : '';
+        $shop_province = !empty($_REQUEST['province'])  ? trim($_REQUEST['province'])       : '';
+        $shop_city     = !empty($_REQUEST['city'])      ? trim($_REQUEST['city'])           : '';
+        $shop_district = !empty($_REQUEST['district'])  ? trim($_REQUEST['district'])       : '';
+        $shop_address  = !empty($_REQUEST['address'])   ? urlencode($_REQUEST['address'])   : '';
 
         if (empty($shop_province)) {
             return $this->showmessage('请选择省份', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR, array('element' => 'province'));
