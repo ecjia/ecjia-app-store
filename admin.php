@@ -617,9 +617,10 @@ class admin extends ecjia_admin
         $store['confirm_time'] = RC_Time::local_date(ecjia::config('time_format'), $store['confirm_time']);
         $store['expired_time'] = RC_Time::local_date('Y-m-d', $store['expired_time']);
 
-        $store['province'] = RC_DB::table('region')->where('region_id', $store['province'])->pluck('region_name');
-        $store['city']     = RC_DB::table('region')->where('region_id', $store['city'])->pluck('region_name');
-        $store['district'] = RC_DB::table('region')->where('region_id', $store['district'])->pluck('region_name');
+        $store['province'] = RC_DB::table('regions')->where('region_id', $store['province'])->pluck('region_name');
+        $store['city']     = RC_DB::table('regions')->where('region_id', $store['city'])->pluck('region_name');
+        $store['district'] = RC_DB::table('regions')->where('region_id', $store['district'])->pluck('region_name');
+        $store['street'] = RC_DB::table('regions')->where('region_id', $store['street'])->pluck('region_name');
 
         $this->assign('ur_here', $store['merchants_name']);
         $store['cat_name'] = RC_DB::table('store_category')->where('cat_id', $store['cat_id'])->pluck('cat_name');
