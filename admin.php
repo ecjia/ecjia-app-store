@@ -1109,7 +1109,7 @@ class admin extends ecjia_admin
         $shop_province = !empty($_REQUEST['province'])  ? trim($_REQUEST['province'])       : '';
         $shop_city     = !empty($_REQUEST['city'])      ? trim($_REQUEST['city'])           : '';
         $shop_district = !empty($_REQUEST['district'])  ? trim($_REQUEST['district'])       : '';
-        $shop_address  = !empty($_REQUEST['address'])   ? urlencode($_REQUEST['address'])   : '';
+        $shop_address  = !empty($_REQUEST['address'])   ? trim($_REQUEST['address'])        : '';
 
         if (empty($shop_province)) {
             return $this->showmessage('请选择省份', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR, array('element' => 'province'));
@@ -1128,9 +1128,10 @@ class admin extends ecjia_admin
         if (empty($key)) {
             return $this->showmessage('腾讯地图key不能为空', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
-        $city_name     = RC_DB::table('region')->where('region_id', $shop_city)->pluck('region_name');
-        $city_district = RC_DB::table('region')->where('region_id', $shop_district)->pluck('region_name');
-        $address       = $city_name . '市' . $city_district . $shop_address;
+        $province_name = RC_DB::table('regions')->where('region_id', $shop_province)->pluck('region_name');
+        $city_name     = RC_DB::table('regions')->where('region_id', $shop_city)->pluck('region_name');
+        $city_district = RC_DB::table('regions')->where('region_id', $shop_district)->pluck('region_name');
+        $address       = $province_name . $city_name . '市' . $city_district . $shop_address;
         $address       = urlencode($address);
         $shop_point    = RC_Http::remote_get("https://apis.map.qq.com/ws/geocoder/v1/?address=" . $address . "&key=" . $key);
         $shop_point    = json_decode($shop_point['body'], true);
