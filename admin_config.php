@@ -133,7 +133,7 @@ class admin_config extends ecjia_admin {
 		
 		$this->assign('mobile_recommend_city', $regions);
 		// 		$this->assign('countries', $this->db_region->get_regions());
-		$provinces = with(new Ecjia\App\Setting\Region)->getProvinces(ecjia::config('shop_country'));;//获取当前国家的所有省份
+		$provinces = with(new Ecjia\App\Setting\Region)->getProvinces(ecjia::config('shop_country'));//获取当前国家的所有省份
 		$this->assign('provinces', $provinces);
 		
 		$this->display('store_config_info.dwt');
