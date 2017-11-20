@@ -148,13 +148,11 @@ class signup_module extends api_admin implements api_interface {
  * 根据地区获取经纬度
  */
 function getgeohash($city, $address){
-    $shop_province      = !empty($province)    ? intval($province)           : 0;
     $shop_city          = !empty($city)        ? intval($city)               : 0;
     $shop_address       = !empty($address)     ? htmlspecialchars($address)  : 0;
 
-    $city_name     = ecjia_region::getRegionName($shop_city);
-    $city_district = ecjia_region::getRegionName($shop_district);
-    $address       = $city_name.'市'.$shop_address;
+    $city_name	= ecjia_region::getRegionName($shop_city);
+    $address  	= $city_name.$shop_address;
 
     //腾讯地图api 地址解析（地址转坐标）
     $address = urlencode($address);

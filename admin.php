@@ -1115,10 +1115,24 @@ class admin extends ecjia_admin
             return $this->showmessage('腾讯地图key不能为空', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
         $province_name  = ecjia_region::getRegionName($shop_province);
+        $city_name      = ecjia_region::getRegionName($shop_city);
         $district_name  = ecjia_region::getRegionName($shop_district);
         $street_name    = ecjia_region::getRegionName($shop_street);
         
-        $address       = $province_name.$district_name.$street_name.$shop_address;
+        $address = '';
+        if (!empty($province_name)) {
+        	$address .= $province_name;
+        }
+        if (!empty($city_name)) {
+        	$address .= $city_name;
+        }
+        if (!empty($district_name)) {
+        	$address .= $district_name;
+        }
+        if (!empty($street_name)) {
+        	$address .= $street_name;
+        }
+        $address 	   .= $shop_address;
         $address       = urlencode($address);
         $shop_point    = RC_Http::remote_get("https://apis.map.qq.com/ws/geocoder/v1/?address=" . $address . "&key=" . $key);
         $shop_point    = json_decode($shop_point['body'], true);
