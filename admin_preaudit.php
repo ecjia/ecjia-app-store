@@ -284,11 +284,10 @@ class admin_preaudit extends ecjia_admin {
 		    return $this->showmessage('信息不存在或已处理完成', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR,  array('pjaxurl' => RC_Uri::url('store/admin_preaudit/init')));
 		}
 		$info['province'] = RC_DB::table('regions')->where('region_id', $info['province'])->pluck('region_name');
-
 		$info['city'] = RC_DB::table('regions')->where('region_id', $info['city'])->pluck('region_name');
-
 		$info['district'] = RC_DB::table('regions')->where('region_id', $info['district'])->pluck('region_name');
-
+		$info['street'] = RC_DB::table('regions')->where('region_id', $info['street'])->pluck('region_name');
+		
 		$info['apply_time']	= RC_Time::local_date(ecjia::config('time_format'), $info['apply_time']);
 		$info['cat_name'] = RC_DB::table('store_category')->where('cat_id', $info['cat_id'])->pluck('cat_name');
 		$this->assign('store', $info);
