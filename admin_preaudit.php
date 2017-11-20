@@ -117,10 +117,10 @@ class admin_preaudit extends ecjia_admin {
 		$id    = intval($_GET['id']);
 		$store = RC_DB::table('store_preaudit')->where('id', $id)->first();
 
-        $provinces = with(new Ecjia\App\Setting\Region)->getProvinces(ecjia::config('shop_country'));
-        $cities = with(new Ecjia\App\Setting\Region)->getSubarea($store['province']);
-        $districts = with(new Ecjia\App\Setting\Region)->getSubarea($store['city']);
-        $streets = with(new Ecjia\App\Setting\Region)->getSubarea($store['district']);
+        $provinces = ecjia_region::getSubarea(ecjia::config('shop_country'));
+        $cities = ecjia_region::getSubarea($store['province']);
+        $districts = ecjia_region::getSubarea($store['city']);
+        $streets = ecjia_region::getSubarea($store['district']);
         
         $this->assign('province', $provinces);
         $this->assign('city', $cities);
@@ -287,10 +287,11 @@ class admin_preaudit extends ecjia_admin {
 		if (empty($info)) {
 		    return $this->showmessage('信息不存在或已处理完成', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR,  array('pjaxurl' => RC_Uri::url('store/admin_preaudit/init')));
 		}
-		$info['province'] = RC_DB::table('regions')->where('region_id', $info['province'])->pluck('region_name');
-		$info['city'] = RC_DB::table('regions')->where('region_id', $info['city'])->pluck('region_name');
-		$info['district'] = RC_DB::table('regions')->where('region_id', $info['district'])->pluck('region_name');
-		$info['street'] = RC_DB::table('regions')->where('region_id', $info['street'])->pluck('region_name');
+		$info['province'] 	= ecjia_region::getRegionName($info['province']);
+		$info['city'] 		= ecjia_region::getRegionName($info['city']);
+		$info['district'] 	= ecjia_region::getRegionName($info['district']);
+		$info['street'] 	= ecjia_region::getRegionName($info['street']);
+
 		
 		$info['apply_time']	= RC_Time::local_date(ecjia::config('time_format'), $info['apply_time']);
 		$info['cat_name'] = RC_DB::table('store_category')->where('cat_id', $info['cat_id'])->pluck('cat_name');
@@ -684,18 +685,6 @@ class admin_preaudit extends ecjia_admin {
 		return $cat_list;
 	}
 
-
-	/**
-	 * 获取指定地区的子级地区
-	 */
-	public function get_region(){
-        $parent_id	= $_GET['parent'];//上级区域编码
-		$arr['regions'] = with(new Ecjia\App\Setting\Region)->getSubarea($parent_id);//传参请求当前国家下信息
-		$arr['target']  = stripslashes(trim($_GET['target']));
-		$arr['target']  = htmlspecialchars($arr['target']);
-
-		echo json_encode($arr);
-	}
 }
 
 //end

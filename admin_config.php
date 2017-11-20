@@ -120,7 +120,7 @@ class admin_config extends ecjia_admin {
 		/*热门城市*/
 		$regions = array ();
 		$mobile_recommend_city = explode(',', ecjia::config('mobile_recommend_city'));
-		$region_data           = RC_DB::table('regions')->whereIn('region_id', $mobile_recommend_city)->get();
+		$region_data           = ecjia_region::getRegions($mobile_recommend_city);
 		if (!empty($region_data)) {
 			foreach ( $region_data as $key => $val ) {
 				if ( empty($val['region_name']) ) {
@@ -130,10 +130,9 @@ class admin_config extends ecjia_admin {
 				}
 			}
 		}
-		
 		$this->assign('mobile_recommend_city', $regions);
-		// 		$this->assign('countries', $this->db_region->get_regions());
-		$provinces = with(new Ecjia\App\Setting\Region)->getProvinces(ecjia::config('shop_country'));//获取当前国家的所有省份
+
+		$provinces = ecjia_region::getSubarea(ecjia::config('shop_country'));//获取当前国家的所有省份
 		$this->assign('provinces', $provinces);
 		
 		$this->display('store_config_info.dwt');
