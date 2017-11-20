@@ -59,7 +59,6 @@ class info_module extends api_admin implements api_interface {
 		}
 		
     	if($_SESSION['store_id'] > 0) {
-			$region = RC_Model::model('shipping/region_model');
 			$where = array();
 			/* if(substr($info['shop_logo'], 0, 1) == '.') {
 				$info['shop_logo'] = str_replace('../', '/', $info['shop_logo']);
@@ -77,9 +76,10 @@ class info_module extends api_admin implements api_interface {
     	  		'seller_logo'			=> RC_Upload::upload_url(RC_DB::table('merchants_config')->where('store_id', $_SESSION['store_id'])->where('code', 'shop_logo')->pluck('value')),
     	  		'seller_category'		=> RC_DB::table('store_category')->where('cat_id', $info['cat_id'])->pluck('cat_name'),
     	  		'seller_telephone'		=> RC_DB::table('merchants_config')->where('store_id', $_SESSION['store_id'])->where('code', 'shop_kf_mobile')->pluck('value'),
-    	  		'seller_province'		=> $region->where(array('region_id' => $info['province']))->get_field('region_name'),
-    	  		'seller_city'			=> $region->where(array('region_id' => $info['city']))->get_field('region_name'),
-		        'seller_district'		=> $region->where(array('region_id' => $info['district']))->get_field('region_name'),
+    	  		'seller_province'		=> ecjia_region::getRegionName($info['province']),
+    	  		'seller_city'			=> ecjia_region::getRegionName($info['city']),
+		        'seller_district'		=> ecjia_region::getRegionName($info['district']),
+
     	  		'seller_address'		=> $info['address'],
 				'validated_status'		=> $info['identity_status'],
     	  		'seller_description'	=> RC_DB::table('merchants_config')->where('store_id', $_SESSION['store_id'])->where('code', 'shop_description')->pluck('value'),
@@ -99,18 +99,18 @@ class info_module extends api_admin implements api_interface {
 				$privilege = 3;
 			}
     	 } else {
-			$region = RC_Model::model('shipping/region_model');
 			$seller_info = array(
-					'id'					=> 0,
-	    	  		'seller_name'			=> ecjia::config('shop_name'),
-	    	  		'seller_logo'			=> ecjia_config::has('shop_logo') ? RC_Upload::upload_url().'/'.ecjia::config('shop_logo') : '',
-	    	  		'seller_category'		=> null,
- 	    	  		'seller_telephone'		=> ecjia::config('service_phone'),
- 	    	  		'seller_province'		=> $region->where(array('region_id'=>ecjia::config('shop_province')))->get_field('region_name'),
- 	    	  		'seller_city'			=> $region->where(array('region_id'=>ecjia::config('shop_city')))->get_field('region_name'),
-	    	
-	    	  		'seller_address'		=> ecjia::config('shop_address'),
-	    	  		'seller_description'	=> strip_tags(ecjia::config('shop_notice'))
+				'id'					=> 0,
+    	  		'seller_name'			=> ecjia::config('shop_name'),
+    	  		'seller_logo'			=> ecjia_config::has('shop_logo') ? RC_Upload::upload_url().'/'.ecjia::config('shop_logo') : '',
+    	  		'seller_category'		=> null,
+	    	  		'seller_telephone'		=> ecjia::config('service_phone'),
+
+	    	  		'seller_province'		=> ecjia_region::getRegionName(ecjia::config('shop_province')),
+	  			'seller_city'			=> ecjia_region::getRegionName(ecjia::config('shop_city')),
+    	
+    	  		'seller_address'		=> ecjia::config('shop_address'),
+    	  		'seller_description'	=> strip_tags(ecjia::config('shop_notice'))
 			);
 			$result = $this->admin_priv('shop_config');
 			if (is_ecjia_error($result)) {

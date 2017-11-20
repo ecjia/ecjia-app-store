@@ -111,13 +111,12 @@ class config_module extends api_front implements api_interface {
 
 		$distance = (!empty($location['latitude']) && !empty($location['longitude']) && !empty($info)) ? getDistance($info['latitude'], $info['longitude'], $location['latitude'], $location['longitude']) : null;
 
-		$db_region = RC_Model::model('shipping/region_model');
-		$province_name = $db_region->where(array('region_id' => $info['province']))->get_field('region_name');
-		$city_name = $db_region->where(array('region_id' => $info['city']))->get_field('region_name');
+		$province_name = ecjia_region::getRegionName($info['province']);
+		$city_name = ecjia_region::getRegionName($info['city']);
 
 		//TODO ::增加优惠活动缓存
 		$store_options = array(
-				'store_id' => $info['store_id']
+			'store_id' => $info['store_id']
 		);
 		$favourable_result = RC_Api::api('favourable', 'store_favourable_list', $store_options);
 		if (!empty($favourable_result)) {

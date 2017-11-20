@@ -50,11 +50,8 @@ defined('IN_ECJIA') or exit('No permission resources.');
  * 入驻商家待审核列表
  */
 class admin_preaudit extends ecjia_admin {
-	private $db_region;
 	public function __construct() {
 		parent::__construct();
-
-		$this->db_region = RC_Model::model('store/region_model');
 
 		//全局JS和CSS
 		RC_Script::enqueue_script('smoke');

@@ -1115,7 +1115,6 @@ function get_consignee($user_id) {
 * @return  bool	true 完整 false 不完整
 */
 function check_consignee_info($consignee, $flow_type) {
-	$db = RC_Loader::load_app_model('region_model','shipping');
     if (exist_real_goods(0, $flow_type)) {
         /* 如果存在实体商品 */
         $res = !empty($consignee['consignee']) &&
