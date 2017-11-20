@@ -884,13 +884,12 @@ class admin extends ecjia_admin
      */
     public function get_region()
     {
-        $type           = !empty($_GET['type']) ? intval($_GET['type']) : 0;
-        $parent         = !empty($_GET['parent']) ? intval($_GET['parent']) : 0;
-        $arr['regions'] = $this->db_region->get_regions($type, $parent);
-        $arr['type']    = $type;
-        $arr['target']  = !empty($_GET['target']) ? stripslashes(trim($_GET['target'])) : '';
-        $arr['target']  = htmlspecialchars($arr['target']);
-        echo json_encode($arr);
+        $parent_id	= $_GET['parent'];//上级区域编码
+		$arr['regions'] = with(new Ecjia\App\Setting\Region)->getSubarea($parent_id);//传参请求当前国家下信息
+		$arr['target']  = stripslashes(trim($_GET['target']));
+		$arr['target']  = htmlspecialchars($arr['target']);
+
+		echo json_encode($arr);
     }
 
     /**
@@ -1110,6 +1109,7 @@ class admin extends ecjia_admin
         $shop_province = !empty($_REQUEST['province'])  ? trim($_REQUEST['province'])       : '';
         $shop_city     = !empty($_REQUEST['city'])      ? trim($_REQUEST['city'])           : '';
         $shop_district = !empty($_REQUEST['district'])  ? trim($_REQUEST['district'])       : '';
+        $shop_street   = !empty($_REQUEST['street'])    ? trim($_REQUEST['street'])         : '';
         $shop_address  = !empty($_REQUEST['address'])   ? trim($_REQUEST['address'])        : '';
 
         if (empty($shop_province)) {
@@ -1131,8 +1131,10 @@ class admin extends ecjia_admin
         }
         $province_name = RC_DB::table('regions')->where('region_id', $shop_province)->pluck('region_name');
         $city_name     = RC_DB::table('regions')->where('region_id', $shop_city)->pluck('region_name');
-        $city_district = RC_DB::table('regions')->where('region_id', $shop_district)->pluck('region_name');
-        $address       = $province_name . $city_name . '市' . $city_district . $shop_address;
+        $district_name = RC_DB::table('regions')->where('region_id', $shop_district)->pluck('region_name');
+        $street_name    = RC_DB::table('regions')->where('region_id', $shop_street)->pluck('region_name');
+        
+        $address       = $province_name.$district_name.$street_name.$shop_address;;
         $address       = urlencode($address);
         $shop_point    = RC_Http::remote_get("https://apis.map.qq.com/ws/geocoder/v1/?address=" . $address . "&key=" . $key);
         $shop_point    = json_decode($shop_point['body'], true);

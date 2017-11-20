@@ -117,12 +117,15 @@ class admin_preaudit extends ecjia_admin {
 		$id    = intval($_GET['id']);
 		$store = RC_DB::table('store_preaudit')->where('id', $id)->first();
 
-		$province   = $this->db_region->get_regions(1, 1);
-		$city       = $this->db_region->get_regions(2, $store['province']);
-		$district   = $this->db_region->get_regions(3, $store['city']);
-		$this->assign('province', $province);
-		$this->assign('city', $city);
-		$this->assign('district', $district);
+        $provinces = with(new Ecjia\App\Setting\Region)->getProvinces(ecjia::config('shop_country'));
+        $cities = with(new Ecjia\App\Setting\Region)->getSubarea($store['province']);
+        $districts = with(new Ecjia\App\Setting\Region)->getSubarea($store['city']);
+        $streets = with(new Ecjia\App\Setting\Region)->getSubarea($store['district']);
+        
+        $this->assign('province', $provinces);
+        $this->assign('city', $cities);
+        $this->assign('district', $districts);
+        $this->assign('street', $streets);
 
 		$certificates_list = array(
 			'1' => RC_Lang::get('store::store.people_id'),
@@ -225,6 +228,7 @@ class admin_preaudit extends ecjia_admin {
 			'province'					=> !empty($_POST['province'])				? $_POST['province']            : '',
 			'city'						=> !empty($_POST['city'])					? $_POST['city']                : '',
 			'district'					=> !empty($_POST['district'])				? $_POST['district']            : '',
+			'street'	    	 		=> !empty($_POST['street']) 				? $_POST['street'] 				: '',
 			'bank_address'         		=> !empty($_POST['bank_address']) 			? $_POST['bank_address']        : '',
 			'longitude'         		=> !empty($_POST['longitude']) 				? $_POST['longitude']           : '',
 			'latitude'         			=> !empty($_POST['latitude']) 				? $_POST['latitude']            : '',
@@ -685,12 +689,11 @@ class admin_preaudit extends ecjia_admin {
 	 * 获取指定地区的子级地区
 	 */
 	public function get_region(){
-		$type           = !empty($_GET['type'])   ? intval($_GET['type'])               : 0;
-		$parent         = !empty($_GET['parent']) ? intval($_GET['parent'])             : 0;
-		$arr['regions'] = $this->db_region->get_regions($type, $parent);
-		$arr['type']    = $type;
-		$arr['target']  = !empty($_GET['target']) ? stripslashes(trim($_GET['target'])) : '';
+        $parent_id	= $_GET['parent'];//上级区域编码
+		$arr['regions'] = with(new Ecjia\App\Setting\Region)->getSubarea($parent_id);//传参请求当前国家下信息
+		$arr['target']  = stripslashes(trim($_GET['target']));
 		$arr['target']  = htmlspecialchars($arr['target']);
+
 		echo json_encode($arr);
 	}
 }

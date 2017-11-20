@@ -62,6 +62,7 @@ class resignup_module extends api_admin implements api_interface {
         $province           = $this->requestData('province');
         $city               = $this->requestData('city');
         $district           = $this->requestData('district');
+        $street             = $this->requestData('street');
         $address            = $this->requestData('address');
         $longitude          = $this->requestData('longitude');
         $latitude           = $this->requestData('latitude');
@@ -110,6 +111,7 @@ class resignup_module extends api_admin implements api_interface {
             'province'           => $province,
             'city'               => $city,
             'district'			 => $district,
+            'street'             => $street,
             'address'            => $address,
             'longitude'          => $longitude,
             'latitude'           => $latitude,
@@ -132,13 +134,27 @@ class resignup_module extends api_admin implements api_interface {
  * 根据地区获取经纬度
  */
 function getgeohash($city, $address){
-    $shop_province      = !empty($province)    ? intval($province)           : 0;
-    $shop_city          = !empty($city)        ? intval($city)               : 0;
-    $shop_address       = !empty($address)     ? htmlspecialchars($address)  : 0;
+    $shop_city          = !empty($city)        ? trim($city)                : '';
+    $shop_address       = !empty($address)     ? htmlspecialchars($address) : 0;
+    $data = with(new Ecjia\App\Setting\Region)->getSplitRegion($shop_city);
 
-    $city_name              = RC_DB::table('regions')->where('region_id', $shop_city)->pluck('region_name');
-    $city_district          = RC_DB::table('regions')->where('region_id', $shop_district)->pluck('region_name');
-    $address                = $city_name.'市'.$shop_address;
+    $address = '';
+    if (!empty($data['country'])) {
+        $address .= RC_DB::table('regions')->where('region_id', $data['country'])->pluck('region_name');
+    }
+    if (!empty($data['province'])) {
+        $address .= RC_DB::table('regions')->where('region_id', $data['province'])->pluck('region_name');
+    }
+    // if (!empty($data['city'])) {
+    //     $address .= RC_DB::table('regions')->where('region_id', $data['city'])->pluck('region_name');
+    // }
+    if (!empty($data['district'])) {
+        $address .= RC_DB::table('regions')->where('region_id', $data['district'])->pluck('region_name');
+    }
+    if (!empty($data['street'])) {
+        $address .= RC_DB::table('regions')->where('region_id', $data['street'])->pluck('region_name');
+    }
+    $address .= $shop_address;
 
     //腾讯地图api 地址解析（地址转坐标）
     $address = urlencode($address);
