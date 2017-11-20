@@ -62,6 +62,7 @@ class signup_module extends api_admin implements api_interface {
 		$province			= $this->requestData('province');
 		$city				= $this->requestData('city');
 		$district			= $this->requestData('district');
+		$street				= $this->requestData('street');
 		$address			= $this->requestData('address');
 		$longitude			= $this->requestData('location.longitude');
 		$latitude			= $this->requestData('location.latitude');
@@ -113,21 +114,22 @@ class signup_module extends api_admin implements api_interface {
         }
 
 		$merchant_shop_data = array(
-				'responsible_person'	=> $responsible_person,
-				'merchants_name'		=> $seller_name,
-				'contact_mobile'		=> $mobile,
-				'email'					=> $email,
-				'check_status'			=> 1,
-				'apply_time'			=> RC_Time::gmtime(),
-				'store_id'				=> 0,
-				'cat_id'				=> $seller_category,
-				'validate_type'			=> $validate_type,
-				'province'				=> $province,
-				'city'					=> $city,
-				'district'				=> $district,
-				'address'				=> $address,
-				'longitude'				=> $longitude,
-				'latitude'				=> $latitude,
+			'responsible_person'	=> $responsible_person,
+			'merchants_name'		=> $seller_name,
+			'contact_mobile'		=> $mobile,
+			'email'					=> $email,
+			'check_status'			=> 1,
+			'apply_time'			=> RC_Time::gmtime(),
+			'store_id'				=> 0,
+			'cat_id'				=> $seller_category,
+			'validate_type'			=> $validate_type,
+			'province'				=> $province,
+			'city'					=> $city,
+			'district'				=> $district,
+			'street'				=> $street,
+			'address'				=> $address,
+			'longitude'				=> $longitude,
+			'latitude'				=> $latitude,
 		);
 		
 		$insert_id = RC_DB::table('store_preaudit')->insertGetId($merchant_shop_data);
@@ -150,10 +152,10 @@ function getgeohash($city, $address){
     $shop_city          = !empty($city)        ? intval($city)               : 0;
     $shop_address       = !empty($address)     ? htmlspecialchars($address)  : 0;
 
-    $city_name              = RC_DB::table('regions')->where('region_id', $shop_city)->pluck('region_name');
-    $city_district          = RC_DB::table('regions')->where('region_id', $shop_district)->pluck('region_name');
-    $address                = $city_name.'市'.$shop_address;
-    
+    $city_name     = ecjia_region::getRegionName($shop_city);
+    $city_district = ecjia_region::getRegionName($shop_district);
+    $address       = $city_name.'市'.$shop_address;
+
     //腾讯地图api 地址解析（地址转坐标）
     $address = urlencode($address);
     $key = ecjia::config('map_qq_key');

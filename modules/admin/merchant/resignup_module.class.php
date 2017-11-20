@@ -136,23 +136,23 @@ class resignup_module extends api_admin implements api_interface {
 function getgeohash($city, $address){
     $shop_city          = !empty($city)        ? trim($city)                : '';
     $shop_address       = !empty($address)     ? htmlspecialchars($address) : 0;
-    $data = with(new Ecjia\App\Setting\Region)->getSplitRegion($shop_city);
+    $data = ecjia_region::getSplitRegion($shop_city);
 
     $address = '';
     if (!empty($data['country'])) {
-        $address .= RC_DB::table('regions')->where('region_id', $data['country'])->pluck('region_name');
+        $address .= ecjia_region::getRegionName($data['country']);
     }
     if (!empty($data['province'])) {
-        $address .= RC_DB::table('regions')->where('region_id', $data['province'])->pluck('region_name');
+        $address .= ecjia_region::getRegionName($data['province']);
     }
     // if (!empty($data['city'])) {
-    //     $address .= RC_DB::table('regions')->where('region_id', $data['city'])->pluck('region_name');
+    //     $address .= ecjia_region::getRegionName($data['city']);
     // }
     if (!empty($data['district'])) {
-        $address .= RC_DB::table('regions')->where('region_id', $data['district'])->pluck('region_name');
+        $address .= ecjia_region::getRegionName($data['district']);
     }
     if (!empty($data['street'])) {
-        $address .= RC_DB::table('regions')->where('region_id', $data['street'])->pluck('region_name');
+        $address .= ecjia_region::getRegionName($data['street']);
     }
     $address .= $shop_address;
 

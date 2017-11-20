@@ -169,7 +169,7 @@ class admin extends ecjia_admin
         $this->assign('action_link', array('href' => RC_Uri::url('store/admin/init'), 'text' => '自营店铺列表'));
 
         $cat_list = $this->get_cat_select_list();
-        $provinces = with(new Ecjia\App\Setting\Region)->getProvinces(ecjia::config('shop_country'));//获取当前国家的所有省份
+        $provinces = ecjia_region::getSubarea(ecjia::config('shop_country'));//获取当前国家的所有省份
         $this->assign('province', $provinces);
         
         $this->assign('form_action', RC_Uri::url('store/admin/insert'));
@@ -362,10 +362,10 @@ class admin extends ecjia_admin
             '3' => RC_Lang::get('store::store.hong_kong_and_macao_pass'),
         );
 
-        $provinces = with(new Ecjia\App\Setting\Region)->getProvinces(ecjia::config('shop_country'));
-        $cities = with(new Ecjia\App\Setting\Region)->getSubarea($store['province']);
-        $districts = with(new Ecjia\App\Setting\Region)->getSubarea($store['city']);
-        $streets = with(new Ecjia\App\Setting\Region)->getSubarea($store['district']);
+        $provinces = ecjia_region::getSubarea(ecjia::config('shop_country'));
+        $cities = ecjia_region::getSubarea($store['province']);
+        $districts = ecjia_region::getSubarea($store['city']);
+        $streets = ecjia_region::getSubarea($store['district']);
         
         $this->assign('province', $provinces);
         $this->assign('city', $cities);
@@ -617,10 +617,10 @@ class admin extends ecjia_admin
         $store['confirm_time'] = RC_Time::local_date(ecjia::config('time_format'), $store['confirm_time']);
         $store['expired_time'] = RC_Time::local_date('Y-m-d', $store['expired_time']);
 
-        $store['province'] = RC_DB::table('regions')->where('region_id', $store['province'])->pluck('region_name');
-        $store['city']     = RC_DB::table('regions')->where('region_id', $store['city'])->pluck('region_name');
-        $store['district'] = RC_DB::table('regions')->where('region_id', $store['district'])->pluck('region_name');
-        $store['street'] = RC_DB::table('regions')->where('region_id', $store['street'])->pluck('region_name');
+        $store['province']  = ecjia_region::getRegionName($store['province']);
+        $store['city']      = ecjia_region::getRegionName($store['city']);
+        $store['district']  = ecjia_region::getRegionName($store['district']);
+        $store['street']    = ecjia_region::getRegionName($store['street']);
 
         $this->assign('ur_here', $store['merchants_name']);
         $store['cat_name'] = RC_DB::table('store_category')->where('cat_id', $store['cat_id'])->pluck('cat_name');
@@ -880,19 +880,6 @@ class admin extends ecjia_admin
     }
 
     /**
-     * 获取指定地区的子级地区
-     */
-    public function get_region()
-    {
-        $parent_id	= $_GET['parent'];//上级区域编码
-		$arr['regions'] = with(new Ecjia\App\Setting\Region)->getSubarea($parent_id);//传参请求当前国家下信息
-		$arr['target']  = stripslashes(trim($_GET['target']));
-		$arr['target']  = htmlspecialchars($arr['target']);
-
-		echo json_encode($arr);
-    }
-
-    /**
      * 查看店铺日志
      */
     public function view_log()
@@ -1129,12 +1116,11 @@ class admin extends ecjia_admin
         if (empty($key)) {
             return $this->showmessage('腾讯地图key不能为空', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
-        $province_name = RC_DB::table('regions')->where('region_id', $shop_province)->pluck('region_name');
-        $city_name     = RC_DB::table('regions')->where('region_id', $shop_city)->pluck('region_name');
-        $district_name = RC_DB::table('regions')->where('region_id', $shop_district)->pluck('region_name');
-        $street_name    = RC_DB::table('regions')->where('region_id', $shop_street)->pluck('region_name');
+        $province_name  = ecjia_region::getRegionName($shop_province);
+        $district_name  = ecjia_region::getRegionName($shop_district);
+        $street_name    = ecjia_region::getRegionName($shop_street);
         
-        $address       = $province_name.$district_name.$street_name.$shop_address;;
+        $address       = $province_name.$district_name.$street_name.$shop_address;
         $address       = urlencode($address);
         $shop_point    = RC_Http::remote_get("https://apis.map.qq.com/ws/geocoder/v1/?address=" . $address . "&key=" . $key);
         $shop_point    = json_decode($shop_point['body'], true);
@@ -1173,6 +1159,7 @@ class admin extends ecjia_admin
         $this->assign('url', $url);
         $this->display('store_progress.dwt');
     }
+    
 }
 
 //end

@@ -75,29 +75,29 @@ class process_module  extends api_admin implements api_interface {
     	
     	if (!empty($info_store_preaudit)) {
     		return array(
-    				'check_status'	=> $info_store_preaudit['check_status'], 
-    				'merchant_info' => array(
-    						'responsible_person'	=> $info_store_preaudit['responsible_person'],
-    						'email'					=> $info_store_preaudit['email'],
-    						'mobile'				=> $info_store_preaudit['contact_mobile'],
-    						'seller_name'			=> $info_store_preaudit['merchants_name'],
-    						'seller_category'		=> RC_DB::table('store_category')->where('cat_id', $info_store_preaudit['cat_id'])->pluck('cat_name'),
-    						'address'				=> RC_DB::table('regions')->where('region_id', $info_store_preaudit['province'])->pluck('region_name').RC_DB::table('regions')->where('region_id', $info_store_preaudit['city'])->pluck('region_name').RC_DB::table('regions')->where('region_id', $info_store_preaudit['district'])->pluck('region_name').$info_store_preaudit['address'],
-    				        'remark'                => $info_store_preaudit['remark'],
-    				)
+				'check_status'	=> $info_store_preaudit['check_status'], 
+				'merchant_info' => array(
+					'responsible_person'	=> $info_store_preaudit['responsible_person'],
+					'email'					=> $info_store_preaudit['email'],
+					'mobile'				=> $info_store_preaudit['contact_mobile'],
+					'seller_name'			=> $info_store_preaudit['merchants_name'],
+					'seller_category'		=> RC_DB::table('store_category')->where('cat_id', $info_store_preaudit['cat_id'])->pluck('cat_name'),
+					'address'				=> ecjia_region::getRegionName($info_store_preaudit['province']).ecjia_region::getRegionName($info_store_preaudit['city']).ecjia_region::getRegionName($info_store_preaudit['district']).ecjia_region::getRegionName($info_store_preaudit['street']).$info_store_preaudit['address'],
+			        'remark'                => $info_store_preaudit['remark']
+				)
     		);
     	} elseif (!empty($info_store_franchisee)) {
     		return array(
-    				'check_status'	=> 2,
-    				'merchant_info' => array(
-    						'responsible_person'	=> $info_store_franchisee['responsible_person'],
-    						'email'					=> $info_store_franchisee['email'],
-    						'mobile'				=> $info_store_franchisee['contact_mobile'],
-    						'seller_name'			=> $info_store_franchisee['merchants_name'],
-    						'seller_category'		=> RC_DB::table('store_category')->where('cat_id', $info_store_franchisee['cat_id'])->pluck('cat_name'),
-    						'address'				=> RC_DB::table('regions')->where('region_id', $info_store_preaudit['province'])->pluck('region_name').RC_DB::table('regions')->where('region_id', $info_store_preaudit['city'])->pluck('region_name').RC_DB::table('regions')->where('region_id', $info_store_franchisee['district'])->pluck('region_name').$info_store_franchisee['address'],
-    				        'remark'                => $info_store_franchisee['remark'],
-    				)
+				'check_status'	=> 2,
+				'merchant_info' => array(
+					'responsible_person'	=> $info_store_franchisee['responsible_person'],
+					'email'					=> $info_store_franchisee['email'],
+					'mobile'				=> $info_store_franchisee['contact_mobile'],
+					'seller_name'			=> $info_store_franchisee['merchants_name'],
+					'seller_category'		=> RC_DB::table('store_category')->where('cat_id', $info_store_franchisee['cat_id'])->pluck('cat_name'),
+					'address'				=> ecjia_region::getRegionName($info_store_franchisee['province']).ecjia_region::getRegionName($info_store_franchisee['city']).ecjia_region::getRegionName($info_store_franchisee['district']).ecjia_region::getRegionName($info_store_franchisee['street']).$info_store_franchisee['address'],
+			        'remark'                => $info_store_franchisee['remark']
+				)
     		);
     		
     	}
