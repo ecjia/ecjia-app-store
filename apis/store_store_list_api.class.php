@@ -182,7 +182,7 @@ class store_store_list_api extends Component_Event_Api {
 			$seller_list = array();
 			
 			$field = 'ssi.*, sc.cat_name, count(cs.store_id) as follower';
-			$result = $db_store_franchisee->join(array('collect_store', 'store_category', 'goods'))->field($field)->where($where)->limit($limit)->group('ssi.store_id')->order(array())->select();
+			$result = $db_store_franchisee->join(array('collect_store', 'store_category', 'goods'))->field($field)->where($where)->limit($limit)->group('ssi.store_id')->select();
 			
 			if (!empty($result)) {
 			    RC_Loader::load_app_func('merchant', 'merchant');
@@ -217,10 +217,10 @@ class store_store_list_api extends Component_Event_Api {
 								'latitude'  => $result[$k]['latitude'],
 								'longitude' => $result[$k]['longitude'],
 							),
-					        'province' 	=> $result[$k]['province'] 	? ecjia_region::getRegionName($result[$k]['province']) 	: '';
-    					    'city' 		=> $result[$k]['city'] 		? ecjia_region::getRegionName($result[$k]['city']) 		: '';
-    					    'district' 	=> $result[$k]['district'] 	? ecjia_region::getRegionName($result[$k]['district']) 	: '';
-    					    'street'	=> $result[$k]['street'] 	? ecjia_region::getRegionName($result[$k]['street']) 	: '';
+					        'province' 	=> $result[$k]['province'] 	? ecjia_region::getRegionName($result[$k]['province']) 	: '',
+    					    'city' 		=> $result[$k]['city'] 		? ecjia_region::getRegionName($result[$k]['city']) 		: '',
+    					    'district' 	=> $result[$k]['district'] 	? ecjia_region::getRegionName($result[$k]['district']) 	: '',
+    					    'street'	=> $result[$k]['street'] 	? ecjia_region::getRegionName($result[$k]['street']) 	: '',
  
 					        'address' 	=> $result[$k]['address'],
 							'label_trade_time'	 => get_store_trade_time($result[$k]['store_id']),

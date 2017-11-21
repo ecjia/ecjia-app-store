@@ -129,6 +129,8 @@ class data_module extends api_front implements api_interface {
 		    
 		    $province_name = ecjia_region::getRegionName($info['province']);
 			$city_name = ecjia_region::getRegionName($info['city']);
+			$district_name = ecjia_region::getRegionName($info['district']);
+			$street_name = ecjia_region::getRegionName($info['street']);
 		    
 		    //TODO ::增加优惠活动缓存
 		    $store_options = array(
@@ -188,14 +190,14 @@ class data_module extends api_front implements api_interface {
 		    if (!empty($quickpay_activity_list['list'])) {
 		    	foreach($quickpay_activity_list['list'] as $key => $val) {
 		    		$quickpay_activity_list_new[] = array(
-		    				'activity_id' 			=> $val['id'],
-		    				'title' 	  			=> $val['title'],
-		    				'activity_type' 		=> $val['activity_type'],
-		    				'label_activity_type' 	=> $val['label_activity_type'],
-		    				'limit_time_type'		=> $val['limit_time_type'],
-		    				'limit_time_weekly'		=> $val['limit_time_weekly_str'],
-		    				'limit_time_daily'		=> $val['limit_time_daily_str'],
-		    				'limit_time_exclude'	=> $val['limit_time_exclude'],
+	    				'activity_id' 			=> $val['id'],
+	    				'title' 	  			=> $val['title'],
+	    				'activity_type' 		=> $val['activity_type'],
+	    				'label_activity_type' 	=> $val['label_activity_type'],
+	    				'limit_time_type'		=> $val['limit_time_type'],
+	    				'limit_time_weekly'		=> $val['limit_time_weekly_str'],
+	    				'limit_time_daily'		=> $val['limit_time_daily_str'],
+	    				'limit_time_exclude'	=> $val['limit_time_exclude'],
 		    		);
 		    	}	
 		    }
@@ -216,7 +218,7 @@ class data_module extends api_front implements api_interface {
 		        'seller_qrcode'		=> with(new Ecjia\App\Mobile\Qrcode\GenerateMerchant($info['store_id'], empty($info['shop_logo']) ?  '' : RC_Upload::upload_url($info['shop_logo'])))->getQrcodeUrl(),
 		        'seller_category'	=> $info['cat_name'],
 		        'shop_name'			=> $info['company_name'],
-		        'shop_address'		=> $province_name.' '.$city_name.' '.$info['address'],
+		        'shop_address'		=> $province_name.' '.$city_name.' '.$district_name.' '. $street_name.' '.$info['address'],
 		        'telephone'			=> $info['shop_kf_mobile'],
 		        'seller_qq'			=> $info['shop_kf_qq'],
 		        'seller_description'	=> $info['shop_description'],
