@@ -119,6 +119,7 @@ class nearby_module extends api_front implements api_interface {
 					'seller_province'   => $row['province'],
 				    'seller_city'       => $row['city'],
 				    'seller_district'   => $row['district'],
+				    'seller_street'		=> $row['street'],
 				    'seller_address'    => $row['address'],
 					'distance'			=> $distance,
 					'label_trade_time'	=> $row['label_trade_time'],
