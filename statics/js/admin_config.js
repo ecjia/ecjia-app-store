@@ -121,7 +121,7 @@
 		},
 		
         choose_area: function () {
-            $('.select_hot_city').on('click', function (e) {
+            $('.select_hot_city').off('click').on('click', function (e) {
                 e.preventDefault();
                 var $this = $(this),
                     val = $this.attr('data-val'),
