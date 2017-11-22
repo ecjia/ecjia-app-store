@@ -332,7 +332,7 @@ function cycleimage_data($response, $request_params)
 function mobile_menu_data($response, $request_params) {
     $request = royalcms('request');
 
-    $city_id	= $request->input('city_id', '');
+    $city_id	= $request->input('city_id', 0);
 
     $device_client = $request->header('device-client', 'iphone');
 
