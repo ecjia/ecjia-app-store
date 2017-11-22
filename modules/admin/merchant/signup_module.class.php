@@ -70,7 +70,7 @@ class signup_module extends api_admin implements api_interface {
 
 
 		if (empty($responsible_person) || empty($email) || empty($mobile) || empty($seller_name) || empty($seller_category)
-		     || empty($validate_type) || empty($province) || empty($city)|| empty($district) || empty($address) || empty($longitude) || empty($latitude)) {
+		     || empty($validate_type) || empty($province) || empty($city)|| empty($district) || empty($street) || empty($address) || empty($longitude) || empty($latitude)) {
 			return new ecjia_error( 'invalid_parameter', RC_Lang::get ('system::system.invalid_parameter' ));
 		}
 
