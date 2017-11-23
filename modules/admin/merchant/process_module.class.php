@@ -50,7 +50,7 @@ defined('IN_ECJIA') or exit('No permission resources.');
  * 申请商家入驻查询进度
  * @author will.chen
  */
-class process_module  extends api_admin implements api_interface {
+class process_module extends api_admin implements api_interface {
     public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {
     	$mobile 		= $this->requestData('mobile');
     	$validate_code	= $this->requestData('validate_code');
@@ -58,6 +58,7 @@ class process_module  extends api_admin implements api_interface {
         if (empty($mobile) || empty($validate_code)) {
         	return new ecjia_error( 'invalid_parameter', RC_Lang::get ('system::system.invalid_parameter' ));
     	}
+    	RC_Logger::getLogger('error')->info(array($_SESSION['merchant_validate_code'], $validate_code));
     	
     	/* 判断校验码*/
     	if ($_SESSION['merchant_validate_code'] != $validate_code) {
