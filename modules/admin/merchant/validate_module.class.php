@@ -106,7 +106,7 @@ class validate_module extends api_admin implements api_interface {
         $options = array(
         	'mobile' => $value,
         	'event'	 => 'sms_get_validate',
-        	'value'  =>array(
+        	'value'  => array(
         		'code' 			=> $code,
         		'service_phone' => ecjia::config('service_phone'),
         	),

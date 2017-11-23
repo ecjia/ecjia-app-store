@@ -58,7 +58,6 @@ class process_module extends api_admin implements api_interface {
         if (empty($mobile) || empty($validate_code)) {
         	return new ecjia_error( 'invalid_parameter', RC_Lang::get ('system::system.invalid_parameter' ));
     	}
-    	RC_Logger::getLogger('error')->info(array($_SESSION['merchant_validate_code'], $validate_code));
     	
     	/* 判断校验码*/
     	if ($_SESSION['merchant_validate_code'] != $validate_code) {
