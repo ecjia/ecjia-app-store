@@ -136,25 +136,6 @@ class resignup_module extends api_admin implements api_interface {
 function getgeohash($city, $address){
     $shop_city          = !empty($city)        ? trim($city)                : '';
     $shop_address       = !empty($address)     ? htmlspecialchars($address) : 0;
-    // $data = ecjia_region::getSplitRegion($shop_city);
-
-    // $address = '';
-    // if (!empty($data['country'])) {
-    //     $address .= ecjia_region::getRegionName($data['country']);
-    // }
-    // if (!empty($data['province'])) {
-    //     $address .= ecjia_region::getRegionName($data['province']);
-    // }
-    // if (!empty($data['city'])) {
-    //     $address .= ecjia_region::getRegionName($data['city']);
-    // }
-    // if (!empty($data['district'])) {
-    //     $address .= ecjia_region::getRegionName($data['district']);
-    // }
-    // if (!empty($data['street'])) {
-    //     $address .= ecjia_region::getRegionName($data['street']);
-    // }
-    // $address .= $shop_address;
 
     $city_name  = ecjia_region::getRegionName($shop_city);
     $address    = $city_name.$shop_address;
