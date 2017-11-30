@@ -173,7 +173,7 @@ class config_module extends api_front implements api_interface {
 		        'seller_qrcode'			=> with(new Ecjia\App\Mobile\Qrcode\GenerateMerchant($info['store_id'], empty($info['shop_logo']) ?  '' : RC_Upload::upload_url($info['shop_logo'])))->getQrcodeUrl(),
 				'seller_category'		=> $info['cat_name'],
 				'shop_name'				=> $info['company_name'],
-				'shop_address'			=> $province_name.' '.$city_name.' '.$district_name.' '. $street_name.' '.$info['address'],
+				'shop_address'			=> $province_name.$city_name.$district_name.$street_name.' '.$info['address'],
 				'telephone'				=> $info['shop_kf_mobile'],
 				'seller_qq'				=> $info['shop_kf_qq'],
 				'seller_description'	=> $info['shop_description'],
