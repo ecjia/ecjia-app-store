@@ -74,7 +74,7 @@ class config_module extends api_front implements api_interface {
 // 							->find();
         $info = RC_DB::table('store_franchisee as sf')
         ->leftJoin('store_category as sc', RC_DB::raw('sf.cat_id'), '=', RC_DB::raw('sc.cat_id'))
-        ->leftJoin('collect_store as cs', RC_DB::raw('sf.cat_id'), '=', RC_DB::raw('cs.store_id'))
+        ->leftJoin('collect_store as cs', RC_DB::raw('sf.store_id'), '=', RC_DB::raw('cs.store_id'))
         ->selectRaw('sf.*, sc.cat_name, count(cs.store_id) as follower, SUM(IF(cs.user_id = '.$user_id.',1,0)) as is_follower')
         ->where(RC_DB::raw('sf.status'), 1)->where(RC_DB::raw('sf.store_id'), $seller_id)
         ->first();
