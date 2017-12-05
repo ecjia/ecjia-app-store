@@ -58,10 +58,6 @@ class validate_module extends api_admin implements api_interface {
 		$validate_code	= $this->requestData('validate_code');
 		$time           = RC_Time::gmtime();
 
-		if (!empty($validate_code)) {
-			RC_Logger::getLogger('error')->info(array($_SESSION['merchant_validate_code'], $validate_code));
-		}
-		
 		if (empty($type) || empty($value)) {
 			return new ecjia_error( 'invalid_parameter', RC_Lang::get ('system::system.invalid_parameter' ));
 		}
@@ -80,14 +76,14 @@ class validate_module extends api_admin implements api_interface {
 			$info_store_franchisee	= RC_DB::table('store_franchisee')->where('contact_mobile', $value)->first();
             $info_staff_user		= RC_DB::table('staff_user')->where('mobile', $value)->first();
 			
-// 			if (!empty($info_store_preaudit)){
-//                 return new ecjia_error('merchant_checking', '手机号'.$value.'已被申请，请确认该账号是否为本人所有');
-//             }elseif(!empty($info_store_franchisee)){
-//                 return new ecjia_error('merchant_exist', '手机号'.$value.'已被申请，请确认该账号是否为本人所有');
-//             }
-//             if(!empty($info_staff_user)){
-//                 return new ecjia_error('already_signup', '手机号'.$value.'已被注册为店铺员工');
-//             }
+			if (!empty($info_store_preaudit)){
+                return new ecjia_error('merchant_checking', '手机号'.$value.'已被申请，请确认该账号是否为本人所有');
+            }elseif(!empty($info_store_franchisee)){
+                return new ecjia_error('merchant_exist', '手机号'.$value.'已被申请，请确认该账号是否为本人所有');
+            }
+            if(!empty($info_staff_user)){
+                return new ecjia_error('already_signup', '手机号'.$value.'已被注册为店铺员工');
+            }
 		}
 
         if (!empty($validate_code)) {
@@ -103,7 +99,7 @@ class validate_module extends api_admin implements api_interface {
 		if (($_SESSION['merchant_validate_expiry'] - 1740) > $time && empty($validate_code)) {
 		    return new ecjia_error('restrict_times', '您发送验证码的频率过高，请稍等一分钟！');
 		}
-
+		
         // 发送验证码
         // 发送短信
         $code     = rand(100000, 999999);
