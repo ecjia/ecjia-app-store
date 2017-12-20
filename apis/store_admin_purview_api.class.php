@@ -71,9 +71,6 @@ class store_admin_purview_api extends Component_Event_Api {
             array('action_name' => '配送方式', 		'action_code' => 'store_shipping_manage', 	'relevance' => ''),
             array('action_name' => '查看日志', 		'action_code' => 'store_log_manage', 		'relevance' => ''),
             array('action_name' => '删除日志', 		'action_code' => 'store_log_delete', 		'relevance' => ''),
-        	array('action_name' => '打印机管理', 		'action_code' => 'store_printer_manage', 		'relevance' => ''),
-        	array('action_name' => '打印机更新', 		'action_code' => 'store_printer_update', 		'relevance' => ''),
-        	array('action_name' => '打印记录', 		'action_code' => 'store_printer_record_manage', 'relevance' => ''),
         		
         	//待审核入驻商权限
         	array('action_name' => RC_Lang::get('store::store.store_preaudit'), 'action_code' => 'store_preaudit_manage', 	'relevance' => ''),
