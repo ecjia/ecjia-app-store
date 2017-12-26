@@ -18,7 +18,8 @@
 		<thead>
 			<tr>
 				<th>分类名称</th>
-				<th class="w100">店铺数量</th>
+				<th class="w100">自营店铺</th>
+				<th class="w100">入驻店铺</th>
 				<th class="w100">排序</th>
 				<th class="w100">是否显示</th>
 				<th class="w80">操作</th>
@@ -38,8 +39,10 @@
 				<!-- {/if} -->
 			</td>
 			<td>
-				<a class="no-underline" target="__blank" href='{url path="store/admin/init" args="cat={$cat.cat_id}"}' title="自营店铺列表">自营：{$cat.self_num}</a><br/>
-				<a class="no-underline" target="__blank" href='{url path="store/admin/join" args="cat={$cat.cat_id}"}' title="入驻店铺列表">入驻：{$cat.join_num}</a>
+				<a class="no-underline" target="__blank" href='{url path="store/admin/init" args="cat={$cat.cat_id}"}' title="自营店铺列表">{$cat.self_num}</a>
+			</td>
+			<td>
+				<a class="no-underline" target="__blank" href='{url path="store/admin/join" args="cat={$cat.cat_id}"}' title="入驻店铺列表">{$cat.join_num}</a>
 			</td>
 			<td>
 				<span class="cursor_pointer" data-trigger="editable" data-url="{url path='store/admin_store_category/edit_sort_order'}" data-name="sort_order" data-pk="{$cat.cat_id}" data-title="编辑排序"> 
