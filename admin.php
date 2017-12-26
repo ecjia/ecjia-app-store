@@ -186,6 +186,7 @@ class admin extends ecjia_admin
         $store_id = intval($_POST['store_id']);
 
         $data = array(
+            'validate_type'  => 2,
             'cat_id'         => !empty($_POST['store_cat']) ? $_POST['store_cat'] : 0,
             'merchants_name' => !empty($_POST['merchants_name']) ? $_POST['merchants_name'] : '',
             'shop_keyword'   => !empty($_POST['shop_keyword']) ? $_POST['shop_keyword'] : '',
