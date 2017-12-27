@@ -52,7 +52,7 @@ class admin_config extends ecjia_admin {
 		parent::__construct();
 		
 		RC_Loader::load_app_func('global');
-		assign_adminlog_content();
+		Ecjia\App\Store\Helper::assign_adminlog_content();
 	
 		RC_Loader::load_app_func('merchant_store_category', 'store');
 		RC_Script::enqueue_script('jquery-validate');

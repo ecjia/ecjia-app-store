@@ -57,7 +57,7 @@ class admin extends ecjia_admin
 
         RC_Loader::load_app_func('global');
         RC_Loader::load_app_func('merchant_store');
-        assign_adminlog_content();
+        Ecjia\App\Store\Helper::assign_adminlog_content();
 
         //全局JS和CSS
         RC_Script::enqueue_script('smoke');
