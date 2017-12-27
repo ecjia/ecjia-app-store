@@ -50,28 +50,29 @@ use ecjia_admin_log;
 
 class Helper
 {
-    
+
     /**
      * 添加管理员记录日志操作对象
      */
-    public static function assign_adminlog_content() {
-    	ecjia_admin_log::instance()->add_object('store_commission','佣金结算');
-    	ecjia_admin_log::instance()->add_object('store_commission_status','佣金结算状态');
-    	
-    	ecjia_admin_log::instance()->add_object('merchants_step', '申请流程');
-    	ecjia_admin_log::instance()->add_object('merchants_step_title', '申请流程信息');
-    	ecjia_admin_log::instance()->add_object('merchants_step_custom', '自定义字段');
-    	
-    	ecjia_admin_log::instance()->add_object('seller', '入驻商');
-    	ecjia_admin_log::instance()->add_object('merchants_brand', '商家品牌');
-    	ecjia_admin_log::instance()->add_object('store_category', '店铺分类');
-    	ecjia_admin_log::instance()->add_object('merchant_notice', '商家公告');
-    	
-    	ecjia_admin_log::instance()->add_object('config', '配置');
-    	ecjia_admin_log::instance()->add_object('store_percent', '佣金比例');
-    	ecjia_admin_log::instance()->add_object('store_mobileconfig', '店铺街配置');
+    public static function assign_adminlog_content()
+    {
+        ecjia_admin_log::instance()->add_object('store_commission', '佣金结算');
+        ecjia_admin_log::instance()->add_object('store_commission_status', '佣金结算状态');
+
+        ecjia_admin_log::instance()->add_object('merchants_step', '申请流程');
+        ecjia_admin_log::instance()->add_object('merchants_step_title', '申请流程信息');
+        ecjia_admin_log::instance()->add_object('merchants_step_custom', '自定义字段');
+
+        ecjia_admin_log::instance()->add_object('seller', '入驻商');
+        ecjia_admin_log::instance()->add_object('merchants_brand', '商家品牌');
+        ecjia_admin_log::instance()->add_object('store_category', '店铺分类');
+        ecjia_admin_log::instance()->add_object('merchant_notice', '商家公告');
+
+        ecjia_admin_log::instance()->add_object('config', '配置');
+        ecjia_admin_log::instance()->add_object('store_percent', '佣金比例');
+        ecjia_admin_log::instance()->add_object('store_mobileconfig', '店铺街配置');
     }
-    
+
 }
 
 // end
