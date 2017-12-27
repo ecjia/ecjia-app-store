@@ -51,8 +51,6 @@ class admin_mobileconfig extends ecjia_admin {
 	public function __construct() {
 		parent::__construct();
 		
-		$this->db_ad_position = RC_Loader::load_app_model('ad_position_model', 'adsense');
-		
 		RC_Loader::load_app_func('global');
 		assign_adminlog_content();
 	
