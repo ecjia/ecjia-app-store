@@ -497,6 +497,7 @@ class admin_preaudit extends ecjia_admin {
 					'province'					=> $store['province'],
 					'city'						=> $store['city'],
 					'district'					=> $store['district'],
+					'street'					=> $store['street'],
 				    'address'					=> $store['address'],
 				    'longitude'					=> $store['longitude'],
 				    'latitude'					=> $store['latitude'],
