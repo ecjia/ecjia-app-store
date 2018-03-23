@@ -441,6 +441,8 @@ class admin_preaudit extends ecjia_admin {
 				    $data_staff['email'] = $store['email'];
 				}
 				RC_DB::table('staff_user')->insertGetId($data_staff);
+				
+				RC_DB::table('store_account')->insertGetId(array('store_id' => $store_id, 'deposit' => ecjia::config('store_deposit')));
 
 				//审核通过，修改所有日志storeid type
 				RC_DB::table('store_check_log')->where('store_id', $id)->where('type', 1)->update(array('store_id' => $store_id, 'type' => 2));
