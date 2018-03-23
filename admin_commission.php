@@ -72,6 +72,7 @@ class admin_commission extends ecjia_admin {
 		RC_Script::enqueue_script('media-editor',RC_Uri::vendor_url('tinymce/tinymce.min.js'));
 		RC_Script::enqueue_script('store', RC_App::apps_url('statics/js/store.js', __FILE__));
 		RC_Script::enqueue_script('commission_info', RC_App::apps_url('statics/js/commission.js' , __FILE__));
+		RC_Style::enqueue_style('admin_fund', RC_App::apps_url('statics/css/admin_fund.css',__FILE__));
 		
 		RC_Loader::load_app_func('admin_order', 'store');
 	}
@@ -392,6 +393,43 @@ class admin_commission extends ecjia_admin {
 		);
 		return $this->showmessage('', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('content' => $opt));
 	}
+	
+	public function fund() {
+		$this->admin_priv('store_fund_manage');
+		$this->assign('form_action', RC_Uri::url('store/admin_commission/update'));
+		
+		$store_id = $_GET['store_id'];
+		$this->assign('store_id', $store_id);
+		$store = RC_DB::table('store_franchisee')->where(RC_DB::raw('store_id'), $store_id)->first();
+		
+		if ($store['manage_mode'] == 'self') {
+			ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('自营店铺'),RC_Uri::url('store/admin/join')));
+			$this->assign('action_link', array('href' => RC_Uri::url('store/admin/init'), 'text' => '自营店铺列表'));
+		} else {
+			ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('入驻商家'),RC_Uri::url('store/admin/init')));
+			$this->assign('action_link', array('href' => RC_Uri::url('store/admin/join'), 'text' => RC_Lang::get('store::store.store_list')));
+		}
+		
+		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here($store['merchants_name'], RC_Uri::url('store/admin/preview', array('store_id' => $store_id))));
+		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('资金管理'));
+		
+		ecjia_screen::get_current_screen()->set_sidebar_display(false);
+		ecjia_screen::get_current_screen()->add_option('store_name', $store['merchants_name']);
+		ecjia_screen::get_current_screen()->add_option('current_code', 'store_fund');
+		
+		$this->assign('ur_here', $store['merchants_name'].' - '.__('资金管理'));
+		$this->assign('merchants_name', $store['merchants_name']);
+		
+		//store_account
+		$account = $this->get_store_account($store_id);
+		$this->assign('account', $account);
+		
+		//store_account_log
+		$data = $this->get_account_log($store_id);
+		$this->assign('data', $data);
+		
+		$this->display('store_fund_list.dwt');
+	}
 
 	/**
 	 *  获取商家佣金列表
@@ -654,6 +692,43 @@ class admin_commission extends ecjia_admin {
 		}
     	$arr = array('item' => $row, 'filter' => $filter, 'page' => $page->show(2), 'desc' => $page->page_desc(), 'current_page' => $page->current_page);
     	return $arr;
+	}
+	
+	//获取店铺账户信息
+	private function get_store_account($store_id = 0) {
+		$data = RC_DB::table('store_account')->where('store_id', $store_id)->first();
+		if (empty($data)) {
+			$data['formated_amount_available'] = $data['formated_money'] = $data['formated_frozen_money'] = $data['formated_deposit'] = '￥0.00';
+			$data['amount_available'] = $data['money'] = $data['frozen_money'] = $data['deposit'] = '0.00';
+		} else {
+			$amount_available = $data['money'] - $data['deposit'];//可用余额=money-保证金
+			$data['formated_amount_available'] = price_format($amount_available);
+			$data['amount_available'] = $amount_available;
+				
+			$money = $data['money'] + $data['frozen_money'];//总金额=money+冻结
+			$data['formated_money'] = price_format($money);
+			$data['money'] = $money;
+				
+			$data['formated_frozen_money'] = price_format($data['frozen_money']);
+			$data['formated_deposit'] = price_format($data['deposit']);
+		}
+		return $data;
+	}
+	
+	//获取资金明细
+	private function get_account_log($store_id = 0) {
+		$db = RC_DB::table('store_account_log');
+	
+		$db->where('store_id', $store_id);
+		$count = $db->count();
+		$page = new ecjia_page($count, 10, 5);
+		$data = $db->take(10)->skip($page->start_id - 1)->orderBy('change_time', 'desc')->get();
+		if (!empty($data)) {
+			foreach ($data as $k => $v) {
+				$data[$k]['change_time'] = RC_Time::local_date('Y-m-d H:i:s', $v['change_time']);
+			}
+		}
+		return array('item' => $data, 'page' => $page->show(2), 'desc' => $page->page_desc());
 	}
 }
 
