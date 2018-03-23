@@ -29,7 +29,7 @@
     			<div class="controls">
     				<div class="fileupload {if $config_logo}fileupload-exists{else}fileupload-new{/if}" data-provides="fileupload">
     				<a tabindex="0" role="button" href="javascript:;" class="no-underline cursor_pointor" data-trigger="focus" data-toggle="popover" data-placement="top">	
-    					<div class="fileupload-preview thumbnail fileupload-exists" style="width: 50px; height: 50px; line-height: 50px;">
+    					<div class="fileupload-preview thumbnail fileupload-exists" style="width: 230px; height: 50px; line-height: 50px;">
     						<img src="{$config_logoimg}" alt="{t}预览图片{/t}" />
     					</div>
     				</a>
