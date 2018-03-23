@@ -170,10 +170,10 @@ class admin_commission extends ecjia_admin {
 		$this->assign('store_commission', $store);
 		
 		if ($store['manage_mode'] == 'self') {
-			ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('自营店铺'),RC_Uri::url('store/admin/join')));
+			ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('自营店铺'),RC_Uri::url('store/admin/init')));
 			$this->assign('action_link', array('href' => RC_Uri::url('store/admin/init'), 'text' => '自营店铺列表'));
 		} else {
-			ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('入驻商家'),RC_Uri::url('store/admin/init')));
+			ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('入驻商家'),RC_Uri::url('store/admin/join')));
 			$this->assign('action_link', array('href' => RC_Uri::url('store/admin/join'), 'text' => RC_Lang::get('store::store.store_list')));
 		}
 		
@@ -403,10 +403,10 @@ class admin_commission extends ecjia_admin {
 		$store = RC_DB::table('store_franchisee')->where(RC_DB::raw('store_id'), $store_id)->first();
 		
 		if ($store['manage_mode'] == 'self') {
-			ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('自营店铺'),RC_Uri::url('store/admin/join')));
+			ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('自营店铺'),RC_Uri::url('store/admin/init')));
 			$this->assign('action_link', array('href' => RC_Uri::url('store/admin/init'), 'text' => '自营店铺列表'));
 		} else {
-			ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('入驻商家'),RC_Uri::url('store/admin/init')));
+			ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('入驻商家'),RC_Uri::url('store/admin/join')));
 			$this->assign('action_link', array('href' => RC_Uri::url('store/admin/join'), 'text' => RC_Lang::get('store::store.store_list')));
 		}
 		
