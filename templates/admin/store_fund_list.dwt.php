@@ -36,7 +36,7 @@
         				<th class="w150">收支金额（元）</th>
         				<th class="w150">账户余额（元）</th>
 					</thead>
-				 	<!-- {foreach from=$data.item item=commission} -->
+				 	<!-- {foreach from=$data.item item=list} -->
 					<tr>
 						<td>{$list.change_time}</td>
 						<td>
