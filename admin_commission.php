@@ -189,6 +189,20 @@ class admin_commission extends ecjia_admin {
 
 		$store_percent = $this->get_suppliers_percent(); //管理员获取佣金百分比
 		$this->assign('store_percent', $store_percent);
+		
+		$store_account = RC_DB::table('store_account')->where('store_id', $store_id)->first();
+		if(empty($store_account)) {
+		    $ins_data = array(
+		        'store_id' => $store_id,
+		        'deposit' => ecjia::config('store_deposit')
+		    );
+		    RC_DB::table('store_account')->insert($ins_data);
+		    $store_deposit = ecjia::config('store_deposit');
+		} else {
+		    $store_deposit = $store_account['deposit'];
+		}
+	    $store_deposit = empty($store_deposit) ? 0 : $store_deposit;
+		$this->assign('store_deposit', $store_deposit);
 
 		$this->display('store_commission_info.dwt');
 	}
@@ -201,6 +215,7 @@ class admin_commission extends ecjia_admin {
 
 		$id       = $_POST['id'];
 		$store_id = $_POST['store_id'];
+		$store_deposit = !empty($_POST['store_deposit']) ? intval($_POST['store_deposit']) : 0;
 
 		$data = array (
 			'percent_id'  => intval($_POST['percent_id']),
@@ -213,13 +228,15 @@ class admin_commission extends ecjia_admin {
 		RC_DB::table('store_franchisee')
 				->where(RC_DB::raw('store_id'), '=', $store_id)
 		        ->update($data);
+		        
+		RC_DB::table('store_account')->where('store_id', $store_id)->update(array('deposit' => $store_deposit));
 
 		$merchants_name = RC_DB::table('store_franchisee')
 							  ->where(RC_DB::raw('store_id'), '=', $store_id)
 		                      ->pluck('merchants_name');
 
 		$percent = RC_DB::table('store_percent')->where(RC_DB::raw('percent_id'), '=', $_POST['percent_id'])->pluck('percent_value');
-		ecjia_admin::admin_log('商家名是 '.$merchants_name.'，'.'佣金比例是 '.$percent.'%', 'edit', 'store_commission');
+		ecjia_admin::admin_log('商家名是 '.$merchants_name.'，'.'佣金比例是 '.$percent.'%，保证金是'.$store_deposit, 'edit', 'store_commission');
 
 		return $this->showmessage('编辑成功！', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS , array('pjaxurl' => RC_Uri::url('store/admin_commission/edit',array('id' => $id, 'store_id' => $store_id))));
 	}
