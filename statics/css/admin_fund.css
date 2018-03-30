@@ -19,11 +19,15 @@
 
 .fund-title .panel-item .price, .form-group .price {
 	font-size: 24px;
-	color: #ff3434;
+	color: #c62626;
 }
 
 .fund-list-header {
 	padding-left: 20px;
 	font-weight: 600;
 	font-size: 15px;
+}
+
+.withdraw-price {
+    color: #e62129;
 }
