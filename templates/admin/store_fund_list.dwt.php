@@ -33,7 +33,7 @@
 				<div><h3 class="heading">资金明细</h3></div>
 				<table class="table table-striped smpl_tbl dataTable table-hide-edit">
 					<thead>
-						<th class="w150">交易时间</th>
+						<th class="w150">结算时间</th>
         				<th>类型/单号</th>
         				<th class="w150">收支金额（元）</th>
         				<th class="w150">账户余额（元）</th>
