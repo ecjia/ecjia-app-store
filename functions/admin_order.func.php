@@ -375,7 +375,7 @@ function order_fee($order, $goods, $consignee) {
     /* 线下红包 */
     if (!empty($order['bonus_kill'])) {
 
-        $bonus                        = bonus_info(0,$order['bonus_kill']);
+        $bonus                        = bonus_info(0, $order['bonus_kill']);
         $total['bonus_kill']          = $order['bonus_kill'];
         $total['bonus_kill_formated'] = price_format($total['bonus_kill'], false);
     }
