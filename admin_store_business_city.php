@@ -47,29 +47,60 @@
 defined('IN_ECJIA') or exit('No permission resources.');
 
 /**
- * 后台入驻商管理
- * @author songqian
+ * 商家经营城市管理
  */
-class store_admin_menu_api extends Component_Event_Api {
-
-    public function call(&$options) {
-        $menus = ecjia_admin::make_admin_menu('06_store', RC_Lang::get('store::store.store_manage'), '', 1);
-        
-        $submenus = array(
-        	ecjia_admin::make_admin_menu('01', '自营店铺', RC_Uri::url('store/admin/init'), 1)->add_purview('store_self_manage'),
-            ecjia_admin::make_admin_menu('02', RC_Lang::get('store::store.store_affiliate'), RC_Uri::url('store/admin/join'), 2)->add_purview('store_affiliate_manage'),
-        	ecjia_admin::make_admin_menu('03', RC_Lang::get('store::store.preaudit'), RC_Uri::url('store/admin_preaudit/init'), 3)->add_purview('store_preaudit_manage'),
-        	ecjia_admin::make_admin_menu('04', RC_Lang::get('store::store.category'), RC_Uri::url('store/admin_store_category/init'), 4)->add_purview('store_category_manage'),
-        	ecjia_admin::make_admin_menu('05', RC_Lang::get('store::store.percent'), RC_Uri::url('store/admin_percent/init'), 5)->add_purview('store_percent_manage'),
-//         	ecjia_admin::make_admin_menu('06', RC_Lang::get('store::store.business_city'), RC_Uri::url('store/admin_store_business_city/init'), 6)->add_purview('store_business_city_manage'),
-//         	ecjia_admin::make_admin_menu('divider', '', '', 6)->add_purview('store_config_manage'),
-//         	ecjia_admin::make_admin_menu('07', RC_Lang::get('store::store.config'), RC_Uri::url('store/admin_config/init'), 7)->add_purview('store_config_manage'),
-        	//ecjia_admin::make_admin_menu('08', RC_Lang::get('store::store.mobileconfig'), RC_Uri::url('store/admin_mobileconfig/init'), 8)->add_purview('store_mobileconfig_manage'),
-        );
-        
-        $menus->add_submenu($submenus);
-        return $menus;
-    }
+class admin_store_business_city extends ecjia_admin {
+	
+	public function __construct() {
+		
+		parent::__construct();
+		RC_Loader::load_app_func('global');
+		Ecjia\App\Store\Helper::assign_adminlog_content();
+		
+		//全局JS和CSS
+		RC_Script::enqueue_script('smoke');
+		RC_Script::enqueue_script('bootstrap-placeholder');
+		RC_Script::enqueue_script('jquery-validate');
+		RC_Script::enqueue_script('jquery-form');
+		RC_Script::enqueue_script('jquery-uniform');
+		RC_Style::enqueue_style('uniform-aristo');
+		RC_Script::enqueue_script('jquery-chosen');
+		RC_Style::enqueue_style('chosen');
+		
+		
+		RC_Script::enqueue_script('store_category', RC_App::apps_url('statics/js/store_business_city.js', __FILE__), array(), false, true);
+		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('商家经营城市'), RC_Uri::url('store/admin_store_business_city/init')));
+	}
+	
+	/**
+	 * 商家经营城市列表
+	 */
+	public function init() {
+	    $this->admin_priv('store_business_city_manage');
+		
+	    ecjia_screen::get_current_screen()->remove_last_nav_here();
+	    ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('商家经营城市列表')));
+	   
+	    $business_city_list = RC_DB::table('store_business_city')->get();
+	    if (!empty($business_city_list)) {
+	    	foreach ($business_city_list as $key => $val) {
+	    		if (!empty($val['business_district'])) {
+	    			$business_district = explode(',', $val['business_district']);
+	    			foreach ($business_district as $res) {
+	    				$district_name = ecjia_region::getRegionName($res);
+	    				$business_city_list[$key]['business_district_name'][] = array('district_id' => $res, 'district_name' => $district_name);
+	    			}
+	    		}
+	    	}
+	    }
+	  
+	    $this->assign('business_city_list', $business_city_list);
+		
+	    
+	    $this->assign('ur_here',__('商家经营城市列表'));
+	    $this->assign('action_link', array('text' => __('添加经营城市'),'href'=>RC_Uri::url('store/admin_store_business_city/add')));
+	    $this->display('store_business_city_list.dwt');
+	}
 }
 
-// end
+//end
