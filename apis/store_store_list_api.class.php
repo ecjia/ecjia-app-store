@@ -216,20 +216,22 @@ class store_store_list_api extends Component_Event_Api {
 					if (!empty($result[$k]['shop_trade_time'])) {
 						$shop_trade_time = unserialize($result[$k]['shop_trade_time']);
 						if (empty($shop_trade_time['start']) || empty($shop_trade_time['end'])) {
-							$result[$k]['shop_closed'] =1;
+							$shop_closed =1;
 						}
 						$current_time = RC_Time::gmtime();
 						$current_hour = RC_Time::local_date('H:i', $current_time);
 						$shop_trade_start_time = $shop_trade_time['start'];
 						$shop_trade_end_time = $shop_trade_time['end'];
+						$shop_trade_end_time_str = RC_Time::local_strtotime($shop_trade_end_time);
 						/*营业至次日*/
 						if ($shop_trade_time['end'] > 24) {
-							$shop_trade_end_time = $shop_trade_time['end'] - 24;
-							$shop_trade_end_time = $shop_trade_end_time.':00';
+							$end_time = explode(':', $shop_trade_time['end']);
+							$shop_trade_end_time = $end_time['0'] - 24;
+							$shop_trade_end_time = $shop_trade_end_time.':'.$end_time['1'];
+							$shop_trade_end_time_str =  RC_Time::local_strtotime($shop_trade_end_time) + 24*3600;
 						}
 						$shop_trade_start_time_str = RC_Time::local_strtotime($shop_trade_start_time);
 						$current_hour_str = RC_Time::local_strtotime($current_hour);
-						$shop_trade_end_time_str = RC_Time::local_strtotime($shop_trade_end_time);
 						 
 						if (($shop_trade_start_time_str < $current_hour_str) && ($current_hour_str < $shop_trade_end_time_str)) {
 							$result[$k]['shop_closed'] = 0;
