@@ -57,6 +57,7 @@ class admin_store_business_city extends ecjia_admin {
 		RC_Loader::load_app_func('global');
 		Ecjia\App\Store\Helper::assign_adminlog_content();
 		
+		
 		//全局JS和CSS
 		RC_Script::enqueue_script('smoke');
 		RC_Script::enqueue_script('bootstrap-placeholder');
@@ -66,9 +67,9 @@ class admin_store_business_city extends ecjia_admin {
 		RC_Style::enqueue_style('uniform-aristo');
 		RC_Script::enqueue_script('jquery-chosen');
 		RC_Style::enqueue_style('chosen');
+		RC_Script::enqueue_script('region', RC_Uri::admin_url('statics/lib/ecjia-js/ecjia.region.js'));
 		
-		
-		RC_Script::enqueue_script('store_category', RC_App::apps_url('statics/js/store_business_city.js', __FILE__), array(), false, true);
+		RC_Script::enqueue_script('store_business_city', RC_App::apps_url('statics/js/store_business_city.js', __FILE__), array(), false, true);
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('商家经营城市'), RC_Uri::url('store/admin_store_business_city/init')));
 	}
 	
@@ -93,13 +94,260 @@ class admin_store_business_city extends ecjia_admin {
 	    		}
 	    	}
 	    }
-	  
+	  	
 	    $this->assign('business_city_list', $business_city_list);
 		
-	    
 	    $this->assign('ur_here',__('商家经营城市列表'));
 	    $this->assign('action_link', array('text' => __('添加经营城市'),'href'=>RC_Uri::url('store/admin_store_business_city/add')));
 	    $this->display('store_business_city_list.dwt');
+	}
+
+	
+	/**
+	 * 添加经营城市
+	 */
+	public function add() {
+		$this->admin_priv('store_business_city_manage');
+		
+		$provinces = ecjia_region::getSubarea(ecjia::config('shop_country'));//获取当前国家的所有省份
+		$this->assign('province', $provinces);
+	
+		$data = $this->fetch('store_business_city_add.dwt');
+		return $this->showmessage('', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('data' => $data));
+	}
+	
+	/**
+	 * 
+	 * 添加经营城市的处理
+	 */
+	public function insert() {
+		$this->admin_priv('store_business_city_manage', ecjia::MSGTYPE_JSON);
+		
+		$business_city_alias    = trim($_POST['business_city_alias']);
+		$index_letter		    = strtoupper($_POST['index_letter']);
+		$province				= trim($_POST['province']);
+		$city    				= trim($_POST['city']);
+		$district    			= trim($_POST['district']);
+
+		if ( empty($city) || empty($district) || empty($province)) {
+			return $this->showmessage(__('请选择地区！'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+		}
+		/*所添加城市是否已存在*/
+		if (!empty($city)) {
+			$city_count = RC_DB::table('store_business_city')->where('business_city', $city)->count();
+			if ($city_count > 0) {
+				return $this->showmessage('当前添加的经营城市已存在！', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			}
+		}
+		$business_city_name = ecjia_region::getRegionName($city);
+		
+		$data = array(
+				'business_city' 		=> $city,
+				'business_city_name'	=> $business_city_name,
+				'business_city_alias'	=> $business_city_alias,
+				'index_letter'			=> $index_letter,
+				'business_district'		=> $district
+		);
+		
+		 RC_DB::table('store_business_city')->insert($data);
+		 ecjia_admin::admin_log('添加经营城市：' . $business_city_name, 'add', 'store_business_city');
+		return $this->showmessage('添加经营城市成功！', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin_store_business_city/init')));
+	}
+	
+	
+	/**
+	 * 编辑经营城市
+	 */
+	public function edit() {
+		$this->admin_priv('store_business_city_manage');
+	
+		$city_id = trim($_GET['city_id']);
+		$business_city = $this->get_business_city_info($city_id);
+		$this->assign('business_city', $business_city);
+		$data = $this->fetch('store_business_city_edit.dwt');
+		return $this->showmessage('', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('data' => $data));
+	}
+	
+	
+	/**
+	 * 更新经营城市
+	 */
+	public function update() {
+		$this->admin_priv('store_business_city_manage');
+	
+		$city_id 				= trim($_POST['city_id']);
+		$business_city_alias 	= trim($_POST['business_city_alias']);
+		$index_letter		    = strtoupper($_POST['index_letter']);
+		RC_DB::table('store_business_city')->where('business_city', $city_id)->update(array('business_city_alias' => $business_city_alias, 'index_letter' => $index_letter));
+		$business_city_name = ecjia_region::getRegionName($city_id);
+		//记录log
+		ecjia_admin::admin_log('编辑经营城市：' . $business_city_name, 'edit', 'store_business_city');
+		return $this->showmessage('编辑经营城市成功！', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin_store_business_city/init')));
+	}
+	
+	/**
+	 * 删除经营城市
+	 */
+	public function remove() {
+		$this->admin_priv('store_business_city_drop');
+	
+		$city_id = trim($_GET['city_id']);
+		RC_DB::table('store_business_city')->where('business_city', $city_id)->delete();
+		//记录log
+		$business_city_name = ecjia_region::getRegionName($city_id);
+		ecjia_admin::admin_log('删除经营城市：' . $business_city_name, 'remove', 'store_business_city');
+		return $this->showmessage('删除经营城市成功！', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin_store_business_city/init')));
+	}
+	
+	/**
+	 * 添加经营地区
+	 */
+	public function add_business_district() {
+		$this->admin_priv('store_business_city_manage');
+	
+		$city_id = trim($_GET['city_id']);
+		
+		$business_city_info = $this->get_business_city_info($city_id);
+		$this->assign('business_city_info', $business_city_info);
+		$district = ecjia_region::getSubarea($city_id);
+		$this->assign('district', $district);
+		
+		$data = $this->fetch('store_business_district_add.dwt');
+		return $this->showmessage('', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('data' => $data));
+	}
+	
+	
+	/**
+	 *
+	 * 添加经营地区的处理
+	 */
+	public function insert_district() {
+		$this->admin_priv('store_business_city_manage', ecjia::MSGTYPE_JSON);
+	
+		$city_id 		= trim($_POST['city_id']);
+		$district    	= trim($_POST['district']);
+		
+		if ( empty($city_id) || empty($district)) {
+			return $this->showmessage(__('请选择地区！'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+		}
+		/*所添加地区是否已存在*/
+		if (!empty($district)) {
+			$business_city_info = $this->get_business_city_info($city_id);
+			if (!empty($business_city_info['business_district'])) {
+				$business_district = explode(',', $business_city_info['business_district']);
+				if (in_array($district, $business_district)) {
+					return $this->showmessage('当前添加的经营地区已存在！', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+				}
+				$business_district_last = array_merge(array($district), $business_district);
+				$business_district_last = implode(',', $business_district_last);
+				RC_DB::table('store_business_city')->where('business_city', $city_id)->update(array('business_district' => $business_district_last));
+				//记录log
+				$district_name = ecjia_region::getRegionName($district);
+				ecjia_admin::admin_log('添加经营地区：' . $district_name, 'add', 'store_business_city');
+			}
+		}
+		return $this->showmessage('添加经营城市成功！', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin_store_business_city/init')));
+	}
+	
+	
+	/**
+	 * 编辑经营地区
+	 */
+	public function edit_business_district() {
+		$this->admin_priv('store_business_city_manage');
+	
+		$city_id = trim($_GET['city_id']);
+		$district_id = trim($_GET['district_id']);
+		
+		$business_city_info = $this->get_business_city_info($city_id);
+		$business_city_info['business_district_name'] = ecjia_region::getRegionName($district_id);
+		$business_city_info['old_district_id'] =  $district_id;
+		$this->assign('business_city_info', $business_city_info);
+		$district = ecjia_region::getSubarea($city_id);
+		$this->assign('district', $district);
+		$data = $this->fetch('store_business_district_edit.dwt');
+		return $this->showmessage('', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('data' => $data));
+	}
+	
+	/**
+	 * 更新经营城市地区
+	 */
+	public function update_district() {
+		$this->admin_priv('store_business_city_manage');
+	
+		$city_id 				= trim($_POST['city_id']);
+		$old_district_id 		= trim($_POST['old_district_id']);
+		$new_district		    = trim($_POST['new_district']);
+		
+		/*有新地区则更新*/
+		if ((!empty($old_district_id) && !empty($new_district)) && $old_district_id != $new_district) {
+			$business_city_info 	= $this->get_business_city_info($city_id);
+			if (!empty($business_city_info['business_district'])) {
+				$business_district = explode(',', $business_city_info['business_district']);
+				$count = count($business_district);
+					
+				if ($count == 1) {
+					$business_district_last = $new_district;
+				} else {
+					foreach ($business_district as $k => $v) {
+						if ($old_district_id == $v) {
+							unset($business_district[$k]);
+						}
+					}
+					if (!empty($new_district) && !empty($business_district)) {
+						$business_district_last = array_merge(array($new_district), $business_district);
+						$business_district_last = implode(',', $business_district_last);
+					} else {
+						$business_district_last = $business_city_info['business_district'];
+					}
+				}
+			}
+			RC_DB::table('store_business_city')->where('business_city', $city_id)->update(array('business_district' => $business_district_last));
+			//记录log
+			$new_district_name = ecjia_region::getRegionName($new_district);
+			ecjia_admin::admin_log('编辑经营地区：' . $new_district_name, 'edit', 'store_business_city');
+		}
+		
+		return $this->showmessage('编辑经营地区成功！', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin_store_business_city/init')));
+	}
+	
+	/**
+	 * 删除经营地区
+	 */
+	public function remove_business_district() {
+		$this->admin_priv('store_business_city_drop');
+	
+		$city_id 		= trim($_GET['city_id']);
+		$district_id 	= trim($_GET['district_id']);
+		
+		$business_city_info 	= $this->get_business_city_info($city_id);
+		
+		if (!empty($business_city_info['business_district']) && !empty($district_id)) {
+			$business_district = explode(',', $business_city_info['business_district']);
+			foreach ($business_district as $key => $val) {
+				if ($val == $district_id) {
+					unset($business_district[$key]);
+				}
+			}
+			$business_district_last = implode(',', $business_district);
+			RC_DB::table('store_business_city')->where('business_city', $city_id)->update(array('business_district' => $business_district_last));
+			//记录log
+			$district_name = ecjia_region::getRegionName($district_id);
+			ecjia_admin::admin_log('删除经营地区：' . $district_name, 'remove', 'store_business_city');
+		}
+		
+		return $this->showmessage('删除经营地区成功！', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin_store_business_city/init')));
+	}
+	
+	/**
+	 * 获取经营城市信息
+	 */
+	private function get_business_city_info($city_id) {
+		$business_city_info = array();
+		if (!empty($city_id)) {
+			$business_city_info = RC_DB::table('store_business_city')->where('business_city', $city_id)->first();
+		}
+		return $business_city_info;
 	}
 }
 

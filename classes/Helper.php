@@ -71,6 +71,8 @@ class Helper
         ecjia_admin_log::instance()->add_object('config', '配置');
         ecjia_admin_log::instance()->add_object('store_percent', '佣金比例');
         ecjia_admin_log::instance()->add_object('store_mobileconfig', '店铺街配置');
+        
+        ecjia_admin_log::instance()->add_object('store_business_city', '店铺经营城市');
     }
 
 }
