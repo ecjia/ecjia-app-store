@@ -82,7 +82,7 @@ class admin_store_business_city extends ecjia_admin {
 	    ecjia_screen::get_current_screen()->remove_last_nav_here();
 	    ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('商家经营城市列表')));
 	   
-	    $business_city_list = RC_DB::table('store_business_city')->get();
+	    $business_city_list = RC_DB::table('store_business_city')->orderBy('index_letter', 'asc')->get();
 	    if (!empty($business_city_list)) {
 	    	foreach ($business_city_list as $key => $val) {
 	    		if (!empty($val['business_district'])) {
