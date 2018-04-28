@@ -53,17 +53,10 @@ defined('IN_ECJIA') or exit('No permission resources.');
 class city_module extends api_front implements api_interface {
     public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {
 
-		/* 获取数量 */
-		$size = $this->requestData('pagination.count', 15);
-		$page = $this->requestData('pagination.page', 1);
-		
 		$db = RC_DB::table('store_business_city');
-		$count = $db->select('business_city')->count();
 		
-		//实例化分页
-		$page_row = new ecjia_page($count, $size, 6, '', $page);
 		$business_city_list = array();
-		$business_city_list = $db->take($size)->skip($page_row->start_id - 1)->select('*')->orderBy('index_letter', 'asc')->get();
+		$business_city_list = $db->select('*')->orderBy('index_letter', 'asc')->get();
 		
 		if (!empty($business_city_list)) {
 			foreach ($business_city_list as $key => $val) {
@@ -77,12 +70,7 @@ class city_module extends api_front implements api_interface {
 			}
 		}
 		
-		$pager = array(
-				'total' => $page_row->total_records,
-				'count' => $page_row->total_records,
-				'more'	=> $page_row->total_pages <= $page ? 0 : 1,
-		);
-		return array('data' => $business_city_list, 'pager' => $pager);
+		return array('data' => $business_city_list);
 		
 	}
 }
