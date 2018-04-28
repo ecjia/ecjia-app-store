@@ -9,7 +9,7 @@
 <div class="modal-body">
 	<form class="form-horizontal" name="Form"  method="post" action="{url path='store/admin_store_business_city/insert'}">
 		<div class="control-group formSep">
-			<label class="control-label control-label-new">选择地区：</label>
+			<label class="control-label control-label-new">选择经营城市：</label>
 			<div class="controls controls-new choose_list">
 	        	<select class="region-summary-provinces w120" name="province" id="selProvinces" data-url="{url path='setting/region/init'}" data-toggle="regionSummary" data-type="2" data-target="region-summary-cities" >
         			<option value='0'>{lang key='system::system.select_please'}</option>
