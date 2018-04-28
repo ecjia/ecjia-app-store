@@ -66,6 +66,8 @@ class city_module extends api_front implements api_interface {
 						$district_name = ecjia_region::getRegionName($res);
 						$business_city_list[$key]['business_district_list'][] = array('district_id' => $res, 'district_name' => $district_name);
 					}
+				} else {
+					$business_city_list[$key]['business_district_list'][] = array();
 				}
 			}
 		}
