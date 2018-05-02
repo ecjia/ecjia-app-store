@@ -7,6 +7,7 @@
 				app.store_business_city.store_business_city_edit();
 				app.store_business_city.store_business_district_edit();
 				app.store_business_city.store_business_district_add();
+				
 			},
 			submit_form : function() {
 				var $form = $("form[name='Form']");
@@ -64,10 +65,16 @@
 	        store_business_district_add :function(){
 	            $(".add-business-district-modal").on('click', function (e) {
 	            	e.preventDefault();
+	            	
 	                var $this = $(this);
 	                var url = $this.attr('add-business-district-url');
-	                $.post(url, {}, function (data) {
-	                	$('.add-business-district').html(data.data);
+	                var href = $this.attr('data-href');
+
+	                $.post(url, function (data) {
+	                	$(href).modal('show');
+	                	$('.add-business-district').html(data.data)
+	                	$('.modal-body').find('input[type="checkbox"]').uniform();
+	                	ecjia.admin.store_business_city.init();
 	                }, 'json');
 				})
 	        },

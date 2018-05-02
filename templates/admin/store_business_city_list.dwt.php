@@ -18,7 +18,7 @@
 <div id="myModal1" class="modal hide fade add-business-city" style="height:430px;width:650px;"></div>
 <div id="myModal2" class="modal hide fade edit-business-city" style="height:430px;width:650px;"></div>
 <div id="myModal3" class="modal hide fade edit-business-district" style="height:300px;width:500px;margin-left:-145px; margin-top:80px;"></div>
-<div id="myModal4" class="modal hide fade add-business-district" style="height:300px;width:500px;margin-left:-145px; margin-top:80px;"></div>
+<div id="myModal4" class="modal hide fade add-business-district" style="height:500px;width:650px;margin-left:-230px; margin-top:80px;"></div>
    
 
 <!-- start ad position list -->
@@ -40,7 +40,7 @@
 				<td>{$business_city.business_city_alias}</td>
 				<td>
 					<a class="no-underline edit-business-city-modal" data-toggle="modal" data-backdrop="static" href="#myModal2" edit-business-city-url='{url path="store/admin_store_business_city/edit" args="city_id={$business_city.business_city}"}'  title="编辑经营城市"><i class="fontello-icon-edit"></i></a>
-					<a class="no-underline add-business-district-modal" data-toggle="modal" data-backdrop="static" href="#myModal4" add-business-district-url='{url path="store/admin_store_business_city/add_business_district" args="city_id={$business_city.business_city}"}'  title="添加经营地区"><i class="fontello-icon-pencil-squared"></i></a>
+					<a class="no-underline add-business-district-modal" data-toggle="test_modal" data-backdrop="static" data-href="#myModal4" add-business-district-url='{url path="store/admin_store_business_city/add_business_district" args="city_id={$business_city.business_city}"}'  title="添加经营地区"><i class="fontello-icon-pencil-squared"></i></a>
 					<a class="ajaxremove no-underline" data-toggle="ajaxremove" data-msg="您确定删除该经营城市吗？" href='{url path="store/admin_store_business_city/remove" args="city_id={$business_city.business_city}"}' title="删除经营城市"><i class="fontello-icon-trash"></i></a>
 				</td>
 			</tr>
@@ -53,7 +53,6 @@
 				</td>
 				<td></td>
 				<td>
-					<a class="no-underline edit-business-district-modal" data-toggle="modal" data-backdrop="static" href="#myModal3" edit-business-district-url='{url path="store/admin_store_business_city/edit_business_district" args="city_id={$business_city.business_city}&district_id={$district.district_id}"}'  title="编辑经营地区"><i class="fontello-icon-edit"></i></a>
 					<a class="ajaxremove no-underline" data-toggle="ajaxremove" data-msg="您确定删除该经营地区吗？" href='{url path="store/admin_store_business_city/remove_business_district" args="city_id={$business_city.business_city}&district_id={$district.district_id}"}' title="删除经营地区"><i class="fontello-icon-trash"></i></a>
 				</td>
 			</tr>
