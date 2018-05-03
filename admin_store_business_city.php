@@ -199,7 +199,7 @@ class admin_store_business_city extends ecjia_admin {
 		//记录log
 		$business_city_name = ecjia_region::getRegionName($city_id);
 		ecjia_admin::admin_log('删除经营城市：' . $business_city_name, 'remove', 'store_business_city');
-		return $this->showmessage('删除经营城市成功！', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin_store_business_city/init')));
+		return $this->showmessage('删除经营城市成功！', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
 	}
 	
 	/**
@@ -289,7 +289,7 @@ class admin_store_business_city extends ecjia_admin {
 			ecjia_admin::admin_log('删除经营地区：' . $district_name, 'remove', 'store_business_city');
 		}
 		
-		return $this->showmessage('删除经营地区成功！', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin_store_business_city/init')));
+		return $this->showmessage('删除经营地区成功！', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
 	}
 	
 	/**

@@ -5,7 +5,6 @@
 				app.store_business_city.submit_form();
 				app.store_business_city.store_business_city_add();
 				app.store_business_city.store_business_city_edit();
-				app.store_business_city.store_business_district_edit();
 				app.store_business_city.store_business_district_add();
 				
 			},
@@ -18,7 +17,6 @@
 								success : function(data) {
 									$('#myModal1').modal('hide');
 									$('#myModal2').modal('hide');
-									$('#myModal3').modal('hide');
 									$('#myModal4').modal('hide');
 									ecjia.admin.showmessage(data);
 								}
@@ -34,8 +32,9 @@
 	            	e.preventDefault();
 	                var $this = $(this);
 	                var url = $this.attr('add-business-city-url');
-	                $.post(url, {}, function (data) {
+	                $.post(url, function (data) {
 	                	$('.add-business-city').html(data.data);
+	                	app.store_business_city.submit_form();
 	                }, 'json');
 				})
 	        },
@@ -45,19 +44,9 @@
 	            	e.preventDefault();
 	                var $this = $(this);
 	                var url = $this.attr('edit-business-city-url');
-	                $.post(url, {}, function (data) {
+	                $.post(url, function (data) {
 	                	$('.edit-business-city').html(data.data);
-	                }, 'json');
-				})
-	        },
-	        
-	        store_business_district_edit :function(){
-	            $(".edit-business-district-modal").on('click', function (e) {
-	            	e.preventDefault();
-	                var $this = $(this);
-	                var url = $this.attr('edit-business-district-url');
-	                $.post(url, {}, function (data) {
-	                	$('.edit-business-district').html(data.data);
+	                	app.store_business_city.submit_form();
 	                }, 'json');
 				})
 	        },
@@ -69,12 +58,11 @@
 	                var $this = $(this);
 	                var url = $this.attr('add-business-district-url');
 	                var href = $this.attr('data-href');
-
 	                $.post(url, function (data) {
 	                	$(href).modal('show');
 	                	$('.add-business-district').html(data.data)
 	                	$('.modal-body').find('input[type="checkbox"]').uniform();
-	                	ecjia.admin.store_business_city.init();
+	                	app.store_business_city.submit_form();
 	                }, 'json');
 				})
 	        },

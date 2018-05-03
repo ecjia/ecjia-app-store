@@ -17,7 +17,6 @@
 
 <div id="myModal1" class="modal hide fade add-business-city" style="height:430px;width:650px;"></div>
 <div id="myModal2" class="modal hide fade edit-business-city" style="height:430px;width:650px;"></div>
-<div id="myModal3" class="modal hide fade edit-business-district" style="height:300px;width:500px;margin-left:-145px; margin-top:80px;"></div>
 <div id="myModal4" class="modal hide fade add-business-district" style="height:500px;width:650px;margin-left:-230px; margin-top:80px;"></div>
    
 

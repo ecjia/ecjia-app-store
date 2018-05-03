@@ -1,7 +1,4 @@
 <?php defined('IN_ECJIA') or exit('No permission resources.');?>
-<script type="text/javascript">
-	ecjia.admin.store_business_city.init();
-</script>
 <div class="modal-header">
 	<button class="close" data-dismiss="modal">×</button>
 	<h3>当前操作：<span class="action_title">编辑经营城市</span></h3>
