@@ -2,9 +2,9 @@
 
 namespace Ecjia\App\Store;
 
-use Royalcms\Component\App\AppServiceProvider;
+use Royalcms\Component\App\AppParentServiceProvider;
 
-class StoreServiceProvider extends  AppServiceProvider
+class StoreServiceProvider extends  AppParentServiceProvider
 {
     
     public function boot()
