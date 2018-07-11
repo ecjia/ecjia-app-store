@@ -651,7 +651,13 @@ class admin extends ecjia_admin
             );
             $authcode_str = http_build_query($authcode_array);
             $authcode     = RC_Crypt::encrypt($authcode_str);
-            $url          = str_replace("index.php", "sites/merchant/index.php", RC_Uri::url('staff/privilege/autologin')) . '&authcode=' . $authcode;
+
+            if (defined(RC_SITE)) {
+                $index = 'sites/' . RC_SITE . '/index.php';
+            } else {
+                $index = 'index.php';
+            }
+            $url          = str_replace($index, "sites/merchant/index.php", RC_Uri::url('staff/privilege/autologin')) . '&authcode=' . $authcode;
             return $this->redirect($url);
         }
     }
