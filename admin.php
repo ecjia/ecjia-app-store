@@ -652,7 +652,7 @@ class admin extends ecjia_admin
             $authcode_str = http_build_query($authcode_array);
             $authcode     = RC_Crypt::encrypt($authcode_str);
 
-            if (defined(RC_SITE)) {
+            if (defined('RC_SITE')) {
                 $index = 'sites/' . RC_SITE . '/index.php';
             } else {
                 $index = 'index.php';
