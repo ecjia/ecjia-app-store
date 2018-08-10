@@ -54,13 +54,24 @@
     		</div>
     		
     		<h3 class="heading">
-				保证金
+				入驻商家保证金
 			</h3>
 	    	<div class="control-group formSep">
     			<label class="control-label">{t}默认保证金：{/t}</label>
     			<div class="controls">
     				<input type="text" name="store_deposit" value="{$store_deposit}" /> 元
     				<span class="help-block">商家入驻后需要向平台缴纳的保证金金额，提现时账户余额大于等于保证金</span>
+    			</div>
+    		</div>
+    		
+    		<h3 class="heading">
+				商家员工数量
+			</h3>
+	    	<div class="control-group formSep">
+    			<label class="control-label">{t}默认员工数：{/t}</label>
+    			<div class="controls">
+    				<input type="text" name="shop_staff_number" value="{$shop_staff_number}" />
+    				<span class="help-block">设置所有商家默认最多可添加员工数量</span>
     			</div>
     		</div>
 
