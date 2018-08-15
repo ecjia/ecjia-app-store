@@ -480,6 +480,7 @@ class admin_preaudit extends ecjia_admin {
 				}
 				$data = array(
 				    'merchants_name'            => $store['merchants_name'],
+				    'validate_type' 			=> $store['validate_type'],
 					'cat_id' 					=> $store['cat_id'],
 // 				    'identity_status'           => intval($_POST['identity_status']),
 					'shop_keyword'				=> $store['shop_keyword'],
