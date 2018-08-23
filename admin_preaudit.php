@@ -421,13 +421,16 @@ class admin_preaudit extends ecjia_admin {
 				//审核通过产生一个主员工的资料
 				$password = rand(100000,999999);
 				$salt = rand(1, 9999);
+				$md5_password = md5($password);
+				$password_final = md5($md5_password.$salt);
+				
 				$data_staff = array(
 					'mobile' 		=> $store['contact_mobile'],
 					'store_id' 		=> $store_id,
 					'name' 			=> $store['responsible_person'],
 					'nick_name' 	=> '',
 					'user_ident' 	=> 'SC001',
-					'password' 		=> md5(md5($password) . $salt),
+					'password' 		=> $password_final,
 					'salt'			=> $salt,
 					'add_time' 		=> RC_Time::gmtime(),
 					'last_ip' 		=> '',
