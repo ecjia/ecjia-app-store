@@ -722,7 +722,7 @@ class admin_commission extends ecjia_admin {
 		$db->where('store_id', $store_id);
 		$count = $db->count();
 		$page = new ecjia_page($count, 10, 5);
-		$data = $db->take(10)->skip($page->start_id - 1)->orderBy('change_time', 'desc')->get();
+		$data = $db->take(10)->skip($page->start_id - 1)->orderBy('change_time', 'desc')->orderBy('log_id', 'desc')->get();
 		if (!empty($data)) {
 			foreach ($data as $k => $v) {
 				$data[$k]['change_time'] = RC_Time::local_date('Y-m-d H:i:s', $v['change_time']);
