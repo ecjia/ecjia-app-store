@@ -925,7 +925,7 @@ class admin extends ecjia_admin
         $this->assign('keyword', $keyword);
         /* 查询IP地址列表 */
         $ip_list = array();
-        $data    = RC_DB::table('staff_log')->selectRaw('distinct ip_address')->get();
+        $data    = RC_DB::table('staff_log')->select(RC_DB::raw('distinct ip_address'))->get();
         if (!empty($data)) {
             foreach ($data as $row) {
                 $ip_list[] = $row['ip_address'];
