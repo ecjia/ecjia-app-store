@@ -70,7 +70,7 @@
 	    	<div class="control-group formSep">
     			<label class="control-label">{t}默认员工数：{/t}</label>
     			<div class="controls">
-    				<input type="text" name="shop_staff_number" value="{$shop_staff_number}" />
+    				<input type="text" name="merchant_staff_max_number" value="{$merchant_staff_max_number}" />
     				<span class="help-block">设置所有商家默认最多可添加员工数量</span>
     			</div>
     		</div>
