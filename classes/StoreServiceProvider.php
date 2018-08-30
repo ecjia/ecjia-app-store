@@ -9,7 +9,7 @@ class StoreServiceProvider extends  AppParentServiceProvider
     
     public function boot()
     {
-        $this->package('ecjia/app-store');
+        $this->package('ecjia/app-store', null, dirname(__DIR__));
     }
     
     public function register()
