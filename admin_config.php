@@ -188,7 +188,7 @@ class admin_config extends ecjia_admin
             $store_model = implode(',', $store_id);
             //平台模式
         } elseif ($store_model == 3) {
-            $store_model = 'platform';
+            $store_model = 'b2b2c';
         }
 
         //后台名称
