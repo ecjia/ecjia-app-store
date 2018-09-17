@@ -926,7 +926,7 @@ function return_order_bonus($order_id) {
 * @return  array
 */
 function order_bonus($order_id) {
-	$db_bonus_type	= RC_Loader::load_app_model('bonus_type_model','bonus');
+	//$db_bonus_type	= RC_Loader::load_app_model('bonus_type_model','bonus');
 	$db_order_info	= RC_Loader::load_app_model('order_info_model','orders');
 	$dbview			= RC_Loader::load_app_model('order_order_goods_viewmodel','orders');
 
@@ -967,7 +967,13 @@ function order_bonus($order_id) {
 	/* 查询订单日期 */
 	$order_time = $db_order_info->where(array('order_id' => $order_id))->get_field('add_time');
 	/* 查询按订单发的红包 */
-	$data = $db_bonus_type->field('type_id, type_money, IFNULL(FLOOR('.$amount.' / min_amount), 1)|number')->where(array('send_type' => SEND_BY_ORDER , 'send_start_date' => array('elt' => $order_time) ,  'send_end_date' => array('egt' => $order_time)))->select();
+	//$data = $db_bonus_type->field('type_id, type_money, IFNULL(FLOOR('.$amount.' / min_amount), 1)|number')->where(array('send_type' => SEND_BY_ORDER , 'send_start_date' => array('elt' => $order_time) ,  'send_end_date' => array('egt' => $order_time)))->select();
+	$data = RC_DB::table('bonus_type')
+				->select('type_id', 'type_money', RC_DB::raw('IFNULL(FLOOR(' . $amount . ' / min_amount), 1) as number'))
+				->where('send_type', SEND_BY_ORDER)
+				->where('send_start_date', '<=', $order_time)
+				->where('send_end_date', '<=', $order_time)
+				->get();
 	$list = array_merge($list, $data);
 	return $list;
 }
