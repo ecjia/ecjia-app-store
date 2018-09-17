@@ -50,7 +50,7 @@ defined('IN_ECJIA') or exit('No permission resources.');
  * 经营城市列表
  * @author zrl
  */
-class city_module extends api_front implements api_interface {
+class store_business_city_module extends api_front implements api_interface {
     public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {
 
 		$db = RC_DB::table('store_business_city');
