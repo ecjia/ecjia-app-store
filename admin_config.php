@@ -101,6 +101,8 @@ class admin_config extends ecjia_admin
 
         if ($store_model == 'nearby' || empty($store_model)) {
             $store_model = 0;
+        } else if ($store_model == 'platform') {
+            $store_model = 3;
         } else if (!empty($store_model)) {
             $store_id = $store_model;
             $store_model = explode(',', $store_model);
