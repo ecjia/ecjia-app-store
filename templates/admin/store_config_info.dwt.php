@@ -105,8 +105,9 @@
     				<input type="radio" name="store_model" value="2" {if $model eq 2}checked{/if} />多门店
 					<input type="radio" name="store_model" value="3" {if $model eq 3}checked{/if} />平台模式
     				<span class="help-block">
-						设置门店的切换模式，如果选择“单门店”则可设置单独的一家门店，如果选择“多门店”则可设置多家门店<br>
-						如果选择“平台模式”，则显示多商户版小程序。
+						设置门店的切换模式，如果选择“单门店”则可设置单独的一家门店<br>
+						如果选择“多门店”则可设置多家门店<br>
+						如果选择“平台模式”，则显示多商户版小程序
 					</span>
     			</div>
     			<div class="controls search" data-url="{url path='store/admin_config/search_store'}">
