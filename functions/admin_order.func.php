@@ -844,7 +844,6 @@ function integral_to_give($order) {
 */
 function send_order_bonus($order_id) {
 	RC_Loader::load_app_func('global', 'goods');
-	$db		=  RC_Loader::load_app_model('user_bonus_model', 'bonus');
 	$dbview	=  RC_Loader::load_app_model('order_info_viewmodel', 'orders');
 	/* 取得订单应该发放的红包 */
 	$bonus_list = order_bonus($order_id);
@@ -876,8 +875,9 @@ function send_order_bonus($order_id) {
 				);
 
 			for ($i = 0; $i < $bonus['number']; $i++) {
-				if(!$db->insert($data)) {
-					return $db->errorMsg();
+				if(!RC_DB::table('user_bonus')->insert($data)) {
+					//return $db->errorMsg();
+					return false;
 				}
 			}
 		}
@@ -905,7 +905,6 @@ function send_order_bonus($order_id) {
 * @param   int	 $order_id   订单id
 */
 function return_order_bonus($order_id) {
-	$db	=  RC_Loader::load_app_model('user_bonus_model','bonus');
 	/* 取得订单应该发放的红包 */
 	$bonus_list = order_bonus($order_id);
 
@@ -915,7 +914,8 @@ function return_order_bonus($order_id) {
 		$order = order_info($order_id);
 		$user_id = $order['user_id'];
 		foreach ($bonus_list AS $bonus) {
-			$db->where(array('bonus_type_id' => $bonus[type_id] , 'user_id' => $user_id , 'order_id' => 0))->limit($bonus['number'])->delete();
+			//$db->where(array('bonus_type_id' => $bonus[type_id] , 'user_id' => $user_id , 'order_id' => 0))->limit($bonus['number'])->delete();
+			RC_DB::table('user_bonus')->where('bonus_type_id', $bonus[type_id])->where('user_id', $user_id)->where('order_id', 0)->take($bonus['number'])->delete();
 		}
 	}
 }
