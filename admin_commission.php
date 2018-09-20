@@ -480,20 +480,20 @@ class admin_commission extends ecjia_admin {
 		return $res;
 	}
 	//获取列表商家
-	private function get_merchants_user_list() {
-		$msidb = RC_Loader::load_app_model('merchants_shop_information_model','seller');
-		$res = $msidb->select();
-		$arr = array();
-		if (!empty($res)) {
-			foreach ($res as $key=>$row) {
-				$arr[$key] = $row;
-				$data = array('user_name');
-				$user_name = get_table_date('users', "user_id = '" .$row['user_id']. "'", $data, 2);
-				$arr[$key]['user_name'] = $user_name;
-			}
-		}
-		return $arr;
-	}
+	//private function get_merchants_user_list() {
+	//	$msidb = RC_Loader::load_app_model('merchants_shop_information_model','seller');
+	//	$res = $msidb->select();
+	//	$arr = array();
+	//	if (!empty($res)) {
+	//		foreach ($res as $key=>$row) {
+	//			$arr[$key] = $row;
+	//			$data = array('user_name');
+	//			$user_name = get_table_date('users', "user_id = '" .$row['user_id']. "'", $data, 2);
+	//			$arr[$key]['user_name'] = $user_name;
+	//		}
+	//	}
+	//	return $arr;
+	//}
 
 
 	//商家订单有效金额和退款金额
