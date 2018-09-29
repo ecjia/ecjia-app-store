@@ -574,8 +574,11 @@ function update_user($user_id, $user) {
 * @return  array
 */
 function address_list($user_id) {
-	$db_users = RC_Loader::load_app_model("user_address_model","user");
-	return $db_users->where(array('user_id' => $user_id))->select();
+	$list = [];
+	if (!empty($user_id)) {
+		$list = RC_DB::table('user_address')->where('user_id', $user_id)->get();
+	}
+	return $list;
 }
 
 /**
@@ -584,8 +587,11 @@ function address_list($user_id) {
 * @return  array
 */
 function address_info($address_id) {
-	$db_users = RC_Loader::load_app_model("user_address_model","user");
-	return $db_users->find(array('address_id' => $address_id));
+	$info = [];
+	if (!empty($address_id)) {
+		RC_DB::table('user_address')->where('address_id', $address_id)->first();
+	}
+	return $info;
 }
 
 
