@@ -619,8 +619,7 @@ function integral_of_value($value) {
 * @param   float   $refund_amount  退款金额（如果为0，取订单已付款金额）
 * @return  bool
 */
-function order_refund($order, $refund_type, $refund_note, $refund_amount = 0) {
-	$db = RC_Loader::load_app_model('user_account_model','user');
+function order_refund($order, $refund_type, $refund_note = '', $refund_amount = 0) {
 	/* 检查参数 */
 	$user_id = $order['user_id'];
 	if ($user_id == 0 && $refund_type == 1) {
@@ -664,17 +663,18 @@ function order_refund($order, $refund_type, $refund_note, $refund_amount = 0) {
 		}
 
 		/* user_account 表增加提款申请记录 */
+		$admin_note = sprintf(RC_Lang::get('store::store.order_refund'), $order['order_sn']);
 		$account = array(
 			'user_id'		=> $user_id,
 			'amount'		=> (-1) * $amount,
 			'add_time'		=> RC_Time::gmtime(),
-			'user_note'		=> $refund_note,
+			'user_note'		=> empty($refund_note) ? '' : $refund_note,
 			'process_type'	=> SURPLUS_RETURN,
-			'admin_user'	=> $_SESSION['admin_name'],
-			'admin_note'	=> sprintf(RC_Lang::get('store::store.order_refund'), $order['order_sn']),
+			'admin_user'	=> empty($_SESSION['admin_name']) ? '' : $_SESSION['admin_name'],
+			'admin_note'	=> empty($admin_note) ? '' : $admin_note,
 			'is_paid'		=> 0
 		);
-		$db->insert($account);
+		RC_DB::table('user_account')->insert($account);
 		return true;
 	} else {
 		return true;
