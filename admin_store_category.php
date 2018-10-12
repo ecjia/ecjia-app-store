@@ -244,7 +244,7 @@ class admin_store_category extends ecjia_admin {
 		$preaudit_count   = RC_DB::table('store_preaudit')->where('cat_id', $cat_id)->count();
 		
 		/* 如果不存在下级子分类和商品，则删除之 */
-		if ($cat_count == 0 && $franchisee_count == 0 && $preaudit_count == 0) {
+		if (empty($cat_count) && empty($franchisee_count) && empty($preaudit_count)) {
 			/* 删除分类 */
 			RC_DB::table('store_category')->where('cat_id', $cat_id)->delete();
 			//记录log
