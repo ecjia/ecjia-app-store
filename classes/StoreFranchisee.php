@@ -53,6 +53,7 @@ use RC_Api;
 use RC_Logger;
 use ecjia_page;
 use RC_Lang;
+use RC_Upload;
 
 /**
  * 店铺信息
@@ -137,5 +138,31 @@ class StoreFranchisee
     		$config = RC_DB::table('merchants_config')->where('store_id', $store_id)->where('code', $code)->pluck('value');
     		return $config;
     	}
+    }
+    
+    
+    /**
+     * 获取店铺名称
+     * @param int $store_id
+     * @return string
+     */
+    public static function StoreName($store_id) {
+    	$store_name = RC_DB::table('store_franchisee')->where('store_id', $store_id)->pluck('merchants_name');
+    	return $store_name;
+    }
+    
+    /**
+     * 获取店铺名称
+     * @param int $store_id
+     * @return string
+     */
+    public static function StoreLogo($store_id) {
+    	$store_logo = RC_DB::table('merchants_config')->where('store_id', $store_id)->where('code', 'shop_logo')->pluck('value');
+    	if (!empty($store_logo)) {
+    		$store_logo = RC_Upload::upload_url($store_logo);
+    	} else {
+    		$store_logo = '';
+    	}
+    	return $store_logo;
     }
 }
