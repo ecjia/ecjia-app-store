@@ -65,9 +65,8 @@ class merchant_menu_module extends api_front implements api_interface {
     	
 		$db = RC_DB::table('merchant_menu');
 		$db->where('store_id', $store_id)->where('status', 1);
-		$field = "*, IF(pid>0,CONCAT(pid, '-', id), id) as sort_by";
 
-		$menulist = $db->where('pid', 0)->orderBy('sort', 'asc')->select(RC_DB::raw($field))->get();
+		$menulist = $db->where('pid', 0)->orderBy('sort', 'asc')->get();
 		
 		$menu_list = array();
 		if (!empty($menulist)) {
