@@ -69,24 +69,36 @@ class merchant_menu_module extends api_front implements api_interface {
 		$menulist = $db->where('pid', 0)->orderBy('sort', 'asc')->get();
 		
 		$menu_list = array();
+		$sub = [];
 		if (!empty($menulist)) {
 			foreach ($menulist as $row) {
-				$sub_button = RC_DB::table('merchant_menu')->where('store_id', $store_id)->where('status', 1)->where('pid', $row['id'])->orderBy('sort', 'asc')->get();
-				$menu_list[$row['id']][] = array(
+				$sub_button = $this->get_sub_button($row['id'], $store_id);
+				$menu_list[] = array(
 						'url' 			=> empty($row['url']) ? '' : $row['url'],
-						'name'			=> empty($row['name']) ? '' : $row['name']
+						'name'			=> empty($row['name']) ? '' : $row['name'],
+						'sub_button'	=> $sub_button,
 				);
-				if (!empty($sub_button)) {
-					foreach ($sub_button as $v) {
-						$menu_list[$row['id']]['sub_button'][] = array(
-								'url' 			=> empty($v['url']) ? '' : $v['url'],
-								'name'			=> empty($v['name']) ? '' : $v['name']
-						); 
-					}
-				}
+				
 			}
 		}
 		return array('data' => $menu_list);
+	}
+	
+	/**
+	 * 获取子菜单
+	 */
+	private function get_sub_button($pid = 0, $store_id= 0) {
+		$arr = [];
+		$sub_button = RC_DB::table('merchant_menu')->select('url', 'name')->where('store_id', $store_id)->where('status', 1)->where('pid', $pid)->orderBy('sort', 'asc')->get();
+		if (!empty($sub_button)) {
+			foreach ($sub_button as $val) {
+				$arr [] = array(
+						'url' 			=> empty($val['url']) ? '' : $val['url'],
+						'name'			=> empty($val['name']) ? '' : $val['name'],
+				);
+			}
+		}
+		return $arr;
 	}
 }
 
