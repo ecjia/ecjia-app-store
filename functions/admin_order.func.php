@@ -619,7 +619,7 @@ function order_refund($order, $refund_type, $refund_note = '', $refund_amount = 
 	/* 检查参数 */
 	$user_id = $order['user_id'];
 	if ($user_id == 0 && $refund_type == 1) {
-		return ecjia_admin::$controller->showmessage(__('匿名用户不能返回退款到账户余额！') , ecjia_admin::MSGTYPE_JSON | ecjia_admin::MSGSTAT_ERROR);
+		return new ecjia_error('invalid_user', '匿名用户不能返回退款到账户余额！');
 	}
 
 	$amount = $refund_amount > 0 ? $refund_amount : $order['money_paid'];
@@ -628,7 +628,7 @@ function order_refund($order, $refund_type, $refund_note = '', $refund_amount = 
 	}
 
 	if (!in_array($refund_type, array(1, 2, 3))) {
-		return ecjia_admin::$controller->showmessage(__('操作有误！请重新操作！') , ecjia_admin::MSGTYPE_JSON | ecjia_admin::MSGSTAT_ERROR);
+		return new ecjia_error('invalid_refund_type', '退款方式错误');
 	}
 
 	/* 备注信息 */
