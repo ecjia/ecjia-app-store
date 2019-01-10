@@ -633,7 +633,7 @@ class admin extends ecjia_admin
             $store['percent_value'] = RC_DB::table('store_percent')->where('percent_id', $store['percent_id'])->pluck('percent_value');
         }
         $store['shop_review_goods'] = get_merchant_config($store_id, 'shop_review_goods');
-        $store['franchisee_amount'] = ecjia_price_format($store['franchisee_amount']);
+//        $store['franchisee_amount'] = ecjia_price_format($store['franchisee_amount']);
 
         $this->assign('store', $store);
 
