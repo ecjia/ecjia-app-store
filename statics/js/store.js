@@ -112,7 +112,7 @@
                     size   = new qq.maps.Size(40,40),
                     origin = new qq.maps.Point(0, 0),
                     icon   = new qq.maps.MarkerImage(
-                        "content/apps/store/statics/images/ex_user.png",
+                        "content/apps/store/statics/images/map_marker.png",
                         size,
                         origin,
                         anchor
@@ -129,7 +129,7 @@
                 Label.prototype.construct = function() {
                      this.dom = document.createElement('div');
                      this.dom.style.cssText =
-                          'background:url("content/apps/store/statics/images/lable_text.png") no-repeat;width:330px;height:60px;margin-top:-98px;margin-left:-40px;position:absolute;' +
+                          'background:url("content/apps/store/statics/images/lable_text.png") no-repeat;width:330px;height:60px;margin-top:-100px;margin-left:-44px;position:absolute;' +
                           'text-align:left;color:white;padding-left:25px;padding-top:8px;';
                      this.dom.innerHTML = name + '<br>' + adddress;
                      //将dom添加到覆盖物层，overlayLayer的顺序为容器 1，此容器中包含Polyline、Polygon、GroundOverlay等
