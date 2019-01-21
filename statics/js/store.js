@@ -119,7 +119,7 @@
                     );
                 marker.setIcon(icon);
 
-                //创建描述框
+                //创建描述框,https://lbs.qq.com/javascript_v2/doc/overlay.html
              	var Label = function(opts) {
                     qq.maps.Overlay.call(this, opts);
                	}
@@ -129,8 +129,8 @@
                 Label.prototype.construct = function() {
                      this.dom = document.createElement('div');
                      this.dom.style.cssText =
-                          'background:url("content/apps/store/statics/images/lable_text.png") no-repeat;width:330px;height:60px;margin-top:-100px;margin-left:-44px;position:absolute;' +
-                          'text-align:left;color:white;padding-left:25px;padding-top:8px;';
+                          'background-color:#0087CB;width:300px;height:auto;position:absolute;' +
+                          'text-align:left;color:white;padding:8px 20px;border-radius:10px;';
                      this.dom.innerHTML = name + '<br>' + adddress;
                      //将dom添加到覆盖物层，overlayLayer的顺序为容器 1，此容器中包含Polyline、Polygon、GroundOverlay等
                      this.getPanes().overlayLayer.appendChild(this.dom);
