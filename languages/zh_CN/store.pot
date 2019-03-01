@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Ecjia App store 1.27.4\n"
 "Report-Msgid-Bugs-To: https://make.ecjia.com/polyglots/\n"
-"POT-Creation-Date: 2019-02-21 03:58:44+00:00\n"
+"POT-Creation-Date: 2019-03-01 01:49:03+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -68,15 +68,15 @@ msgstr ""
 msgid "设置商家佣金"
 msgstr ""
 
-#: admin_commission.php:107 admin_commission.php:327
+#: admin_commission.php:107
 msgid "佣金结算"
 msgstr ""
 
-#: admin_commission.php:173 admin_commission.php:406
+#: admin_commission.php:173 admin_commission.php:365
 msgid "自营店铺"
 msgstr ""
 
-#: admin_commission.php:176 admin_commission.php:409
+#: admin_commission.php:176 admin_commission.php:368
 msgid "入驻商家"
 msgstr ""
 
@@ -84,11 +84,7 @@ msgstr ""
 msgid "佣金设置"
 msgstr ""
 
-#: admin_commission.php:313 admin_commission.php:326
-msgid "商家订单列表"
-msgstr ""
-
-#: admin_commission.php:420
+#: admin_commission.php:379
 msgid "资金管理"
 msgstr ""
 
@@ -382,44 +378,6 @@ msgstr ""
 msgid "门店切换模式："
 msgstr ""
 
-#: content/apps/store/templates/admin/store_order_list.dwt.php:40
-msgid "订单编号"
-msgstr ""
-
-#: content/apps/store/templates/admin/store_order_list.dwt.php:41
-msgid "下单时间"
-msgstr ""
-
-#: content/apps/store/templates/admin/store_order_list.dwt.php:42
-msgid "收货人"
-msgstr ""
-
-#: content/apps/store/templates/admin/store_order_list.dwt.php:43
-msgid "总金额"
-msgstr ""
-
-#: content/apps/store/templates/admin/store_order_list.dwt.php:44
-msgid "应付金额"
-msgstr ""
-
-#: content/apps/store/templates/admin/store_order_list.dwt.php:45
-msgid "佣金金额"
-msgstr ""
-
-#: content/apps/store/templates/admin/store_order_list.dwt.php:46
-msgid "订单状态"
-msgstr ""
-
-#: content/apps/store/templates/admin/store_order_list.dwt.php:47
-msgid "结算状态"
-msgstr ""
-
-#: content/apps/store/templates/admin/store_order_list.dwt.php:62
-#: content/apps/store/templates/admin/store_commission_list.dwt.php:68
-#: content/apps/store/templates/admin/store_fund_list.dwt.php:59
-msgid "没有找到任何记录"
-msgstr ""
-
 #: content/apps/store/templates/admin/store_percent_info.dwt.php:25
 msgid "奖励额度："
 msgstr ""
@@ -463,6 +421,11 @@ msgstr ""
 
 #: content/apps/store/templates/admin/store_commission_list.dwt.php:64
 msgid "0"
+msgstr ""
+
+#: content/apps/store/templates/admin/store_commission_list.dwt.php:68
+#: content/apps/store/templates/admin/store_fund_list.dwt.php:59
+msgid "没有找到任何记录"
 msgstr ""
 
 #: content/apps/store/templates/admin/store_mobileconfig.dwt.php:25
