@@ -89,7 +89,7 @@ class Helper
         ecjia_admin_log::instance()->add_object('store_goods', __('店铺商品数据', 'store'));
         ecjia_admin_log::instance()->add_object('store_cart_goods', __('店铺购物车商品', 'store'));
 
-        ecjia_admin_log::instance()->add_object('', __('店铺收银台挂单', 'store'));
+        ecjia_admin_log::instance()->add_object('store_cashier_pendorder', __('店铺收银台挂单', 'store'));
         ecjia_admin_log::instance()->add_object('', __('店铺收银台设备', 'store'));
         ecjia_admin_log::instance()->add_object('', __('店铺电子秤设备', 'store'));
 
