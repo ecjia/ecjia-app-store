@@ -75,6 +75,8 @@ class admin extends ecjia_admin
 
         RC_Script::enqueue_script('jquery-range', RC_App::apps_url('statics/js/jquery.range.js', __FILE__));
         RC_Style::enqueue_style('range', RC_App::apps_url('statics/css/range.css', __FILE__), array());
+        RC_Style::enqueue_style('store', RC_App::apps_url('statics/css/store.css', __FILE__), array());
+
         //时间控件
         RC_Script::enqueue_script('bootstrap-datepicker', RC_Uri::admin_url('statics/lib/datepicker/bootstrap-datepicker.min.js'));
         RC_Style::enqueue_style('datepicker', RC_Uri::admin_url('statics/lib/datepicker/datepicker.css'));
@@ -84,6 +86,8 @@ class admin extends ecjia_admin
         RC_Script::enqueue_script('store_log', RC_App::apps_url('statics/js/store_log.js', __FILE__));
         RC_Script::enqueue_script('commission_info', RC_App::apps_url('statics/js/commission.js', __FILE__));
         RC_Script::enqueue_script('region', RC_Uri::admin_url('statics/lib/ecjia-js/ecjia.region.js'));
+
+        RC_Script::localize_script('store', 'store_js_lang', config('app-user::jslang.admin_page'));
 
         $store_id   = intval($_GET['store_id']);
         $store_info = RC_DB::table('store_franchisee')->where('store_id', $store_id)->first();
@@ -1185,6 +1189,161 @@ class admin extends ecjia_admin
         $this->assign('type', $type);
         $this->assign('url', $url);
         $this->display('store_progress.dwt');
+    }
+
+    //删除商家
+    public function remove_store()
+    {
+        $this->admin_priv('store_delete');
+
+        $store_id = intval($_GET['store_id']);
+        if (empty($store_id)) {
+            return $this->showmessage(__('请选择您要操作的店铺', 'store'), ecjia::MSGTYPE_HTML | ecjia::MSGSTAT_ERROR);
+        }
+
+        $store = RC_DB::table('store_franchisee')->where('store_id', $store_id)->first();
+        if (empty($store)) {
+            return $this->showmessage(__('该店铺不存在', 'store'), ecjia::MSGTYPE_HTML | ecjia::MSGSTAT_ERROR);
+        }
+
+        $this->assign('ur_here', __('删除店铺数据', 'store'));
+        $this->assign('action_link', array('href' => RC_Uri::url('store/admin/preview', array('store_id' => $store_id)), 'text' => __('店铺详情', 'store')));
+
+        ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here($store['merchants_name'], RC_Uri::url('store/admin/preview', array('store_id' => $store_id))));
+        ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('删除店铺数据', 'store')));
+
+        ecjia_screen::get_current_screen()->set_sidebar_display(false);
+        ecjia_screen::get_current_screen()->add_option('store_name', $store['merchants_name']);
+        ecjia_screen::get_current_screen()->add_option('current_code', 'store_remove');
+
+        $delete_all = $_SESSION['action_list'] == 'all' ? true : false;
+        $this->assign('delete_all', $delete_all);
+
+        $this->assign('id', $store_id);
+
+        $handles = (new \Ecjia\App\Store\StoreCleanManager($store_id))->getFactories();
+        $this->assign('handles', $handles);
+
+        $count = 0;
+        if (!empty($handles)) {
+            foreach ($handles as $k => $v) {
+                $count += $v->handleCount();
+            }
+        }
+        $this->assign('count', $count);
+
+        $this->display('store_delete.dwt');
+    }
+
+    /**
+     * 删除店铺帐号
+     */
+    public function remove()
+    {
+        $this->admin_priv('store_delete', ecjia::MSGTYPE_JSON);
+
+        $store_id = !empty($_GET['id']) ? intval($_GET['id']) : 0;
+        $store    = RC_DB::table('store_franchisee')->where('store_id', $store_id)->first();
+
+        $url = RC_Uri::url('store/admin/init');
+        if ($store['manage_mode'] != 'self') {
+            $url = RC_Uri::url('store/admin/join');
+        }
+
+        $handles = (new \Ecjia\App\Store\StoreCleanManager($store_id))->getFactories();
+
+        $count = 0;
+        if (!empty($handles)) {
+            foreach ($handles as $k => $v) {
+                $count += $v->handleCount();
+            }
+        }
+
+        if (!empty($count)) {
+            return $this->showmessage(__('当前还有店铺数据未清除，请先清除后再执行删除店铺操作', 'store'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+        }
+
+        RC_DB::table('store_franchisee')->where('store_id', $store_id)->delete();
+
+        RC_Session::flash('status', __('删除店铺成功', 'store'));
+
+        return $this->showmessage('', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('url' => $url));
+    }
+
+    /**
+     * 删除店铺帐号单项数据
+     */
+    public function remove_item()
+    {
+        $this->admin_priv('store_delete', ecjia::MSGTYPE_JSON);
+
+        $store_id = !empty($_GET['id']) ? intval($_GET['id']) : 0;
+        $code     = trim($_GET['handle']);
+
+        $handles = (new \Ecjia\App\Store\StoreCleanManager($store_id))->getFactories();
+        $handle  = array_get($handles, $code);
+
+        if (empty($handle)) {
+            return $this->showmessage(__('操作失败，当前code无效', 'store'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+        }
+
+        $result = $handle->handleClean();
+        if ($result) {
+            return $this->showmessage(sprintf(__('%s删除成功', 'store'), $handle->getName()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
+        }
+        return $this->showmessage(sprintf(__('%s删除失败', 'store'), $handle->getName()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+    }
+
+    /**
+     * 一键删除店铺帐号
+     */
+    public function remove_all()
+    {
+        $this->admin_priv('store_delete', ecjia::MSGTYPE_JSON);
+
+        $store_id = !empty($_GET['id']) ? intval($_GET['id']) : 0;
+        $store    = RC_DB::table('store_franchisee')->where('store_id', $store_id)->first();
+
+        $url = RC_Uri::url('store/admin/init');
+        if ($store['manage_mode'] != 'self') {
+            $url = RC_Uri::url('store/admin/join');
+        }
+
+        $handles = (new \Ecjia\App\Store\StoreCleanManager($store_id))->getFactories();
+
+        if (!empty($handles)) {
+            $remove_result = [];
+            foreach ($handles as $k => $handle) {
+                $handle_result = array(
+                    'code'   => $handle->getCode(),
+                    'name'   => $handle->getName(),
+                    'result' => $handle->handleClean()
+                );
+
+                $remove_result[] = $handle_result;
+            }
+
+            $filter = [];
+            if (!empty($remove_result)) {
+                $filter = collect($remove_result)->where('result', false)->all();
+            }
+
+            if (!empty($filter)) {
+                $error_html = '';
+                foreach ($filter as $v) {
+                    $error_html .= sprintf(__('%s删除失败；<br>', 'store'), $v['name']);
+                }
+                return $this->showmessage($error_html, ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            }
+
+            RC_DB::table('store_franchisee')->where('store_id', $store_id)->delete();
+
+            RC_Session::flash('status', __('一键删除店铺成功', 'store'));
+
+            return $this->showmessage(__('一键删除店铺成功', 'store'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('url' => $url));
+        }
+
+        return $this->showmessage(__('操作失败', 'store'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
     }
 
 }

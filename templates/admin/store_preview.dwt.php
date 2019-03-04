@@ -102,6 +102,12 @@
         							<td><div align="right"><strong>{lang key='store::store.address_lable'}</strong></div></td>
         							<td colspan="3">{$store.address}</td>
         						</tr>
+
+                                <tr>
+                                    <td><div align="right"><strong>{t domain="store"}删除商家：{/t}</strong></div></td>
+                                    <td colspan="3"><a class="btn data-pjax" href="{RC_Uri::url('store/admin/remove_store')}&store_id={$store.store_id}">{t domain="store"}去删除店铺数据{/t}</a></td>
+                                </tr>
+
         						</tbody>
         					</table>
         				</div>

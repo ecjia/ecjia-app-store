@@ -44,76 +44,13 @@
 //
 //  ---------------------------------------------------------------------------------
 //
-namespace Ecjia\App\Store;
+defined('IN_ECJIA') or exit('No permission resources.');
 
-use RC_Hook;
-use RC_Api;
-use InvalidArgumentException;
-use ecjia_app;
+return array(
+    'admin_page' => array(
+        'ok'     => __('确定', 'store'),
+        'cancel' => __('取消', 'store'),
+    ),
+);
 
-class StoreCleanManager
-{
-
-    protected $api_name = 'store_remove_cleardata';
-
-    protected $factories;
-
-    protected $store_id;
-
-    public function __construct($store_id)
-    {
-        $this->store_id = $store_id;
-    }
-
-    public function getFactories()
-    {
-
-        $apps     = ecjia_app::installed_app_floders();
-        $handlers = RC_Api::apis($apps, $this->api_name, ['store_id' => $this->store_id]);
-
-        $factories = [];
-        foreach ($handlers as $values) {
-            foreach ($values as $item) {
-                $factories[$item->getCode()] = $item;
-            }
-        }
-
-        $factories = RC_Hook::apply_filters('ecjia_store_clean_component_filter', $factories, $this->store_id);
-
-        usort($factories, array($this, 'listMenuBySort'));
-
-        $new_factories = [];
-        foreach ($factories as $item) {
-            $new_factories[$item->getCode()] = $item;
-        }
-
-        return $new_factories;
-    }
-
-    public function handler($code)
-    {
-        if (!array_key_exists($code, $this->factories)) {
-            throw new InvalidArgumentException("Handler '$code' is not supported.");
-        }
-
-        return $this->factories[$code];
-    }
-
-
-    /**
-     * 列表排序
-     *
-     * @param StoreCleanAbstract $a
-     * @param StoreCleanAbstract $b
-     * @return number
-     */
-    protected function listMenuBySort(StoreCleanAbstract $a, StoreCleanAbstract $b)
-    {
-        if ($a->getSort() == $b->getSort()) {
-            return 0;
-        } else {
-            return ($a->getSort() > $b->getSort()) ? 1 : -1;
-        }
-    }
-
-}
+// end

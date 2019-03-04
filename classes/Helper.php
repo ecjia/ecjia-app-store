@@ -56,23 +56,28 @@ class Helper
      */
     public static function assign_adminlog_content()
     {
-        ecjia_admin_log::instance()->add_object('store_commission', '佣金结算');
-        ecjia_admin_log::instance()->add_object('store_commission_status', '佣金结算状态');
+        ecjia_admin_log::instance()->add_object('store_commission', __('佣金结算', 'store'));
+        ecjia_admin_log::instance()->add_object('store_commission_status', __('佣金结算状态', 'store'));
 
-        ecjia_admin_log::instance()->add_object('merchants_step', '申请流程');
-        ecjia_admin_log::instance()->add_object('merchants_step_title', '申请流程信息');
-        ecjia_admin_log::instance()->add_object('merchants_step_custom', '自定义字段');
+        ecjia_admin_log::instance()->add_object('merchants_step', __('申请流程', 'store'));
+        ecjia_admin_log::instance()->add_object('merchants_step_title', __('申请流程信息', 'store'));
+        ecjia_admin_log::instance()->add_object('merchants_step_custom', __('自定义字段', 'store'));
 
-        ecjia_admin_log::instance()->add_object('seller', '入驻商');
-        ecjia_admin_log::instance()->add_object('merchants_brand', '商家品牌');
-        ecjia_admin_log::instance()->add_object('store_category', '店铺分类');
-        ecjia_admin_log::instance()->add_object('merchant_notice', '商家公告');
+        ecjia_admin_log::instance()->add_object('seller', __('入驻商', 'store'));
+        ecjia_admin_log::instance()->add_object('merchants_brand', __('商家品牌', 'store'));
+        ecjia_admin_log::instance()->add_object('store_category', __('店铺分类', 'store'));
+        ecjia_admin_log::instance()->add_object('merchant_notice', __('商家公告', 'store'));
 
-        ecjia_admin_log::instance()->add_object('config', '配置');
-        ecjia_admin_log::instance()->add_object('store_percent', '佣金比例');
-        ecjia_admin_log::instance()->add_object('store_mobileconfig', '店铺街配置');
-        
-        ecjia_admin_log::instance()->add_object('store_business_city', '店铺经营城市');
+        ecjia_admin_log::instance()->add_object('config', __('配置', 'store'));
+        ecjia_admin_log::instance()->add_object('store_percent', __('佣金比例', 'store'));
+        ecjia_admin_log::instance()->add_object('store_mobileconfig', __('店铺街配置', 'store'));
+
+        ecjia_admin_log::instance()->add_object('store_business_city', __('店铺经营城市', 'store'));
+
+        ecjia_admin_log::instance()->add_object('store', __('店铺', 'store'));
+        ecjia_admin_log::instance()->add_object('store_article', __('店铺文章', 'store'));
+
+        ecjia_admin_log::instance()->add_action('clean', __('清空', 'store'));
     }
 
 }
