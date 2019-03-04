@@ -76,6 +76,7 @@ class Helper
 
         ecjia_admin_log::instance()->add_object('store', __('店铺', 'store'));
         ecjia_admin_log::instance()->add_object('store_article', __('店铺文章', 'store'));
+        ecjia_admin_log::instance()->add_object('store_article_comment', __('文章评论', 'store'));
 
         ecjia_admin_log::instance()->add_action('clean', __('清空', 'store'));
     }
