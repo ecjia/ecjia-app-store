@@ -77,7 +77,43 @@ class Helper
         ecjia_admin_log::instance()->add_object('store', __('店铺', 'store'));
         ecjia_admin_log::instance()->add_object('store_article', __('店铺文章', 'store'));
         ecjia_admin_log::instance()->add_object('store_article_comment', __('文章评论', 'store'));
+
         ecjia_admin_log::instance()->add_object('store_bonus', __('店铺红包', 'store'));
+        ecjia_admin_log::instance()->add_object('store_favourable_activity', __('店铺优惠活动', 'store'));
+        ecjia_admin_log::instance()->add_object('store_groupbuy_activity', __('店铺团购活动', 'store'));
+        ecjia_admin_log::instance()->add_object('store_quickpay_activity', __('店铺买单活动', 'store'));
+
+        ecjia_admin_log::instance()->add_object('store_staff', __('店铺员工', 'store'));
+        ecjia_admin_log::instance()->add_object('store_collect', __('店铺收藏', 'store'));
+        ecjia_admin_log::instance()->add_object('store_goods', __('店铺商品数据', 'store'));
+        ecjia_admin_log::instance()->add_object('store_cart_goods', __('店铺购物车商品', 'store'));
+
+        ecjia_admin_log::instance()->add_object('', __('店铺收银台挂单', 'store'));
+        ecjia_admin_log::instance()->add_object('', __('店铺收银台设备', 'store'));
+        ecjia_admin_log::instance()->add_object('', __('店铺电子秤设备', 'store'));
+
+        ecjia_admin_log::instance()->add_object('store_platform_activity', __('店铺公众平台营销活动', 'store'));
+
+        ecjia_admin_log::instance()->add_object('store_adsense_position', __('店铺广告', 'store'));
+        ecjia_admin_log::instance()->add_object('store_adsense', __('店铺广告位', 'store'));
+
+        ecjia_admin_log::instance()->add_object('store_menu', __('店铺自定义菜单', 'store'));
+        ecjia_admin_log::instance()->add_object('store_toutiao', __('店铺今日头条', 'store'));
+
+        ecjia_admin_log::instance()->add_object('store_printer', __('店铺小票打印机', 'store'));
+        ecjia_admin_log::instance()->add_object('store_print_record', __('店铺小票打印记录', 'store'));
+        ecjia_admin_log::instance()->add_object('store_print_template', __('店铺小票打印模板', 'store'));
+
+        ecjia_admin_log::instance()->add_object('store_shipping_area', __('店铺配送区域', 'store'));
+        ecjia_admin_log::instance()->add_object('store_log', __('店铺操作日志', 'store'));
+        ecjia_admin_log::instance()->add_object('store_close', __('锁定、关闭店铺主表', 'store'));
+        ecjia_admin_log::instance()->add_object('store_keywords', __('店铺搜索关键词', 'store'));
+        ecjia_admin_log::instance()->add_object('store_user', __('店铺会员', 'store'));
+
+        ecjia_admin_log::instance()->add_object('store_apply', __('店铺申请资料修改', 'store'));
+        ecjia_admin_log::instance()->add_object('store_order', __('店铺订单', 'store'));
+        ecjia_admin_log::instance()->add_object('store_comment', __('商品评论', 'store'));
+        ecjia_admin_log::instance()->add_object('store_shipping_template', __('运费模版', 'store'));
 
         ecjia_admin_log::instance()->add_action('clean', __('清空', 'store'));
     }
