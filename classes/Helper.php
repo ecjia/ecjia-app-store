@@ -80,6 +80,7 @@ class Helper
 
         ecjia_admin_log::instance()->add_object('store_bonus', __('店铺红包', 'store'));
         ecjia_admin_log::instance()->add_object('store_favourable_activity', __('店铺优惠活动', 'store'));
+        ecjia_admin_log::instance()->add_object('store_promotion_activity', __('店铺促销活动', 'store'));
         ecjia_admin_log::instance()->add_object('store_groupbuy_activity', __('店铺团购活动', 'store'));
         ecjia_admin_log::instance()->add_object('store_quickpay_activity', __('店铺买单活动', 'store'));
 
