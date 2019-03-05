@@ -1260,7 +1260,7 @@ class admin extends ecjia_admin
         }
 
         if (!empty($count)) {
-            return $this->showmessage(__('当前还有店铺数据未清除，请先清除后再执行删除店铺操作', 'store'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            return $this->showmessage(__('当前商家账户还有关联数据没有删除，请删除完关联数据后，再删除商家账户', 'store'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
 
         RC_DB::table('store_franchisee')->where('store_id', $store_id)->delete();

@@ -33,7 +33,7 @@ class StoreCloseClear extends StoreCleanAbstract
      * 排序
      * @var int
      */
-    protected $sort = 113;
+    protected $sort = 34;
 
     /**
      * 数据描述及输出显示内容
