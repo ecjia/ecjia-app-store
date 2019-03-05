@@ -112,7 +112,7 @@ class Helper
 
         ecjia_admin_log::instance()->add_object('store_check_log', __('店铺申请资料修改', 'store'));
         ecjia_admin_log::instance()->add_object('store_order', __('店铺订单', 'store'));
-        ecjia_admin_log::instance()->add_object('store_comment', __('商品评论', 'store'));
+        ecjia_admin_log::instance()->add_object('store_goods_comment', __('商品评论', 'store'));
         ecjia_admin_log::instance()->add_object('store_shipping_template', __('运费模版', 'store'));
 
         ecjia_admin_log::instance()->add_action('clean', __('清空', 'store'));

@@ -17,6 +17,7 @@
                 ecjia.pjax(url);
             });
             app.store_list.toggle_view();
+            app.store_list.delete();
         },
         toggle_view: function (option) {
             $('.toggle_view').off('click').on('click', function (e) {
@@ -49,13 +50,37 @@
                 }
             });
         },
+
+        delete: function () {
+            $('.delete_confirm').off('click').on('click', function (e) {
+                e.preventDefault();
+                var $this = $(this),
+                    msg = $this.attr('data-msg'),
+                    url = $this.attr('href');
+
+                smoke.confirm(msg, function (e) {
+                    if (e) {
+                        $.post(url, function (data) {
+                            console.log(data);
+                            if (data.state == 'success') {
+                                ecjia.admin.showmessage(data);
+                                window.setTimeout(function () {
+                                    window.location.href = data.url;
+                                }, 2000);
+                            } else {
+                                ecjia.admin.showmessage(data);
+                            }
+                        });
+                    }
+                }, {ok: store_js_lang.ok, cancel: store_js_lang.cancel});
+            });
+        },
     };
 
     app.store_edit = {
         init: function () {
             app.store_edit.get_longitude();
             app.store_edit.gethash();
-            app.store_edit.delete();
 
             $(".date").datepicker({
                 format: "yyyy-mm-dd",
@@ -249,27 +274,6 @@
                     markersArray.push(marker);
                 });
             }
-        },
-
-        delete: function () {
-            $('.delete_confirm').off('click').on('click', function (e) {
-                e.preventDefault();
-                var $this = $(this),
-                    msg = $this.attr('data-msg'),
-                    url = $this.attr('href');
-
-                smoke.confirm(msg, function (e) {
-                    if (e) {
-                        $.post(url, function (data) {
-                            if (data.state == 'success') {
-                                window.location.href = data.url;
-                            } else {
-                                ecjia.admin.showmessage(data);
-                            }
-                        });
-                    }
-                }, {ok: store_js_lang.ok, cancel: store_js_lang.cancel});
-            });
         },
     };
     app.store_lock = {
