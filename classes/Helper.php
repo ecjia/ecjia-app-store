@@ -93,12 +93,12 @@ class Helper
         ecjia_admin_log::instance()->add_object('store_cashier_device', __('店铺收银台设备', 'store'));
         ecjia_admin_log::instance()->add_object('store_cashier_scales', __('店铺电子秤设备', 'store'));
 
-        ecjia_admin_log::instance()->add_object('store_platform_activity', __('店铺公众平台营销活动', 'store'));
+        ecjia_admin_log::instance()->add_object('store_market_activity', __('店铺公众平台营销活动', 'store'));
 
-        ecjia_admin_log::instance()->add_object('store_adsense_position', __('店铺广告', 'store'));
-        ecjia_admin_log::instance()->add_object('store_adsense', __('店铺广告位', 'store'));
+        ecjia_admin_log::instance()->add_object('store_adsense', __('店铺广告', 'store'));
+        ecjia_admin_log::instance()->add_object('store_adsense_position', __('店铺广告位', 'store'));
 
-        ecjia_admin_log::instance()->add_object('store_menu', __('店铺自定义菜单', 'store'));
+        ecjia_admin_log::instance()->add_object('store_toutiao_menu', __('店铺自定义菜单', 'store'));
         ecjia_admin_log::instance()->add_object('store_toutiao', __('店铺今日头条', 'store'));
 
         ecjia_admin_log::instance()->add_object('store_printer', __('店铺小票打印机', 'store'));
