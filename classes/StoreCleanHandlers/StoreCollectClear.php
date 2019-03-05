@@ -40,12 +40,11 @@ class StoreCollectClear extends StoreCleanAbstract
      */
     public function handlePrintData()
     {
+        $text = __('所有店铺被收藏数据全部删除', 'store');
+
         return <<<HTML
-
-<span class="controls-info w300">所有店铺被收藏数据全部删除</span>
-
+<span class="controls-info w300">{$text}</span>
 HTML;
-
     }
 
     /**

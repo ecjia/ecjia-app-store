@@ -40,12 +40,11 @@ class StoreKeywordsClear extends StoreCleanAbstract
      */
     public function handlePrintData()
     {
+        $text = __('将店铺设置的搜索关键词全部删除', 'store');
+
         return <<<HTML
-
-<span class="controls-info">将店铺设置的搜索关键词全部删除</span>
-
+<span class="controls-info">{$text}</span>
 HTML;
-
     }
 
     /**

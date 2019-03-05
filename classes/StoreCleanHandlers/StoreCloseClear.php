@@ -40,12 +40,11 @@ class StoreCloseClear extends StoreCleanAbstract
      */
     public function handlePrintData()
     {
+        $text = __('将店铺主表中，锁定、关闭当前店铺', 'store');
+
         return <<<HTML
-
-<span class="controls-info">将店铺主表中，锁定、关闭当前店铺</span>
-
+<span class="controls-info">{$text}</span>
 HTML;
-
     }
 
     /**

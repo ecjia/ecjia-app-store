@@ -66,7 +66,7 @@
                                 ecjia.admin.showmessage(data);
                                 window.setTimeout(function () {
                                     window.location.href = data.url;
-                                }, 2000);
+                                }, 1000);
                             } else {
                                 ecjia.admin.showmessage(data);
                             }

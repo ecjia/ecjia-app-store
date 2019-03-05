@@ -1267,7 +1267,7 @@ class admin extends ecjia_admin
 
         RC_Session::flash('status', __('删除店铺成功', 'store'));
 
-        return $this->showmessage('', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('url' => $url));
+        return $this->showmessage('删除店铺成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('url' => $url));
     }
 
     /**

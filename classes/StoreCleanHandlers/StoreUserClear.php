@@ -40,10 +40,10 @@ class StoreUserClear extends StoreCleanAbstract
      */
     public function handlePrintData()
     {
+        $text = __('店铺内所有店铺会员全部删除', 'store');
+
         return <<<HTML
-
-<span class="controls-info">店铺内所有店铺会员全部删除</span>
-
+<span class="controls-info">{$text}</span>
 HTML;
 
     }
