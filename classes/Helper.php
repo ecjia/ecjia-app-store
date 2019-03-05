@@ -105,12 +105,12 @@ class Helper
         ecjia_admin_log::instance()->add_object('store_print_record', __('店铺小票打印记录', 'store'));
 
         ecjia_admin_log::instance()->add_object('store_shipping_area', __('店铺配送区域', 'store'));
-        ecjia_admin_log::instance()->add_object('store_check_log', __('店铺操作日志', 'store'));
+        ecjia_admin_log::instance()->add_object('store_staff_log', __('店铺操作日志', 'store'));
         ecjia_admin_log::instance()->add_object('store_close', __('锁定、关闭店铺主表', 'store'));
         ecjia_admin_log::instance()->add_object('store_keywords', __('店铺搜索关键词', 'store'));
         ecjia_admin_log::instance()->add_object('store_user', __('店铺会员', 'store'));
 
-        ecjia_admin_log::instance()->add_object('store_apply', __('店铺申请资料修改', 'store'));
+        ecjia_admin_log::instance()->add_object('store_check_log', __('店铺申请资料修改', 'store'));
         ecjia_admin_log::instance()->add_object('store_order', __('店铺订单', 'store'));
         ecjia_admin_log::instance()->add_object('store_comment', __('商品评论', 'store'));
         ecjia_admin_log::instance()->add_object('store_shipping_template', __('运费模版', 'store'));

@@ -68,6 +68,7 @@ class store_store_remove_cleardata_api extends Component_Event_Api
             new \Ecjia\App\Store\StoreCleanHandlers\StoreCheckLogClear($store_id),
             new \Ecjia\App\Store\StoreCleanHandlers\StoreCloseClear($store_id),
             new \Ecjia\App\Store\StoreCleanHandlers\StoreKeywordsClear($store_id),
+            new \Ecjia\App\Store\StoreCleanHandlers\StoreUserClear($store_id),
         ];
     }
 
