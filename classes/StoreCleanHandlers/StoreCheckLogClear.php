@@ -6,34 +6,34 @@
  * Time: 14:04
  */
 
-namespace Ecjia\App\User\UserCleanHandlers;
+namespace Ecjia\App\Store\StoreCleanHandlers;
 
-use Ecjia\App\User\UserCleanAbstract;
+use Ecjia\App\Store\StoreCleanAbstract;
 use RC_Uri;
 use RC_DB;
 use RC_Api;
 use ecjia_admin;
 
-class StoreLogClear extends UserCleanAbstract
+class StoreCheckLogClear extends StoreCleanAbstract
 {
 
     /**
      * 代号标识
      * @var string
      */
-    protected $code = 'store_log_clear';
+    protected $code = 'store_check_log_clear';
 
     /**
      * 名称
      * @var string
      */
-    protected $name = '店铺操作日志';
+    protected $name = '审核操作日志';
 
     /**
      * 排序
      * @var int
      */
-    protected $sort = 41;
+    protected $sort = 112;
 
     /**
      * 数据描述及输出显示内容
@@ -42,7 +42,7 @@ class StoreLogClear extends UserCleanAbstract
     {
         return <<<HTML
 
-<span class="controls-info">与账号有关的所有日志记录</span>
+<span class="controls-info">店铺所有日志全部删除</span>
 
 HTML;
 
@@ -55,9 +55,9 @@ HTML;
      */
     public function handleCount()
     {
-        // @todo
+        $count = RC_DB::table('store_check_log')->where('store_id', $this->store_id)->count();
 
-        return 0;
+        return $count;
     }
 
 
@@ -72,10 +72,12 @@ HTML;
         if (empty($count)) {
             return true;
         }
-        
-        // @todo
 
-        $this->handleAdminLog();
+        $result = RC_DB::table('store_check_log')->where('store_id', $this->store_id)->delete();
+
+        if ($result) {
+            $this->handleAdminLog();
+        }
 
         return true;
     }
@@ -87,13 +89,13 @@ HTML;
      */
     public function handleAdminLog()
     {
-        \Ecjia\App\User\Helper::assign_adminlog_content();
+        \Ecjia\App\Store\Helper::assign_adminlog_content();
 
-//        $user_info = RC_Api::api('user', 'user_info', array('user_id' => $this->user_id));
-//
-//        $user_name = !empty($user_info) ? sprintf(__('用户名是%s', 'user'), $user_info['user_name']) : sprintf(__('用户ID是%s', 'user'), $this->user_id);
-//
-//        ecjia_admin::admin_log($user_name, 'clean', 'user_log');
+        $store_info = RC_Api::api('store', 'store_info', array('store_id' => $this->store_id));
+
+        $merchants_name = !empty($store_info) ? sprintf(__('店铺名是%s', 'store'), $store_info['merchants_name']) : sprintf(__('店铺ID是%s', 'store'), $this->store_id);
+
+        ecjia_admin::admin_log($merchants_name, 'clean', 'store_check_log');
     }
 
     /**

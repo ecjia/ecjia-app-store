@@ -103,10 +103,9 @@ class Helper
 
         ecjia_admin_log::instance()->add_object('store_printer', __('店铺小票打印机', 'store'));
         ecjia_admin_log::instance()->add_object('store_print_record', __('店铺小票打印记录', 'store'));
-        ecjia_admin_log::instance()->add_object('store_print_template', __('店铺小票打印模板', 'store'));
 
         ecjia_admin_log::instance()->add_object('store_shipping_area', __('店铺配送区域', 'store'));
-        ecjia_admin_log::instance()->add_object('store_log', __('店铺操作日志', 'store'));
+        ecjia_admin_log::instance()->add_object('store_check_log', __('店铺操作日志', 'store'));
         ecjia_admin_log::instance()->add_object('store_close', __('锁定、关闭店铺主表', 'store'));
         ecjia_admin_log::instance()->add_object('store_keywords', __('店铺搜索关键词', 'store'));
         ecjia_admin_log::instance()->add_object('store_user', __('店铺会员', 'store'));
