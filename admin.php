@@ -1207,7 +1207,7 @@ class admin extends ecjia_admin
         }
 
         $config_path = 'content/configs/site.php';
-        $help_url    = 'https://www.ecjia.com/wiki/';
+        $help_url    = 'https://www.ecjia.com/wiki/常见问题:ECJia到家:ECJia到家店铺删除功能如何开启与关闭';
 
         $disabled_btn = false;
         if (config('site.store_delete_enabled')) {
