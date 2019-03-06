@@ -1209,6 +1209,7 @@ class admin extends ecjia_admin
         $config_path = 'content/configs/site.php';
         $help_url    = 'https://www.ecjia.com/wiki/';
 
+        $disabled_btn = false;
         if (config('site.store_delete_enabled')) {
             $warning = __(sprintf('
                 <strong>
@@ -1225,6 +1226,8 @@ class admin extends ecjia_admin
                 <p>当前还未开启删除店铺设置项功能，请在配置文件【%s】中，将删除店铺的设置项开启，开启后，才可删除。<br />如何开启？<a href="%s">请点击此处 >></a></p>
             ', $config_path, $help_url));
             ecjia_screen::get_current_screen()->add_admin_notice(new admin_notice($warning, 'alert-info'));
+
+            $disabled_btn = true;
         }
 
         $warning2 = __('
@@ -1235,6 +1238,7 @@ class admin extends ecjia_admin
         ');
         ecjia_screen::get_current_screen()->add_admin_notice(new admin_notice($warning2, 'alert-warning'));
 
+        $this->assign('disabled', $disabled_btn);
         $this->assign('ur_here', __('删除店铺数据', 'store'));
         $this->assign('action_link', array('href' => RC_Uri::url('store/admin/preview', array('store_id' => $store_id)), 'text' => __('店铺详情', 'store')));
 
@@ -1259,7 +1263,6 @@ class admin extends ecjia_admin
                 $count += $v->handleCount();
             }
         }
-
         $this->assign('count', $count);
 
         $this->display('store_delete.dwt');
@@ -1314,7 +1317,7 @@ class admin extends ecjia_admin
         if (!config('site.store_delete_enabled')) {
             return $this->showmessage(__('您还未开启删除店铺设置项，请先开启后，再来删除', 'store'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
-        
+
         $store_id = !empty($_GET['id']) ? intval($_GET['id']) : 0;
         $code     = trim($_GET['handle']);
 

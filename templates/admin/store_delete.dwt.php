@@ -39,8 +39,8 @@
                     {$val->handlePrintData()}
                     {if $val->handleCanRemove()}
                     <span class="controls-info-right f_r">
-							<a class="btn btn-gebo" data-toggle="store_ajaxremove" data-msg='{t domain="store"}您确定要【删除】吗？一旦操作后将不可恢复{/t}' data-confirm='{t domain="store"}你真的确定要【删除】吗？{/t}' href="{RC_Uri::url('store/admin/remove_item')}&id={$id}&handle={$val->getCode()}">{t domain="store"}删除数据{/t}</a>
-						</span>
+                        <a class="btn btn-gebo" {if $disabled} disabled href="javascript:;" {else} data-toggle="store_ajaxremove" data-msg='{t domain="store"}您确定要【删除】吗？一旦操作后将不可恢复{/t}' data-confirm='{t domain="store"}你真的确定要【删除】吗？{/t}' href="{RC_Uri::url('store/admin/remove_item')}&id={$id}&handle={$val->getCode()}" {/if}>{t domain="store"}删除数据{/t}</a>
+                    </span>
                     {/if}
                 </div>
             </div>

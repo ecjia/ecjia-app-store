@@ -14,33 +14,33 @@ use RC_DB;
 use RC_Api;
 use ecjia_admin;
 
-class StoreCheckLogClear extends StoreCleanAbstract
+class StorePreauditClear extends StoreCleanAbstract
 {
 
     /**
      * 代号标识
      * @var string
      */
-    protected $code = 'store_check_log_clear';
+    protected $code = 'store_preaudit_clear';
 
     /**
      * 名称
      * @var string
      */
-    protected $name = '店铺审核日志记录';
+    protected $name = '店铺申请资料修改';
 
     /**
      * 排序
      * @var int
      */
-    protected $sort = 37;
+    protected $sort = 38;
 
     /**
      * 数据描述及输出显示内容
      */
     public function handlePrintData()
     {
-        $text = __('将店铺审核日志记录全部删除', 'store');
+        $text = __('将店铺申请资料修改记录全部删除', 'store');
 
         return <<<HTML
 <span class="controls-info">{$text}</span>
@@ -54,7 +54,7 @@ HTML;
      */
     public function handleCount()
     {
-        $count = RC_DB::table('store_check_log')->where('store_id', $this->store_id)->count();
+        $count = RC_DB::table('store_preaudit')->where('store_id', $this->store_id)->count();
 
         return $count;
     }
@@ -72,7 +72,7 @@ HTML;
             return true;
         }
 
-        $result = RC_DB::table('store_check_log')->where('store_id', $this->store_id)->delete();
+        $result = RC_DB::table('store_preaudit')->where('store_id', $this->store_id)->delete();
 
         if ($result) {
             $this->handleAdminLog();
@@ -94,7 +94,7 @@ HTML;
 
         $merchants_name = !empty($store_info) ? sprintf(__('店铺名是%s', 'store'), $store_info['merchants_name']) : sprintf(__('店铺ID是%s', 'store'), $this->store_id);
 
-        ecjia_admin::admin_log($merchants_name, 'clean', 'store_check_log');
+        ecjia_admin::admin_log($merchants_name, 'clean', 'store_preaudit');
     }
 
     /**
