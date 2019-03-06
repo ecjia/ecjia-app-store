@@ -61,7 +61,6 @@
                 smoke.confirm(msg, function (e) {
                     if (e) {
                         $.post(url, function (data) {
-                            console.log(data);
                             if (data.state == 'success') {
                                 ecjia.admin.showmessage(data);
                                 window.setTimeout(function () {
@@ -71,6 +70,25 @@
                                 ecjia.admin.showmessage(data);
                             }
                         });
+                    }
+                }, {ok: store_js_lang.ok, cancel: store_js_lang.cancel});
+            });
+
+            $('[data-toggle="store_ajaxremove"]').off('click').on('click', function (e) {
+                e.preventDefault();
+                var $this = $(this),
+                    msg = $this.attr('data-msg'),
+                    confirm = $this.attr('data-confirm'),
+                    url = $this.attr('href');
+                smoke.confirm(msg, function (f) {
+                    if (f) {
+                        smoke.confirm(confirm, function (g) {
+                            if (g) {
+                                $.post(url, function (data) {
+                                    ecjia.admin.showmessage(data);
+                                });
+                            }
+                        }, {ok: store_js_lang.ok, cancel: store_js_lang.cancel});
                     }
                 }, {ok: store_js_lang.ok, cancel: store_js_lang.cancel});
             });

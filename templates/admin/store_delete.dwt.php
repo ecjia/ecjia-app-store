@@ -39,7 +39,7 @@
                     {$val->handlePrintData()}
                     {if $val->handleCanRemove()}
                     <span class="controls-info-right f_r">
-							<a class="btn btn-gebo" data-toggle="ajaxremove" data-msg='{t domain="store"}您确定要【删除】吗？一旦操作后将不可恢复{/t}' href="{RC_Uri::url('store/admin/remove_item')}&id={$id}&handle={$val->getCode()}">{t domain="store"}删除数据{/t}</a>
+							<a class="btn btn-gebo" data-toggle="store_ajaxremove" data-msg='{t domain="store"}您确定要【删除】吗？一旦操作后将不可恢复{/t}' data-confirm='{t domain="store"}你真的确定要【删除】吗？{/t}' href="{RC_Uri::url('store/admin/remove_item')}&id={$id}&handle={$val->getCode()}">{t domain="store"}删除数据{/t}</a>
 						</span>
                     {/if}
                 </div>
@@ -50,9 +50,8 @@
             <div class="control-group">
                 {if $delete_all}
                 <a class="btn delete_confirm" data-msg='{t domain="store"}您确定要彻底删除该商家所有信息吗？{/t}' href="{RC_Uri::url('store/admin/remove_all')}&id={$id}">{t domain="store"}一键删除所有{/t}</a>
-                {/if}
-
                 <a class="btn btn-gebo delete_confirm m_l10" data-msg='{t domain="store"}您确定要彻底删除该商家吗？{/t}' href="{RC_Uri::url('store/admin/remove')}&id={$id}">{t domain="store"}删除商家{/t}</a>
+                {/if}
 
                 <div class="help-block">
                     <p>{t domain="store"}注：一键删除：点击后，会将以上所有有关当前账号的数据全部删除，一旦删除后将不可恢复。{/t}</p>

@@ -1207,7 +1207,7 @@ class admin extends ecjia_admin
         }
 
         $config_path = 'content/configs/site.php';
-        $help_url = 'https://www.ecjia.com/wiki/';
+        $help_url    = 'https://www.ecjia.com/wiki/';
 
         if (config('site.store_delete_enabled')) {
             $warning = __(sprintf('
@@ -1235,7 +1235,7 @@ class admin extends ecjia_admin
         ');
         ecjia_screen::get_current_screen()->add_admin_notice(new admin_notice($warning2, 'alert-warning'));
 
-            $this->assign('ur_here', __('删除店铺数据', 'store'));
+        $this->assign('ur_here', __('删除店铺数据', 'store'));
         $this->assign('action_link', array('href' => RC_Uri::url('store/admin/preview', array('store_id' => $store_id)), 'text' => __('店铺详情', 'store')));
 
         ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here($store['merchants_name'], RC_Uri::url('store/admin/preview', array('store_id' => $store_id))));
@@ -1272,6 +1272,10 @@ class admin extends ecjia_admin
     {
         $this->admin_priv('store_delete', ecjia::MSGTYPE_JSON);
 
+        if (!config('site.store_delete_enabled')) {
+            return $this->showmessage(__('您还未开启删除店铺设置项，请先开启后，再来删除', 'store'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+        }
+
         $store_id = !empty($_GET['id']) ? intval($_GET['id']) : 0;
         $store    = RC_DB::table('store_franchisee')->where('store_id', $store_id)->first();
 
@@ -1307,6 +1311,10 @@ class admin extends ecjia_admin
     {
         $this->admin_priv('store_delete', ecjia::MSGTYPE_JSON);
 
+        if (!config('site.store_delete_enabled')) {
+            return $this->showmessage(__('您还未开启删除店铺设置项，请先开启后，再来删除', 'store'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+        }
+        
         $store_id = !empty($_GET['id']) ? intval($_GET['id']) : 0;
         $code     = trim($_GET['handle']);
 
@@ -1330,6 +1338,10 @@ class admin extends ecjia_admin
     public function remove_all()
     {
         $this->admin_priv('store_delete', ecjia::MSGTYPE_JSON);
+
+        if (!config('site.store_delete_enabled')) {
+            return $this->showmessage(__('您还未开启删除店铺设置项，请先开启后，再来删除', 'store'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+        }
 
         $store_id = !empty($_GET['id']) ? intval($_GET['id']) : 0;
         $store    = RC_DB::table('store_franchisee')->where('store_id', $store_id)->first();
