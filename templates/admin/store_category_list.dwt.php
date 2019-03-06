@@ -39,10 +39,10 @@
 				<!-- {/if} -->
 			</td>
 			<td>
-				<a class="no-underline" target="__blank" href='{url path="store/admin/init" args="cat={$cat.cat_id}"}' title="自营店铺列表">{$cat.self_num}</a>
+				<a class="no-underline" target="_blank" href='{url path="store/admin/init" args="cat={$cat.cat_id}"}' title="自营店铺列表">{$cat.self_num}</a>
 			</td>
 			<td>
-				<a class="no-underline" target="__blank" href='{url path="store/admin/join" args="cat={$cat.cat_id}"}' title="入驻店铺列表">{$cat.join_num}</a>
+				<a class="no-underline" target="_blank" href='{url path="store/admin/join" args="cat={$cat.cat_id}"}' title="入驻店铺列表">{$cat.join_num}</a>
 			</td>
 			<td>
 				<span class="cursor_pointer" data-trigger="editable" data-url="{url path='store/admin_store_category/edit_sort_order'}" data-name="sort_order" data-pk="{$cat.cat_id}" data-title="编辑排序"> 

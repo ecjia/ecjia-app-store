@@ -169,7 +169,7 @@
 			
 			<div class="alert alert-warnning">
 				<a class="close" data-dismiss="alert">×</a>
-				<strong>{lang key='orders::statistic.tips'}</strong>1、此模块仅限老版本设置，新版本请到“商家管理－经营城市”中设置。<a target="__blank" href="{RC_Uri::url('store/admin_store_business_city/init')}">去往经营城市设置 >></a>
+				<strong>{lang key='orders::statistic.tips'}</strong>1、此模块仅限老版本设置，新版本请到“商家管理－经营城市”中设置。<a target="_blank" href="{RC_Uri::url('store/admin_store_business_city/init')}">去往经营城市设置 >></a>
 			</div>
 
 			<div class="control-group formSep">
