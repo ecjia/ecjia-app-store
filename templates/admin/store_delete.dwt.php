@@ -22,21 +22,6 @@
 <div class="row-fluid ecjia-delete-store">
     <div class="span12">
         <div class="form-horizontal">
-            <div class="alert alert-info">
-                <a class="close" data-dismiss="alert">×</a>
-                <strong>
-                    <p>{t domain="store"}未开启删除店铺设置项{/t}</p>
-                </strong>
-                <p>{t domain="store"}当前还未开启删除店铺设置项功能，请在配置文件：【文件路径】中，将删除店铺的设置项开启，开启后，才可删除。如何开启？{/t}<a href="">{t domain="store"}请点击此处 >>{/t}</a></p>
-            </div>
-
-            <div class="alert alert-warning">
-                <a class="close" data-dismiss="alert">×</a>
-                <strong>
-                    <p>{t domain="store"}温馨提示{/t}</p>
-                </strong>
-                <p>{t domain="store"}以下【删除】为毁灭性操作，点击后，系统会自动将以下有关当前店铺账户的数据彻底删除，一旦彻底删除后将不可恢复，请您谨慎操作！{/t}</p>
-            </div>
 
             {if $count eq 0}
             <div class="alert alert-warning">

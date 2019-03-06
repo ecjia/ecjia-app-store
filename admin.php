@@ -1206,7 +1206,36 @@ class admin extends ecjia_admin
             return $this->showmessage(__('该店铺不存在', 'store'), ecjia::MSGTYPE_HTML | ecjia::MSGSTAT_ERROR);
         }
 
-        $this->assign('ur_here', __('删除店铺数据', 'store'));
+        $config_path = 'content/configs/site.php';
+        $help_url = 'https://www.ecjia.com/wiki/';
+
+        if (config('site.store_delete_enabled')) {
+            $warning = __(sprintf('
+                <strong>
+                    <p>删除店铺开启风险警告</p>
+                </strong>
+                <p>当前配置中已经开启删除店铺功能，如果您现在不需要清理店铺，且删除店铺并非常用功能，为了安全起见，请在配置文件【%s】中，将删除店铺的设置项关闭，如需要删除，可再次开启。<br />如何关闭？<a href="%s">请点击此处 >></a></p>
+            ', $config_path, $help_url));
+            ecjia_screen::get_current_screen()->add_admin_notice(new admin_notice($warning, 'alert-error'));
+        } else {
+            $warning = __(sprintf('
+                <strong>
+                    <p>未开启删除店铺设置项</p>
+                </strong>
+                <p>当前还未开启删除店铺设置项功能，请在配置文件【%s】中，将删除店铺的设置项开启，开启后，才可删除。<br />如何开启？<a href="%s">请点击此处 >></a></p>
+            ', $config_path, $help_url));
+            ecjia_screen::get_current_screen()->add_admin_notice(new admin_notice($warning, 'alert-info'));
+        }
+
+        $warning2 = __('
+            <strong>
+                <p>温馨提示</p>
+            </strong>
+            <p>以下【删除】为毁灭性操作，点击后，系统会自动将以下有关当前店铺账户的数据彻底删除，一旦彻底删除后将不可恢复，请您谨慎操作！</p>
+        ');
+        ecjia_screen::get_current_screen()->add_admin_notice(new admin_notice($warning2, 'alert-warning'));
+
+            $this->assign('ur_here', __('删除店铺数据', 'store'));
         $this->assign('action_link', array('href' => RC_Uri::url('store/admin/preview', array('store_id' => $store_id)), 'text' => __('店铺详情', 'store')));
 
         ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here($store['merchants_name'], RC_Uri::url('store/admin/preview', array('store_id' => $store_id))));
@@ -1230,6 +1259,7 @@ class admin extends ecjia_admin
                 $count += $v->handleCount();
             }
         }
+
         $this->assign('count', $count);
 
         $this->display('store_delete.dwt');
