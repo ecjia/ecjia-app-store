@@ -22,21 +22,6 @@
 <div class="row-fluid ecjia-delete-store">
     <div class="span12">
         <div class="form-horizontal">
-            <div class="alert alert-info">
-                <a class="close" data-dismiss="alert">×</a>
-                <strong>
-                    <p>{t domain="store"}未开启删除店铺设置项{/t}</p>
-                </strong>
-                <p>{t domain="store"}当前还未开启删除店铺设置项功能，请在配置文件：【文件路径】中，将删除店铺的设置项开启，开启后，才可删除。如何开启？{/t}<a href="">{t domain="store"}请点击此处 >>{/t}</a></p>
-            </div>
-
-            <div class="alert alert-warning">
-                <a class="close" data-dismiss="alert">×</a>
-                <strong>
-                    <p>{t domain="store"}温馨提示{/t}</p>
-                </strong>
-                <p>{t domain="store"}以下【删除】为毁灭性操作，点击后，系统会自动将以下有关当前店铺账户的数据彻底删除，一旦彻底删除后将不可恢复，请您谨慎操作！{/t}</p>
-            </div>
 
             {if $count eq 0}
             <div class="alert alert-warning">
@@ -54,8 +39,8 @@
                     {$val->handlePrintData()}
                     {if $val->handleCanRemove()}
                     <span class="controls-info-right f_r">
-							<a class="btn btn-gebo" data-toggle="ajaxremove" data-msg='{t domain="store"}您确定要【删除】吗？一旦操作后将不可恢复{/t}' href="{RC_Uri::url('store/admin/remove_item')}&id={$id}&handle={$val->getCode()}">{t domain="store"}删除数据{/t}</a>
-						</span>
+                        <a class="btn btn-gebo" {if $disabled} disabled href="javascript:;" {else} data-toggle="store_ajaxremove" data-msg='{t domain="store"}您确定要【删除】吗？一旦操作后将不可恢复{/t}' data-confirm='{t domain="store"}你真的确定要【删除】吗？{/t}' href="{RC_Uri::url('store/admin/remove_item')}&id={$id}&handle={$val->getCode()}" {/if}>{t domain="store"}删除数据{/t}</a>
+                    </span>
                     {/if}
                 </div>
             </div>
@@ -63,16 +48,14 @@
             {/if}
 
             <div class="control-group">
-                {if $delete_all}
+                {if $delete_all && !$disabled}
                 <a class="btn delete_confirm" data-msg='{t domain="store"}您确定要彻底删除该商家所有信息吗？{/t}' href="{RC_Uri::url('store/admin/remove_all')}&id={$id}">{t domain="store"}一键删除所有{/t}</a>
-                {/if}
-
                 <a class="btn btn-gebo delete_confirm m_l10" data-msg='{t domain="store"}您确定要彻底删除该商家吗？{/t}' href="{RC_Uri::url('store/admin/remove')}&id={$id}">{t domain="store"}删除商家{/t}</a>
-
                 <div class="help-block">
                     <p>{t domain="store"}注：一键删除：点击后，会将以上所有有关当前账号的数据全部删除，一旦删除后将不可恢复。{/t}</p>
                     <p>{t domain="store"}删除商家：点击后，将当前商家账号彻底删除。{/t}</p>
                 </div>
+                {/if}
             </div>
 
         </div>
