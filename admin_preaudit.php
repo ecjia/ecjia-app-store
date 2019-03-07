@@ -67,7 +67,7 @@ class admin_preaudit extends ecjia_admin
         RC_Script::enqueue_script('jquery-chosen');
         RC_Style::enqueue_style('chosen');
 
-        RC_Script::enqueue_script('store', RC_App::apps_url('statics/js/store.js', __FILE__));
+        RC_Script::enqueue_script('store', RC_App::apps_url('statics/js/store.js', __FILE__), array(), false, 1);
         RC_Script::enqueue_script('region', RC_Uri::admin_url('statics/lib/ecjia-js/ecjia.region.js'));
         RC_Script::enqueue_script('qq_map', ecjia_location_mapjs());
 

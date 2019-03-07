@@ -64,7 +64,7 @@ class admin_mobileconfig extends ecjia_admin {
 		RC_Script::enqueue_script('jquery-chosen');
 		RC_Script::enqueue_script('bootstrap-placeholder');
 		
-		RC_Script::enqueue_script('admin_mobileconfig', RC_App::apps_url('statics/js/admin_mobileconfig.js', __FILE__), array(), false, true);
+		RC_Script::enqueue_script('admin_mobileconfig', RC_App::apps_url('statics/js/admin_mobileconfig.js', __FILE__), array(), false, 1);
 	}
 
 					

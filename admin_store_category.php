@@ -76,7 +76,7 @@ class admin_store_category extends ecjia_admin {
 		RC_Script::enqueue_script('jquery.toggle.buttons', RC_Uri::admin_url('statics/lib/toggle_buttons/jquery.toggle.buttons.js'));
 		RC_Style::enqueue_style('bootstrap-toggle-buttons', RC_Uri::admin_url('statics/lib/toggle_buttons/bootstrap-toggle-buttons.css'));
 		
-		RC_Script::enqueue_script('store_category', RC_App::apps_url('statics/js/store_category.js', __FILE__), array(), false, true);
+		RC_Script::enqueue_script('store_category', RC_App::apps_url('statics/js/store_category.js', __FILE__), array(), false, 1);
 		
 		//js语言包
 		RC_Script::localize_script('store_category', 'js_lang', config('app-store::jslang.store_category_page'));

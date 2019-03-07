@@ -69,7 +69,7 @@ class admin_percent extends ecjia_admin {
 		RC_Script::enqueue_script('bootstrap-editable-script', RC_Uri::admin_url('statics/lib/x-editable/bootstrap-editable/js/bootstrap-editable.min.js'));
 		RC_Style::enqueue_style('bootstrap-editable-css', RC_Uri::admin_url('statics/lib/x-editable/bootstrap-editable/css/bootstrap-editable.css'));
 		
-		RC_Script::enqueue_script('commission', RC_App::apps_url('statics/js/commission.js', __FILE__));
+		RC_Script::enqueue_script('commission', RC_App::apps_url('statics/js/commission.js', __FILE__), array(), false, 1);
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('佣金比例', 'store'),RC_Uri::url('store/admin_percent/init')));
 		
 		//js语言包
