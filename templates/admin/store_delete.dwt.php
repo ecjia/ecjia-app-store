@@ -48,15 +48,14 @@
             {/if}
 
             <div class="control-group">
-                {if $delete_all}
+                {if $delete_all && !$disabled}
                 <a class="btn delete_confirm" data-msg='{t domain="store"}您确定要彻底删除该商家所有信息吗？{/t}' href="{RC_Uri::url('store/admin/remove_all')}&id={$id}">{t domain="store"}一键删除所有{/t}</a>
                 <a class="btn btn-gebo delete_confirm m_l10" data-msg='{t domain="store"}您确定要彻底删除该商家吗？{/t}' href="{RC_Uri::url('store/admin/remove')}&id={$id}">{t domain="store"}删除商家{/t}</a>
-                {/if}
-
                 <div class="help-block">
                     <p>{t domain="store"}注：一键删除：点击后，会将以上所有有关当前账号的数据全部删除，一旦删除后将不可恢复。{/t}</p>
                     <p>{t domain="store"}删除商家：点击后，将当前商家账号彻底删除。{/t}</p>
                 </div>
+                {/if}
             </div>
 
         </div>
