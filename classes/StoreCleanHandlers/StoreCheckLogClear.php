@@ -40,7 +40,7 @@ class StoreCheckLogClear extends StoreCleanAbstract
      */
     public function handlePrintData()
     {
-        $text = __('将店铺申请资料修改记录全部删除', 'staff');
+        $text = __('将店铺申请资料修改记录全部删除', 'store');
 
         return <<<HTML
 <span class="controls-info">{$text}</span>

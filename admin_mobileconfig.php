@@ -74,8 +74,8 @@ class admin_mobileconfig extends ecjia_admin {
 	public function init() {
 	    $this->admin_priv('store_mobileconfig_manage');
 	   
-		$this->assign('ur_here', '店铺街移动应用设置');
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('店铺街移动应用设置')));
+		$this->assign('ur_here', __('店铺街移动应用设置', 'store'));
+		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('店铺街移动应用设置', 'store')));
 		
 		$ad_position_list = RC_DB::table('ad_position')->select(RC_DB::raw('position_id, position_name'))->get();
 		
@@ -94,8 +94,8 @@ class admin_mobileconfig extends ecjia_admin {
 		
 		ecjia_config::instance()->write_config('mobile_store_home_adsense', $_POST['mobile_store_home_adsense']);
 
-		ecjia_admin::admin_log('店铺街移动应用>店铺街首页配置', 'setup', 'store_mobileconfig');
-		return $this->showmessage(__('更新店铺街首页配置设置成功！'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS,array('pjaxurl' => RC_Uri::url('store/admin_mobileconfig/init')));
+		ecjia_admin::admin_log(__('店铺街移动应用>店铺街首页配置', 'store'), 'setup', 'store_mobileconfig');
+		return $this->showmessage(__('更新店铺街首页配置设置成功！', 'store'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS,array('pjaxurl' => RC_Uri::url('store/admin_mobileconfig/init')));
 	}
 	
 }

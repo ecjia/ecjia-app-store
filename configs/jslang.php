@@ -48,9 +48,34 @@ defined('IN_ECJIA') or exit('No permission resources.');
 
 return array(
     'admin_page' => array(
-        'ok'     => __('确定', 'store'),
-        'cancel' => __('取消', 'store'),
+        'ok'     			=> __('确定', 'store'),
+        'cancel' 			=> __('取消', 'store'),
+    	'choose_delet_time' => __('请先选择删除日志的时间！', 'store'),
+    	'delet_ok_1'        => __('确定删除', 'store'),
+    	'delet_ok_2'        => __('的日志吗？', 'store'),
     ),
+	
+	//商家设置
+	'store_config_page' => array(
+			'open'     			=> __('开启', 'store'),
+			'close' 			=> __('关闭', 'store'),
+			'no_store_info' 	=> __('未搜索到店铺信息', 'store'),
+			'add'				=> __('添加', 'store'),
+			'no_select_region'	=> __('没有可选择的地区', 'store'),
+			'region_selected'	=> __('该地区已被选择！', 'store'),
+	),
+	//商家佣金设置
+	'store_commission_page' => array(
+			'required_commission_percent'   => __('请选择佣金比例！', 'store'),
+			'required_percent_value' 		=> __('请输入奖励额度！', 'store'),
+			'required_start_time' 			=> __('请输入开始时间！', 'store'),
+			'required_end_time'				=> __('请输入结束时间！', 'store'),
+			'time_error'					=> __('开始时间不能超于结束时间！', 'store'),
+	),
+	//商家分类
+	'store_category_page' => array(
+			'required_cat_name'   => __('请输入分类名称！', 'store'),
+	),
 );
 
 // end

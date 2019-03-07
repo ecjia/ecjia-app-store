@@ -39,7 +39,7 @@
                                 });
                             }, 'json');
                         }
-                    }, {ok: '确定', cancel: '取消'});
+                    }, {ok: js_lang.ok, cancel: js_lang.cancel});
                 } else {
                     $.get(url, val, function (data) {
                         var url = $this.attr("data-pjax-url");
@@ -72,7 +72,7 @@
                             }
                         });
                     }
-                }, {ok: store_js_lang.ok, cancel: store_js_lang.cancel});
+                }, {ok: js_lang.ok, cancel: js_lang.cancel});
             });
         },
     };
