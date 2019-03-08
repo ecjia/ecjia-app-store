@@ -1305,6 +1305,16 @@ class admin extends ecjia_admin
             }
         }
 
+        $fields     = array('shop_logo', 'shop_banner_pic', 'shop_nav_background', 'shop_thumb_logo', 'shop_qrcode_logo', 'shop_front_logo');
+        $image_list = RC_DB::table('merchants_config')->where('store_id', $store_id)->whereIn('code', $fields)->lists('value');
+        if (!empty($image_list)) {
+            $disk = RC_Filesystem::disk();
+            foreach ($file_list as $k => $v) {
+                $disk->delete(RC_Upload::upload_path() . $v);
+            }
+        }
+
+        RC_DB::table('merchants_config')->where('store_id', $store_id)->delete();
         RC_DB::table('store_franchisee')->where('store_id', $store_id)->delete();
 
         RC_Session::flash('status', __('删除店铺成功', 'store'));
@@ -1397,6 +1407,16 @@ class admin extends ecjia_admin
                 }
             }
 
+            $fields     = array('shop_logo', 'shop_banner_pic', 'shop_nav_background', 'shop_thumb_logo', 'shop_qrcode_logo', 'shop_front_logo');
+            $image_list = RC_DB::table('merchants_config')->where('store_id', $store_id)->whereIn('code', $fields)->lists('value');
+            if (!empty($image_list)) {
+                $disk = RC_Filesystem::disk();
+                foreach ($image_list as $k => $v) {
+                    $disk->delete(RC_Upload::upload_path() . $v);
+                }
+            }
+
+            RC_DB::table('merchants_config')->where('store_id', $store_id)->delete();
             RC_DB::table('store_franchisee')->where('store_id', $store_id)->delete();
 
             RC_Session::flash('status', __('一键删除店铺成功', 'store'));
