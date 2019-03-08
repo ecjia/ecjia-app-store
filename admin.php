@@ -86,10 +86,10 @@ class admin extends ecjia_admin
         RC_Script::enqueue_script('store_log', RC_App::apps_url('statics/js/store_log.js', __FILE__), array(), false, 1);
         RC_Script::enqueue_script('commission', RC_App::apps_url('statics/js/commission.js', __FILE__), array(), false, 1);
         RC_Script::enqueue_script('region', RC_Uri::admin_url('statics/lib/ecjia-js/ecjia.region.js'));
-		
+
         //js语言包
-        RC_Script::localize_script('store', 'js_lang', config('app-store::jslang.admin_page'));
-        RC_Script::localize_script('commission', 'js_lang', config('app-store::jslang.store_commission_page'));
+        RC_Script::localize_script('store', 'store_js_lang', config('app-store::jslang.admin_page'));
+        RC_Script::localize_script('commission', 'commission_js_lang', config('app-store::jslang.store_commission_page'));
         RC_Script::localize_script('store_log', 'js_lang', config('app-store::jslang.admin_page'));
 
         $store_id   = intval($_GET['store_id']);
@@ -785,7 +785,7 @@ class admin extends ecjia_admin
         }
 
         clear_cart_list($store_id);
-        ecjia_admin::admin_log(sprintf(__('店铺%s店铺名称：%s', 'store'),  $status_label,  $store_info['merchants_name']), 'update', 'store');
+        ecjia_admin::admin_log(sprintf(__('店铺%s店铺名称：%s', 'store'), $status_label, $store_info['merchants_name']), 'update', 'store');
         return $this->showmessage(__('操作成功！', 'store'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('store/admin/preview', array('store_id' => $store_id))));
     }
 
@@ -1294,6 +1294,17 @@ class admin extends ecjia_admin
             return $this->showmessage(__('当前商家账户还有关联数据没有删除，请删除完关联数据后，再删除商家账户', 'store'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
 
+        $file_list = RC_DB::table('store_franchisee')->where('store_id', $store_id)->select('personhand_identity_pic', 'identity_pic_front', 'identity_pic_back', 'business_licence_pic')->get();
+        if (!empty($file_list)) {
+            $disk = RC_Filesystem::disk();
+            foreach ($file_list as $k => $v) {
+                $disk->delete(RC_Upload::upload_path() . $v['personhand_identity_pic']);
+                $disk->delete(RC_Upload::upload_path() . $v['identity_pic_front']);
+                $disk->delete(RC_Upload::upload_path() . $v['identity_pic_back']);
+                $disk->delete(RC_Upload::upload_path() . $v['business_licence_pic']);
+            }
+        }
+
         RC_DB::table('store_franchisee')->where('store_id', $store_id)->delete();
 
         RC_Session::flash('status', __('删除店铺成功', 'store'));
@@ -1373,6 +1384,17 @@ class admin extends ecjia_admin
                     $error_html .= sprintf(__('%s删除失败；<br>', 'store'), $v['name']);
                 }
                 return $this->showmessage($error_html, ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            }
+
+            $file_list = RC_DB::table('store_franchisee')->where('store_id', $store_id)->select('personhand_identity_pic', 'identity_pic_front', 'identity_pic_back', 'business_licence_pic')->get();
+            if (!empty($file_list)) {
+                $disk = RC_Filesystem::disk();
+                foreach ($file_list as $k => $v) {
+                    $disk->delete(RC_Upload::upload_path() . $v['personhand_identity_pic']);
+                    $disk->delete(RC_Upload::upload_path() . $v['identity_pic_front']);
+                    $disk->delete(RC_Upload::upload_path() . $v['identity_pic_back']);
+                    $disk->delete(RC_Upload::upload_path() . $v['business_licence_pic']);
+                }
             }
 
             RC_DB::table('store_franchisee')->where('store_id', $store_id)->delete();

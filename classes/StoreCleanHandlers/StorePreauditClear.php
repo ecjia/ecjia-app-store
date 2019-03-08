@@ -13,6 +13,8 @@ use RC_Uri;
 use RC_DB;
 use RC_Api;
 use ecjia_admin;
+use RC_Filesystem;
+use RC_Upload;
 
 class StorePreauditClear extends StoreCleanAbstract
 {
@@ -70,6 +72,17 @@ HTML;
         $count = $this->handleCount();
         if (empty($count)) {
             return true;
+        }
+
+        $file_list = RC_DB::table('store_preaudit')->where('store_id', $this->store_id)->select('personhand_identity_pic', 'identity_pic_front', 'identity_pic_back', 'business_licence_pic')->get();
+        if (!empty($file_list)) {
+            $disk = RC_Filesystem::disk();
+            foreach ($file_list as $k => $v) {
+                $disk->delete(RC_Upload::upload_path() . $v['personhand_identity_pic']);
+                $disk->delete(RC_Upload::upload_path() . $v['identity_pic_front']);
+                $disk->delete(RC_Upload::upload_path() . $v['identity_pic_back']);
+                $disk->delete(RC_Upload::upload_path() . $v['business_licence_pic']);
+            }
         }
 
         $result = RC_DB::table('store_preaudit')->where('store_id', $this->store_id)->delete();
