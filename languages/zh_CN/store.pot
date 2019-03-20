@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Ecjia App store 1.27.4\n"
 "Report-Msgid-Bugs-To: https://make.ecjia.com/polyglots/\n"
-"POT-Creation-Date: 2019-03-13 05:24:31+00:00\n"
+"POT-Creation-Date: 2019-03-20 07:33:56+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -920,7 +920,7 @@ msgstr ""
 msgid "店铺员工"
 msgstr ""
 
-#: classes/Helper.php:88
+#: classes/Helper.php:88 classes/StoreCleanHandlers/StoreCollectClear.php:34
 msgid "店铺收藏"
 msgstr ""
 
@@ -980,15 +980,15 @@ msgstr ""
 msgid "店铺操作日志"
 msgstr ""
 
-#: classes/Helper.php:109
+#: classes/Helper.php:109 classes/StoreCleanHandlers/StoreCloseClear.php:34
 msgid "锁定、关闭店铺主表"
 msgstr ""
 
-#: classes/Helper.php:110
+#: classes/Helper.php:110 classes/StoreCleanHandlers/StoreKeywordsClear.php:34
 msgid "店铺搜索关键词"
 msgstr ""
 
-#: classes/Helper.php:111
+#: classes/Helper.php:111 classes/StoreCleanHandlers/StoreUserClear.php:34
 msgid "店铺会员"
 msgstr ""
 
@@ -1016,45 +1016,53 @@ msgstr ""
 msgid "一键删除"
 msgstr ""
 
-#: classes/StoreCleanHandlers/StoreCheckLogClear.php:44
+#: classes/StoreCleanHandlers/StoreCheckLogClear.php:34
+msgid "店铺审核日志记录"
+msgstr ""
+
+#: classes/StoreCleanHandlers/StoreCheckLogClear.php:45
 msgid "将店铺审核日志记录全部删除"
 msgstr ""
 
-#: classes/StoreCleanHandlers/StoreCheckLogClear.php:96
-#: classes/StoreCleanHandlers/StoreCloseClear.php:95
-#: classes/StoreCleanHandlers/StoreCollectClear.php:95
-#: classes/StoreCleanHandlers/StoreKeywordsClear.php:95
-#: classes/StoreCleanHandlers/StorePreauditClear.php:108
-#: classes/StoreCleanHandlers/StoreUserClear.php:96
+#: classes/StoreCleanHandlers/StoreCheckLogClear.php:97
+#: classes/StoreCleanHandlers/StoreCloseClear.php:96
+#: classes/StoreCleanHandlers/StoreCollectClear.php:96
+#: classes/StoreCleanHandlers/StoreKeywordsClear.php:96
+#: classes/StoreCleanHandlers/StorePreauditClear.php:109
+#: classes/StoreCleanHandlers/StoreUserClear.php:97
 msgid "店铺名是%s"
 msgstr ""
 
-#: classes/StoreCleanHandlers/StoreCheckLogClear.php:96
-#: classes/StoreCleanHandlers/StoreCloseClear.php:95
-#: classes/StoreCleanHandlers/StoreCollectClear.php:95
-#: classes/StoreCleanHandlers/StoreKeywordsClear.php:95
-#: classes/StoreCleanHandlers/StorePreauditClear.php:108
-#: classes/StoreCleanHandlers/StoreUserClear.php:96
+#: classes/StoreCleanHandlers/StoreCheckLogClear.php:97
+#: classes/StoreCleanHandlers/StoreCloseClear.php:96
+#: classes/StoreCleanHandlers/StoreCollectClear.php:96
+#: classes/StoreCleanHandlers/StoreKeywordsClear.php:96
+#: classes/StoreCleanHandlers/StorePreauditClear.php:109
+#: classes/StoreCleanHandlers/StoreUserClear.php:97
 msgid "店铺ID是%s"
 msgstr ""
 
-#: classes/StoreCleanHandlers/StoreCloseClear.php:43
+#: classes/StoreCleanHandlers/StoreCloseClear.php:44
 msgid "将店铺主表中，锁定、关闭当前店铺"
 msgstr ""
 
-#: classes/StoreCleanHandlers/StoreCollectClear.php:43
+#: classes/StoreCleanHandlers/StoreCollectClear.php:44
 msgid "所有店铺被收藏数据全部删除"
 msgstr ""
 
-#: classes/StoreCleanHandlers/StoreKeywordsClear.php:43
+#: classes/StoreCleanHandlers/StoreKeywordsClear.php:44
 msgid "将店铺设置的搜索关键词全部删除"
 msgstr ""
 
-#: classes/StoreCleanHandlers/StorePreauditClear.php:45
+#: classes/StoreCleanHandlers/StorePreauditClear.php:36
+msgid "店铺申请资料修改"
+msgstr ""
+
+#: classes/StoreCleanHandlers/StorePreauditClear.php:46
 msgid "将店铺申请资料修改记录全部删除"
 msgstr ""
 
-#: classes/StoreCleanHandlers/StoreUserClear.php:43
+#: classes/StoreCleanHandlers/StoreUserClear.php:44
 msgid "店铺内所有店铺会员全部删除"
 msgstr ""
 
