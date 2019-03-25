@@ -58,7 +58,7 @@
                     <td class="hide-edit-area">
                         <span>{$list.merchants_name} {if $list.manage_mode eq 'self'}&nbsp;<span class="ecjiafc-red">{t domain="store"}(自营){/t}</span>{/if}</span>
                         <div class="edit-list">
-                            <a target="_blank" href='{RC_Uri::url("store/admin/preview", "store_id={$list.store_id}")}&from=cancel' title='{t domain="store"}查看详情{/t}'>{t domain="store"}查看详情{/t}</a>
+                            <a target="_blank" href='{RC_Uri::url("store/admin/preview", "store_id={$list.store_id}")}' title='{t domain="store"}查看详情{/t}'>{t domain="store"}查看详情{/t}</a>
                             {if !$store_list.filter.type && $action}
                             &nbsp;|&nbsp;
                             <a target="_blank" class="ecjiafc-red" href='{url path="store/admin/remove_store" args="store_id={$list.store_id}"}'>{t domain="store"}删除{/t}</a>
