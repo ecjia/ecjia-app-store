@@ -833,7 +833,7 @@ class admin extends ecjia_admin
         $filter['type']     = empty($_GET['type']) ? '' : trim($_GET['type']);
         $filter['cat']      = empty($_GET['cat']) ? null : trim($_GET['cat']);
 
-        $db_store_franchisee->where('manage_mode', $manage_mode);
+        $db_store_franchisee->where('manage_mode', $manage_mode)->where('account_status', 'normal');
 
         if ($filter['keywords']) {
             $db_store_franchisee->where(function ($query) use ($filter) {
