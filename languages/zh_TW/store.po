@@ -8,7 +8,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2019-03-28 14:03+0800\n"
+"PO-Revision-Date: 2019-04-01 10:09+0800\n"
 "Language-Team: LANGUAGE <ecjia@ecjia.com>\n"
 "X-Generator: Poedit 2.2\n"
 "Last-Translator: \n"
@@ -20,7 +20,7 @@ msgstr ""
 #: apis/store_admin_menu_api.class.php:60
 #: apis/store_admin_purview_api.class.php:58
 msgid "入驻商家"
-msgstr "\v入駐商家"
+msgstr "入駐商家"
 
 #: admin.php:100 admin.php:114 admin.php:170 admin.php:1167
 #: admin_commission.php:161 admin_commission.php:352
