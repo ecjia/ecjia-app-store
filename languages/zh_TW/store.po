@@ -4,32 +4,32 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Ecjia App store 1.27.4\n"
 "Report-Msgid-Bugs-To: https://make.ecjia.com/polyglots/\n"
-"POT-Creation-Date: 2019-03-20 07:33:56+00:00\n"
+"POT-Creation-Date: 2019-04-04 13:25+0800\n"
+"PO-Revision-Date: 2019-04-04 13:25+0800\n"
+"Last-Translator: \n"
+"Language-Team: LANGUAGE <ecjia@ecjia.com>\n"
+"Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2019-04-01 17:37+0800\n"
-"Language-Team: LANGUAGE <ecjia@ecjia.com>\n"
 "X-Generator: Poedit 1.8.7\n"
-"Last-Translator: \n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"Language: zh_TW\n"
 
-#: admin.php:97 admin.php:142 admin.php:1171 admin_commission.php:164
+#: admin.php:97 admin.php:142 admin.php:1180 admin_commission.php:164
 #: admin_commission.php:355 admin_preaudit.php:81
-#: apis/store_admin_menu_api.class.php:60
-#: apis/store_admin_purview_api.class.php:58
+#: apis/store_admin_menu_api.class.php:62
+#: apis/store_admin_purview_api.class.php:60
 msgid "入驻商家"
 msgstr "\v入駐商家"
 
-#: admin.php:100 admin.php:114 admin.php:170 admin.php:1167
+#: admin.php:100 admin.php:114 admin.php:170 admin.php:1176
 #: admin_commission.php:161 admin_commission.php:352
-#: apis/store_admin_menu_api.class.php:59
+#: apis/store_admin_menu_api.class.php:61
 msgid "自营店铺"
 msgstr "自營店鋪"
 
-#: admin.php:117 admin.php:174 admin.php:611 admin.php:687 admin.php:950
-#: admin.php:975 admin.php:1168 admin_commission.php:162
+#: admin.php:117 admin.php:174 admin.php:611 admin.php:696 admin.php:959
+#: admin.php:984 admin.php:1177 admin_commission.php:162
 #: admin_commission.php:353
 msgid "自营店铺列表"
 msgstr "自營店鋪列表"
@@ -38,17 +38,17 @@ msgstr "自營店鋪列表"
 msgid "添加自营商家"
 msgstr "添加自營商家"
 
-#: admin.php:129 admin.php:156 admin.php:1176 admin.php:1177
+#: admin.php:129 admin.php:156 admin.php:1185 admin.php:1186
 msgid "结算流程"
 msgstr "結算流程"
 
-#: admin.php:144 admin.php:613 admin.php:689 admin.php:740 admin.php:952
-#: admin.php:977 admin.php:1172 admin_commission.php:165
+#: admin.php:144 admin.php:613 admin.php:698 admin.php:749 admin.php:961
+#: admin.php:986 admin.php:1181 admin_commission.php:165
 #: admin_commission.php:356
 msgid "入驻商家列表"
 msgstr "入駐商家列表"
 
-#: admin.php:157 admin.php:1179 admin.php:1180
+#: admin.php:157 admin.php:1188 admin.php:1189
 msgid "入驻流程"
 msgstr "入駐流程"
 
@@ -72,7 +72,7 @@ msgstr "聯繫手機不能為空"
 msgid "邮箱不能为空"
 msgstr "郵箱不能為空"
 
-#: admin.php:234 admin.php:1120
+#: admin.php:234 admin.php:1129
 msgid "请选择地区"
 msgstr "請選擇地區"
 
@@ -116,7 +116,7 @@ msgstr "店長賬號添加失敗"
 msgid "添加自营店铺："
 msgstr "添加自營店鋪："
 
-#: admin.php:330 admin.php:1427
+#: admin.php:330 admin.php:1436
 msgid "操作失败"
 msgstr "操作失敗"
 
@@ -134,7 +134,7 @@ msgid "基本信息"
 msgstr "基本信息"
 
 #: admin.php:354 admin.php:356 admin_preaudit.php:112 admin_preaudit.php:113
-#: apis/store_admin_purview_api.class.php:59
+#: apis/store_admin_purview_api.class.php:61
 msgid "编辑入驻商"
 msgstr "編輯入駐商"
 
@@ -182,118 +182,118 @@ msgstr "編輯成功"
 msgid "进入商家后台"
 msgstr "進入商家後台"
 
-#: admin.php:624 admin.php:683 admin.php:911 admin.php:1195
+#: admin.php:624 admin.php:692 admin.php:920 admin.php:1204
 msgid "请选择您要操作的店铺"
 msgstr "請選擇您要操作的店鋪"
 
-#: admin.php:693 apis/store_admin_purview_api.class.php:69
+#: admin.php:702 apis/store_admin_purview_api.class.php:72
 #: apis/store_store_menu_api.class.php:60 functions/global.func.php:68
 msgid "资质认证"
 msgstr "資質認證"
 
-#: admin.php:699
+#: admin.php:708
 msgid " - 资质认证"
 msgstr "- 資質認證"
 
-#: admin.php:711 functions/merchant_store.func.php:151
+#: admin.php:720 functions/merchant_store.func.php:151
 msgid "参数错误"
 msgstr "參數錯誤"
 
-#: admin.php:727 admin.php:789
+#: admin.php:736 admin.php:798
 msgid "操作成功！"
 msgstr "操作成功！"
 
-#: admin.php:729
+#: admin.php:738
 msgid "操作失败！"
 msgstr "操作失敗！"
 
-#: admin.php:745 admin.php:746
+#: admin.php:754 admin.php:755
 msgid "锁定店铺"
 msgstr "鎖定店鋪"
 
-#: admin.php:748 admin.php:749
+#: admin.php:757 admin.php:758
 msgid "店铺解锁"
 msgstr "店鋪解鎖"
 
-#: admin.php:769
+#: admin.php:778
 msgid "锁定"
 msgstr "鎖定"
 
-#: admin.php:772
+#: admin.php:781
 msgid "解锁"
 msgstr "解鎖"
 
-#: admin.php:788
+#: admin.php:797
 msgid "店铺%s店铺名称：%s"
 msgstr "店鋪%s店鋪名稱：%s"
 
-#: admin.php:800
+#: admin.php:809
 msgid "详细地址不能为空"
 msgstr "詳細地址不能為空"
 
-#: admin.php:916
+#: admin.php:925
 msgid " - 查看日志"
 msgstr "- 查看日誌"
 
-#: admin.php:956 admin_preaudit.php:625 admin_preaudit.php:628
-#: apis/store_admin_purview_api.class.php:77
+#: admin.php:965 admin_preaudit.php:625 admin_preaudit.php:628
+#: apis/store_admin_purview_api.class.php:80
 #: apis/store_store_menu_api.class.php:63 functions/global.func.php:93
 msgid "查看日志"
 msgstr "查看日誌"
 
-#: admin.php:981 admin.php:984
+#: admin.php:990 admin.php:993
 msgid "审核申请日志"
 msgstr "審核申請日誌"
 
-#: admin.php:1068
+#: admin.php:1077
 msgid "一周之前"
 msgstr "一周之前"
 
-#: admin.php:1073
+#: admin.php:1082
 msgid "一个月前"
 msgstr "一個月前"
 
-#: admin.php:1078
+#: admin.php:1087
 msgid "三个月前"
 msgstr "三個月前"
 
-#: admin.php:1083
+#: admin.php:1092
 msgid "半年之前"
 msgstr "半年之前"
 
-#: admin.php:1089
+#: admin.php:1098
 msgid "一年之前"
 msgstr "一年之前"
 
-#: admin.php:1095
+#: admin.php:1104
 msgid "%s 的日志成功删除。"
 msgstr "%s 的日誌成功刪除。"
 
-#: admin.php:1098
+#: admin.php:1107
 msgid "请选择日期"
 msgstr "請選擇日期"
 
-#: admin.php:1114
+#: admin.php:1123
 msgid "请选择省份"
 msgstr "請選擇省份"
 
-#: admin.php:1117
+#: admin.php:1126
 msgid "请选择城市"
 msgstr "請選擇城市"
 
-#: admin.php:1123
+#: admin.php:1132
 msgid "请填写详细地址"
 msgstr "請填寫詳細地址"
 
-#: admin.php:1128
+#: admin.php:1137
 msgid "腾讯地图key不能为空"
 msgstr "騰訊地圖key不能為空"
 
-#: admin.php:1200
+#: admin.php:1209
 msgid "该店铺不存在"
 msgstr "該店鋪不存在"
 
-#: admin.php:1227
+#: admin.php:1236
 msgid ""
 "\n"
 "            <strong>\n"
@@ -311,45 +311,71 @@ msgstr ""
 "鋪賬戶的數據徹底刪除，一旦徹底刪除後將不可恢復，請您謹慎操作！</p>\n"
 "        "
 
-#: admin.php:1236 admin.php:1240
+#: admin.php:1245 admin.php:1249
 msgid "删除店铺数据"
 msgstr "刪除店鋪數據"
 
-#: admin.php:1237
+#: admin.php:1246
 msgid "店铺详情"
 msgstr "店鋪詳情"
 
-#: admin.php:1273 admin.php:1333 admin.php:1361
+#: admin.php:1282 admin.php:1342 admin.php:1370
 msgid "您还未开启删除店铺设置项，请先开启后，再来删除"
 msgstr "您還未開啟刪除店鋪設置項，請先開啟後，再來刪除"
 
-#: admin.php:1294
+#: admin.php:1303
 msgid "当前商家账户还有关联数据没有删除，请删除完关联数据后，再删除商家账户"
 msgstr "當前商家賬戶還有關聯數據沒有刪除，請刪除完關聯數據後，再刪除商家賬戶"
 
-#: admin.php:1320 admin.php:1322
+#: admin.php:1329 admin.php:1331
 msgid "删除店铺成功"
 msgstr "刪除店鋪成功"
 
-#: admin.php:1343
+#: admin.php:1352
 msgid "操作失败，当前code无效"
 msgstr "操作失敗，當前code無效"
 
-#: admin.php:1348
+#: admin.php:1357
 msgid "%s删除成功"
 msgstr "%s刪除成功"
 
-#: admin.php:1350
+#: admin.php:1359
 msgid "%s删除失败"
 msgstr "%s刪除失敗"
 
-#: admin.php:1394
+#: admin.php:1403
 msgid "%s删除失败；<br>"
 msgstr "%s刪除失敗；<br>"
 
-#: admin.php:1422 admin.php:1424
+#: admin.php:1431 admin.php:1433
 msgid "一键删除店铺成功"
 msgstr "一鍵刪除店鋪成功"
+
+#: admin_cancel.php:71 admin_cancel.php:72 admin_cancel.php:82
+#: apis/store_admin_menu_api.class.php:64
+#: apis/store_admin_purview_api.class.php:65
+msgid "注销申请"
+msgstr "註銷申請"
+
+#: admin_cancel.php:146
+msgid "1天内"
+msgstr "1天內"
+
+#: admin_cancel.php:166
+msgid "年"
+msgstr "年"
+
+#: admin_cancel.php:170
+msgid "个月"
+msgstr "個月"
+
+#: admin_cancel.php:174
+msgid "天"
+msgstr "天"
+
+#: admin_cancel.php:178
+msgid "小时"
+msgstr "小時"
 
 #: admin_commission.php:91 admin_commission.php:93
 msgid "设置商家佣金"
@@ -425,7 +451,7 @@ msgid "结算状态修改成功！"
 msgstr "結算狀態修改成功！"
 
 #: admin_commission.php:360 admin_commission.php:366
-#: apis/store_admin_purview_api.class.php:71
+#: apis/store_admin_purview_api.class.php:74
 #: apis/store_store_menu_api.class.php:62
 msgid "资金管理"
 msgstr "資金管理"
@@ -472,7 +498,7 @@ msgstr "更新店鋪街首頁配置設置成功！"
 
 #: admin_percent.php:73 admin_percent.php:78 admin_percent.php:88
 #: admin_percent.php:90 admin_percent.php:110 admin_percent.php:167
-#: apis/store_admin_menu_api.class.php:63 classes/Helper.php:72
+#: apis/store_admin_menu_api.class.php:66 classes/Helper.php:72
 msgid "佣金比例"
 msgstr "佣金比例"
 
@@ -521,7 +547,7 @@ msgid "批量删除成功！"
 msgstr "批量刪除成功！"
 
 #: admin_preaudit.php:74 admin_preaudit.php:119 admin_preaudit.php:288
-#: admin_preaudit.php:629 apis/store_admin_purview_api.class.php:81
+#: admin_preaudit.php:629 apis/store_admin_purview_api.class.php:84
 msgid "待审核入驻商"
 msgstr "待審核入駐商"
 
@@ -643,7 +669,7 @@ msgstr "刪除經營地區成功！"
 
 #: admin_store_category.php:84 admin_store_category.php:94
 #: admin_store_category.php:98 admin_store_category.php:110
-#: apis/store_admin_menu_api.class.php:62
+#: apis/store_admin_menu_api.class.php:65
 msgid "商家分类"
 msgstr "商家分類"
 
@@ -711,112 +737,112 @@ msgstr "刪除商家分類圖片成功！"
 msgid "参数无效！"
 msgstr "參數無效！"
 
-#: apis/store_admin_menu_api.class.php:56 configs/package.php:56
+#: apis/store_admin_menu_api.class.php:58 configs/package.php:56
 msgid "商家管理"
 msgstr "商家管理"
 
-#: apis/store_admin_menu_api.class.php:61
+#: apis/store_admin_menu_api.class.php:63
 msgid "待审核商家"
 msgstr "待審核商家"
 
-#: apis/store_admin_menu_api.class.php:64
+#: apis/store_admin_menu_api.class.php:67
 msgid "经营城市"
 msgstr "經營城市"
 
-#: apis/store_admin_purview_api.class.php:60
+#: apis/store_admin_purview_api.class.php:62
 msgid "锁定商家"
 msgstr "鎖定商家"
 
-#: apis/store_admin_purview_api.class.php:61
+#: apis/store_admin_purview_api.class.php:63
 msgid "添加商家"
 msgstr "\v添加商家"
 
-#: apis/store_admin_purview_api.class.php:62
+#: apis/store_admin_purview_api.class.php:64
 msgid "自营商家"
 msgstr "自營商家"
 
-#: apis/store_admin_purview_api.class.php:65
+#: apis/store_admin_purview_api.class.php:68
 msgid "删除商家"
 msgstr "刪除商家"
 
-#: apis/store_admin_purview_api.class.php:67 functions/global.func.php:63
+#: apis/store_admin_purview_api.class.php:70 functions/global.func.php:63
 msgid "店铺设置"
 msgstr "店鋪設置"
 
-#: apis/store_admin_purview_api.class.php:68
+#: apis/store_admin_purview_api.class.php:71
 msgid "修改店铺设置"
 msgstr "修改店鋪設置"
 
-#: apis/store_admin_purview_api.class.php:70
+#: apis/store_admin_purview_api.class.php:73
 #: apis/store_store_menu_api.class.php:61
 msgid "资金设置"
 msgstr "資金設置"
 
-#: apis/store_admin_purview_api.class.php:73 functions/global.func.php:83
+#: apis/store_admin_purview_api.class.php:76 functions/global.func.php:83
 msgid "查看员工"
 msgstr "查看員工"
 
-#: apis/store_admin_purview_api.class.php:74
+#: apis/store_admin_purview_api.class.php:77
 msgid "编辑店长"
 msgstr "編輯店長"
 
-#: apis/store_admin_purview_api.class.php:75
+#: apis/store_admin_purview_api.class.php:78
 msgid "重置店长密码"
 msgstr "重置店長密碼"
 
-#: apis/store_admin_purview_api.class.php:76 functions/global.func.php:88
+#: apis/store_admin_purview_api.class.php:79 functions/global.func.php:88
 msgid "配送方式"
 msgstr "配送方式"
 
-#: apis/store_admin_purview_api.class.php:78
+#: apis/store_admin_purview_api.class.php:81
 msgid "删除日志"
 msgstr "刪除日誌"
 
-#: apis/store_admin_purview_api.class.php:82
+#: apis/store_admin_purview_api.class.php:85
 msgid "待审核入驻商更新"
 msgstr "待審核入駐商更新"
 
-#: apis/store_admin_purview_api.class.php:83
+#: apis/store_admin_purview_api.class.php:86
 msgid "审核入驻商"
 msgstr "審核入駐商"
 
-#: apis/store_admin_purview_api.class.php:84
+#: apis/store_admin_purview_api.class.php:87
 msgid "查看审核日志"
 msgstr "查看審核日誌"
 
-#: apis/store_admin_purview_api.class.php:87
+#: apis/store_admin_purview_api.class.php:90
 msgid "店铺分类管理"
 msgstr "店鋪分類管理"
 
-#: apis/store_admin_purview_api.class.php:88
+#: apis/store_admin_purview_api.class.php:91
 msgid "店铺分类删除"
 msgstr "店鋪分類刪除"
 
-#: apis/store_admin_purview_api.class.php:91
+#: apis/store_admin_purview_api.class.php:94
 msgid "经营城市管理"
 msgstr "經營城市管理"
 
-#: apis/store_admin_purview_api.class.php:92
+#: apis/store_admin_purview_api.class.php:95
 msgid "经营城市删除"
 msgstr "經營城市管理"
 
-#: apis/store_admin_purview_api.class.php:95
+#: apis/store_admin_purview_api.class.php:98
 msgid "佣金比例管理"
 msgstr "佣金比例管理"
 
-#: apis/store_admin_purview_api.class.php:96
+#: apis/store_admin_purview_api.class.php:99
 msgid "佣金比例添加"
 msgstr "佣金比例添加"
 
-#: apis/store_admin_purview_api.class.php:97
+#: apis/store_admin_purview_api.class.php:100
 msgid "佣金比例更新"
 msgstr "佣金比例更新"
 
-#: apis/store_admin_purview_api.class.php:98
+#: apis/store_admin_purview_api.class.php:101
 msgid "佣金比例删除"
 msgstr "佣金比例刪除"
 
-#: apis/store_admin_purview_api.class.php:100
+#: apis/store_admin_purview_api.class.php:103
 msgid "后台设置"
 msgstr "後台設置"
 
@@ -1309,6 +1335,7 @@ msgstr "您確定要刪除此文件嗎？"
 
 #: content/apps/store/templates/admin/store_category_info.dwt.php:65
 #: content/apps/store/templates/admin/store_percent_list.dwt.php:62
+#: content/apps/store/templates/admin/store_cancel_list.dwt.php:64
 #: content/apps/store/templates/admin/store_config_info.dwt.php:42
 #: content/apps/store/templates/admin/store_edit.dwt.php:326
 #: content/apps/store/templates/admin/store_edit.dwt.php:353
@@ -1351,18 +1378,18 @@ msgid "确认"
 msgstr "確認"
 
 #: content/apps/store/templates/admin/store_auth.dwt.php:35
-#: content/apps/store/templates/admin/store_preview.dwt.php:120
+#: content/apps/store/templates/admin/store_preview.dwt.php:131
 #: content/apps/store/templates/admin/store_preaudit_check.dwt.php:161
 msgid "经营主体信息"
 msgstr "經營主體信息"
 
 #: content/apps/store/templates/admin/store_auth.dwt.php:37
 #: content/apps/store/templates/admin/store_auth.dwt.php:106
-#: content/apps/store/templates/admin/store_preview.dwt.php:42
-#: content/apps/store/templates/admin/store_preview.dwt.php:64
-#: content/apps/store/templates/admin/store_preview.dwt.php:122
-#: content/apps/store/templates/admin/store_preview.dwt.php:191
-#: content/apps/store/templates/admin/store_preview.dwt.php:225
+#: content/apps/store/templates/admin/store_preview.dwt.php:53
+#: content/apps/store/templates/admin/store_preview.dwt.php:75
+#: content/apps/store/templates/admin/store_preview.dwt.php:133
+#: content/apps/store/templates/admin/store_preview.dwt.php:202
+#: content/apps/store/templates/admin/store_preview.dwt.php:236
 #: content/apps/store/templates/admin/store_percent_list.dwt.php:61
 #: content/apps/store/templates/admin/store_preaudit_list.dwt.php:70
 #: content/apps/store/templates/admin/store_category_list.dwt.php:56
@@ -1373,8 +1400,8 @@ msgstr "編輯"
 
 #: content/apps/store/templates/admin/store_auth.dwt.php:45
 #: content/apps/store/templates/admin/store_auth.dwt.php:67
-#: content/apps/store/templates/admin/store_preview.dwt.php:130
-#: content/apps/store/templates/admin/store_preview.dwt.php:152
+#: content/apps/store/templates/admin/store_preview.dwt.php:141
+#: content/apps/store/templates/admin/store_preview.dwt.php:163
 #: content/apps/store/templates/admin/store_edit.dwt.php:195
 #: content/apps/store/templates/admin/store_edit.dwt.php:227
 #: content/apps/store/templates/admin/store_preaudit_check.dwt.php:170
@@ -1387,8 +1414,8 @@ msgstr "入駐類型："
 
 #: content/apps/store/templates/admin/store_auth.dwt.php:46
 #: content/apps/store/templates/admin/store_auth.dwt.php:68
-#: content/apps/store/templates/admin/store_preview.dwt.php:131
-#: content/apps/store/templates/admin/store_preview.dwt.php:153
+#: content/apps/store/templates/admin/store_preview.dwt.php:142
+#: content/apps/store/templates/admin/store_preview.dwt.php:164
 #: content/apps/store/templates/admin/store_preaudit_check.dwt.php:171
 #: content/apps/store/templates/admin/store_preaudit_check.dwt.php:186
 #: content/apps/store/templates/admin/store_preaudit_edit.dwt.php:64
@@ -1398,8 +1425,8 @@ msgstr "個人"
 
 #: content/apps/store/templates/admin/store_auth.dwt.php:46
 #: content/apps/store/templates/admin/store_auth.dwt.php:68
-#: content/apps/store/templates/admin/store_preview.dwt.php:131
-#: content/apps/store/templates/admin/store_preview.dwt.php:153
+#: content/apps/store/templates/admin/store_preview.dwt.php:142
+#: content/apps/store/templates/admin/store_preview.dwt.php:164
 #: content/apps/store/templates/admin/store_edit.dwt.php:229
 #: content/apps/store/templates/admin/store_preaudit_check.dwt.php:171
 #: content/apps/store/templates/admin/store_preaudit_check.dwt.php:186
@@ -1409,15 +1436,15 @@ msgid "企业"
 msgstr "企業"
 
 #: content/apps/store/templates/admin/store_auth.dwt.php:47
-#: content/apps/store/templates/admin/store_preview.dwt.php:132
+#: content/apps/store/templates/admin/store_preview.dwt.php:143
 #: content/apps/store/templates/admin/store_preaudit_check.dwt.php:172
 msgid "负责人:"
 msgstr "負責人:"
 
 #: content/apps/store/templates/admin/store_auth.dwt.php:52
 #: content/apps/store/templates/admin/store_auth.dwt.php:81
-#: content/apps/store/templates/admin/store_preview.dwt.php:137
-#: content/apps/store/templates/admin/store_preview.dwt.php:166
+#: content/apps/store/templates/admin/store_preview.dwt.php:148
+#: content/apps/store/templates/admin/store_preview.dwt.php:177
 #: content/apps/store/templates/admin/store_edit.dwt.php:210
 #: content/apps/store/templates/admin/store_edit.dwt.php:249
 #: content/apps/store/templates/admin/store_preaudit_check.dwt.php:220
@@ -1429,8 +1456,8 @@ msgstr "證件類型："
 
 #: content/apps/store/templates/admin/store_auth.dwt.php:62
 #: content/apps/store/templates/admin/store_auth.dwt.php:91
-#: content/apps/store/templates/admin/store_preview.dwt.php:147
-#: content/apps/store/templates/admin/store_preview.dwt.php:176
+#: content/apps/store/templates/admin/store_preview.dwt.php:158
+#: content/apps/store/templates/admin/store_preview.dwt.php:187
 #: content/apps/store/templates/admin/store_edit.dwt.php:220
 #: content/apps/store/templates/admin/store_edit.dwt.php:259
 #: content/apps/store/templates/admin/store_preaudit_check.dwt.php:235
@@ -1441,7 +1468,7 @@ msgid "证件号码："
 msgstr "證件類型："
 
 #: content/apps/store/templates/admin/store_auth.dwt.php:69
-#: content/apps/store/templates/admin/store_preview.dwt.php:154
+#: content/apps/store/templates/admin/store_preview.dwt.php:165
 #: content/apps/store/templates/admin/store_edit.dwt.php:203
 #: content/apps/store/templates/admin/store_edit.dwt.php:242
 #: content/apps/store/templates/admin/store_edit_bak.dwt.php:80
@@ -1450,7 +1477,7 @@ msgid "负责人："
 msgstr "負責人："
 
 #: content/apps/store/templates/admin/store_auth.dwt.php:74
-#: content/apps/store/templates/admin/store_preview.dwt.php:159
+#: content/apps/store/templates/admin/store_preview.dwt.php:170
 #: content/apps/store/templates/admin/store_edit.dwt.php:235
 #: content/apps/store/templates/admin/store_preaudit_check.dwt.php:199
 #: content/apps/store/templates/admin/store_preaudit_edit.dwt.php:111
@@ -1459,7 +1486,7 @@ msgid "公司名称："
 msgstr "公司名稱："
 
 #: content/apps/store/templates/admin/store_auth.dwt.php:76
-#: content/apps/store/templates/admin/store_preview.dwt.php:161
+#: content/apps/store/templates/admin/store_preview.dwt.php:172
 #: content/apps/store/templates/admin/store_edit.dwt.php:265
 #: content/apps/store/templates/admin/store_preaudit_check.dwt.php:208
 #: content/apps/store/templates/admin/store_preaudit_edit.dwt.php:262
@@ -1468,13 +1495,13 @@ msgid "营业执照注册号："
 msgstr "營業執照註冊號："
 
 #: content/apps/store/templates/admin/store_auth.dwt.php:104
-#: content/apps/store/templates/admin/store_preview.dwt.php:223
+#: content/apps/store/templates/admin/store_preview.dwt.php:234
 #: content/apps/store/templates/admin/store_preaudit_check.dwt.php:332
 msgid "证件电子版"
 msgstr "證件電子版"
 
 #: content/apps/store/templates/admin/store_auth.dwt.php:114
-#: content/apps/store/templates/admin/store_preview.dwt.php:233
+#: content/apps/store/templates/admin/store_preview.dwt.php:244
 #: content/apps/store/templates/admin/store_edit.dwt.php:308
 #: content/apps/store/templates/admin/store_preaudit_check.dwt.php:341
 #: content/apps/store/templates/admin/store_preaudit_edit.dwt.php:151
@@ -1488,10 +1515,10 @@ msgstr "證件正面："
 #: content/apps/store/templates/admin/store_auth.dwt.php:127
 #: content/apps/store/templates/admin/store_auth.dwt.php:139
 #: content/apps/store/templates/admin/store_auth.dwt.php:152
-#: content/apps/store/templates/admin/store_preview.dwt.php:236
-#: content/apps/store/templates/admin/store_preview.dwt.php:246
-#: content/apps/store/templates/admin/store_preview.dwt.php:258
-#: content/apps/store/templates/admin/store_preview.dwt.php:271
+#: content/apps/store/templates/admin/store_preview.dwt.php:247
+#: content/apps/store/templates/admin/store_preview.dwt.php:257
+#: content/apps/store/templates/admin/store_preview.dwt.php:269
+#: content/apps/store/templates/admin/store_preview.dwt.php:282
 #: content/apps/store/templates/admin/store_preaudit_check.dwt.php:348
 #: content/apps/store/templates/admin/store_preaudit_check.dwt.php:363
 #: content/apps/store/templates/admin/store_preaudit_check.dwt.php:380
@@ -1517,11 +1544,11 @@ msgstr "證件反面："
 #: content/apps/store/templates/admin/store_auth.dwt.php:130
 #: content/apps/store/templates/admin/store_auth.dwt.php:142
 #: content/apps/store/templates/admin/store_auth.dwt.php:155
-#: content/apps/store/templates/admin/store_preview.dwt.php:239
-#: content/apps/store/templates/admin/store_preview.dwt.php:243
-#: content/apps/store/templates/admin/store_preview.dwt.php:249
-#: content/apps/store/templates/admin/store_preview.dwt.php:261
-#: content/apps/store/templates/admin/store_preview.dwt.php:274
+#: content/apps/store/templates/admin/store_preview.dwt.php:250
+#: content/apps/store/templates/admin/store_preview.dwt.php:254
+#: content/apps/store/templates/admin/store_preview.dwt.php:260
+#: content/apps/store/templates/admin/store_preview.dwt.php:272
+#: content/apps/store/templates/admin/store_preview.dwt.php:285
 #: content/apps/store/templates/admin/store_preaudit_check.dwt.php:351
 #: content/apps/store/templates/admin/store_preaudit_check.dwt.php:366
 #: content/apps/store/templates/admin/store_preaudit_check.dwt.php:383
@@ -1530,7 +1557,7 @@ msgid "还未上传"
 msgstr "還未上傳"
 
 #: content/apps/store/templates/admin/store_auth.dwt.php:136
-#: content/apps/store/templates/admin/store_preview.dwt.php:255
+#: content/apps/store/templates/admin/store_preview.dwt.php:266
 #: content/apps/store/templates/admin/store_edit.dwt.php:362
 #: content/apps/store/templates/admin/store_preaudit_check.dwt.php:373
 #: content/apps/store/templates/admin/store_preaudit_edit.dwt.php:224
@@ -1540,7 +1567,7 @@ msgid "手持证件："
 msgstr "手持證件："
 
 #: content/apps/store/templates/admin/store_auth.dwt.php:149
-#: content/apps/store/templates/admin/store_preview.dwt.php:268
+#: content/apps/store/templates/admin/store_preview.dwt.php:279
 #: content/apps/store/templates/admin/store_edit.dwt.php:390
 #: content/apps/store/templates/admin/store_preaudit_check.dwt.php:391
 #: content/apps/store/templates/admin/store_preaudit_edit.dwt.php:269
@@ -1589,12 +1616,21 @@ msgstr "可執行操作："
 msgid "通过"
 msgstr "通過"
 
-#: content/apps/store/templates/admin/store_preview.dwt.php:40
+#: content/apps/store/templates/admin/store_preview.dwt.php:21
+#: content/apps/store/templates/admin/store_delete.dwt.php:30
+msgid "温馨提示"
+msgstr "溫馨提示"
+
+#: content/apps/store/templates/admin/store_preview.dwt.php:23
+msgid "当前店铺注销申请到期还未处理，等待您删除店铺数据。"
+msgstr "當前店鋪註銷申請到期還未處理，等待您刪除店鋪數據。"
+
+#: content/apps/store/templates/admin/store_preview.dwt.php:51
 #: content/apps/store/templates/admin/store_preaudit_check.dwt.php:36
 msgid "店铺信息"
 msgstr "店鋪信息"
 
-#: content/apps/store/templates/admin/store_preview.dwt.php:48
+#: content/apps/store/templates/admin/store_preview.dwt.php:59
 #: content/apps/store/templates/admin/store_edit.dwt.php:70
 #: content/apps/store/templates/admin/store_preaudit_check.dwt.php:43
 #: content/apps/store/templates/admin/store_preaudit_edit.dwt.php:84
@@ -1602,21 +1638,21 @@ msgstr "店鋪信息"
 msgid "店铺名称："
 msgstr "店鋪名稱："
 
-#: content/apps/store/templates/admin/store_preview.dwt.php:50
+#: content/apps/store/templates/admin/store_preview.dwt.php:61
 #: content/apps/store/templates/admin/store_preaudit_check.dwt.php:51
 msgid "已认证"
 msgstr "已認證"
 
-#: content/apps/store/templates/admin/store_preview.dwt.php:50
+#: content/apps/store/templates/admin/store_preview.dwt.php:61
 #: content/apps/store/templates/admin/store_preaudit_check.dwt.php:51
 msgid "未认证"
 msgstr "未認證"
 
-#: content/apps/store/templates/admin/store_preview.dwt.php:52
+#: content/apps/store/templates/admin/store_preview.dwt.php:63
 msgid "店铺关闭"
 msgstr "店鋪關閉"
 
-#: content/apps/store/templates/admin/store_preview.dwt.php:55
+#: content/apps/store/templates/admin/store_preview.dwt.php:66
 #: content/apps/store/templates/admin/store_add.dwt.php:69
 #: content/apps/store/templates/admin/store_add.dwt.php:76
 #: content/apps/store/templates/admin/store_edit.dwt.php:76
@@ -1626,13 +1662,13 @@ msgstr "店鋪關閉"
 msgid "商家分类："
 msgstr "商家分類："
 
-#: content/apps/store/templates/admin/store_preview.dwt.php:56
+#: content/apps/store/templates/admin/store_preview.dwt.php:67
 #: content/apps/store/templates/admin/store_preaudit_check.dwt.php:54
 #: content/apps/store/templates/admin/store_list.dwt.php:84
 msgid "未分类"
 msgstr "未分類"
 
-#: content/apps/store/templates/admin/store_preview.dwt.php:59
+#: content/apps/store/templates/admin/store_preview.dwt.php:70
 #: content/apps/store/templates/admin/store_add.dwt.php:86
 #: content/apps/store/templates/admin/store_edit.dwt.php:85
 #: content/apps/store/templates/admin/store_preaudit_check.dwt.php:64
@@ -1641,54 +1677,54 @@ msgstr "未分類"
 msgid "店铺关键词："
 msgstr "店鋪關鍵詞："
 
-#: content/apps/store/templates/admin/store_preview.dwt.php:63
+#: content/apps/store/templates/admin/store_preview.dwt.php:74
 msgid "分成比例："
 msgstr "分成比例："
 
-#: content/apps/store/templates/admin/store_preview.dwt.php:64
+#: content/apps/store/templates/admin/store_preview.dwt.php:75
 msgid "未设置，默认"
 msgstr "未設置，默認"
 
-#: content/apps/store/templates/admin/store_preview.dwt.php:67
+#: content/apps/store/templates/admin/store_preview.dwt.php:78
 msgid "开店时间："
 msgstr "開店時間："
 
-#: content/apps/store/templates/admin/store_preview.dwt.php:69
+#: content/apps/store/templates/admin/store_preview.dwt.php:80
 #: content/apps/store/templates/admin/store_edit.dwt.php:186
 msgid "到期时间："
 msgstr "到期時間："
 
-#: content/apps/store/templates/admin/store_preview.dwt.php:73
+#: content/apps/store/templates/admin/store_preview.dwt.php:84
 #: content/apps/store/templates/admin/store_add.dwt.php:168
 #: content/apps/store/templates/admin/store_edit.dwt.php:163
 msgid "店铺模式："
 msgstr "店鋪模式："
 
-#: content/apps/store/templates/admin/store_preview.dwt.php:74
+#: content/apps/store/templates/admin/store_preview.dwt.php:85
 #: content/apps/store/templates/admin/store_edit.dwt.php:166
 msgid "入驻"
 msgstr "入駐"
 
-#: content/apps/store/templates/admin/store_preview.dwt.php:74
+#: content/apps/store/templates/admin/store_preview.dwt.php:85
 #: content/apps/store/templates/admin/store_add.dwt.php:170
 #: content/apps/store/templates/admin/store_edit.dwt.php:165
 msgid "自营"
 msgstr "自營"
 
-#: content/apps/store/templates/admin/store_preview.dwt.php:75
+#: content/apps/store/templates/admin/store_preview.dwt.php:86
 #: content/apps/store/templates/admin/store_add.dwt.php:174
 #: content/apps/store/templates/admin/store_edit.dwt.php:170
 msgid "商品审核："
 msgstr "商品審核："
 
-#: content/apps/store/templates/admin/store_preview.dwt.php:79
+#: content/apps/store/templates/admin/store_preview.dwt.php:90
 #: content/apps/store/templates/admin/store_preaudit_check.dwt.php:75
 #: content/apps/store/templates/admin/store_preaudit_edit.dwt.php:97
 #: content/apps/store/templates/admin/store_edit_bak.dwt.php:58
 msgid "联系方式："
 msgstr "聯繫方式："
 
-#: content/apps/store/templates/admin/store_preview.dwt.php:81
+#: content/apps/store/templates/admin/store_preview.dwt.php:92
 #: content/apps/store/templates/admin/store_add.dwt.php:101
 #: content/apps/store/templates/admin/store_edit.dwt.php:98
 #: content/apps/store/templates/admin/store_preaudit_check.dwt.php:84
@@ -1697,12 +1733,12 @@ msgstr "聯繫方式："
 msgid "电子邮箱："
 msgstr "電子郵箱："
 
-#: content/apps/store/templates/admin/store_preview.dwt.php:95
+#: content/apps/store/templates/admin/store_preview.dwt.php:106
 #: content/apps/store/templates/admin/store_preaudit_check.dwt.php:107
 msgid "所在地区："
 msgstr "所在地區："
 
-#: content/apps/store/templates/admin/store_preview.dwt.php:97
+#: content/apps/store/templates/admin/store_preview.dwt.php:108
 #: content/apps/store/templates/admin/store_add.dwt.php:159
 #: content/apps/store/templates/admin/store_edit.dwt.php:156
 #: content/apps/store/templates/admin/store_preaudit_check.dwt.php:116
@@ -1710,7 +1746,7 @@ msgstr "所在地區："
 msgid "经纬度："
 msgstr "經緯度："
 
-#: content/apps/store/templates/admin/store_preview.dwt.php:99
+#: content/apps/store/templates/admin/store_preview.dwt.php:110
 #: content/apps/store/templates/admin/store_preaudit_check.dwt.php:122
 #: content/apps/store/templates/admin/store_preaudit_check.dwt.php:124
 #: content/apps/store/templates/admin/store_preaudit_check.dwt.php:130
@@ -1719,7 +1755,7 @@ msgstr "經緯度："
 msgid "查看地图"
 msgstr "查看地圖"
 
-#: content/apps/store/templates/admin/store_preview.dwt.php:99
+#: content/apps/store/templates/admin/store_preview.dwt.php:110
 #: content/apps/store/templates/admin/store_preaudit_check.dwt.php:122
 #: content/apps/store/templates/admin/store_preaudit_check.dwt.php:124
 #: content/apps/store/templates/admin/store_preaudit_check.dwt.php:130
@@ -1728,7 +1764,7 @@ msgstr "查看地圖"
 msgid "[查看地图]"
 msgstr "[查看地圖]"
 
-#: content/apps/store/templates/admin/store_preview.dwt.php:102
+#: content/apps/store/templates/admin/store_preview.dwt.php:113
 #: content/apps/store/templates/admin/store_add.dwt.php:139
 #: content/apps/store/templates/admin/store_edit.dwt.php:134
 #: content/apps/store/templates/admin/store_preaudit_check.dwt.php:142
@@ -1736,20 +1772,20 @@ msgstr "[查看地圖]"
 msgid "通讯地址："
 msgstr "通訊地址："
 
-#: content/apps/store/templates/admin/store_preview.dwt.php:107
+#: content/apps/store/templates/admin/store_preview.dwt.php:118
 msgid "删除商家："
 msgstr "刪除商家："
 
-#: content/apps/store/templates/admin/store_preview.dwt.php:108
+#: content/apps/store/templates/admin/store_preview.dwt.php:119
 msgid "去删除店铺数据"
 msgstr "去刪除店鋪數據"
 
-#: content/apps/store/templates/admin/store_preview.dwt.php:189
+#: content/apps/store/templates/admin/store_preview.dwt.php:200
 #: content/apps/store/templates/admin/store_preaudit_check.dwt.php:263
 msgid "银行账户信息"
 msgstr "銀行賬戶信息"
 
-#: content/apps/store/templates/admin/store_preview.dwt.php:199
+#: content/apps/store/templates/admin/store_preview.dwt.php:210
 #: content/apps/store/templates/admin/store_edit.dwt.php:276
 #: content/apps/store/templates/admin/store_preaudit_check.dwt.php:272
 #: content/apps/store/templates/admin/store_preaudit_edit.dwt.php:307
@@ -1757,7 +1793,7 @@ msgstr "銀行賬戶信息"
 msgid "收款银行："
 msgstr "收款銀行："
 
-#: content/apps/store/templates/admin/store_preview.dwt.php:201
+#: content/apps/store/templates/admin/store_preview.dwt.php:212
 #: content/apps/store/templates/admin/store_edit.dwt.php:294
 #: content/apps/store/templates/admin/store_preaudit_check.dwt.php:281
 #: content/apps/store/templates/admin/store_preaudit_edit.dwt.php:314
@@ -1765,7 +1801,7 @@ msgstr "收款銀行："
 msgid "开户银行支行名称："
 msgstr "開戶銀行支行名稱："
 
-#: content/apps/store/templates/admin/store_preview.dwt.php:205
+#: content/apps/store/templates/admin/store_preview.dwt.php:216
 #: content/apps/store/templates/admin/store_edit.dwt.php:282
 #: content/apps/store/templates/admin/store_preaudit_check.dwt.php:292
 #: content/apps/store/templates/admin/store_preaudit_edit.dwt.php:321
@@ -1773,7 +1809,7 @@ msgstr "開戶銀行支行名稱："
 msgid "银行账号："
 msgstr "銀行賬號："
 
-#: content/apps/store/templates/admin/store_preview.dwt.php:207
+#: content/apps/store/templates/admin/store_preview.dwt.php:218
 #: content/apps/store/templates/admin/store_edit.dwt.php:288
 #: content/apps/store/templates/admin/store_preaudit_check.dwt.php:301
 #: content/apps/store/templates/admin/store_preaudit_edit.dwt.php:328
@@ -1781,7 +1817,7 @@ msgstr "銀行賬號："
 msgid "账户名称："
 msgstr "賬戶名稱："
 
-#: content/apps/store/templates/admin/store_preview.dwt.php:211
+#: content/apps/store/templates/admin/store_preview.dwt.php:222
 msgid "户银行支行地址："
 msgstr "戶銀行支行地址："
 
@@ -1901,6 +1937,7 @@ msgid "请输入关键字"
 msgstr "請輸入關鍵字"
 
 #: content/apps/store/templates/admin/staff_log.dwt.php:65
+#: content/apps/store/templates/admin/store_cancel_list.dwt.php:33
 #: content/apps/store/templates/admin/store_config_info.dwt.php:122
 #: content/apps/store/templates/admin/store_preaudit_list.dwt.php:43
 #: content/apps/store/templates/admin/store_list.dwt.php:72
@@ -1930,6 +1967,7 @@ msgstr "操作記錄"
 
 #: content/apps/store/templates/admin/staff_log.dwt.php:91
 #: content/apps/store/templates/admin/store_percent_list.dwt.php:66
+#: content/apps/store/templates/admin/store_cancel_list.dwt.php:79
 #: content/apps/store/templates/admin/store_preaudit_list.dwt.php:83
 #: content/apps/store/templates/admin/store_commission_list.dwt.php:68
 #: content/apps/store/templates/admin/store_list.dwt.php:121
@@ -2007,6 +2045,55 @@ msgstr "操作"
 #: content/apps/store/templates/admin/store_commission_list.dwt.php:55
 msgid "您确定要删除吗？"
 msgstr "您確定要刪除嗎？"
+
+#: content/apps/store/templates/admin/store_cancel_list.dwt.php:20
+msgid "到期等待处理"
+msgstr "到期等待處理"
+
+#: content/apps/store/templates/admin/store_cancel_list.dwt.php:26
+msgid "未到期"
+msgstr "未到期"
+
+#: content/apps/store/templates/admin/store_cancel_list.dwt.php:32
+msgid "请输入商家名称或手机号"
+msgstr "請輸入商家名稱或手機號"
+
+#: content/apps/store/templates/admin/store_cancel_list.dwt.php:42
+#: content/apps/store/templates/admin/store_preaudit_list.dwt.php:53
+msgid "店铺名称"
+msgstr "店鋪名稱"
+
+#: content/apps/store/templates/admin/store_cancel_list.dwt.php:44
+#: content/apps/store/templates/admin/store_preaudit_list.dwt.php:55
+msgid "负责人"
+msgstr "負責人"
+
+#: content/apps/store/templates/admin/store_cancel_list.dwt.php:45
+#: content/apps/store/templates/admin/store_preaudit_list.dwt.php:56
+msgid "公司名称"
+msgstr "公司名稱"
+
+#: content/apps/store/templates/admin/store_cancel_list.dwt.php:46
+#: content/apps/store/templates/admin/store_preaudit_list.dwt.php:57
+msgid "手机号"
+msgstr "手機號"
+
+#: content/apps/store/templates/admin/store_cancel_list.dwt.php:49
+msgid "倒计时"
+msgstr "倒計時"
+
+#: content/apps/store/templates/admin/store_cancel_list.dwt.php:52
+#: content/apps/store/templates/admin/store_preaudit_list.dwt.php:60
+msgid "申请时间"
+msgstr "申請時間"
+
+#: content/apps/store/templates/admin/store_cancel_list.dwt.php:59
+msgid "(自营)"
+msgstr "(自營)"
+
+#: content/apps/store/templates/admin/store_cancel_list.dwt.php:61
+msgid "查看详情"
+msgstr "查看詳情"
 
 #: content/apps/store/templates/admin/store_config_info.dwt.php:13
 #: content/apps/store/templates/admin/store_config_info.dwt.php:172
@@ -2254,10 +2341,6 @@ msgstr "新值"
 msgid "暂无数据"
 msgstr "暫無數據"
 
-#: content/apps/store/templates/admin/store_delete.dwt.php:30
-msgid "温馨提示"
-msgstr "溫馨提示"
-
 #: content/apps/store/templates/admin/store_delete.dwt.php:32
 msgid "当前商家账户没有关联数据，您可以直接删除此商家账户。"
 msgstr "當前商家賬戶沒有關聯數據，您可以直接刪除此商家賬戶。"
@@ -2421,26 +2504,6 @@ msgstr "請選擇分類"
 #: content/apps/store/templates/admin/store_list.dwt.php:71
 msgid "请输入店铺名称或手机号"
 msgstr "請輸入店鋪名稱或手機號"
-
-#: content/apps/store/templates/admin/store_preaudit_list.dwt.php:53
-msgid "店铺名称"
-msgstr "店鋪名稱"
-
-#: content/apps/store/templates/admin/store_preaudit_list.dwt.php:55
-msgid "负责人"
-msgstr "負責人"
-
-#: content/apps/store/templates/admin/store_preaudit_list.dwt.php:56
-msgid "公司名称"
-msgstr "公司名稱"
-
-#: content/apps/store/templates/admin/store_preaudit_list.dwt.php:57
-msgid "手机号"
-msgstr "手機號"
-
-#: content/apps/store/templates/admin/store_preaudit_list.dwt.php:60
-msgid "申请时间"
-msgstr "申請時間"
 
 #: content/apps/store/templates/admin/store_business_city_add.dwt.php:9
 msgid "选择经营城市："
