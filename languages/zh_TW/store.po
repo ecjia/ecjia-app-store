@@ -5,14 +5,14 @@ msgstr ""
 "Project-Id-Version: Ecjia App store 1.27.4\n"
 "Report-Msgid-Bugs-To: https://make.ecjia.com/polyglots/\n"
 "POT-Creation-Date: 2019-04-04 13:25+0800\n"
-"PO-Revision-Date: 2019-04-04 13:25+0800\n"
+"PO-Revision-Date: 2019-04-08 14:30+0800\n"
 "Last-Translator: \n"
 "Language-Team: LANGUAGE <ecjia@ecjia.com>\n"
 "Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.7\n"
+"X-Generator: Poedit 2.2\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: admin.php:97 admin.php:142 admin.php:1180 admin_commission.php:164
@@ -20,7 +20,7 @@ msgstr ""
 #: apis/store_admin_menu_api.class.php:62
 #: apis/store_admin_purview_api.class.php:60
 msgid "入驻商家"
-msgstr "\v入駐商家"
+msgstr "入駐商家"
 
 #: admin.php:100 admin.php:114 admin.php:170 admin.php:1176
 #: admin_commission.php:161 admin_commission.php:352
