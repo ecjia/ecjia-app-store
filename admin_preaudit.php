@@ -649,7 +649,7 @@ class admin_preaudit extends ecjia_admin
         $wait_delete_list = RC_DB::table('store_franchisee')
             ->where('account_status', 'wait_delete')
             ->where('shop_close', 1)
-            ->where('is_delete', '!=', 0)
+            ->where('delete_time', '!=', 0)
             ->lists('store_id');
 
         $db_store_franchisee = RC_DB::table('store_preaudit as sp')->whereNotIn(RC_DB::raw('sp.store_id'), $wait_delete_list);
