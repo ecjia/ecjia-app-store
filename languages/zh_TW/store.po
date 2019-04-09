@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: Ecjia App store 1.27.4\n"
 "Report-Msgid-Bugs-To: https://make.ecjia.com/polyglots/\n"
 "POT-Creation-Date: 2019-04-04 13:25+0800\n"
-"PO-Revision-Date: 2019-04-08 14:30+0800\n"
+"PO-Revision-Date: 2019-04-09 10:24+0800\n"
 "Last-Translator: \n"
 "Language-Team: LANGUAGE <ecjia@ecjia.com>\n"
 "Language: zh_TW\n"
@@ -720,7 +720,7 @@ msgstr "編輯商家分類成功！"
 
 #: admin_store_category.php:258
 msgid "删除商家分类成功！"
-msgstr "編輯商家分類成功！"
+msgstr "刪除商家分類成功！"
 
 #: admin_store_category.php:260
 msgid "不是末级分类或者此分类下还存在有商家，您不能删除!"
@@ -824,7 +824,7 @@ msgstr "經營城市管理"
 
 #: apis/store_admin_purview_api.class.php:95
 msgid "经营城市删除"
-msgstr "經營城市管理"
+msgstr "經營城市刪除"
 
 #: apis/store_admin_purview_api.class.php:98
 msgid "佣金比例管理"
@@ -1465,7 +1465,7 @@ msgstr "證件類型："
 #: content/apps/store/templates/admin/store_edit_bak.dwt.php:97
 #: content/apps/store/templates/admin/store_edit_bak.dwt.php:136
 msgid "证件号码："
-msgstr "證件類型："
+msgstr "證件號碼："
 
 #: content/apps/store/templates/admin/store_auth.dwt.php:69
 #: content/apps/store/templates/admin/store_preview.dwt.php:165
