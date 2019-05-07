@@ -66,7 +66,7 @@
 				<form class="form-horizontal" id="form-privilege" name="theForm" action="{$form_action}" method="post" enctype="multipart/form-data" >
         			<fieldset>
         			    <div class="control-group formSep">
-        					<label class="control-label">{t domain="store"}商家分类：{/t}</label>
+        					<label class="control-label">{t domain="store"}店铺名称：{/t}</label>
         					<div class="controls">
         						<input class="span6" name="merchants_name" type="text" value="{$store.merchants_name}" />
         						<span class="input-must">*</span>
