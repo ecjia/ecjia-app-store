@@ -85,7 +85,7 @@ class admin extends ecjia_admin
         RC_Script::enqueue_script('store', RC_App::apps_url('statics/js/store.js', __FILE__), array(), false, 1);
         RC_Script::enqueue_script('store_log', RC_App::apps_url('statics/js/store_log.js', __FILE__), array(), false, 1);
         RC_Script::enqueue_script('commission', RC_App::apps_url('statics/js/commission.js', __FILE__), array(), false, 1);
-        RC_Script::enqueue_script('region', RC_Uri::admin_url('statics/lib/ecjia-js/ecjia.region.js'));
+        RC_Script::enqueue_script('region', RC_Uri::admin_url('statics/lib/ecjia_js/ecjia.region.js'));
 
         //js语言包
         RC_Script::localize_script('store', 'store_js_lang', config('app-store::jslang.admin_page'));
