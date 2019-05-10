@@ -49,16 +49,18 @@ defined('IN_ECJIA') or exit('No permission resources.');
 /**
  * 店铺祥情及配置接口
  * @author
+ * RC_Api::api('store', 'store_info', ['store_id' = 1]);
  */
 class store_store_info_api extends Component_Event_Api {
 	/**
 	 *
 	 * @param array $options
-	 * @return  array
+     *  store_id 店铺ID
+	 * @return  array | ecjia_error
 	 */
 	public function call (&$options) {
 		if (!array_key_exists('store_id', $options)) {
-			return new ecjia_error('invalid_parameter', __('调用store_info_api文件，参数无效', 'store'));
+			return new ecjia_error('invalid_parameter', sprintf(__('调用%s文件，参数无效', 'store'), __CLASS__));
 		}
 		
 		$store_id = $options['store_id'];
@@ -66,8 +68,8 @@ class store_store_info_api extends Component_Event_Api {
 		$store_info     = RC_DB::table('store_franchisee')->where('store_id', $store_id)->first();
 		$store_config   = RC_DB::table('merchants_config')->where('store_id', $store_id)->get();
 		
-		$configs = collect($store_config)->map(function ($item) use (& $store_info) {
-			return $store_info[$item['code']] = $item['value'];
+		collect($store_config)->map(function ($item) use (& $store_info) {
+		    $store_info[$item['code']] = $item['value'];
 		});
 		
 		return $store_info;
