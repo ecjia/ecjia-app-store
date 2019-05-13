@@ -110,7 +110,7 @@ class StoreDuplicateManager
      * @param StoreCleanAbstract $b
      * @return number
      */
-    protected function listMenuBySort(StoreCleanAbstract $a, StoreCleanAbstract $b)
+    protected function listMenuBySort(StoreDuplicateAbstract $a, StoreDuplicateAbstract $b)
     {
         if ($a->getSort() == $b->getSort()) {
             return 0;

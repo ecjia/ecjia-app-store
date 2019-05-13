@@ -632,7 +632,7 @@ class admin extends ecjia_admin
         }
         if (isset($store['duplicate_store_status']) && $store['duplicate_store_status'] == 'processing') { //processing|finished
             $help_url = RC_Uri::url('store/admin/duplicate_processing', ['store_id' => $store_id]);
-            $warning = sprintf(__('<p><strong>温馨提示：</strong> 当前店铺数据还未复制全，您可以选择右上角【复制店铺】按钮，继续复制店铺数据。<strong><a href="%s"> 请点击此处去复制</a></strong></p>', 'store'), $help_url);
+            $warning = sprintf(__('<strong>温馨提示：</strong> 当前店铺数据还未复制全，您可以选择右上角【复制店铺】按钮，继续复制店铺数据。<strong><a href="%s"> 请点击此处去复制 >></a></strong>', 'store'), $help_url);
             ecjia_screen::get_current_screen()->add_admin_notice(new admin_notice($warning, 'alert-error'));
             $this->assign('duplicate', [
                 'href' => RC_Uri::url($help_url, ['store_id' => $store_id]),
@@ -667,6 +667,7 @@ class admin extends ecjia_admin
 
         list($store['province'], $store['city'], $store['district'], $store['street']) = ecjia_region::getDisplayLabel($store['province'], $store['city'], $store['district'], $store['street']);
 
+        //dd($store);
         $this->assign('ur_here', $store['merchants_name']);
         $store['cat_name'] = RC_DB::table('store_category')->where('cat_id', $store['cat_id'])->pluck('cat_name');
         if ($store['percent_id']) {
@@ -1413,6 +1414,7 @@ class admin extends ecjia_admin
         }
 
         $handles = (new \Ecjia\App\Store\StoreCleanManager($store_id))->getFactories();
+dd($handles);
 
         if (!empty($handles)) {
             $remove_result = [];
@@ -1506,15 +1508,17 @@ class admin extends ecjia_admin
 
         $cat_list = $this->get_cat_select_list();
 
-        $provinces = ecjia_region::getSubarea(ecjia::config('shop_country')); //获取当前国家的所有省份
-        $cities = ecjia_region::getSubarea($store_info['province']); //获取当前省份的所有城市
-        $districts = ecjia_region::getSubarea($store_info['city']); //获取当前城市的所有地区
-        $streets = ecjia_region::getSubarea($store_info['district']); //获取当前地区的所有街道
+        $province = ecjia_region::getSubarea(ecjia::config('shop_country')); //获取当前国家的所有省份
+        $city = ecjia_region::getSubarea($store_info['province']); //获取当前省份的所有城市
+        $district = ecjia_region::getSubarea($store_info['city']); //获取当前城市的所有地区
+        $street = ecjia_region::getSubarea($store_info['district']); //获取当前地区的所有街道
 
-        $this->assign('province', $provinces);
-        $this->assign('city', $cities);
-        $this->assign('district', $districts);
-        $this->assign('street', $streets);
+        list($province, $city, $district, $street) = ecjia_region::getDisplayID($store_info['province'], $store_info['city'], $store_info['district'], $store_info['street']);
+        //dd($province, $city, $district, $street);
+        $this->assign('province', $province);
+        $this->assign('city', $city);
+        $this->assign('district', $district);
+        $this->assign('street', $street);
 
         $this->assign('form_action', RC_Uri::url('store/admin/duplicate_insert', ['store_id' => $store_id]));
         $this->assign('cat_list', $cat_list);
@@ -1728,6 +1732,10 @@ class admin extends ecjia_admin
         $store_info = $this->store_info; //新店铺信息
         $source_store_id = $store_info['duplicate_source_store_id']; //源店铺ID
 
+        if ($store_info['duplicate_store_status'] != 'processing'){
+            //return $this->showmessage(__('店铺已复制完成', 'store'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+        }
+
         $current_screen = ecjia_screen::get_current_screen();
         $current_screen->remove_last_nav_here();
         $current_screen->add_nav_here(new admin_nav_here(__('自营店铺', 'store'), RC_Uri::url('store/admin/init')));
@@ -1741,6 +1749,7 @@ class admin extends ecjia_admin
 
         $handles = (new \Ecjia\App\Store\StoreDuplicate\StoreDuplicateManager($store_id, $source_store_id))->getFactories();
 
+        //dd($handles);
         $this->assign('store_id', $store_id);
         $this->assign('handles', $handles);
         $this->assign('duplicate_item_link', [
@@ -1786,7 +1795,11 @@ class admin extends ecjia_admin
         $source_store_id = $this->store_info['duplicate_source_store_id'];
         //dd($store_id, $handle, $source_store_id);
 
-        return $this->showmessage(__('操作成功', 'store'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, ['pjaxurl' => RC_Uri::url('store/admin/duplicate_processing', ['store_id' => $store_id])]);
+        return $this->showmessage(__('操作成功', 'store'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array(
+                'pjaxurl' => RC_Uri::url('store/admin/duplicate_processing', ['store_id' => $store_id])
+            )
+        );
+        //return $this->showmessage(__('操作成功', 'store'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, ['pjaxurl' => RC_Uri::url('store/admin/duplicate_processing', ['store_id' => $store_id])]);
     }
 
     /*

@@ -14,24 +14,24 @@ use RC_DB;
 use RC_Api;
 use ecjia_admin;
 
-class MerchantConfigDuplicate extends StoreDuplicateAbstract
+class StoreEssentialInfoDuplicate extends StoreDuplicateAbstract
 {
 
     /**
      * 代号标识
      * @var string
      */
-    protected $code = 'merchant_config_duplicate';
+    protected $code = 'store_essential_info_duplicate';
 
     /**
      * 排序
      * @var int
      */
-    protected $sort = 100;
+    protected $sort = 1;
 
     public function __construct($store_id, $source_store_id)
     {
-        $this->name = __('锁定、关闭店铺主表', 'store');
+        $this->name = __('店铺基本信息', 'store');
 
         parent::__construct($store_id, $source_store_id);
     }
@@ -41,7 +41,7 @@ class MerchantConfigDuplicate extends StoreDuplicateAbstract
      */
     public function handlePrintData()
     {
-        $text = __('将店铺主表中，锁定、关闭当前店铺', 'store');
+        $text = __('复制店铺内基本信息（店铺Logo、Banner、营业时间、客服电话、公告、简介等）', 'store');
 
         return <<<HTML
 <span class="controls-info">{$text}</span>
@@ -56,7 +56,7 @@ HTML;
     public function handleCount()
     {
 
-        return 0;
+        return 5;
     }
 
 

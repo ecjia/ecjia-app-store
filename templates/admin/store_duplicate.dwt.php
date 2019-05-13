@@ -127,6 +127,7 @@
                                     <!-- {foreach from=$province item=region} -->
                                     <option value="{$region.region_id}" {if $region.region_id eq $store.province}selected{/if}>{$region.region_name}</option>
                                     <!-- {/foreach} -->
+
                                 </select>
 
                                 <select class="region-summary-cities w120" name="city" id="selCities" data-url="{url path='setting/region/init'}" data-toggle="regionSummary" data-type="3" data-target="region-summary-district">

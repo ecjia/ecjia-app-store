@@ -66,10 +66,16 @@ class store_store_duplicate_storedata_api extends Component_Event_Api
 
         return [
             new \Ecjia\App\Store\StoreDuplicate\Handlers\MerchantConfigDuplicate($store_id, $source_store_id),
-            new \Ecjia\App\Store\StoreDuplicate\Handlers\MerchantConfigDuplicate($store_id, $source_store_id),
-            new \Ecjia\App\Store\StoreDuplicate\Handlers\MerchantConfigDuplicate($store_id, $source_store_id),
-            new \Ecjia\App\Store\StoreDuplicate\Handlers\MerchantConfigDuplicate($store_id, $source_store_id),
-            new \Ecjia\App\Store\StoreDuplicate\Handlers\MerchantConfigDuplicate($store_id, $source_store_id),
+            new \Ecjia\App\Store\StoreDuplicate\Handlers\StoreCategoryDuplicate($store_id, $source_store_id),
+            new \Ecjia\App\Store\StoreDuplicate\Handlers\StoreCheckstandDuplicate($store_id, $source_store_id),
+            new \Ecjia\App\Store\StoreDuplicate\Handlers\StoreEssentialInfoDuplicate($store_id, $source_store_id),
+            new \Ecjia\App\Store\StoreDuplicate\Handlers\StoreParamDuplicate($store_id, $source_store_id),
+            new \Ecjia\App\Store\StoreDuplicate\Handlers\StorePromotionDuplicate($store_id, $source_store_id),
+            new \Ecjia\App\Store\StoreDuplicate\Handlers\StoreRedPacketDuplicate($store_id, $source_store_id),
+            new \Ecjia\App\Store\StoreDuplicate\Handlers\StoreScatteredDuplicate($store_id, $source_store_id),
+            new \Ecjia\App\Store\StoreDuplicate\Handlers\StoreSellingDuplicate($store_id, $source_store_id),
+            new \Ecjia\App\Store\StoreDuplicate\Handlers\StoreSpecificationDuplicate($store_id, $source_store_id),
+            new \Ecjia\App\Store\StoreDuplicate\Handlers\StoreDiscountPayDuplicate($store_id, $source_store_id)
         ];
     }
 
