@@ -9,12 +9,29 @@
 
 <!-- {block name="main_content"} -->
 
+<div class="alert alert-info">
+    <a class="close" data-dismiss="alert">×</a>
+    <strong>
+        <p>{t domain="store"}复制店铺{/t}</p>
+    </strong>
+    <p>{t domain="store"}用于店铺开分店，重新上传产品、设置店铺相关信息又太过于麻烦，使用复制功能，可以轻松处理，一键克隆。{/t}</p>
+</div>
+
+<div class="alert alert-warning">
+    <a class="close" data-dismiss="alert">×</a>
+    <strong>
+        <p>{t domain="store"}温馨提示{/t}</p>
+    </strong>
+    <p>{t domain="store"}以下所有数据，为了避免复制错误导致店铺出现异常，请按显示顺序逐一复制。{/t}</p>
+</div>
+
 <div>
     <h3 class="heading">
-        <!-- {if $ur_here}{$ur_here}{/if} -->
+        {$ur_here}
         <!-- {if $action_link} -->
-        <a class="btn plus_or_reply data-pjax" href="{$action_link.href}"><i class="fontello-icon-reply"></i>{$action_link.text}</a>
+        <a class="data-pjax btn plus_or_reply" id="sticky_a" href="{$action_link.href}"><i class="fontello-icon-reply"></i>{$action_link.text}</a>
         <!-- {/if} -->
+
     </h3>
 </div>
 
@@ -23,21 +40,7 @@
     <div class="span12">
         <div class="form-horizontal">
 
-            <div class="alert alert-info">
-                <a class="close" data-dismiss="alert">×</a>
-                <strong>
-                    <p>{t domain="store"}复制店铺{/t}</p>
-                </strong>
-                <p>{t domain="store"}用于店铺开分店，重新上传产品、设置店铺相关信息又太过于麻烦，使用复制功能，可以轻松处理，一键克隆。{/t}</p>
-            </div>
 
-            <div class="alert alert-warning">
-                <a class="close" data-dismiss="alert">×</a>
-                <strong>
-                    <p>{t domain="store"}温馨提示{/t}</p>
-                </strong>
-                <p>{t domain="store"}以下所有数据，为了避免复制错误导致店铺出现异常，请按显示顺序逐一复制。{/t}</p>
-            </div>
             {foreach from=$handles item=val}
             <div class="control-group formSep">
                 <label class="control-label">{$val->getName()}</label>

@@ -1496,7 +1496,7 @@ class admin extends ecjia_admin
 
         ecjia_screen::get_current_screen()->set_sidebar_display(false);
         ecjia_screen::get_current_screen()->add_option('store_name', $store_info['merchants_name']);
-        ecjia_screen::get_current_screen()->add_option('current_code', 'store_preview');
+        //ecjia_screen::get_current_screen()->add_option('current_code', 'store_preview');
 
         $this->assign('ur_here', __('复制店铺', 'store'));
         $this->assign('action_link', array(
@@ -1506,12 +1506,19 @@ class admin extends ecjia_admin
 
         $cat_list = $this->get_cat_select_list();
 
-        $provinces = ecjia_region::getSubarea(ecjia::config('shop_country'));//获取当前国家的所有省份
+        $provinces = ecjia_region::getSubarea(ecjia::config('shop_country')); //获取当前国家的所有省份
+        $cities = ecjia_region::getSubarea($store_info['province']); //获取当前省份的所有城市
+        $districts = ecjia_region::getSubarea($store_info['city']); //获取当前城市的所有地区
+        $streets = ecjia_region::getSubarea($store_info['district']); //获取当前地区的所有街道
 
         $this->assign('province', $provinces);
+        $this->assign('city', $cities);
+        $this->assign('district', $districts);
+        $this->assign('street', $streets);
 
         $this->assign('form_action', RC_Uri::url('store/admin/duplicate_insert', ['store_id' => $store_id]));
         $this->assign('cat_list', $cat_list);
+        //dd($store_info);
         $this->assign('store', $store_info);
 
         $this->display('store_duplicate.dwt');
@@ -1724,8 +1731,13 @@ class admin extends ecjia_admin
         $current_screen = ecjia_screen::get_current_screen();
         $current_screen->remove_last_nav_here();
         $current_screen->add_nav_here(new admin_nav_here(__('自营店铺', 'store'), RC_Uri::url('store/admin/init')));
-        $current_screen->add_nav_here(new admin_nav_here($store_info['merchants_name'], RC_Uri::url('store/admin/preview', ['store_id' => $store_id])));
+        $current_screen->add_nav_here(new admin_nav_here($store_info['merchants_name'], RC_Uri::url('store/admin/preview', array('store_id' => $store_id))));
         $current_screen->add_nav_here(new admin_nav_here(__('复制店铺', 'store')));
+        $this->assign('ur_here', __('复制店铺', 'store'));
+        $this->assign('action_link', array(
+            'href' => RC_Uri::url('store/admin/preview', ['store_id' => $store_id]),
+            'text' => __('店铺详情', 'store')
+        ));
 
         $handles = (new \Ecjia\App\Store\StoreDuplicate\StoreDuplicateManager($store_id, $source_store_id))->getFactories();
 
