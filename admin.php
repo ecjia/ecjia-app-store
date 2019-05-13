@@ -1591,16 +1591,13 @@ class admin extends ecjia_admin
         if (!$store_id) {
             return $this->showmessage(__('操作失败', 'store'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
+
+
         $this->toDoSomethingAfterInsertStore($store_id, $data);
+
         ecjia_admin::admin_log(sprintf(__('复制商家：%s', 'store'), $data['merchants_name']), 'add', 'store');
-        return $this->showmessage(
-            __('操作成功', 'store'),
-            ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, [
-            'pjaxurl' => RC_Uri::url('store/admin/duplicate_step',
-                [
-                    'store_id' => $store_id,
-                    //'source_store_id' => $_GET['source_store_id']
-                ])
+        return $this->showmessage(__('操作成功', 'store'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, [
+            'pjaxurl' => RC_Uri::url('store/admin/duplicate_step', ['store_id' => $store_id])
         ]);
     }
 
@@ -1657,6 +1654,8 @@ class admin extends ecjia_admin
         if (!RC_DB::table('staff_user')->insertGetId($data_staff)) {
             return $this->showmessage(__('店长账号添加失败', 'store'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
+
+
         //短信发送通知
         /*$options  = array(
             'mobile' => $data['contact_mobile'],
@@ -1676,9 +1675,18 @@ class admin extends ecjia_admin
 
     public function duplicate_step()
     {
+        /**
+         * 控制器内开发流程
+         * 1、权限判断
+         * 2、接收参数过滤处理
+         * 3、页面场景设置
+         * 4、业务逻辑
+         * 5、模板赋值
+         * 6、调用模板或者返回showmessage
+         */
 
-        $store_id = $_GET['store_id'] ?? 62; //新店铺ID
-        $source_store_id = $_GET['source_store_id'] ?? 62; //源店铺ID
+        $store_id = $this->request->input('store_id', 62);  //$_GET['store_id'] ?? 62; //新店铺ID
+        $source_store_id = $this->request->input('source_store_id', 0); //$_GET['source_store_id'] ?? 62; //源店铺ID
         $store_info = $this->store_info; //新店铺信息
 
         $current_screen = ecjia_screen::get_current_screen();
@@ -1709,10 +1717,9 @@ class admin extends ecjia_admin
         ]);
         RC_DB::table('merchants_config')->where('store_id', $store_id)->where('code', 'duplicate_shop')->update(['value' => 'finish']);
 
-        return $this->showmessage(
-            __('操作成功', 'store'),
-            ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS
-            , array('pjaxurl' => RC_Uri::url('store/admin/init', array('store_id' => $store_id)))
+        return $this->showmessage(__('操作成功', 'store'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array(
+            'pjaxurl' => RC_Uri::url('store/admin/init', array('store_id' => $store_id))
+            )
         );
     }
 
