@@ -61,7 +61,12 @@ defined('IN_ECJIA') or exit('No permission resources.');
  */
 class admin extends ecjia_admin
 {
-    private $store_info, $store_id;
+    /**
+     * @var array
+     */
+    private $store_info;
+
+    private $store_id;
 
     public function __construct()
     {
@@ -1462,9 +1467,18 @@ class admin extends ecjia_admin
         return $this->showmessage(__('操作失败', 'store'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
     }
 
-    /*
-     * 复制店铺信息采集
-     * */
+    /**
+     * 复制店铺大致思路如下：
+     * 1、读取源店铺数据
+     * 2、支持用户数据部分数据，然后创建新商家（身份证、营销执照、收款信息等不需要复制）
+     * 3、创建店铺时，需要写入merchant_configs表初始数据，携带两个值用于判断复制状态，duplicate_store_status, duplicate_store_source_id
+     * 4、初始化店铺的状态为锁定状态，shop_close = 1 关闭店铺中
+     * 5、创建店长帐号，生成店长登录密码，用于下一步的短信发送到店长手机号
+     * 6、短信发送创建店铺成功的消息通知，并携带店长的账号和密码
+     * 7、然后进入下一步duplicate_processing，继续店铺的每一项分别复制
+     * 8、如果复制完成了，点击底部的"复制完成"按钮，完成复制操作，未点击此按钮，新店铺将一直处于复制进行中状态
+     * 9、复制完成后，将店铺从锁定状态恢复正常，并且默认关闭店铺
+     */
     public function duplicate()
     {
         $this->admin_priv('store_duplicate'); //在/apis/store_admin_purview_api.class.php中注册
@@ -1505,7 +1519,7 @@ class admin extends ecjia_admin
      * */
     public function duplicate_insert()
     {
-        $this->admin_priv('store_duplicate_insert', ecjia::MSGTYPE_JSON);
+        $this->admin_priv('store_duplicate', ecjia::MSGTYPE_JSON);
         $store = $this->store_info;
 
         $data = [
@@ -1535,28 +1549,36 @@ class admin extends ecjia_admin
         if (empty($data['cat_id'])) {
             $data['cat_id'] = $store['cat_id'];
         }
+
         if (empty($data['email'])) {
             $data['email'] = $store['email'];
         }
+
         if (empty($data['merchants_name'])) {
             return $this->showmessage(__('店铺名称不能为空', 'store'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
+
         if (mb_strlen($data['merchants_name']) > 17) {
             return $this->showmessage(__('店铺名称不能超过17个字符', 'store'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
+
         if (empty($data['contact_mobile'])) {
             return $this->showmessage(__('联系手机不能为空', 'store'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
+
         $check_mobile = Ecjia\App\Sms\Helper::check_mobile($data['contact_mobile']);
         if (is_ecjia_error($check_mobile)) {
             return $this->showmessage($check_mobile->get_error_message(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
+
         if (empty($data['province']) || empty($data['city']) || empty($data['district'])) {
             //return $this->showmessage(__('请选择地区', 'store'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
+
         if (empty($data['address'])) {
             return $this->showmessage(__('请填写通讯地址', 'store'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
+
         if (empty($data['latitude']) || empty($data['longitude'])) {
             return $this->showmessage(__('请获取坐标', 'store'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
@@ -1570,6 +1592,7 @@ class admin extends ecjia_admin
         if (RC_DB::table('store_franchisee')->where('contact_mobile', $data['contact_mobile'])->get()) {
             return $this->showmessage(__('联系手机已存在，请修改', 'store'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
+
         if (RC_DB::table('staff_user')->where('mobile', $data['contact_mobile'])->get()) {
             return $this->showmessage(__('联系手机员工中已存在，请修改', 'store'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
@@ -1578,9 +1601,11 @@ class admin extends ecjia_admin
         if (RC_DB::table('store_franchisee')->where('email', $data['email'])->get()) {
             return $this->showmessage(__('邮箱已存在，请修改', 'store'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
+
         if (RC_DB::table('staff_user')->where('email', $data['email'])->get()) {
             return $this->showmessage(__('邮箱员工中已存在，请修改', 'store'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
+
         $geohash = RC_Loader::load_app_class('geohash', 'store');
         $geohash_code = $geohash->encode($data['latitude'], $data['longitude']);
         $geohash_code = substr($geohash_code, 0, 10);
@@ -1654,6 +1679,7 @@ class admin extends ecjia_admin
             'avatar' => '',
             'introduction' => '',
         );
+
         if (!RC_DB::table('staff_user')->insertGetId($data_staff)) {
             return $this->showmessage(__('店长账号添加失败', 'store'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
@@ -1680,7 +1706,7 @@ class admin extends ecjia_admin
      * */
     public function duplicate_processing()
     {
-        $this->admin_priv('store_duplicate_processing');
+        $this->admin_priv('store_duplicate');
 
         $store_id = $this->store_id;  //新店铺ID
         $store_info = $this->store_info; //新店铺信息
@@ -1715,7 +1741,7 @@ class admin extends ecjia_admin
      * */
     public function duplicate_finish()
     {
-        $this->admin_priv('store_duplicate_finish', ecjia::MSGTYPE_JSON);
+        $this->admin_priv('store_duplicate', ecjia::MSGTYPE_JSON);
 
         $store_id = $this->store_id;
         RC_DB::table('store_franchisee')->where('store_id', $store_id)->update([
@@ -1735,7 +1761,7 @@ class admin extends ecjia_admin
      * */
     public function duplicate_item()
     {
-        $this->admin_priv('store_duplicate_item', ecjia::MSGTYPE_JSON);
+        $this->admin_priv('store_duplicate', ecjia::MSGTYPE_JSON);
 
         $store_id = $this->store_id;
         $handle = $this->request->input('handle');

@@ -104,9 +104,6 @@ class store_admin_purview_api extends Component_Event_Api
 
             //复制店铺权限
             array('action_name' => __('复制店铺', 'store'), 'action_code' => 'store_duplicate', 'relevance' => ''),
-            array('action_name' => __('复制信息录入', 'store'), 'action_code' => 'store_duplicate_insert', 'relevance' => ''),
-            array('action_name' => __('复制过程', 'store'), 'action_code' => 'store_duplicate_processing', 'relevance' => ''),
-            array('action_name' => __('复制完成', 'store'), 'action_code' => 'store_duplicate_finish', 'relevance' => ''),
 
 
         );
