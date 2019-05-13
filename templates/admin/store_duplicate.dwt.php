@@ -124,25 +124,25 @@
         						<select class="region-summary-provinces w120" name="province" id="selProvinces" data-url="{url path='setting/region/init'}" data-toggle="regionSummary" data-type="2" data-target="region-summary-cities" >
         							<option value='0'>{t domain="store"}请选择...{/t}</option>
         							<!-- {foreach from=$province item=region} -->
-        							<option value="{$region.region_id}" {if $region.region_id eq $store.province}selected{/if}>{$region.region_name}</option>
+        							<option value="{$region.region_id}">{$region.region_name}</option>
         							<!-- {/foreach} -->
         						</select>
         						<select class="region-summary-cities w120" name="city" id="selCities" data-url="{url path='setting/region/init'}" data-toggle="regionSummary" data-type="3" data-target="region-summary-district">
         							<option value='0'>{t domain="store"}请选择...{/t}</option>
         							<!-- {foreach from=$city item=region} -->
-        							<option value="{$region.region_id}" {if $region.region_id eq $store.city}selected{/if}>{$region.region_name}</option>
+        							<option value="{$region.region_id}">{$region.region_name}</option>
         							<!-- {/foreach} -->
         						</select>
         						<select class="region-summary-district w120" name="district" id="seldistrict" data-url="{url path='setting/region/init'}" data-toggle="regionSummary" data-type="4" data-target="region-summary-street">
         							<option value='0'>{t domain="store"}请选择...{/t}</option>
         							<!-- {foreach from=$district item=region} -->
-        							<option value="{$region.region_id}" {if $region.region_id eq $store.district}selected{/if}>{$region.region_name}</option>
+        							<option value="{$region.region_id}">{$region.region_name}</option>
         							<!-- {/foreach} -->
         						</select>
         						<select class="region-summary-street w120" name="street" id="selstreet" >
         							<option value='0'>{t domain="store"}请选择...{/t}</option>
         							<!-- {foreach from=$street item=region} -->
-        							<option value="{$region.region_id}" {if $region.region_id eq $store.district}selected{/if}>{$region.region_name}</option>
+        							<option value="{$region.region_id}">{$region.region_name}</option>
         							<!-- {/foreach} -->
         						</select>
         						<span class="input-must">*</span>

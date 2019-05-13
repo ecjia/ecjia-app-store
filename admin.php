@@ -226,6 +226,7 @@ class admin extends ecjia_admin
             'shop_close' => isset($_POST['shop_close']) ? $_POST['shop_close'] : 1,
             'confirm_time' => RC_Time::gmtime(),
         );
+        $data['apply_time'] = $data['confirm_time'];
 
         if (empty($data['merchants_name'])) {
             return $this->showmessage(__('店铺名称不能为空', 'store'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
@@ -1521,21 +1522,22 @@ class admin extends ecjia_admin
     {
         $this->admin_priv('store_duplicate', ecjia::MSGTYPE_JSON);
         $store = $this->store_info;
-
         $data = [
-            'validate_type' => 0,
             'cat_id' => 0,
             'status' => 2,
             'shop_close' => 1,
             'confirm_time' => RC_Time::gmtime(),
             'manage_mode' => $store['manage_mode'],
-            'remark' => $store['remark']
+            'remark' => $store['remark'],
+            'shop_keyword' => $store['shop_keyword'],
+            'company_name' => $store['company_name'],
+            'percent_id' => $store['percent_id']
         ];
+        $data['apply_time'] = $data['confirm_time'];
 
         $this->prepareData($data, [
             'merchants_name',
             'email',
-            'contact_mobile',
             'contact_mobile',
             'address',
             'province',
@@ -1544,6 +1546,7 @@ class admin extends ecjia_admin
             'street',
             'longitude',
             'latitude',
+            'responsible_person'
         ]);
 
         if (empty($data['cat_id'])) {
@@ -1552,6 +1555,10 @@ class admin extends ecjia_admin
 
         if (empty($data['email'])) {
             $data['email'] = $store['email'];
+        }
+
+        if ($data['manage_mode'] == 'self') { //自营店铺不区分入驻类型
+            $data['validate_type'] = 2;
         }
 
         if (empty($data['merchants_name'])) {
@@ -1717,9 +1724,6 @@ class admin extends ecjia_admin
         $current_screen->add_nav_here(new admin_nav_here(__('自营店铺', 'store'), RC_Uri::url('store/admin/init')));
         $current_screen->add_nav_here(new admin_nav_here($store_info['merchants_name'], RC_Uri::url('store/admin/preview', ['store_id' => $store_id])));
         $current_screen->add_nav_here(new admin_nav_here(__('复制店铺', 'store')));
-        ecjia_screen::get_current_screen()->set_sidebar_display(false);
-        ecjia_screen::get_current_screen()->add_option('store_name', $store_info['merchants_name']);
-        ecjia_screen::get_current_screen()->add_option('current_code', 'store_view_log');
 
         $handles = (new \Ecjia\App\Store\StoreDuplicate\StoreDuplicateManager($store_id, $source_store_id))->getFactories();
 
