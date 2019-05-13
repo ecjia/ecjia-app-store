@@ -659,10 +659,12 @@ class admin extends ecjia_admin
         $store['confirm_time'] = RC_Time::local_date(ecjia::config('time_format'), $store['confirm_time']);
         $store['expired_time'] = RC_Time::local_date('Y-m-d', $store['expired_time']);
 
-        $store['province'] = ecjia_region::getRegionName($store['province']);
-        $store['city'] = ecjia_region::getRegionName($store['city']);
-        $store['district'] = ecjia_region::getRegionName($store['district']);
-        $store['street'] = ecjia_region::getRegionName($store['street']);
+//        $store['province'] = ecjia_region::getRegionName($store['province']);
+//        $store['city'] = ecjia_region::getRegionName($store['city']);
+//        $store['district'] = ecjia_region::getRegionName($store['district']);
+//        $store['street'] = ecjia_region::getRegionName($store['street']);
+
+        list($store['province'], $store['city'], $store['district'], $store['street']) = ecjia_region::getDisplayLabel($store['province'], $store['city'], $store['district'], $store['street']);
 
         $this->assign('ur_here', $store['merchants_name']);
         $store['cat_name'] = RC_DB::table('store_category')->where('cat_id', $store['cat_id'])->pluck('cat_name');
