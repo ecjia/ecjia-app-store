@@ -47,6 +47,16 @@
 defined('IN_ECJIA') or exit('No permission resources.');
 
 /**
+ * 控制器内开发流程
+ * 1、权限判断
+ * 2、接收参数过滤处理
+ * 3、页面场景设置
+ * 4、业务逻辑
+ * 5、模板赋值
+ * 6、调用模板或者返回showmessage
+ */
+
+/**
  * 入驻商家管理
  */
 class admin extends ecjia_admin
@@ -94,10 +104,8 @@ class admin extends ecjia_admin
         RC_Script::localize_script('commission', 'commission_js_lang', config('app-store::jslang.store_commission_page'));
         RC_Script::localize_script('store_log', 'js_lang', config('app-store::jslang.admin_page'));
 
-        $store_id = intval(isset($_GET['store_id']) ? $_GET['store_id'] : 0);
-
-        //$store_info = RC_DB::table('store_franchisee')->where('store_id', $store_id)->first();
-        $this->store_info = RC_Api::api('store', 'store_info', ['store_id' => $store_id]);
+        $this->store_id = (int)$this->request->input('store_id');
+        $this->store_info = RC_Api::api('store', 'store_info', ['store_id' => $this->store_id]);
 
         $nav_here = __('入驻商家', 'store');
         $url = RC_Uri::url('store/admin/join');
@@ -106,9 +114,6 @@ class admin extends ecjia_admin
             $url = RC_Uri::url('store/admin/init');
         }
         ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here($nav_here, $url));
-
-        $this->store_id = $store_id;
-
     }
 
     /**
@@ -197,8 +202,6 @@ class admin extends ecjia_admin
     public function insert()
     {
         $this->admin_priv('store_affiliate_add', ecjia::MSGTYPE_JSON);
-
-        $store_id = intval($_POST['store_id']);
 
         $data = array(
             'validate_type' => 2,
@@ -349,7 +352,7 @@ class admin extends ecjia_admin
     {
         $this->admin_priv('store_affiliate_update', ecjia::MSGTYPE_JSON);
 
-        $store_id = intval($_GET['store_id']);
+        $store_id = $this->store_id;
         $store = RC_DB::table('store_franchisee')->where('store_id', $store_id)->first();
 
         ecjia_screen::get_current_screen()->set_sidebar_display(false);
@@ -411,7 +414,7 @@ class admin extends ecjia_admin
     {
         $this->admin_priv('store_affiliate_update', ecjia::MSGTYPE_JSON);
 
-        $store_id = intval($_POST['store_id']);
+        $store_id = $this->store_id;
         $step = trim($_POST['step']);
         if (!in_array($step, array('base', 'identity', 'bank', 'pic'))) {
             return $this->showmessage(__('操作异常，请检查', 'store'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
@@ -609,7 +612,7 @@ class admin extends ecjia_admin
     public function preview()
     {
         $this->admin_priv('store_affiliate_manage');
-        $store_id = intval($_GET['store_id']);
+        $store_id = $this->store_id;
         $store = $this->store_info;
 
         if ($store['manage_mode'] == 'self' && $_SESSION['action_list'] == 'all') {
@@ -621,18 +624,19 @@ class admin extends ecjia_admin
         } else {
             $this->assign('action_link', array('href' => RC_Uri::url('store/admin/join'), 'text' => __('入驻商家列表', 'store')));
         }
-        if ($store['duplicate_shop'] == 'break') { //break|finished
-            $help_url = RC_Uri::url('store/admin/duplicate_step');
-
+        if (isset($store['duplicate_store_status']) && $store['duplicate_store_status'] == 'processing') { //processing|finished
+            $help_url = RC_Uri::url('store/admin/duplicate_processing', ['store_id' => $store_id]);
             $warning = sprintf(__('<p><strong>温馨提示：</strong> 当前店铺数据还未复制全，您可以选择右上角【复制店铺】按钮，继续复制店铺数据。<strong><a href="%s"> 请点击此处去复制</a></strong></p>', 'store'), $help_url);
             ecjia_screen::get_current_screen()->add_admin_notice(new admin_notice($warning, 'alert-error'));
             $this->assign('duplicate', [
-                'href' => RC_Uri::url('store/admin/duplicate_step', [
-                    'store_id' => $store_id
-                ]), 'text' => __('继续复制', 'store')
+                'href' => RC_Uri::url($help_url, ['store_id' => $store_id]),
+                'text' => __('继续复制', 'store')
             ]);
         } else {
-            $this->assign('duplicate', array('href' => RC_Uri::url('store/admin/duplicate', array('store_id' => $store_id)), 'text' => __('复制店铺', 'store')));
+            $this->assign('duplicate', [
+                'href' => RC_Uri::url('store/admin/duplicate', ['store_id' => $store_id]),
+                'text' => __('复制店铺', 'store')
+            ]);
         }
 
         ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here($store['merchants_name'], RC_Uri::url('store/admin/preview', array('store_id' => $store_id))));
@@ -680,7 +684,7 @@ class admin extends ecjia_admin
     //自营商家自动登录
     public function autologin()
     {
-        $store_id = intval($_GET['store_id']);
+        $store_id = $this->store_id;
         $store = RC_DB::table('store_franchisee')->where('store_id', $store_id)->first();
         if ($store['manage_mode'] == 'self' && $_SESSION['action_list'] == 'all') {
             $cookie_name = RC_Config::get('session.session_admin_name');
@@ -709,7 +713,7 @@ class admin extends ecjia_admin
     {
         $this->admin_priv('store_auth_manage');
 
-        $store_id = intval($_GET['store_id']);
+        $store_id = $this->store_id;
         if (empty($store_id)) {
             return $this->showmessage(__('请选择您要操作的店铺', 'store'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
@@ -770,7 +774,7 @@ class admin extends ecjia_admin
 
         $this->assign('action_link', array('href' => RC_Uri::url('store/admin/init'), 'text' => __('入驻商家列表', 'store')));
 
-        $store_id = $_GET['store_id'];
+        $store_id = $this->store_id;
         $status = $_GET['status'];
         if ($status == 1) {
             $this->assign('ur_here', __('锁定店铺', 'store'));
@@ -792,7 +796,7 @@ class admin extends ecjia_admin
     {
         $this->admin_priv('store_affiliate_lock', ecjia::MSGTYPE_JSON);
 
-        $store_id = $_GET['store_id'];
+        $store_id = $this->store_id;
         $status = $_GET['status'];
 
         if ($status == 1) {
@@ -937,7 +941,7 @@ class admin extends ecjia_admin
     {
         $this->admin_priv('store_log_manage');
 
-        $store_id = intval($_GET['store_id']);
+        $store_id = $this->store_id;
         if (empty($store_id)) {
             return $this->showmessage(__('请选择您要操作的店铺', 'store'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
@@ -1000,7 +1004,7 @@ class admin extends ecjia_admin
     {
         $this->admin_priv('store_preaudit_check_log');
 
-        $store_id = intval($_GET['store_id']);
+        $store_id = $this->store_id;
         $store = RC_DB::table('store_franchisee')->where('store_id', $store_id)->first();
         if ($store['manage_mode'] == 'self') {
             $this->assign('action_link', array('href' => RC_Uri::url('store/admin/init'), 'text' => __('自营店铺列表', 'store')));
@@ -1086,7 +1090,7 @@ class admin extends ecjia_admin
 
         $drop_type_date = isset($_POST['drop_type_date']) ? $_POST['drop_type_date'] : '';
         $staff_log = RC_DB::table('staff_log');
-        $store_id = $_GET['store_id'];
+        $store_id = $this->store_id;
 
         /* 按日期删除日志 */
         if ($drop_type_date) {
@@ -1221,7 +1225,7 @@ class admin extends ecjia_admin
     {
         $this->admin_priv('store_delete');
 
-        $store_id = intval($_GET['store_id']);
+        $store_id = $this->store_id;
         if (empty($store_id)) {
             return $this->showmessage(__('请选择您要操作的店铺', 'store'), ecjia::MSGTYPE_HTML | ecjia::MSGSTAT_ERROR);
         }
@@ -1459,22 +1463,18 @@ class admin extends ecjia_admin
     }
 
     /*
-     * 复制店铺
+     * 复制店铺信息采集
      * */
-
     public function duplicate()
     {
-
-        //$this->admin_priv('store_affiliate_manage');
-        $store_id = intval($_GET['store_id']);
-
+        $this->admin_priv('store_duplicate'); //在/apis/store_admin_purview_api.class.php中注册
+        $store_id = $this->store_id;
         $store_info = $this->store_info;
 
         $current_screen = ecjia_screen::get_current_screen();
         $current_screen->remove_last_nav_here();
         $current_screen->add_nav_here(new admin_nav_here(__('自营店铺', 'store'), RC_Uri::url('store/admin/init')));
         $current_screen->add_nav_here(new admin_nav_here($store_info['merchants_name'], RC_Uri::url('store/admin/preview', array('store_id' => $store_id))));
-
         $current_screen->add_nav_here(new admin_nav_here(__('复制店铺', 'store')));
 
         ecjia_screen::get_current_screen()->set_sidebar_display(false);
@@ -1483,51 +1483,54 @@ class admin extends ecjia_admin
 
         $this->assign('ur_here', __('复制店铺', 'store'));
         $this->assign('action_link', array(
-            'href' => RC_Uri::url('store/admin/preview', [
-                'store_id' => $store_id
-            ]), 'text' => __('店铺详情', 'store')
+            'href' => RC_Uri::url('store/admin/preview', ['store_id' => $store_id]),
+            'text' => __('店铺详情', 'store')
         ));
 
         $cat_list = $this->get_cat_select_list();
 
         $provinces = ecjia_region::getSubarea(ecjia::config('shop_country'));//获取当前国家的所有省份
 
-
         $this->assign('province', $provinces);
 
-        $this->assign('form_action', RC_Uri::url('store/admin/insert_store', [
-            'store_id' => $store_id
-        ]));
+        $this->assign('form_action', RC_Uri::url('store/admin/duplicate_insert', ['store_id' => $store_id]));
         $this->assign('cat_list', $cat_list);
         $this->assign('store', $store_info);
 
         $this->display('store_duplicate.dwt');
     }
 
-    public function insert_store()
+    /*
+     * 复制店铺信息录入
+     * */
+    public function duplicate_insert()
     {
-        //$this->admin_priv('store_affiliate_add', ecjia::MSGTYPE_JSON); //在/apis/store_admin_purview_api.class.php中注册
+        $this->admin_priv('store_duplicate_insert', ecjia::MSGTYPE_JSON);
         $store = $this->store_info;
 
-        $data = array(
-            'validate_type' => !empty($_POST['validate_type']) ? $_POST['validate_type'] : 0, //in the store_preaudit table
-            'cat_id' => !empty($_POST['store_cat']) ? $_POST['store_cat'] : 0,
-            'merchants_name' => !empty($_POST['merchants_name']) ? $_POST['merchants_name'] : '',
-            'email' => !empty($_POST['email']) ? $_POST['email'] : '',
-            'contact_mobile' => !empty($_POST['contact_mobile']) ? $_POST['contact_mobile'] : '',
-            'address' => !empty($_POST['address']) ? $_POST['address'] : '',
-            'province' => !empty($_POST['province']) ? $_POST['province'] : '',
-            'city' => !empty($_POST['city']) ? $_POST['city'] : '',
-            'district' => !empty($_POST['district']) ? $_POST['district'] : '',
-            'street' => !empty($_POST['street']) ? $_POST['street'] : '',
-            'longitude' => !empty($_POST['longitude']) ? $_POST['longitude'] : '',
-            'latitude' => !empty($_POST['latitude']) ? $_POST['latitude'] : '',
-            'responsible_person' => !empty($_POST['responsible_person']) ? $_POST['responsible_person'] : '',
-
-            'status' => 2, //锁定店铺
-            'shop_close' => 1, //关闭 = 休息
+        $data = [
+            'validate_type' => 0,
+            'cat_id' => 0,
+            'status' => 2,
+            'shop_close' => 1,
             'confirm_time' => RC_Time::gmtime(),
-        );
+            'manage_mode' => $store['manage_mode'],
+            'remark' => $store['remark']
+        ];
+
+        $this->prepareData($data, [
+            'merchants_name',
+            'email',
+            'contact_mobile',
+            'contact_mobile',
+            'address',
+            'province',
+            'city',
+            'district',
+            'street',
+            'longitude',
+            'latitude',
+        ]);
 
         if (empty($data['cat_id'])) {
             $data['cat_id'] = $store['cat_id'];
@@ -1535,7 +1538,6 @@ class admin extends ecjia_admin
         if (empty($data['email'])) {
             $data['email'] = $store['email'];
         }
-
         if (empty($data['merchants_name'])) {
             return $this->showmessage(__('店铺名称不能为空', 'store'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
@@ -1584,27 +1586,24 @@ class admin extends ecjia_admin
         $geohash_code = substr($geohash_code, 0, 10);
         $data['geohash'] = $geohash_code;
 
-        $data['manage_mode'] = $store['manage_mode'];
-        $data['remark'] = $store['remark'];
-
-        $store_id = RC_DB::table('store_franchisee')->insertGetId($data);
-        if (!$store_id) {
+        $new_store_id = RC_DB::table('store_franchisee')->insertGetId($data);
+        if (!$new_store_id) {
             return $this->showmessage(__('操作失败', 'store'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
 
-
-        $this->toDoSomethingAfterInsertStore($store_id, $data);
+        $this->toDoSomethingAfterInsertStore($new_store_id, $data);
 
         ecjia_admin::admin_log(sprintf(__('复制商家：%s', 'store'), $data['merchants_name']), 'add', 'store');
-        return $this->showmessage(__('操作成功', 'store'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, [
-            'pjaxurl' => RC_Uri::url('store/admin/duplicate_step', ['store_id' => $store_id])
-        ]);
+        return $this->showmessage(__('操作成功', 'store'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, ['pjaxurl' => RC_Uri::url('store/admin/duplicate_processing', ['store_id' => $new_store_id, 'source_store_id' => $this->store_id])]);
     }
 
+    /*
+     * 店铺基本信息采集完毕后，做一些连带工作
+     * */
     private function toDoSomethingAfterInsertStore($store_id, $data)
     {
         //审核通过产生店铺中的code
-        $codes = array(
+        $codes = [
             'shop_logo', // 默认店铺页头部LOGO
             'shop_nav_background', // 店铺导航背景图
             'shop_banner_pic', // 店铺顶部Banner图
@@ -1614,21 +1613,25 @@ class admin extends ecjia_admin
             'shop_notice', // 店铺公告
             'shop_review_goods', // 店铺商品审核状态，平台开启审核时店铺优先级高于平台设置
             'express_assign_auto', // o2o配送自动派单开关
-
-        );
+        ];
         $merchant_config = [];
         foreach ($codes as $val) {
             $merchant_config[] = [
                 'store_id' => $store_id,
                 'code' => $val,
-                'value' => NULL
+                'value' => ''
             ];
         }
-        $merchant_config[] = [
+        array_push($merchant_config, [
             'store_id' => $store_id,
-            'code' => 'duplicate_shop',
-            'value' => 'break'
-        ];
+            'code' => 'duplicate_store_status',
+            'value' => 'processing'
+        ]);
+        array_push($merchant_config, [
+            'store_id' => $store_id,
+            'code' => 'duplicate_source_store_id',
+            'value' => $this->store_id
+        ]);
         RC_DB::table('merchants_config')->insert($merchant_config);
 
         //审核通过产生一个主员工的资料
@@ -1655,7 +1658,6 @@ class admin extends ecjia_admin
             return $this->showmessage(__('店长账号添加失败', 'store'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
 
-
         //短信发送通知
         /*$options  = array(
             'mobile' => $data['contact_mobile'],
@@ -1673,29 +1675,22 @@ class admin extends ecjia_admin
         }*/
     }
 
-    public function duplicate_step()
+    /*
+     * 复制店铺过程处理
+     * */
+    public function duplicate_processing()
     {
-        /**
-         * 控制器内开发流程
-         * 1、权限判断
-         * 2、接收参数过滤处理
-         * 3、页面场景设置
-         * 4、业务逻辑
-         * 5、模板赋值
-         * 6、调用模板或者返回showmessage
-         */
+        $this->admin_priv('store_duplicate_processing');
 
-        $store_id = $this->request->input('store_id', 62);  //$_GET['store_id'] ?? 62; //新店铺ID
-        $source_store_id = $this->request->input('source_store_id', 0); //$_GET['source_store_id'] ?? 62; //源店铺ID
+        $store_id = $this->store_id;  //新店铺ID
         $store_info = $this->store_info; //新店铺信息
+        $source_store_id = $store_info['duplicate_source_store_id']; //源店铺ID
 
         $current_screen = ecjia_screen::get_current_screen();
         $current_screen->remove_last_nav_here();
         $current_screen->add_nav_here(new admin_nav_here(__('自营店铺', 'store'), RC_Uri::url('store/admin/init')));
-        $current_screen->add_nav_here(new admin_nav_here($store_info['merchants_name'], RC_Uri::url('store/admin/preview', array('store_id' => $store_id))));
-
+        $current_screen->add_nav_here(new admin_nav_here($store_info['merchants_name'], RC_Uri::url('store/admin/preview', ['store_id' => $store_id])));
         $current_screen->add_nav_here(new admin_nav_here(__('复制店铺', 'store')));
-
         ecjia_screen::get_current_screen()->set_sidebar_display(false);
         ecjia_screen::get_current_screen()->add_option('store_name', $store_info['merchants_name']);
         ecjia_screen::get_current_screen()->add_option('current_code', 'store_view_log');
@@ -1704,29 +1699,72 @@ class admin extends ecjia_admin
 
         $this->assign('store_id', $store_id);
         $this->assign('handles', $handles);
-        $this->display('store_duplicate_step.dwt');
-
+        $this->assign('duplicate_item_link', [
+            'href' => RC_Uri::url('store/admin/duplicate_item', ['store_id' => $store_id]),
+            'text' => __('复制到店铺', 'store')
+        ]);
+        $this->assign('duplicate_finish_link', [
+            'href' => RC_Uri::url('store/admin/duplicate_finish', ['store_id' => $store_id]),
+            'text' => __('复制完成', 'store')
+        ]);
+        $this->display('store_duplicate_processing.dwt');
     }
 
+    /*
+     * 直接复制完成
+     * */
     public function duplicate_finish()
     {
+        $this->admin_priv('store_duplicate_finish', ecjia::MSGTYPE_JSON);
+
         $store_id = $this->store_id;
         RC_DB::table('store_franchisee')->where('store_id', $store_id)->update([
             'status' => 1, //不锁定
             'shop_close' => 1 //关闭店铺
         ]);
-        RC_DB::table('merchants_config')->where('store_id', $store_id)->where('code', 'duplicate_shop')->update(['value' => 'finish']);
+        RC_DB::table('merchants_config')->where('store_id', $store_id)->where('code', 'duplicate_store_status')->update(['value' => 'finished']);
 
         return $this->showmessage(__('操作成功', 'store'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array(
-            'pjaxurl' => RC_Uri::url('store/admin/init', array('store_id' => $store_id))
+                'pjaxurl' => RC_Uri::url('store/admin/init', ['store_id' => $store_id])
             )
         );
     }
 
+    /*
+     * 逐项复制店铺数据
+     * */
     public function duplicate_item()
     {
-        dd('逐一复制店铺', $_GET);
+        $this->admin_priv('store_duplicate_item', ecjia::MSGTYPE_JSON);
+
+        $store_id = $this->store_id;
+        $handle = $this->request->input('handle');
+        $source_store_id = $this->store_info['duplicate_source_store_id'];
+        //dd($store_id, $handle, $source_store_id);
+
+        return $this->showmessage(__('操作成功', 'store'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, ['pjaxurl' => RC_Uri::url('store/admin/duplicate_processing', ['store_id' => $store_id])]);
     }
+
+    /*
+     * 传入默认数据和指定键名，通过request组装最终数据
+     * */
+    private function prepareData(array &$raw_data, $keys)
+    {
+        if (is_string($keys)) {
+            $keys = explode(',', $keys);
+        }
+
+        if (is_array($keys)) {
+            foreach ($keys as $key) {
+                if (!isset($raw_data[$key])) {
+                    $val = $this->request->input($key);
+                    is_null($val) OR $raw_data[$key] = $val;
+                }
+            }
+        }
+    }
+
+
 }
 
 //end

@@ -192,7 +192,6 @@
         				<div class="control-group">
         					<div class="controls">
         						<input type="hidden"  name="store_id" value="{$store.store_id}" />
-        						<input type="hidden"  name="step" value="{$step}" />
         						<button class="btn btn-gebo" type="submit">{t domain="store"}下一步{/t}</button>
         					</div>
         				</div>

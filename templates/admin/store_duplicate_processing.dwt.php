@@ -53,9 +53,9 @@
 <!--                             data-toggle="store_ajaxremove"-->
 <!--                             data-msg='{t domain="store"}您确定要【删除】吗？一旦操作后将不可恢复{/t}'-->
 <!--                             data-confirm='{t domain="store"}你真的确定要【删除】吗？{/t}'-->
-                             href="{RC_Uri::url('store/admin/duplicate_item')}&id={$id}&handle={$val->getCode()}"
+                            href = "{$duplicate_item_link.href}&handle={$val->getCode()}"
                            {/if}>
-                        {t domain="store"}复制到店铺{/t}
+                        {$duplicate_item_link.text}
                         </a>
                     </span>
                 </div>
@@ -66,9 +66,10 @@
                 <a class="btn btn-gebo"
                    data-toggle="store_ajaxremove"
                    data-msg='{t domain="store"}您确定要【完成】吗？一旦操作后，您将不可再复制数据到店铺{/t}'
-                   data-confirm='{t domain="store"}您确定要【完成】吗？一旦操作后，您将不可再复制数据到店铺{/t}'
-                   href="{RC_Uri::url('store/admin/duplicate_finish')}&store_id={$store_id}&handle={$val->getCode()}"
-                >{t domain="store"}复制完成{/t}</a>
+                   data-confirm='{t domain="store"}你真的确定要【完成复制】吗{/t}'
+                   href="{$duplicate_finish_link.href}">
+                {$duplicate_finish_link.text}
+                </a>
             </div>
 
         </div>
