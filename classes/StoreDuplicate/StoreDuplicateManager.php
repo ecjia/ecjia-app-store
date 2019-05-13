@@ -44,7 +44,7 @@
 //
 //  ---------------------------------------------------------------------------------
 //
-namespace Ecjia\App\Store;
+namespace Ecjia\App\Store\StoreDuplicate;
 
 use RC_Hook;
 use RC_Api;
