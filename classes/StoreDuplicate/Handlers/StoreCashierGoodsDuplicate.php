@@ -14,24 +14,24 @@ use RC_DB;
 use RC_Api;
 use ecjia_admin;
 
-class StoreSellingDuplicate extends StoreDuplicateAbstract
+class StoreCashierGoodsDuplicate extends StoreDuplicateAbstract
 {
 
     /**
      * 代号标识
      * @var string
      */
-    protected $code = 'store_selling_duplicate';
+    protected $code = 'store_cashier_goods_duplicate';
 
     /**
      * 排序
      * @var int
      */
-    protected $sort = 5;
+    protected $sort = 7;
 
     public function __construct($store_id, $source_store_id)
     {
-        $this->name = __('在售商品', 'goods');
+        $this->name = __('收银台商品', 'goods');
 
         parent::__construct($store_id, $source_store_id);
     }
@@ -42,7 +42,7 @@ class StoreSellingDuplicate extends StoreDuplicateAbstract
     public function handlePrintData()
     {
         $count     = $this->handleCount();
-        $text      = sprintf(__('店铺内总共有<span class="ecjiafc-red ecjiaf-fs3">%s</span>件在售商品', 'goods'), $count);
+        $text = sprintf(__('店铺内总共有<span class="ecjiafc-red ecjiaf-fs3">%s</span>件收银台商品', 'goods'), $count);
 
         return <<<HTML
 <span class="controls-info">{$text}</span>
@@ -56,13 +56,13 @@ HTML;
      */
     public function handleCount()
     {
-
-        return 100;
+        $count = RC_DB::table('goods')->where('store_id', $this->source_store_id)->where('extension_code', 'cashier')->count();
+        return $count;
     }
 
 
     /**
-     * 执行清除操作
+     * 执行复制操作
      *
      * @return mixed
      */
@@ -79,7 +79,15 @@ HTML;
      */
     public function handleAdminLog()
     {
+        \Ecjia\App\Store\Helper::assign_adminlog_content();
+
+        $store_info = RC_Api::api('store', 'store_info', array('store_id' => $this->store_id));
+
+        $merchants_name = !empty($store_info) ? sprintf(__('店铺名是%s', 'cashier'), $store_info['merchants_name']) : sprintf(__('店铺ID是%s', 'cashier'), $this->store_id);
+
+        ecjia_admin::admin_log($merchants_name, 'clean', 'store_cashier_pendorder');
 
     }
+
 
 }

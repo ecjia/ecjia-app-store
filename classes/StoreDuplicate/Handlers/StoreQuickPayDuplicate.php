@@ -56,7 +56,7 @@ HTML;
      */
     public function handleCount()
     {
-        $count = RC_DB::table('quickpay_activity')->where('store_id', $this->store_id)->count();
+        $count = RC_DB::table('quickpay_activity')->where('store_id', $this->source_store_id)->count();
         return $count;
     }
 

@@ -66,15 +66,15 @@ class store_store_duplicate_storedata_api extends Component_Event_Api
 
         return [
             new \Ecjia\App\Store\StoreDuplicate\Handlers\StoreBonusDuplicate($store_id, $source_store_id),
-            new \Ecjia\App\Store\StoreDuplicate\Handlers\StoreCategoryDuplicate($store_id, $source_store_id),
-            new \Ecjia\App\Store\StoreDuplicate\Handlers\StoreCashierDuplicate($store_id, $source_store_id),
+            new \Ecjia\App\Store\StoreDuplicate\Handlers\StoreGoodsCategoryDuplicate($store_id, $source_store_id),
+            new \Ecjia\App\Store\StoreDuplicate\Handlers\StoreCashierGoodsDuplicate($store_id, $source_store_id),
             new \Ecjia\App\Store\StoreDuplicate\Handlers\StoreEssentialInfoDuplicate($store_id, $source_store_id),
-            new \Ecjia\App\Store\StoreDuplicate\Handlers\StoreParamDuplicate($store_id, $source_store_id),
+            new \Ecjia\App\Store\StoreDuplicate\Handlers\StoreGoodsParamDuplicate($store_id, $source_store_id),
             new \Ecjia\App\Store\StoreDuplicate\Handlers\StoreQuickPayDuplicate($store_id, $source_store_id),
             new \Ecjia\App\Store\StoreDuplicate\Handlers\StorePromotionDuplicate($store_id, $source_store_id),
-            new \Ecjia\App\Store\StoreDuplicate\Handlers\StoreScatteredDuplicate($store_id, $source_store_id),
-            new \Ecjia\App\Store\StoreDuplicate\Handlers\StoreSellingDuplicate($store_id, $source_store_id),
-            new \Ecjia\App\Store\StoreDuplicate\Handlers\StoreSpecificationDuplicate($store_id, $source_store_id),
+            new \Ecjia\App\Store\StoreDuplicate\Handlers\StoreBulkGoodsDuplicate($store_id, $source_store_id),
+            new \Ecjia\App\Store\StoreDuplicate\Handlers\StoreSellingGoodsDuplicate($store_id, $source_store_id),
+            new \Ecjia\App\Store\StoreDuplicate\Handlers\StoreGoodsSpecificationDuplicate($store_id, $source_store_id),
             new \Ecjia\App\Store\StoreDuplicate\Handlers\StoreShippingAreaDuplicate($store_id, $source_store_id)
            // new \Ecjia\App\Store\StoreDuplicate\Handlers\StoreGoodsDuplicate($store_id, $source_store_id),
            // new \Ecjia\App\Store\StoreDuplicate\Handlers\MerchantConfigDuplicate($store_id, $source_store_id),

@@ -14,24 +14,24 @@ use RC_DB;
 use RC_Api;
 use ecjia_admin;
 
-class StoreCashierDuplicate extends StoreDuplicateAbstract
+class StoreSellingGoodsDuplicate extends StoreDuplicateAbstract
 {
 
     /**
      * 代号标识
      * @var string
      */
-    protected $code = 'store_cashier_duplicate';
-
+    protected $code = 'store_selling_goods_duplicate';
+    protected $data;
     /**
      * 排序
      * @var int
      */
-    protected $sort = 7;
+    protected $sort = 5;
 
     public function __construct($store_id, $source_store_id)
     {
-        $this->name = __('收银台商品', 'cashier');
+        $this->name = __('在售商品', 'goods');
 
         parent::__construct($store_id, $source_store_id);
     }
@@ -42,7 +42,7 @@ class StoreCashierDuplicate extends StoreDuplicateAbstract
     public function handlePrintData()
     {
         $count     = $this->handleCount();
-        $text = sprintf(__('店铺内总共有<span class="ecjiafc-red ecjiaf-fs3">%s</span>件收银台商品', 'cashier'), $count);
+        $text      = sprintf(__('店铺内总共有<span class="ecjiafc-red ecjiaf-fs3">%s</span>件在售商品', 'goods'), $count);
 
         return <<<HTML
 <span class="controls-info">{$text}</span>
@@ -56,8 +56,9 @@ HTML;
      */
     public function handleCount()
     {
-        //$count = RC_DB::table('cashier_pendorder')->where('store_id', $this->store_id)->count();
-        return 18;
+        $count = RC_DB::table('goods')->where('store_id', $this->source_store_id)->where('is_on_sale', 1)->count();
+
+        return $count;
     }
 
 
@@ -83,11 +84,9 @@ HTML;
 
         $store_info = RC_Api::api('store', 'store_info', array('store_id' => $this->store_id));
 
-        $merchants_name = !empty($store_info) ? sprintf(__('店铺名是%s', 'cashier'), $store_info['merchants_name']) : sprintf(__('店铺ID是%s', 'cashier'), $this->store_id);
+        $merchants_name = !empty($store_info) ? sprintf(__('店铺名是%s', 'goods'), $store_info['merchants_name']) : sprintf(__('店铺ID是%s', 'goods'), $this->store_id);
 
-        ecjia_admin::admin_log($merchants_name, 'clean', 'store_cashier_pendorder');
-
+        ecjia_admin::admin_log($merchants_name, 'clean', 'store_goods');
     }
-
 
 }

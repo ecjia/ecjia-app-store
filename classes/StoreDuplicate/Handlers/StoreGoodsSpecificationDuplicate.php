@@ -14,24 +14,24 @@ use RC_DB;
 use RC_Api;
 use ecjia_admin;
 
-class StoreCategoryDuplicate extends StoreDuplicateAbstract
+class StoreGoodsSpecificationDuplicate extends StoreDuplicateAbstract
 {
 
     /**
      * 代号标识
      * @var string
      */
-    protected $code = 'store_category_duplicate';
+    protected $code = 'store_goods_specification_duplicate';
 
     /**
      * 排序
      * @var int
      */
-    protected $sort = 2;
+    protected $sort = 3;
 
     public function __construct($store_id, $source_store_id)
     {
-        $this->name = __('商品分类', 'category');
+        $this->name = __('商品规格', 'goods');
 
         parent::__construct($store_id, $source_store_id);
     }
@@ -42,7 +42,7 @@ class StoreCategoryDuplicate extends StoreDuplicateAbstract
     public function handlePrintData()
     {
         $count     = $this->handleCount();
-        $text = sprintf(__('店铺内总共有<span class="ecjiafc-red ecjiaf-fs3">%s</span>大分类', 'category'), $count);
+        $text      = sprintf(__('店铺内总共有<span class="ecjiafc-red ecjiaf-fs3">%s</span>个规格模板', 'goods'), $count);
 
         return <<<HTML
 <span class="controls-info">{$text}</span>
@@ -56,8 +56,8 @@ HTML;
      */
     public function handleCount()
     {
-
-        return 12;
+        $count = RC_DB::table('goods_type')->where('store_id', $this->source_store_id)->count();
+        return $count;
     }
 
 
@@ -81,6 +81,5 @@ HTML;
     {
 
     }
-
 
 }

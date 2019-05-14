@@ -56,7 +56,7 @@ HTML;
      */
     public function handleCount()
     {
-        $count = RC_DB::table('goods')->where('is_promote', 1)->where('is_delete', '!=', 1)->where('store_id', $this->store_id)->count();
+        $count = RC_DB::table('goods')->where('is_promote', 1)->where('is_delete', '!=', 1)->where('store_id', $this->source_store_id)->count();
 
         return $count;
     }

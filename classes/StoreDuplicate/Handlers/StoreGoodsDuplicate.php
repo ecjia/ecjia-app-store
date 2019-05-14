@@ -7,30 +7,31 @@
  */
 
 namespace Ecjia\App\Store\StoreDuplicate\Handlers;
+
 use Ecjia\App\Store\StoreDuplicate\StoreDuplicateAbstract;
 use RC_Uri;
 use RC_DB;
 use RC_Api;
 use ecjia_admin;
 
-class StoreShippingAreaDuplicate extends StoreDuplicateAbstract
+class StoreGoodsDuplicate extends StoreDuplicateAbstract
 {
 
     /**
      * 代号标识
      * @var string
      */
-    protected $code = 'store_shipping_area_duplicate';
+    protected $code = 'store_goods_duplicate';
 
     /**
      * 排序
      * @var int
      */
-    protected $sort = 32;
+    protected $sort = 200;
 
     public function __construct($store_id, $source_store_id)
     {
-        $this->name = __('店铺配送区域、运费模板', 'shipping');
+        $this->name = __('店铺商品', 'goods');
 
         parent::__construct($store_id, $source_store_id);
     }
@@ -40,12 +41,16 @@ class StoreShippingAreaDuplicate extends StoreDuplicateAbstract
      */
     public function handlePrintData()
     {
+        $url = RC_Uri::url('goods/admin/init', array('store_id' => $this->store_id));
+
         $count = $this->handleCount();
-        $text      = sprintf(__('店铺内运费模板总共<span class="ecjiafc-red ecjiaf-fs3">%s</span>个', 'shipping'), $count);
+        $text = sprintf(__('店铺商品总共<span class="ecjiafc-red ecjiaf-fs3">%s</span>件，将店铺内所有商品数据全部删除', 'goods'), $count);
+        $text_info = __('查看全部>>>', 'goods');
+
         return <<<HTML
 <span class="controls-info w400">{$text}</span>
+<span class="controls-info"><a href="{$url}" target="_blank">{$text_info}</a></span>
 HTML;
-
     }
 
     /**
@@ -55,26 +60,25 @@ HTML;
      */
     public function handleCount()
     {
-        $count = RC_DB::table('shipping_area')->where('store_id', $this->source_store_id)->count();
+        $count = RC_DB::table('goods')->where('store_id', $this->store_id)->count();
 
         return $count;
     }
 
 
     /**
-     * 执行复制操作
+     * 执行清除操作
      *
      * @return mixed
      */
     public function handleDuplicate()
     {
-        return true;
         $count = $this->handleCount();
         if (empty($count)) {
             return true;
         }
 
-        $result = RC_DB::table('shipping_area')->where('store_id', $this->store_id)->delete();
+        $result = RC_DB::table('goods')->where('store_id', $this->store_id)->delete();
 
         if ($result) {
             $this->handleAdminLog();
@@ -94,9 +98,9 @@ HTML;
 
         $store_info = RC_Api::api('store', 'store_info', array('store_id' => $this->store_id));
 
-        $merchants_name = !empty($store_info) ? sprintf(__('店铺名是%s', 'shipping'), $store_info['merchants_name']) : sprintf(__('店铺ID是%s', 'shipping'), $this->store_id);
+        $merchants_name = !empty($store_info) ? sprintf(__('店铺名是%s', 'goods'), $store_info['merchants_name']) : sprintf(__('店铺ID是%s', 'goods'), $this->store_id);
 
-        ecjia_admin::admin_log($merchants_name, 'clean', 'store_shipping_area');
+        ecjia_admin::admin_log($merchants_name, 'clean', 'store_goods');
     }
 
 

@@ -68,11 +68,13 @@ HTML;
      */
     public function handleCount()
     {
-        $bonus_type_list = RC_DB::table('bonus_type')->where('store_id', $this->store_id)->lists('type_id');
+        $bonus_type_list = RC_DB::table('bonus_type')->where('store_id', $this->source_store_id)->lists('type_id');
+        //$bonus_type_list = [1,2];
+        if ($bonus_type_list){
+            return RC_DB::table('user_bonus')->whereIn('bonus_type_id', $bonus_type_list)->count();
+        }
+        return 0;
 
-        $count = RC_DB::table('user_bonus')->whereIn('bonus_type_id', $bonus_type_list)->count();
-
-        return $count;
     }
 
 

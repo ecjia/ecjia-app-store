@@ -14,24 +14,24 @@ use RC_DB;
 use RC_Api;
 use ecjia_admin;
 
-class StoreScatteredDuplicate extends StoreDuplicateAbstract
+class StoreGoodsCategoryDuplicate extends StoreDuplicateAbstract
 {
 
     /**
      * 代号标识
      * @var string
      */
-    protected $code = 'store_scattered_duplicate';
+    protected $code = 'store_goods_category_duplicate';
 
     /**
      * 排序
      * @var int
      */
-    protected $sort = 6;
+    protected $sort = 2;
 
     public function __construct($store_id, $source_store_id)
     {
-        $this->name = __('散装商品', 'goods');
+        $this->name = __('商品分类', 'goods');
 
         parent::__construct($store_id, $source_store_id);
     }
@@ -42,7 +42,7 @@ class StoreScatteredDuplicate extends StoreDuplicateAbstract
     public function handlePrintData()
     {
         $count     = $this->handleCount();
-        $text      = sprintf(__('店铺内总共有<span class="ecjiafc-red ecjiaf-fs3">%s</span>件散装商品', 'goods'), $count);
+        $text = sprintf(__('店铺内总共有<span class="ecjiafc-red ecjiaf-fs3">%s</span>大分类', 'goods'), $count);
 
         return <<<HTML
 <span class="controls-info">{$text}</span>
@@ -56,13 +56,13 @@ HTML;
      */
     public function handleCount()
     {
-
-        return 22;
+        $count = RC_DB::table('merchants_category')->where('store_id', $this->source_store_id)->count();
+        return $count;
     }
 
 
     /**
-     * 执行清除操作
+     * 执行复制操作
      *
      * @return mixed
      */
@@ -81,5 +81,6 @@ HTML;
     {
 
     }
+
 
 }
