@@ -95,7 +95,7 @@ abstract class StoreDuplicateAbstract
 
 
     /**
-     * 执行清除操作
+     * 执行复制操作
      *
      * @return mixed
      */

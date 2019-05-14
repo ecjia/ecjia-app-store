@@ -1293,6 +1293,7 @@ class admin extends ecjia_admin
         $this->assign('id', $store_id);
 
         $handles = (new \Ecjia\App\Store\StoreCleanManager($store_id))->getFactories();
+
         $this->assign('handles', $handles);
 
         $count = 0;
@@ -1414,7 +1415,6 @@ class admin extends ecjia_admin
         }
 
         $handles = (new \Ecjia\App\Store\StoreCleanManager($store_id))->getFactories();
-dd($handles);
 
         if (!empty($handles)) {
             $remove_result = [];
@@ -1513,18 +1513,16 @@ dd($handles);
         $district = ecjia_region::getSubarea($store_info['city']); //获取当前城市的所有地区
         $street = ecjia_region::getSubarea($store_info['district']); //获取当前地区的所有街道
 
-        list($province, $city, $district, $street) = ecjia_region::getDisplayID($store_info['province'], $store_info['city'], $store_info['district'], $store_info['street']);
+        //list($province, $city, $district, $street) = ecjia_region::getDisplayID($store_info['province'], $store_info['city'], $store_info['district'], $store_info['street']);
         //dd($province, $city, $district, $street);
+
         $this->assign('province', $province);
         $this->assign('city', $city);
         $this->assign('district', $district);
         $this->assign('street', $street);
-
         $this->assign('form_action', RC_Uri::url('store/admin/duplicate_insert', ['store_id' => $store_id]));
         $this->assign('cat_list', $cat_list);
-        //dd($store_info);
         $this->assign('store', $store_info);
-
         $this->display('store_duplicate.dwt');
     }
 
@@ -1749,7 +1747,6 @@ dd($handles);
 
         $handles = (new \Ecjia\App\Store\StoreDuplicate\StoreDuplicateManager($store_id, $source_store_id))->getFactories();
 
-        //dd($handles);
         $this->assign('store_id', $store_id);
         $this->assign('handles', $handles);
         $this->assign('duplicate_item_link', [
@@ -1803,9 +1800,9 @@ dd($handles);
     }
 
     /*
-     * 传入默认数据和指定键名，通过request组装最终数据
+     * 传入默认数据和指定键名，通过request组装数据
      * */
-    private function prepareData(array &$raw_data, $keys)
+    private function prepareData(array &$raw_data, $keys, $default = '')
     {
         if (is_string($keys)) {
             $keys = explode(',', $keys);
@@ -1815,7 +1812,7 @@ dd($handles);
             foreach ($keys as $key) {
                 if (!isset($raw_data[$key])) {
                     $val = $this->request->input($key);
-                    is_null($val) OR $raw_data[$key] = $val;
+                    $raw_data[$key] = is_null($val) ? $default : $val;
                 }
             }
         }

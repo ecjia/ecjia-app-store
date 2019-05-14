@@ -14,14 +14,14 @@ use RC_DB;
 use RC_Api;
 use ecjia_admin;
 
-class StoreDiscountPayDuplicate extends StoreDuplicateAbstract
+class StoreQuickPayDuplicate extends StoreDuplicateAbstract
 {
 
     /**
      * 代号标识
      * @var string
      */
-    protected $code = 'store_discount_pay_duplicate';
+    protected $code = 'store_quick_pay_duplicate';
 
     /**
      * 排序
@@ -31,7 +31,7 @@ class StoreDiscountPayDuplicate extends StoreDuplicateAbstract
 
     public function __construct($store_id, $source_store_id)
     {
-        $this->name = __('优惠买单规则', 'store');
+        $this->name = __('优惠买单规则', 'quickpay');
 
         parent::__construct($store_id, $source_store_id);
     }
@@ -41,10 +41,11 @@ class StoreDiscountPayDuplicate extends StoreDuplicateAbstract
      */
     public function handlePrintData()
     {
-        $text = __('', 'store');
+        $count     = $this->handleCount();
+        $text      = sprintf(__('店铺买单活动总共<span class="ecjiafc-red ecjiaf-fs3">%s</span>个', 'quickpay'), $count);
 
         return <<<HTML
-<span class="controls-info">{$text}</span>
+<span class="controls-info w300">{$text}</span>
 HTML;
     }
 
@@ -55,13 +56,13 @@ HTML;
      */
     public function handleCount()
     {
-
-        return 5;
+        $count = RC_DB::table('quickpay_activity')->where('store_id', $this->store_id)->count();
+        return $count;
     }
 
 
     /**
-     * 执行清除操作
+     * 执行复制操作
      *
      * @return mixed
      */
@@ -79,17 +80,14 @@ HTML;
     public function handleAdminLog()
     {
 
-    }
+        \Ecjia\App\Store\Helper::assign_adminlog_content();
 
-//    /**
-//     * 是否允许删除
-//     *
-//     * @return mixed
-//     */
-//    public function handleCanRemove()
-//    {
-////        return !empty($this->handleCount()) ? true : false;
-//    }
+        $store_info = RC_Api::api('store', 'store_info', array('store_id' => $this->store_id));
+
+        $merchants_name = !empty($store_info) ? sprintf(__('店铺名是%s', 'quickpay'), $store_info['merchants_name']) : sprintf(__('店铺ID是%s', 'quickpay'), $this->store_id);
+
+        ecjia_admin::admin_log($merchants_name, 'clean', 'store_quickpay_activity');
+    }
 
 
 }

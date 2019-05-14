@@ -31,7 +31,7 @@ class StoreParamDuplicate extends StoreDuplicateAbstract
 
     public function __construct($store_id, $source_store_id)
     {
-        $this->name = __('商品参数', 'store');
+        $this->name = __('商品参数', 'goods');
 
         parent::__construct($store_id, $source_store_id);
     }
@@ -41,7 +41,8 @@ class StoreParamDuplicate extends StoreDuplicateAbstract
      */
     public function handlePrintData()
     {
-        $text = __('', 'store');
+        $count     = $this->handleCount();
+        $text = sprintf(__('店铺内总共有<span class="ecjiafc-red ecjiaf-fs3">%s</span>个参数模板', 'goods'), $count);
 
         return <<<HTML
 <span class="controls-info">{$text}</span>
@@ -56,7 +57,7 @@ HTML;
     public function handleCount()
     {
 
-        return 5;
+        return 8;
     }
 
 
@@ -80,16 +81,5 @@ HTML;
     {
 
     }
-
-//    /**
-//     * 是否允许删除
-//     *
-//     * @return mixed
-//     */
-//    public function handleCanRemove()
-//    {
-////        return !empty($this->handleCount()) ? true : false;
-//    }
-
 
 }

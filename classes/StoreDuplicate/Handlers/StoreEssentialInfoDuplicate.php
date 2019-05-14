@@ -81,15 +81,5 @@ HTML;
 
     }
 
-//    /**
-//     * 是否允许删除
-//     *
-//     * @return mixed
-//     */
-//    public function handleCanRemove()
-//    {
-////        return !empty($this->handleCount()) ? true : false;
-//    }
-
 
 }

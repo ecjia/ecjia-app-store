@@ -31,7 +31,7 @@ class StoreCategoryDuplicate extends StoreDuplicateAbstract
 
     public function __construct($store_id, $source_store_id)
     {
-        $this->name = __('商品分类', 'store');
+        $this->name = __('商品分类', 'category');
 
         parent::__construct($store_id, $source_store_id);
     }
@@ -41,7 +41,8 @@ class StoreCategoryDuplicate extends StoreDuplicateAbstract
      */
     public function handlePrintData()
     {
-        $text = __('', 'store');
+        $count     = $this->handleCount();
+        $text = sprintf(__('店铺内总共有<span class="ecjiafc-red ecjiaf-fs3">%s</span>大分类', 'category'), $count);
 
         return <<<HTML
 <span class="controls-info">{$text}</span>
@@ -56,12 +57,12 @@ HTML;
     public function handleCount()
     {
 
-        return 5;
+        return 12;
     }
 
 
     /**
-     * 执行清除操作
+     * 执行复制操作
      *
      * @return mixed
      */
@@ -80,16 +81,6 @@ HTML;
     {
 
     }
-
-//    /**
-//     * 是否允许删除
-//     *
-//     * @return mixed
-//     */
-//    public function handleCanRemove()
-//    {
-////        return !empty($this->handleCount()) ? true : false;
-//    }
 
 
 }

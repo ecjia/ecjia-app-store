@@ -14,14 +14,14 @@ use RC_DB;
 use RC_Api;
 use ecjia_admin;
 
-class StoreCheckstandDuplicate extends StoreDuplicateAbstract
+class StoreCashierDuplicate extends StoreDuplicateAbstract
 {
 
     /**
      * 代号标识
      * @var string
      */
-    protected $code = 'store_checkstand_duplicate';
+    protected $code = 'store_cashier_duplicate';
 
     /**
      * 排序
@@ -31,7 +31,7 @@ class StoreCheckstandDuplicate extends StoreDuplicateAbstract
 
     public function __construct($store_id, $source_store_id)
     {
-        $this->name = __('收银台商品', 'store');
+        $this->name = __('收银台商品', 'cashier');
 
         parent::__construct($store_id, $source_store_id);
     }
@@ -41,7 +41,8 @@ class StoreCheckstandDuplicate extends StoreDuplicateAbstract
      */
     public function handlePrintData()
     {
-        $text = __('', 'store');
+        $count     = $this->handleCount();
+        $text = sprintf(__('店铺内总共有<span class="ecjiafc-red ecjiaf-fs3">%s</span>件收银台商品', 'cashier'), $count);
 
         return <<<HTML
 <span class="controls-info">{$text}</span>
@@ -55,13 +56,13 @@ HTML;
      */
     public function handleCount()
     {
-
-        return 5;
+        //$count = RC_DB::table('cashier_pendorder')->where('store_id', $this->store_id)->count();
+        return 18;
     }
 
 
     /**
-     * 执行清除操作
+     * 执行复制操作
      *
      * @return mixed
      */
@@ -78,18 +79,15 @@ HTML;
      */
     public function handleAdminLog()
     {
+        \Ecjia\App\Store\Helper::assign_adminlog_content();
+
+        $store_info = RC_Api::api('store', 'store_info', array('store_id' => $this->store_id));
+
+        $merchants_name = !empty($store_info) ? sprintf(__('店铺名是%s', 'cashier'), $store_info['merchants_name']) : sprintf(__('店铺ID是%s', 'cashier'), $this->store_id);
+
+        ecjia_admin::admin_log($merchants_name, 'clean', 'store_cashier_pendorder');
 
     }
-
-//    /**
-//     * 是否允许删除
-//     *
-//     * @return mixed
-//     */
-//    public function handleCanRemove()
-//    {
-////        return !empty($this->handleCount()) ? true : false;
-//    }
 
 
 }
