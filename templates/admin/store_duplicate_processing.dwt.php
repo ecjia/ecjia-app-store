@@ -49,10 +49,7 @@
                     {$val->handlePrintData()}
 
                     <span class="controls-info-right f_r">
-                        <a class="btn btn-gebo"
-
-                           href="{$duplicate_item_link.href}&handle={$val->getCode()}"
-                        >
+                        <a class="btn btn-gebo" data-toggle="store_ajaxduplicate" href="{$duplicate_item_link.href}&handle={$val->getCode()}">
                             {$duplicate_item_link.text}
                         </a>
                     </span>
