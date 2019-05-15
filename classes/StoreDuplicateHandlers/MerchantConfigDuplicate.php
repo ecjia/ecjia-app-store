@@ -14,6 +14,12 @@ use RC_DB;
 use RC_Api;
 use ecjia_admin;
 
+/**
+ * 店铺基本信息复制
+ *
+ * Class MerchantConfigDuplicate
+ * @package Ecjia\App\Store\StoreDuplicateHandlers
+ */
 class MerchantConfigDuplicate extends StoreDuplicateAbstract
 {
 

@@ -66,17 +66,6 @@ class store_store_duplicate_storedata_api extends Component_Event_Api
 
         return [
             new \Ecjia\App\Store\StoreDuplicateHandlers\MerchantConfigDuplicate($store_id, $source_store_id),
-
-            //quickpay
-            new \Ecjia\App\Store\StoreDuplicateHandlers\StoreQuickPayDuplicate($store_id, $source_store_id),
-
-            //shipping
-            new \Ecjia\App\Store\StoreDuplicateHandlers\StoreShippingAreaDuplicate($store_id, $source_store_id),
-
-            //bonus
-            new \Ecjia\App\Store\StoreDuplicateHandlers\StoreBonusDuplicate($store_id, $source_store_id),
-
-
         ];
     }
 
