@@ -61,18 +61,20 @@ class ProgressDataStorage
         if (is_null($this->duplicate_status)) {
             $model = MerchantConfigModel::where('store_id', $this->store_id)->where('code', self::STORAGE_CODE)->first();
 
-            if (! empty($model)) {
+            if (! empty($model) && $model->value) {
 
-                if ($model->value) {
-                    $data = unserialize($model->value);
+                $data = unserialize($model->value);
 
-                    if (is_array($data)) {
-                        $this->duplicate_status = StoreDuplicateStatus::createStoreDuplicateStatus($data);
-                    }
-
+                if (is_array($data)) {
+                    $this->duplicate_status = StoreDuplicateStatus::createStoreDuplicateStatus($data);
+                }
+                else {
+                    $this->duplicate_status = StoreDuplicateStatus::createStoreDuplicateStatus();
                 }
 
-
+            }
+            else {
+                $this->duplicate_status = StoreDuplicateStatus::createStoreDuplicateStatus();
             }
 
         }
