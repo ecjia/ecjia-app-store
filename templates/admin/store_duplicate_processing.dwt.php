@@ -29,7 +29,7 @@
     <h3 class="heading">
         {$ur_here}
         <!-- {if $action_link} -->
-        <a class="data-pjax btn plus_or_reply" id="sticky_a" href="{$action_link.href}"><i class="fontello-icon-reply"></i>{$action_link.text}</a>
+        <a class="btn plus_or_reply data-pjax" href="{$action_link.href}"><i class="fontello-icon-reply"></i>{$action_link.text}</a>
         <!-- {/if} -->
 
     </h3>
@@ -50,15 +50,10 @@
 
                     <span class="controls-info-right f_r">
                         <a class="btn btn-gebo"
-                           {if $disabled}
-                             disabled href="javascript:;"
-                           {else}
-<!--                             data-toggle="store_ajaxremove"-->
-<!--                             data-msg='{t domain="store"}您确定要【删除】吗？一旦操作后将不可恢复{/t}'-->
-<!--                             data-confirm='{t domain="store"}你真的确定要【删除】吗？{/t}'-->
-                            href = "{$duplicate_item_link.href}&handle={$val->getCode()}"
-                           {/if}>
-                        {$duplicate_item_link.text}
+
+                           href="{$duplicate_item_link.href}&handle={$val->getCode()}"
+                        >
+                            {$duplicate_item_link.text}
                         </a>
                     </span>
                 </div>
