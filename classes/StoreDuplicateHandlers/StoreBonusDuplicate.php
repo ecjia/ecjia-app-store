@@ -6,7 +6,7 @@
  * Time: 14:04
  */
 
-namespace Ecjia\App\Store\StoreDuplicate\Handlers;
+namespace Ecjia\App\Store\StoreDuplicateHandlers;
 
 use Ecjia\App\Store\StoreDuplicate\StoreDuplicateAbstract;
 use RC_Uri;

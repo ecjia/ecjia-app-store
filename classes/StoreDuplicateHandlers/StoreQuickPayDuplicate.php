@@ -6,7 +6,7 @@
  * Time: 14:04
  */
 
-namespace Ecjia\App\Store\StoreDuplicate\Handlers;
+namespace Ecjia\App\Store\StoreDuplicateHandlers;
 
 use Ecjia\App\Store\StoreDuplicate\StoreDuplicateAbstract;
 use RC_Uri;
@@ -14,24 +14,24 @@ use RC_DB;
 use RC_Api;
 use ecjia_admin;
 
-class StorePromotionDuplicate extends StoreDuplicateAbstract
+class StoreQuickPayDuplicate extends StoreDuplicateAbstract
 {
 
     /**
      * 代号标识
      * @var string
      */
-    protected $code = 'store_promotion_duplicate';
+    protected $code = 'store_quick_pay_duplicate';
 
     /**
      * 排序
      * @var int
      */
-    protected $sort = 9;
+    protected $sort = 8;
 
     public function __construct($store_id, $source_store_id)
     {
-        $this->name = __('促销活动', 'promotion');
+        $this->name = __('优惠买单规则', 'quickpay');
 
         parent::__construct($store_id, $source_store_id);
     }
@@ -42,7 +42,7 @@ class StorePromotionDuplicate extends StoreDuplicateAbstract
     public function handlePrintData()
     {
         $count     = $this->handleCount();
-        $text      = sprintf(__('店铺促销活动总共<span class="ecjiafc-red ecjiaf-fs3">%s</span>个', 'promotion'), $count);
+        $text      = sprintf(__('店铺买单活动总共<span class="ecjiafc-red ecjiaf-fs3">%s</span>个', 'quickpay'), $count);
 
         return <<<HTML
 <span class="controls-info w300">{$text}</span>
@@ -56,14 +56,13 @@ HTML;
      */
     public function handleCount()
     {
-        $count = RC_DB::table('goods')->where('is_promote', 1)->where('is_delete', '!=', 1)->where('store_id', $this->source_store_id)->count();
-
+        $count = RC_DB::table('quickpay_activity')->where('store_id', $this->source_store_id)->count();
         return $count;
     }
 
 
     /**
-     * 执行清除操作
+     * 执行复制操作
      *
      * @return mixed
      */
@@ -80,14 +79,15 @@ HTML;
      */
     public function handleAdminLog()
     {
+
         \Ecjia\App\Store\Helper::assign_adminlog_content();
 
         $store_info = RC_Api::api('store', 'store_info', array('store_id' => $this->store_id));
 
-        $merchants_name = !empty($store_info) ? sprintf(__('店铺名是%s', 'promotion'), $store_info['merchants_name']) : sprintf(__('店铺ID是%s', 'promotion'), $this->store_id);
+        $merchants_name = !empty($store_info) ? sprintf(__('店铺名是%s', 'quickpay'), $store_info['merchants_name']) : sprintf(__('店铺ID是%s', 'quickpay'), $this->store_id);
 
-        ecjia_admin::admin_log($merchants_name, 'clean', 'store_promotion_activity');
-
+        ecjia_admin::admin_log($merchants_name, 'clean', 'store_quickpay_activity');
     }
+
 
 }

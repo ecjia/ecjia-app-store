@@ -6,7 +6,7 @@
  * Time: 14:04
  */
 
-namespace Ecjia\App\Store\StoreDuplicate\Handlers;
+namespace Ecjia\App\Store\StoreDuplicateHandlers;
 
 use Ecjia\App\Store\StoreDuplicate\StoreDuplicateAbstract;
 use RC_Uri;
@@ -14,14 +14,14 @@ use RC_DB;
 use RC_Api;
 use ecjia_admin;
 
-class StoreEssentialInfoDuplicate extends StoreDuplicateAbstract
+class MerchantConfigDuplicate extends StoreDuplicateAbstract
 {
 
     /**
      * 代号标识
      * @var string
      */
-    protected $code = 'store_essential_info_duplicate';
+    protected $code = 'merchant_config_duplicate';
 
     /**
      * 排序

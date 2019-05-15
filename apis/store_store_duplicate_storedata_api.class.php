@@ -60,24 +60,23 @@ class store_store_duplicate_storedata_api extends Component_Event_Api
         $store_id = array_get($options, 'store_id');
         $source_store_id = array_get($options, 'source_store_id');
 
-        if (empty($store_id)) {
+        if (empty($store_id) || empty($source_store_id)) {
             return new ecjia_error('invalid_parameter', sprintf(__('请求接口%s参数无效', 'store'), __CLASS__));
         }
 
         return [
-            new \Ecjia\App\Store\StoreDuplicate\Handlers\StoreBonusDuplicate($store_id, $source_store_id),
-            new \Ecjia\App\Store\StoreDuplicate\Handlers\StoreGoodsCategoryDuplicate($store_id, $source_store_id),
-            new \Ecjia\App\Store\StoreDuplicate\Handlers\StoreCashierGoodsDuplicate($store_id, $source_store_id),
-            new \Ecjia\App\Store\StoreDuplicate\Handlers\StoreEssentialInfoDuplicate($store_id, $source_store_id),
-            new \Ecjia\App\Store\StoreDuplicate\Handlers\StoreGoodsParamDuplicate($store_id, $source_store_id),
-            new \Ecjia\App\Store\StoreDuplicate\Handlers\StoreQuickPayDuplicate($store_id, $source_store_id),
-            new \Ecjia\App\Store\StoreDuplicate\Handlers\StorePromotionDuplicate($store_id, $source_store_id),
-            new \Ecjia\App\Store\StoreDuplicate\Handlers\StoreBulkGoodsDuplicate($store_id, $source_store_id),
-            new \Ecjia\App\Store\StoreDuplicate\Handlers\StoreSellingGoodsDuplicate($store_id, $source_store_id),
-            new \Ecjia\App\Store\StoreDuplicate\Handlers\StoreGoodsSpecificationDuplicate($store_id, $source_store_id),
-            new \Ecjia\App\Store\StoreDuplicate\Handlers\StoreShippingAreaDuplicate($store_id, $source_store_id)
-           // new \Ecjia\App\Store\StoreDuplicate\Handlers\StoreGoodsDuplicate($store_id, $source_store_id),
-           // new \Ecjia\App\Store\StoreDuplicate\Handlers\MerchantConfigDuplicate($store_id, $source_store_id),
+            new \Ecjia\App\Store\StoreDuplicateHandlers\MerchantConfigDuplicate($store_id, $source_store_id),
+
+            //quickpay
+            new \Ecjia\App\Store\StoreDuplicateHandlers\StoreQuickPayDuplicate($store_id, $source_store_id),
+
+            //shipping
+            new \Ecjia\App\Store\StoreDuplicateHandlers\StoreShippingAreaDuplicate($store_id, $source_store_id),
+
+            //bonus
+            new \Ecjia\App\Store\StoreDuplicateHandlers\StoreBonusDuplicate($store_id, $source_store_id),
+
+
         ];
     }
 
