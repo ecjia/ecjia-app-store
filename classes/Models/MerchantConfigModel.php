@@ -59,7 +59,16 @@ class MerchantConfigModel extends Model
 	 *
 	 * @var array
 	 */
-	protected $fillable = [];
+	protected $fillable = [
+	    'store_id',
+	    'group',
+	    'code',
+	    'type',
+	    'store_range',
+	    'store_dir',
+	    'value',
+	    'sort_order',
+    ];
 	
 	/**
 	 * 该模型是否被自动维护时间戳
