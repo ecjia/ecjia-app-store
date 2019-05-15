@@ -48,6 +48,13 @@ abstract class StoreDuplicateAbstract
     protected $sort = 0;
 
 
+    /**
+     * 依赖关联code
+     * @var array
+     */
+    protected $dependents = [];
+
+
     public function __construct($store_id, $source_store_id)
     {
         $this->store_id = $store_id;
