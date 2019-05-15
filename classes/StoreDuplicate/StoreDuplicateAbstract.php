@@ -125,6 +125,7 @@ abstract class StoreDuplicateAbstract
         $duplicate_status = $storage->getDuplicateStatus();
 
         $duplicate_status->addDuplicateItem($this->getCode());
+//        $duplicate_status->setStatus($duplicate_status::STATUS_FINISHED);
 
         $storage->save();
     }
