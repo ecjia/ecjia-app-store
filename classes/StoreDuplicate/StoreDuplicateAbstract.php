@@ -115,4 +115,36 @@ abstract class StoreDuplicateAbstract
      */
     abstract public function handleAdminLog();
 
+    /**
+     * 标记操作完成
+     */
+    public function markDuplicateFinished()
+    {
+        $storage = new ProgressDataStorage($this->store_id);
+
+        $duplicate_status = $storage->getDuplicateStatus();
+
+        $duplicate_status->addDuplicateItem($this->getCode());
+
+        $storage->save();
+    }
+
+    /**
+     * 依赖检测
+     * 返回依赖未完成的项
+     */
+    public function dependentCheck()
+    {
+        $storage = new ProgressDataStorage($this->store_id);
+
+        $duplicate_status = $storage->getDuplicateStatus();
+
+        $items = $duplicate_status->getDuplicateItems();
+
+        $diff = collect($this->dependents)->diff($items);
+
+        return $diff->all();
+    }
+
+
 }
