@@ -66,11 +66,12 @@ class StoreDuplicateManager
     {
         $this->store_id = $store_id;
         $this->source_store_id = $source_store_id;
+
+        $this->factories = $this->fetchStoreCleanHandlers();
     }
 
-    public function getFactories()
+    private function fetchStoreCleanHandlers()
     {
-
         $apps     = ecjia_app::installed_app_floders();
         $handlers = RC_Api::apis($apps, $this->api_name, ['store_id' => $this->store_id, 'source_store_id' => $this->source_store_id]);
 
@@ -90,7 +91,14 @@ class StoreDuplicateManager
             $new_factories[$item->getCode()] = $item;
         }
 
+        $this->factories = $new_factories;
+
         return $new_factories;
+    }
+
+    public function getFactories()
+    {
+        return $this->factories;
     }
 
     public function handler($code)
