@@ -11,14 +11,8 @@ namespace Ecjia\App\Store\StoreDuplicate;
 
 use Royalcms\Component\Support\Str;
 
-class StoreDuplicateStatus
+class StoreDuplicateProgressData
 {
-
-    const STATUS_PROCESSING = 'processing';
-
-    const STATUS_FINISHED = 'finished';
-
-    protected $status;
 
     /**
      * 存储已经完成的复制项
@@ -26,24 +20,6 @@ class StoreDuplicateStatus
      * @var array
      */
     protected $duplicate_items = [];
-
-    /**
-     * @return string
-     */
-    public function getStatus()
-    {
-        return $this->status;
-    }
-
-    /**
-     * @param string $status
-     * @return StoreDuplicateStatus
-     */
-    public function setStatus($status)
-    {
-        $this->status = $status;
-        return $this;
-    }
 
     /**
      * @return array
@@ -73,7 +49,7 @@ class StoreDuplicateStatus
     public function toArray()
     {
         return [
-            'status' => $this->status,
+            //'status' => $this->status,
             'duplicate_items' => $this->duplicate_items,
         ];
 
