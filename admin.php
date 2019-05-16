@@ -1789,21 +1789,13 @@ class admin extends ecjia_admin
             'text' => __('复制完成', 'store')
         ]);
         if ($store_info['duplicate_store_status'] != 'processing') {
-            return $this->showmessage(__('店铺已复制完成', 'store'), ecjia::MSGTYPE_HTML | ecjia::MSGSTAT_ERROR);
+            return $this->showmessage(__('店铺已复制完成，无法继续复制', 'store'), ecjia::MSGTYPE_HTML | ecjia::MSGSTAT_ERROR);
         }
 
         $handles = (new \Ecjia\App\Store\StoreDuplicate\StoreDuplicateManager($store_id, $source_store_id))->getFactories();
-        $duplicate_progress_data = (new \Ecjia\App\Store\StoreDuplicate\ProgressDataStorage($this->store_id))->getDuplicateProgressData();
+        $finished_items = (new \Ecjia\App\Store\StoreDuplicate\ProgressDataStorage($this->store_id))->getDuplicateProgressData()->getDuplicateFinishedItems();
 
-        /*foreach ($handles as $code => $item){
-            if (in_array($code, $duplicate_progress_data->getDuplicateFinishedItems())){
-                $item->mark_finished = true;
-            }else{
-                $item->mark_finished = false;
-            }
-        }*/
-
-        $this->assign('duplicate_finished_items', $duplicate_progress_data->getDuplicateFinishedItems());
+        $this->assign('duplicate_finished_items', $finished_items);
 
         $this->assign('handles', $handles);
 
