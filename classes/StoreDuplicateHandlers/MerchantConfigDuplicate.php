@@ -13,6 +13,7 @@ use RC_Uri;
 use RC_DB;
 use RC_Api;
 use ecjia_admin;
+use ecjia_error;
 
 /**
  * 店铺基本信息复制
@@ -40,6 +41,8 @@ class MerchantConfigDuplicate extends StoreDuplicateAbstract
         $this->name = __('店铺基本信息', 'store');
 
         parent::__construct($store_id, $source_store_id);
+
+        $this->data_operator = RC_DB::table('merchants_config')->where('store_id', $this->source_store_id);
     }
 
     /**
@@ -55,14 +58,21 @@ HTML;
     }
 
     /**
-     * 获取数据统计条数
+     * 统计数据条数并获取
      *
      * @return mixed
      */
     public function handleCount()
     {
-
-        return 5;
+        //如果已经统计过，直接返回统计过的条数
+        if ($this->count) {
+            return $this->count;
+        }
+        // 统计数据条数
+        if (!empty($this->data_operator)) {
+            $this->count = $this->data_operator->count();
+        }
+        return $this->count;
     }
 
 
@@ -78,20 +88,16 @@ HTML;
             return true;
         }
 
-        $dependent = false;
+        //如果当前对象复制前仍存在依赖，则需要先复制依赖对象才能继续复制
         if (!empty($this->dependents)) { //如果设有依赖对象
             //检测依赖
-            if (!empty($this->dependentCheck())) {
-                $dependent = true;
+            $items = $this->dependentCheck();
+            if (!empty($items)) {
+                return new ecjia_error('handle_duplicate_error', __('复制依赖检测失败！', 'store'), $items);
             }
         }
 
-        //如果当前对象复制前仍存在依赖，则需要先复制依赖对象才能继续复制
-        if ($dependent) {
-            return false;
-        }
-
-        //@todo 执行具体任务
+        //执行具体任务
         $this->startDuplicateProcedure();
 
         //标记处理完成
@@ -104,10 +110,54 @@ HTML;
     }
 
     /**
-     * 此方法实现店铺复制操作的具体过程
+     * 店铺复制操作的具体过程
      */
     protected function startDuplicateProcedure()
     {
+        $this->data_operator->chunk(50, function ($items) {
+            //构造可用于复制的数据
+            $this->buildDuplicateData($items);
+
+            dd($items);
+            //更新数据到新店铺
+            //RC_DB::table('merchants_config')->insert($items);
+        });
+
+
+    }
+
+    protected function buildDuplicateData(&$items)
+    {
+        foreach ($items as $k => &$item) {
+            unset($item['id']);
+
+            //将源店铺ID设为新店铺的ID
+            $item['store_id'] = $this->store_id;
+
+            //解决图片问题数据
+            switch ($item['code']) {
+                //目前只发现了这几种value带图片路径的code，还有的话可以再加
+                case 'shop_thumb_logo' :
+                case 'shop_nav_background' :
+                case 'shop_logo' :
+                case 'shop_banner_pic' :
+                    $item['value'] = sprintf('merchant/%s/data/%s/%s.jpg', $this->store_id, $item['code'], '123');
+
+                    //存储图片
+
+                    break;
+            }
+
+
+            //不需要复制的数据
+            if (stripos($item['code'], 'duplicate_') !== false) {
+                unset($items[$k]);
+            }
+
+            //其他数据处理
+
+        }
+
 
     }
 

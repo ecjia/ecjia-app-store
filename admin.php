@@ -1855,24 +1855,22 @@ class admin extends ecjia_admin
 
         if (is_ecjia_error($result)) {
             $dependents = $result->get_error_data();
-            if (!empty($dependents)) {
-                $names = [];
-                foreach ($dependents as $v) {
-                    $names[] = $handlers->handler($v)->getName();
-                }
-                return $this->showmessage(sprintf(__('%s复制失败，您需要先复制：%s', 'store'), $handle->getName(), implode('和', $names)), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR, ['pjaxurl' => $pjaxurl]);
+
+            $names = [];
+            foreach ($dependents as $v) {
+                $names[] = $handlers->handler($v)->getName();
             }
+            return $this->showmessage(sprintf(__('%s复制失败，您需要先复制：%s', 'store'), $handle->getName(), implode('和', $names)), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR, ['pjaxurl' => $pjaxurl]);
         }
 
         if ($result) {
-
             $finished_items = (new \Ecjia\App\Store\StoreDuplicate\ProgressDataStorage($this->store_id))->getDuplicateProgressData()->getDuplicateFinishedItems();
             $codes = array_keys($handlers->getFactories());
             $diff = collect($codes)->diff($finished_items);
 
             if (empty($diff->all())) {
                 $this->finish_duplication($store_id);
-                $pjaxurl = RC_Uri::url('store/admin/init', ['store_id' => $store_id]);
+                $pjaxurl = RC_Uri::url('store/admin/preview', ['store_id' => $store_id]);
             }
 
             return $this->showmessage(sprintf(__('%s复制成功', 'store'), $handle->getName()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, ['pjaxurl' => $pjaxurl]);

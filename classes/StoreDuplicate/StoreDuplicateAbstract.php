@@ -47,20 +47,29 @@ abstract class StoreDuplicateAbstract
      */
     protected $sort = 0;
 
-
     /**
      * 依赖关联code
      * @var array
      */
     protected $dependents = [];
 
+    /**
+     * 复制操作对象
+     * @var
+     */
+    protected $data_operator;
+
+    /**
+     * 复制对象关联的数据条目
+     * @var int
+     */
+    protected $count = 0;
 
     public function __construct($store_id, $source_store_id)
     {
         $this->store_id = $store_id;
         $this->source_store_id = $source_store_id;
     }
-
 
     public function getCode()
     {
@@ -88,6 +97,11 @@ abstract class StoreDuplicateAbstract
         return $this;
     }
 
+    public function getDataOperator()
+    {
+        return $this->data_operator;
+    }
+
     /**
      * 数据描述及输出显示内容
      */
@@ -99,7 +113,6 @@ abstract class StoreDuplicateAbstract
      * @return mixed
      */
     abstract public function handleCount();
-
 
     /**
      * 执行复制操作
@@ -135,15 +148,11 @@ abstract class StoreDuplicateAbstract
      */
     public function dependentCheck()
     {
-        //$storage = (new ProgressDataStorage($this->store_id));
-
-        $duplicate_progress_data = (new ProgressDataStorage($this->store_id))->getDuplicateProgressData();
-
-        $items = $duplicate_progress_data->getDuplicateFinishedItems();
+        $items = (new ProgressDataStorage($this->store_id))->getDuplicateProgressData()->getDuplicateFinishedItems();
 
         $factory = new StoreDuplicateManager($this->store_id, $this->source_store_id);
 
-        $diff = collect($this->dependents)->diff($items)->filter(function($item) use ($factory) {
+        $diff = collect($this->dependents)->diff($items)->filter(function ($item) use ($factory) {
             //判断依赖项是否有数据
             $handle = $factory->handler($item);
 
@@ -169,14 +178,6 @@ abstract class StoreDuplicateAbstract
         }
 
         return false;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getDataOperator()
-    {
-        return $this->data_operator;
     }
 
 }
