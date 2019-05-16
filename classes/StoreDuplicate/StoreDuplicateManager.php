@@ -114,8 +114,8 @@ class StoreDuplicateManager
     /**
      * 列表排序
      *
-     * @param StoreCleanAbstract $a
-     * @param StoreCleanAbstract $b
+     * @param StoreDuplicateAbstract $a
+     * @param StoreDuplicateAbstract $b
      * @return number
      */
     protected function listMenuBySort(StoreDuplicateAbstract $a, StoreDuplicateAbstract $b)

@@ -73,14 +73,29 @@ HTML;
      */
     public function handleDuplicate()
     {
-        $item = $this->dependentCheck();
+        $is_checked = $this->isCheckFinished();
         //判断提示错误
-        if (empty($item)){
-            //标记处理完成
-            $this->markDuplicateFinished();
-            //$this->handleAdminLog();
-            return TRUE;
+        if ($is_checked) {
+            return true;
         }
+
+        {
+            //检测依赖
+
+
+            //执行任务
+
+            //@todo 执行具体任务
+
+        }
+
+        //标记处理完成
+        $this->markDuplicateFinished();
+
+        //记录日志
+        $this->handleAdminLog();
+
+        return true;
     }
 
     /**

@@ -146,5 +146,22 @@ abstract class StoreDuplicateAbstract
         return $diff->all();
     }
 
+    /**
+     * 检查当前复制项是否完成
+     */
+    public function isCheckFinished()
+    {
+        $storage = new ProgressDataStorage($this->store_id);
+
+        $duplicate_progress_data = $storage->getDuplicateProgressData();
+
+        $items = $duplicate_progress_data->getDuplicateFinishedItems();
+
+        if (in_array($this->getCode(), $items)) {
+            return true;
+        }
+
+        return false;
+    }
 
 }
