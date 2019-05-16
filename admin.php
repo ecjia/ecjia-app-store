@@ -1820,17 +1820,22 @@ class admin extends ecjia_admin
         $this->admin_priv('store_duplicate', ecjia::MSGTYPE_JSON);
 
         $store_id = $this->store_id;
-        RC_DB::table('store_franchisee')->where('store_id', $store_id)->update([
-            'status' => 1, //不锁定
-            'shop_close' => 1 //关闭店铺
-        ]);
-        RC_DB::table('merchants_config')->where('store_id', $store_id)->where('code', 'duplicate_store_status')->update(['value' => 'finished']);
+        $this->finish_duplication($store_id);
 
         return $this->showmessage(__('操作成功', 'store'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array(
                 'pjaxurl' => RC_Uri::url('store/admin/init', ['store_id' => $store_id]),
                 //'pjaxurl' => RC_Uri::url('store/admin/duplicate_processing', ['store_id' => $store_id, 'source_store_id' => $this->store_info['duplicate_source_store_id'])
             )
         );
+    }
+
+    private function finish_duplication($store_id)
+    {
+        RC_DB::table('store_franchisee')->where('store_id', $store_id)->update([
+            'status' => 1, //不锁定
+            'shop_close' => 1 //关闭店铺
+        ]);
+        RC_DB::table('merchants_config')->where('store_id', $store_id)->where('code', 'duplicate_store_status')->update(['value' => 'finished']);
     }
 
     /**
@@ -1867,6 +1872,16 @@ class admin extends ecjia_admin
         $result = $handle->handleDuplicate();
 
         if ($result) {
+
+            $finished_items = (new \Ecjia\App\Store\StoreDuplicate\ProgressDataStorage($this->store_id))->getDuplicateProgressData()->getDuplicateFinishedItems();
+            $codes = array_keys($handlers->getFactories());
+            $diff = collect($codes)->diff($finished_items);
+
+            if (empty($diff->all())) {
+                $this->finish_duplication($store_id);
+                $pjaxurl = RC_Uri::url('store/admin/init', ['store_id' => $store_id]);
+            }
+
             return $this->showmessage(sprintf(__('%s复制成功', 'store'), $handle->getName()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, ['pjaxurl' => $pjaxurl]);
         }
         return $this->showmessage(sprintf(__('%s复制失败', 'store'), $handle->getName()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR, ['pjaxurl' => $pjaxurl]);
