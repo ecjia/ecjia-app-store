@@ -141,7 +141,14 @@ abstract class StoreDuplicateAbstract
 
         $items = $duplicate_progress_data->getDuplicateFinishedItems();
 
-        $diff = collect($this->dependents)->diff($items);
+        $factory = new StoreDuplicateManager($this->store_id, $this->source_store_id);
+
+        $diff = collect($this->dependents)->diff($items)->filter(function($item) use ($factory) {
+            //判断依赖项是否有数据
+            $handle = $factory->handler($item);
+
+            return $handle->handleCount() > 0 ? true : false;
+        });
 
         return $diff->all();
     }

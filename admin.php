@@ -1849,19 +1849,20 @@ class admin extends ecjia_admin
             return $this->showmessage(__('操作失败，当前code无效', 'store'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
 
-        $dependents = $handle->dependentCheck();
-
         $pjaxurl = RC_Uri::url('store/admin/duplicate_processing', ['store_id' => $store_id, 'source_store_id' => $this->store_info['duplicate_source_store_id']]);
 
-        if (!empty($dependents)) {
-            $names = [];
-            foreach ($dependents as $v) {
-                $names[] = $handlers->handler($v)->getName();
-            }
-            return $this->showmessage(sprintf(__('%s复制失败，您需要先复制：%s', 'store'), $handle->getName(), implode('和', $names)), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR, ['pjaxurl' => $pjaxurl]);
-        }
-
         $result = $handle->handleDuplicate();
+
+        if (is_ecjia_error($result)) {
+            $dependents = $result->get_error_data();
+            if (!empty($dependents)) {
+                $names = [];
+                foreach ($dependents as $v) {
+                    $names[] = $handlers->handler($v)->getName();
+                }
+                return $this->showmessage(sprintf(__('%s复制失败，您需要先复制：%s', 'store'), $handle->getName(), implode('和', $names)), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR, ['pjaxurl' => $pjaxurl]);
+            }
+        }
 
         if ($result) {
 
