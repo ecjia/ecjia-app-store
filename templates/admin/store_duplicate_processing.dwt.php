@@ -47,10 +47,11 @@
                 <div class="controls p_t4">
                     {$val->handlePrintData()}
                     <span class="controls-info-right f_r">
-                        <!--<a class="btn btn-gebo" data-toggle="store_ajaxduplicate" {if $val->mark_finished} disabled href="javascript:;" {else}  href="{$duplicate_item_link.href}&handle={$val->getCode()}" {/if}>{$duplicate_item_link.text}</a>-->
-                        <a class="btn btn-gebo" {if $val->getCode()|in_array:$duplicate_finished_items} disabled href="javascript:;" {else} data-toggle="store_ajaxduplicate" href="{$duplicate_item_link.href}&handle={$val->getCode()}" {/if}>{$duplicate_item_link.text}</a>
-                        <!--<a class="btn btn-gebo" {if $val->isCheckFinished()} disabled href="javascript:;" {else} data-toggle="store_ajaxduplicate" href="{$duplicate_item_link.href}&handle={$val->getCode()}" {/if}>{$duplicate_item_link.text}</a>-->
-
+                        {if $val->handleCount() > 0}
+                            <!--<a class="btn btn-gebo" data-toggle="store_ajaxduplicate" {if $val->mark_finished} disabled href="javascript:;" {else}  href="{$duplicate_item_link.href}&handle={$val->getCode()}" {/if}>{$duplicate_item_link.text}</a>-->
+                            <a class="btn btn-gebo" {if $val->getCode()|in_array:$duplicate_finished_items} disabled href="javascript:;" {else} data-toggle="store_ajaxduplicate" href="{$duplicate_item_link.href}&handle={$val->getCode()}" {/if}>{$duplicate_item_link.text}</a>
+                            <!--<a class="btn btn-gebo" {if $val->isCheckFinished()} disabled href="javascript:;" {else} data-toggle="store_ajaxduplicate" href="{$duplicate_item_link.href}&handle={$val->getCode()}" {/if}>{$duplicate_item_link.text}</a>-->
+                        {/if}
                     </span>
                 </div>
             </div>

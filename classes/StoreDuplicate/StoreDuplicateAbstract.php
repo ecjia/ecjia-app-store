@@ -164,4 +164,12 @@ abstract class StoreDuplicateAbstract
         return false;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getDataOperator()
+    {
+        return $this->data_operator;
+    }
+
 }
