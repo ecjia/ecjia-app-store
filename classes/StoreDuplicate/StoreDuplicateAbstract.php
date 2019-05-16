@@ -122,10 +122,9 @@ abstract class StoreDuplicateAbstract
     {
         $storage = new ProgressDataStorage($this->store_id);
 
-        $duplicate_status = $storage->getDuplicateStatus();
+        $duplicate_progress_data = $storage->getDuplicateProgressData();
 
-        $duplicate_status->addDuplicateItem($this->getCode());
-//        $duplicate_status->setStatus($duplicate_status::STATUS_FINISHED);
+        $duplicate_progress_data->addDuplicateFinishedItem($this->getCode());
 
         $storage->save();
     }
@@ -136,11 +135,11 @@ abstract class StoreDuplicateAbstract
      */
     public function dependentCheck()
     {
-        $storage = new ProgressDataStorage($this->store_id);
+        //$storage = (new ProgressDataStorage($this->store_id));
 
-        $duplicate_status = $storage->getDuplicateStatus();
+        $duplicate_progress_data = (new ProgressDataStorage($this->store_id))->getDuplicateProgressData();
 
-        $items = $duplicate_status->getDuplicateItems();
+        $items = $duplicate_progress_data->getDuplicateFinishedItems();
 
         $diff = collect($this->dependents)->diff($items);
 

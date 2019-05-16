@@ -19,38 +19,35 @@ class StoreDuplicateProgressData
      *
      * @var array
      */
-    protected $duplicate_items = [];
+    protected $duplicate_finished_items = [];
 
     /**
      * @return array
      */
-    public function getDuplicateItems()
+    public function getDuplicateFinishedItems()
     {
-        return $this->duplicate_items;
+        return $this->duplicate_finished_items;
     }
 
     /**
-     * @param array $duplicate_items
-     * @return StoreDuplicateStatus
+     * @param $finished_items
+     * @return $this
      */
-    public function setDuplicateItems($duplicate_items)
+    public function setDuplicateFinishedItems($finished_items)
     {
-        $this->duplicate_items = $duplicate_items;
+        $this->duplicate_finished_items = $finished_items;
         return $this;
     }
 
-
-    public function addDuplicateItem($code)
+    public function addDuplicateFinishedItem($code)
     {
-        $this->duplicate_items[] = $code;
+        $this->duplicate_finished_items[] = $code;
     }
-
 
     public function toArray()
     {
         return [
-            //'status' => $this->status,
-            'duplicate_items' => $this->duplicate_items,
+            'duplicate_finished_items' => $this->duplicate_finished_items,
         ];
 
     }
@@ -59,26 +56,20 @@ class StoreDuplicateProgressData
      * 创建对象
      * @param array $data
      */
-    public static function createStoreDuplicateStatus(array $data = null)
+    public static function createStoreDuplicateProgressData(array $data = null)
     {
         $duplicate = new static();
-
-        if (! empty($data)) {
-
+        if (!empty($data)) {
             foreach ($data as $key => $value) {
                 $method = Str::camel('set_' . $key);
-
                 if (method_exists($duplicate, $method)) {
                     $duplicate->{$method}($value);
                 }
-
             }
-
         }
 
         return $duplicate;
     }
-
 
 
 }

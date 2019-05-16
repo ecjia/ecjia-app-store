@@ -16,36 +16,32 @@ class ProgressDataStorage
 
     protected $store_id;
 
-    protected $duplicate_status;
+    protected $duplicate_progress_data;
 
-    const STORAGE_CODE = 'duplicate_store_status';
+    const STORAGE_CODE = 'duplicate_progress_data';
 
-    public function __construct($store_id, StoreDuplicateStatus $status = null)
+    public function __construct($store_id, StoreDuplicateProgressData $data = NULL)
     {
         $this->store_id = $store_id;
 
-        $this->duplicate_status = $status;
-
+        $this->duplicate_progress_data = $data;
     }
 
 
     public function save()
     {
-
         $model = MerchantConfigModel::where('store_id', $this->store_id)->where('code', self::STORAGE_CODE)->first();
 
-        if (! empty($model)) {
-
-            $model->value = serialize($this->duplicate_status->toArray());
+        if (!empty($model)) {
+            $model->value = serialize($this->duplicate_progress_data->toArray());
             $model->save();
 
-        }
-        else {
+        } else {
 
             $data = [
                 'store_id' => $this->store_id,
                 'code' => self::STORAGE_CODE,
-                'value' => serialize($this->duplicate_status->toArray()),
+                'value' => serialize($this->duplicate_progress_data->toArray()),
             ];
 
             $model = MerchantConfigModel::create($data);
@@ -56,30 +52,25 @@ class ProgressDataStorage
     }
 
 
-    public function getDuplicateStatus()
+    public function getDuplicateProgressData()
     {
-        if (is_null($this->duplicate_status)) {
+        if (is_null($this->duplicate_progress_data)) {
             $model = MerchantConfigModel::where('store_id', $this->store_id)->where('code', self::STORAGE_CODE)->first();
 
-            if (! empty($model) && $model->value) {
-
+            if (!empty($model) && $model->value) {
                 $data = unserialize($model->value);
-
                 if (is_array($data)) {
-                    $this->duplicate_status = StoreDuplicateStatus::createStoreDuplicateStatus($data);
+                    $this->duplicate_progress_data = StoreDuplicateProgressData::createStoreDuplicateProgressData($data);
+                } else {
+                    $this->duplicate_progress_data = StoreDuplicateProgressData::createStoreDuplicateProgressData();
                 }
-                else {
-                    $this->duplicate_status = StoreDuplicateStatus::createStoreDuplicateStatus();
-                }
-
-            }
-            else {
-                $this->duplicate_status = StoreDuplicateStatus::createStoreDuplicateStatus();
+            } else {
+                $this->duplicate_progress_data = StoreDuplicateProgressData::createStoreDuplicateProgressData();
             }
 
         }
 
-        return $this->duplicate_status;
+        return $this->duplicate_progress_data;
     }
 
 }
