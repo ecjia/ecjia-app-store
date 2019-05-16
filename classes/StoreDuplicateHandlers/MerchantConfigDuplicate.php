@@ -74,20 +74,20 @@ HTML;
     public function handleDuplicate()
     {
         //检测当前对象是否已复制完成
-        if ($this->isCheckFinished()){
+        if ($this->isCheckFinished()) {
             return true;
         }
 
         $dependent = false;
         if (!empty($this->dependents)) { //如果设有依赖对象
             //检测依赖
-            if (!empty($this->dependentCheck())){
+            if (!empty($this->dependentCheck())) {
                 $dependent = true;
             }
         }
 
         //如果当前对象复制前仍存在依赖，则需要先复制依赖对象才能继续复制
-        if ($dependent){
+        if ($dependent) {
             return false;
         }
 
@@ -106,7 +106,8 @@ HTML;
     /**
      * 此方法实现店铺复制操作的具体过程
      */
-    protected function startDuplicateProcedure(){
+    protected function startDuplicateProcedure()
+    {
 
     }
 
