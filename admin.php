@@ -1634,7 +1634,7 @@ class admin extends ecjia_admin
         }
 
         //审核通过产生店铺中的code
-        //$this->generate_store_code($new_store_id);
+        $this->generate_store_code($new_store_id);
 
         //审核通过产生一个主员工资料
         $password = rand(100000, 999999);
@@ -1789,11 +1789,22 @@ class admin extends ecjia_admin
             'text' => __('复制完成', 'store')
         ]);
         if ($store_info['duplicate_store_status'] != 'processing') {
-            // return $this->showmessage(__('店铺已复制完成', 'store'), ecjia::MSGTYPE_HTML | ecjia::MSGSTAT_ERROR);
+            //return $this->showmessage(__('店铺已复制完成', 'store'), ecjia::MSGTYPE_HTML | ecjia::MSGSTAT_ERROR);
         }
 
         $handles = (new \Ecjia\App\Store\StoreDuplicate\StoreDuplicateManager($store_id, $source_store_id))->getFactories();
-//        dd($handles['store_selling_goods_duplicate']->handlePrintData());
+        $duplicate_progress_data = (new \Ecjia\App\Store\StoreDuplicate\ProgressDataStorage($this->store_id))->getDuplicateProgressData();
+
+        /*foreach ($handles as $code => $item){
+            if (in_array($code, $duplicate_progress_data->getDuplicateFinishedItems())){
+                $item->mark_finished = true;
+            }else{
+                $item->mark_finished = false;
+            }
+        }*/
+
+        $this->assign('duplicate_finished_items', $duplicate_progress_data->getDuplicateFinishedItems());
+
         $this->assign('handles', $handles);
 
         $this->display('store_duplicate_processing.dwt');
@@ -1834,25 +1845,34 @@ class admin extends ecjia_admin
         $code = $this->request->input('handle');
         $source_store_id = $this->store_info['duplicate_source_store_id'];
 
-//        $handles = (new \Ecjia\App\Store\StoreDuplicate\StoreDuplicateManager($store_id, $source_store_id))->getFactories();
-//        dd($handles);
-        $handle = (new \Ecjia\App\Store\StoreDuplicate\StoreDuplicateManager($store_id, $source_store_id))->handler($code);
-//        dd($handle);
-//        $handle = array_get($handles, $code);
-        //dd($store_id, $handle, $source_store_id);
+        $handlers = (new \Ecjia\App\Store\StoreDuplicate\StoreDuplicateManager($store_id, $source_store_id));
+        $handle = $handlers->handler($code);
 
         if (empty($handle)) {
             return $this->showmessage(__('操作失败，当前code无效', 'store'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
 
+        $dependents = $handle->dependentCheck();
+
+        $pjaxurl = RC_Uri::url('store/admin/duplicate_processing', ['store_id' => $store_id, 'source_store_id' => $this->store_info['duplicate_source_store_id']]);
+
+        if (!empty($dependents)) {
+            $names = [];
+            foreach ($dependents as $v) {
+                $names[] = $handlers->handler($v)->getName();
+            }
+            return $this->showmessage(sprintf(__('%s复制失败，您需要先复制：%s', 'store'), $handle->getName(), implode('和', $names)), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR, ['pjaxurl' => $pjaxurl]);
+        }
+
         $result = $handle->handleDuplicate();
 
         if ($result) {
-            return $this->showmessage(sprintf(__('%s复制成功', 'store'), $handle->getName()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
+            return $this->showmessage(sprintf(__('%s复制成功', 'store'), $handle->getName()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, ['pjaxurl' => $pjaxurl]);
         }
-        return $this->showmessage(sprintf(__('%s复制失败', 'store'), $handle->getName()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+        return $this->showmessage(sprintf(__('%s复制失败', 'store'), $handle->getName()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR, ['pjaxurl' => $pjaxurl]);
 
     }
+
 
     /**
      * 通过request组装数据

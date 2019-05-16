@@ -67,14 +67,20 @@ HTML;
 
 
     /**
-     * 执行清除操作
+     * 执行复制操作
      *
      * @return mixed
      */
     public function handleDuplicate()
     {
-
-        return true;
+        $item = $this->dependentCheck();
+        //判断提示错误
+        if (empty($item)){
+            //标记处理完成
+            $this->markDuplicateFinished();
+            //$this->handleAdminLog();
+            return TRUE;
+        }
     }
 
     /**
