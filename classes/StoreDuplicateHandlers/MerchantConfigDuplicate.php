@@ -8,6 +8,7 @@
 
 namespace Ecjia\App\Store\StoreDuplicateHandlers;
 
+use Ecjia\App\Store\Repositories\MerchantConfigRepository;
 use Ecjia\App\Store\StoreDuplicate\StoreDuplicateAbstract;
 use RC_Uri;
 use RC_DB;
@@ -42,7 +43,7 @@ class MerchantConfigDuplicate extends StoreDuplicateAbstract
 
         parent::__construct($store_id, $source_store_id);
 
-        $this->source_store_data_handler = RC_DB::table('merchants_config')->where('store_id', $this->source_store_id)->select('store_id','code','value');
+//        $this->source_store_data_handler = RC_DB::table('merchants_config')->where('store_id', $this->source_store_id)->select('store_id','code','value');
     }
 
     /**
@@ -65,14 +66,22 @@ HTML;
     public function handleCount()
     {
         //如果已经统计过，直接返回统计过的条数
-        if ($this->count) {
-            return $this->count;
+//        if ($this->count) {
+//            return $this->count;
+//        }
+
+        try {
+            $source_repository = new MerchantConfigRepository($this->source_store_id);
+
+            $count = $source_repository->getCount();
+
+            // 统计数据条数
+            return $count;
         }
-        // 统计数据条数
-        if (!empty($this->source_store_data_handler)) {
-            $this->count = $this->source_store_data_handler->count();
+        catch (\Royalcms\Component\Repository\Exceptions\RepositoryException $e) {
+            return new ecjia_error('duplicate_data_error', $e->getMessage());
         }
-        return $this->count;
+
     }
 
 
@@ -98,7 +107,11 @@ HTML;
         }
 
         //执行具体任务
-        $this->startDuplicateProcedure();
+        $result = $this->startDuplicateProcedure();
+
+        if (is_ecjia_error($result)) {
+            return $result;
+        }
 
         //标记处理完成
         $this->markDuplicateFinished();
@@ -114,14 +127,51 @@ HTML;
      */
     protected function startDuplicateProcedure()
     {
-        $this->source_store_data_handler->chunk(50, function ($items) {
-            //构造可用于复制的数据
-            $this->buildDuplicateData($items);
+        try {
+            $repository = new MerchantConfigRepository($this->store_id);
+            $source_repository = new MerchantConfigRepository($this->source_store_id);
 
-            dd($items);
-            //更新数据到新店铺
-            //RC_DB::table('merchants_config')->insert($items);
-        });
+            $options = $source_repository->getAllOptions();
+            $options->map(function ($item) use ($repository) {
+                //构造可用于复制的数据
+//            $this->buildDuplicateData($items);
+
+//            dd($items);
+                //更新数据到新店铺
+                //RC_DB::table('merchants_config')->insert($items);
+
+                if (in_array($item['code'], [
+                    'duplicate_progress_data',
+                    'duplicate_source_store_id',
+                    'duplicate_store_status',
+                ])) {
+                    return false;
+                }
+
+                return $repository->addOption($item['code'], $item['value'], [
+                    'type' => $item['type'],
+                    'group' => $item['group'],
+                    'store_range' => $item['store_range'],
+                    'store_dir' => $item['store_dir'],
+                    'sort_order' => $item['sort_order'],
+                ]);
+
+            });
+        }
+        catch (\Royalcms\Component\Repository\Exceptions\RepositoryException $e) {
+            return new ecjia_error('duplicate_data_error', $e->getMessage());
+        }
+
+        /**
+         * setp2
+         *
+         * 目前只发现了这几种value带图片路径的code，还有的话可以再加
+         * shop_thumb_logo
+         * shop_nav_background
+         * shop_logo
+         * shop_banner_pic
+         */
+
 
 
     }
