@@ -113,7 +113,6 @@
         					<label class="control-label">{t domain="store"}电子邮箱：{/t}</label>
         					<div class="controls">
         						<input class="span6" name="email" type="text" value="" />
-        						<span class="input-must">*</span>
         					</div>
                             <div class="m_t30 controls help-block">{t domain="store"}账号不能与原店铺相同，非必填项{/t}</div>
         				</div>
