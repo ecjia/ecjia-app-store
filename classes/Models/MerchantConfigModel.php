@@ -46,7 +46,7 @@
 //
 namespace Ecjia\App\Store\Models;
 
-use Royalcms\Component\Database\Eloquent\Model;
+use Ecjia\System\Frameworks\Model\Model;
 
 class MerchantConfigModel extends Model
 {
