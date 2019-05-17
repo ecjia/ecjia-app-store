@@ -57,7 +57,7 @@ abstract class StoreDuplicateAbstract
      * 复制操作对象
      * @var
      */
-    protected $data_operator;
+    protected $source_store_data_handler;
 
     /**
      * 复制对象关联的数据条目
@@ -97,9 +97,9 @@ abstract class StoreDuplicateAbstract
         return $this;
     }
 
-    public function getDataOperator()
+    public function getSourceStoreDataHandler()
     {
-        return $this->data_operator;
+        return $this->source_store_data_handler;
     }
 
     /**
