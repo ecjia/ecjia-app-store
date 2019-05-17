@@ -21,6 +21,8 @@ class StoreDuplicateProgressData
      */
     protected $duplicate_finished_items = [];
 
+    protected $replacement_data = [];
+
     /**
      * @return array
      */
@@ -44,10 +46,54 @@ class StoreDuplicateProgressData
         $this->duplicate_finished_items[] = $code;
     }
 
+    /**
+     * @return array
+     */
+    public function getReplacementData()
+    {
+        return $this->replacement_data;
+    }
+
+    /**
+     * @param array $replacement_data
+     * @return StoreDuplicateProgressData
+     */
+    public function setReplacementData($replacement_data)
+    {
+        $this->replacement_data = $replacement_data;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getReplacementDataByCode($code = null)
+    {
+        if (!is_null($code)) {
+            return array_get($this->replacement_data, $code);
+        }
+
+        return $this->replacement_data;
+    }
+
+    /**
+     * @param string $code
+     * @param array $replacement_data
+     * @return StoreDuplicateProgressData
+     */
+    public function setReplacementDataByCode($code, $replacement_data)
+    {
+        $this->replacement_data[$code] = $replacement_data;
+
+        return $this;
+    }
+
+
     public function toArray()
     {
         return [
             'duplicate_finished_items' => $this->duplicate_finished_items,
+            'replacement_data' => $this->replacement_data,
         ];
 
     }

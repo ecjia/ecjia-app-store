@@ -180,4 +180,35 @@ abstract class StoreDuplicateAbstract
         return false;
     }
 
+    /**
+     * @return array
+     */
+    public function getReplacementData($code)
+    {
+        $storage = new ProgressDataStorage($this->store_id);
+
+        $duplicate_progress_data = $storage->getDuplicateProgressData();
+
+        $data = $duplicate_progress_data->getReplacementData($code);
+
+        return $data;
+    }
+
+    /**
+     * @param array $replacement_data
+     * @return bool
+     */
+    public function setReplacementData($code, $replacement_data)
+    {
+        $storage = new ProgressDataStorage($this->store_id);
+
+        $duplicate_progress_data = $storage->getDuplicateProgressData();
+
+        $duplicate_progress_data->setReplacementDataByCode($code, $replacement_data);
+
+        $storage->save();
+
+        return true;
+    }
+
 }
