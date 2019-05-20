@@ -40,10 +40,7 @@ class MerchantConfigDuplicate extends StoreDuplicateAbstract
     public function __construct($store_id, $source_store_id)
     {
         $this->name = __('店铺基本信息', 'store');
-
         parent::__construct($store_id, $source_store_id);
-
-//        $this->source_store_data_handler = RC_DB::table('merchants_config')->where('store_id', $this->source_store_id)->select('store_id','code','value');
     }
 
     /**
@@ -65,11 +62,6 @@ HTML;
      */
     public function handleCount()
     {
-        //如果已经统计过，直接返回统计过的条数
-//        if ($this->count) {
-//            return $this->count;
-//        }
-
         try {
             $source_repository = new MerchantConfigRepository($this->source_store_id);
 
@@ -77,8 +69,7 @@ HTML;
 
             // 统计数据条数
             return $count;
-        }
-        catch (\Royalcms\Component\Repository\Exceptions\RepositoryException $e) {
+        } catch (\Royalcms\Component\Repository\Exceptions\RepositoryException $e) {
             return new ecjia_error('duplicate_data_error', $e->getMessage());
         }
 
@@ -136,7 +127,6 @@ HTML;
                 //构造可用于复制的数据
 //            $this->buildDuplicateData($items);
 
-//            dd($items);
                 //更新数据到新店铺
                 //RC_DB::table('merchants_config')->insert($items);
 
@@ -157,8 +147,9 @@ HTML;
                 ]);
 
             });
-        }
-        catch (\Royalcms\Component\Repository\Exceptions\RepositoryException $e) {
+
+            return true;
+        } catch (\Royalcms\Component\Repository\Exceptions\RepositoryException $e) {
             return new ecjia_error('duplicate_data_error', $e->getMessage());
         }
 
@@ -171,7 +162,6 @@ HTML;
          * shop_logo
          * shop_banner_pic
          */
-
 
 
     }
@@ -218,7 +208,13 @@ HTML;
      */
     public function handleAdminLog()
     {
+        \Ecjia\App\Store\Helper::assign_adminlog_content();
 
+        $store_info = RC_Api::api('store', 'store_info', array('store_id' => $this->store_id));
+
+        $merchants_name = !empty($store_info) ? sprintf(__('店铺名是%s', 'goods'), $store_info['merchants_name']) : sprintf(__('店铺ID是%s', 'goods'), $this->store_id);
+
+        ecjia_admin::admin_log($merchants_name, 'duplicate', 'store_goods');
     }
 
 

@@ -65,7 +65,9 @@ class StoreDuplicateProgressData
     }
 
     /**
-     * @return array
+     * @param null $code
+     * @param array $default
+     * @return array|mixed
      */
     public function getReplacementDataByCode($code = null, $default = [])
     {
@@ -99,8 +101,8 @@ class StoreDuplicateProgressData
     }
 
     /**
-     * 创建对象
-     * @param array $data
+     * @param array|null $data
+     * @return StoreDuplicateProgressData
      */
     public static function createStoreDuplicateProgressData(array $data = null)
     {

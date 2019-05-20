@@ -54,12 +54,6 @@ abstract class StoreDuplicateAbstract
     protected $dependents = [];
 
     /**
-     * 复制操作对象
-     * @var
-     */
-    protected $source_store_data_handler;
-
-    /**
      * 复制对象关联的数据条目
      * @var int
      */

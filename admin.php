@@ -1849,7 +1849,7 @@ class admin extends ecjia_admin
             return $this->showmessage(__('操作失败，当前code无效', 'store'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
 
-        if ($handle->isCheckFinished()){
+        if ($handle->isCheckFinished()) {
             return $this->showmessage(sprintf(__('%s已复制完成，请不要重复复制', 'store'), $handle->getName()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
 
@@ -1864,85 +1864,25 @@ class admin extends ecjia_admin
             foreach ($dependents as $v) {
                 $names[] = $handlers->handler($v)->getName();
             }
-            return $this->showmessage(sprintf(__('%s复制失败，您需要先复制：%s', 'store'), $handle->getName(), implode('和', $names)), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR, ['pjaxurl' => $pjaxurl]);
+            return $this->showmessage(sprintf(__('%s您需要先复制：%s', 'store'), $handle->getName(), implode('和', $names)), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR, ['pjaxurl' => $pjaxurl]);
         }
 
-        if ($result) {
-            $finished_items = (new \Ecjia\App\Store\StoreDuplicate\ProgressDataStorage($this->store_id))->getDuplicateProgressData()->getDuplicateFinishedItems();
-            $codes = array_keys($handlers->getFactories());
-            $diff = collect($codes)->diff($finished_items);
-
-            if (empty($diff->all())) {
-                $this->finish_duplication($store_id);
-                $pjaxurl = RC_Uri::url('store/admin/preview', ['store_id' => $store_id]);
-            }
-
-            return $this->showmessage(sprintf(__('%s复制成功', 'store'), $handle->getName()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, ['pjaxurl' => $pjaxurl]);
-        }
-        return $this->showmessage(sprintf(__('%s复制失败', 'store'), $handle->getName()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR, ['pjaxurl' => $pjaxurl]);
-
-    }
-
-
-    /**
-     * 通过request组装数据
-     *
-     * @param array $raw_data
-     * @param $keys
-     * @param string $default
-     */
-    private function prepareData(array &$raw_data, $keys, $default = '')
-    {
-        if (is_string($keys)) {
-            $keys = explode(',', $keys);
+        if (is_ecjia_error($result)) {
+            return $this->showmessage(sprintf(__('%s复制失败', 'store'), $handle->getName()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR, ['pjaxurl' => $pjaxurl]);
         }
 
-        if (is_array($keys)) {
-            foreach ($keys as $key) {
-                if (!isset($raw_data[$key])) {
-                    $val = $this->request->input($key);
-                    $raw_data[$key] = is_null($val) ? $default : $val;
-                }
-            }
+        $finished_items = (new \Ecjia\App\Store\StoreDuplicate\ProgressDataStorage($this->store_id))->getDuplicateProgressData()->getDuplicateFinishedItems();
+        $codes = array_keys($handlers->getFactories());
+        $diff = collect($codes)->diff($finished_items);
+
+        if (empty($diff->all())) {
+            $this->finish_duplication($store_id);
+            $pjaxurl = RC_Uri::url('store/admin/preview', ['store_id' => $store_id]);
         }
-    }
 
-    public function test(){
-        $array = RC_DB::table('merchants_category')->where('store_id', 62)->get();
+        return $this->showmessage(sprintf(__('%s复制成功', 'store'), $handle->getName()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, ['pjaxurl' => $pjaxurl]);
 
-        dump($array);
-        $tree = $this->getTree($array);
 
-        $this->html($tree);
-
-    }
-
-    public function getTree($array, $pid =0, $level = 0){
-
-        //声明静态数组,避免递归调用时,多次声明导致数组覆盖
-        static $list = [];
-        foreach ($array as $key => $value){
-            //第一次遍历,找到父节点为根节点的节点 也就是pid=0的节点
-            if ($value['parent_id'] == $pid){
-                //父节点为根节点的节点,级别为0，也就是第一级
-                $value['level'] = $level;
-                //把数组放到list中
-                $list[] = $value;
-                //把这个节点从数组中移除,减少后续递归消耗
-                unset($array[$key]);
-                //开始递归,查找父ID为该节点ID的节点,级别则为原级别+1
-                $this->getTree($array, $value['cat_id'], $level+1);
-
-            }
-        }
-        return $list;
-    }
-//输出效果
-    public function html($tree)
-    {
-        foreach ($tree as $key => $value) {
-            echo str_repeat('|----', $value['level']), $value['cat_name'].'<br />';
-        }
     }
 
 }
