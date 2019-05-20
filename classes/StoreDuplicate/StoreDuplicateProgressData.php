@@ -67,10 +67,10 @@ class StoreDuplicateProgressData
     /**
      * @return array
      */
-    public function getReplacementDataByCode($code = null)
+    public function getReplacementDataByCode($code = null, $default = [])
     {
         if (!is_null($code)) {
-            return array_get($this->replacement_data, $code);
+            return array_get($this->replacement_data, $code, $default);
         }
 
         return $this->replacement_data;
