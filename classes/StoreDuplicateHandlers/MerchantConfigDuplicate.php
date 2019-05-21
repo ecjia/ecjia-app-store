@@ -195,7 +195,7 @@ HTML;
 
         $merchants_name = !empty($store_info) ? sprintf(__('店铺名是%s', 'goods'), $store_info['merchants_name']) : sprintf(__('店铺ID是%s', 'goods'), $this->store_id);
 
-        ecjia_admin::admin_log($merchants_name, 'duplicate', 'store_goods');
+        ecjia_admin::admin_log($merchants_name, 'duplicate', 'config');
     }
 
 
