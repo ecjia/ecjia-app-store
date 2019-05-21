@@ -9,6 +9,7 @@
 namespace Ecjia\App\Store\StoreDuplicateHandlers;
 
 use Ecjia\App\Store\Repositories\MerchantConfigRepository;
+use Ecjia\App\Store\StoreDuplicate\StoreCopyImage;
 use Ecjia\App\Store\StoreDuplicate\StoreDuplicateAbstract;
 use RC_Uri;
 use RC_DB;
@@ -62,17 +63,20 @@ HTML;
      */
     public function handleCount()
     {
-        try {
-            $source_repository = new MerchantConfigRepository($this->source_store_id);
+        static $count;
 
-            $count = $source_repository->getCount();
+        if (is_null($count)) {
+            try {
+                $source_repository = new MerchantConfigRepository($this->source_store_id);
 
-            // 统计数据条数
-            return $count;
-        } catch (\Royalcms\Component\Repository\Exceptions\RepositoryException $e) {
-            return new ecjia_error('duplicate_data_error', $e->getMessage());
+                // 统计数据条数
+                $count = $source_repository->getCount();
+            } catch (\Royalcms\Component\Repository\Exceptions\RepositoryException $e) {
+                return new ecjia_error('duplicate_data_error', $e->getMessage());
+            }
         }
 
+        return $count;
     }
 
 
@@ -124,12 +128,7 @@ HTML;
 
             $options = $source_repository->getAllOptions();
             $options->map(function ($item) use ($repository) {
-                //构造可用于复制的数据
-//            $this->buildDuplicateData($items);
-
-                //更新数据到新店铺
-                //RC_DB::table('merchants_config')->insert($items);
-
+                //setp1. 过滤不需要复制的元素
                 if (in_array($item['code'], [
                     'duplicate_progress_data',
                     'duplicate_source_store_id',
@@ -138,12 +137,16 @@ HTML;
                     return false;
                 }
 
+                //setp2. 复制图片
+                $this->copyImage($item);
+
+                //setp3. 复制数据
                 return $repository->addOption($item['code'], $item['value'], [
-                    'type' => $item['type'],
-                    'group' => $item['group'],
-                    'store_range' => $item['store_range'],
-                    'store_dir' => $item['store_dir'],
-                    'sort_order' => $item['sort_order'],
+                    'type'          => $item['type'],
+                    'group'         => $item['group'],
+                    'store_range'   => $item['store_range'],
+                    'store_dir'     => $item['store_dir'],
+                    'sort_order'    => $item['sort_order'],
                 ]);
 
             });
@@ -153,52 +156,30 @@ HTML;
             return new ecjia_error('duplicate_data_error', $e->getMessage());
         }
 
-        /**
-         * setp2
-         *
-         * 目前只发现了这几种value带图片路径的code，还有的话可以再加
-         * shop_thumb_logo
-         * shop_nav_background
-         * shop_logo
-         * shop_banner_pic
-         */
-
-
     }
 
-    protected function buildDuplicateData(&$items)
+    /**
+     * 复制图片
+     *
+     * 目前只发现了这几种value带图片路径的code，还有的话可以再加
+     * shop_thumb_logo
+     * shop_nav_background
+     * shop_logo
+     * shop_banner_pic
+     *
+     * @param $item
+     */
+    protected function copyImage(& $item)
     {
-        foreach ($items as $k => &$item) {
-            unset($item['id']);
-
-            //将源店铺ID设为新店铺的ID
-            $item['store_id'] = $this->store_id;
-
-            //解决图片问题数据
-            switch ($item['code']) {
-                //目前只发现了这几种value带图片路径的code，还有的话可以再加
-                case 'shop_thumb_logo' :
-                case 'shop_nav_background' :
-                case 'shop_logo' :
-                case 'shop_banner_pic' :
-                    $item['value'] = sprintf('merchant/%s/data/%s/%s.jpg', $this->store_id, $item['code'], '123');
-
-                    //存储图片
-
-                    break;
-            }
-
-
-            //不需要复制的数据
-            if (stripos($item['code'], 'duplicate_') !== false) {
-                unset($items[$k]);
-            }
-
-            //其他数据处理
-
+        //setp2. 复制图片
+        if (in_array($item['code'], [
+            'shop_thumb_logo',
+            'shop_nav_background',
+            'shop_logo',
+            'shop_banner_pic',
+        ])) {
+            $item['value'] = (new StoreCopyImage($this->store_id, $this->source_store_id))->copyMerchantConfigImage($item['value']);
         }
-
-
     }
 
     /**
