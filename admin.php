@@ -1763,6 +1763,7 @@ class admin extends ecjia_admin
      */
     public function duplicate_processing()
     {
+        //dd(unserialize($this->store_info['duplicate_progress_data']),strlen($this->store_info['duplicate_progress_data']));
         $this->admin_priv('store_duplicate');
 
         $store_id = $this->store_id;  //新店铺ID
