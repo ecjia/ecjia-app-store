@@ -1253,7 +1253,7 @@ class admin extends ecjia_admin
                 <strong>
                     <p>删除店铺开启风险警告</p>
                 </strong>
-                <p>当前配置中已经开启删除店铺功能，如果您现在不需要清理店铺，且删除店铺并非常用功能，为了安全起见，请在配置文件【%s】中，将删除店铺的设置项关闭，如需要删除，可再次开启。<br />如何关闭？<a href="%s">请点击此处 >></a></p>
+                <p>当前配置中已经开启删除店铺功能，如果您现在不需要清理店铺，且删除店铺并非常用功能，为了安全起见，请在配置文件【%s】中，将删除店铺的设置项关闭，如需要删除，可再次开启。<br />如何关闭？<a href="%s" target="_blank">请点击此处 >></a></p>
             ', 'store'), $config_path, $help_url);
             ecjia_screen::get_current_screen()->add_admin_notice(new admin_notice($warning, 'alert-error'));
         } else {
