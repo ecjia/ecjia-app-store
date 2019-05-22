@@ -176,6 +176,9 @@ HTML;
             }
         }
         catch (\League\Flysystem\FileNotFoundException $e) {
+
+            $item['value'] = '';
+
             ecjia_log_warning($e->getMessage());
         }
     }
