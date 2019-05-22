@@ -667,7 +667,6 @@ class admin extends ecjia_admin
 
         list($store['province'], $store['city'], $store['district'], $store['street']) = ecjia_region::getDisplayLabel($store['province'], $store['city'], $store['district'], $store['street']);
 
-        //dd($store);
         $this->assign('ur_here', $store['merchants_name']);
         $store['cat_name'] = RC_DB::table('store_category')->where('cat_id', $store['cat_id'])->pluck('cat_name');
         if ($store['percent_id']) {
