@@ -164,14 +164,19 @@ HTML;
      */
     protected function copyImage(& $item)
     {
-        //setp2. 复制图片
-        if (in_array($item['code'], [
-            'shop_thumb_logo',
-            'shop_nav_background',
-            'shop_logo',
-            'shop_banner_pic',
-        ])) {
-            $item['value'] = (new StoreCopyImage($this->store_id, $this->source_store_id))->copyMerchantConfigImage($item['value']);
+        try {
+            //setp2. 复制图片
+            if (in_array($item['code'], [
+                'shop_thumb_logo',
+                'shop_nav_background',
+                'shop_logo',
+                'shop_banner_pic',
+            ])) {
+                $item['value'] = (new StoreCopyImage($this->store_id, $this->source_store_id))->copyMerchantConfigImage($item['value']);
+            }
+        }
+        catch (\League\Flysystem\FileNotFoundException $e) {
+            ecjia_log_warning($e->getMessage());
         }
     }
 
