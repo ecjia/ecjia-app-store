@@ -1770,7 +1770,7 @@ class admin extends ecjia_admin
         $source_store_id = $store_info['duplicate_source_store_id']; //源店铺ID
 
         if (empty($store_info['duplicate_store_status'])) {
-            return $this->showmessage(__('非法操作', 'store'), ecjia::MSGTYPE_HTML | ecjia::MSGSTAT_ERROR);
+            return $this->showmessage(__('您不能进行这样的操作', 'store'), ecjia::MSGTYPE_HTML | ecjia::MSGSTAT_ERROR);
         }
 
         //dd($this->store_info,unserialize($this->store_info['duplicate_progress_data']),strlen($this->store_info['duplicate_progress_data']));
@@ -1828,12 +1828,18 @@ class admin extends ecjia_admin
         );
     }
 
+    /**
+     * 直接完成复制
+     * @param $store_id
+     */
     private function finish_duplication($store_id)
     {
+        //修改店铺状态
         RC_DB::table('store_franchisee')->where('store_id', $store_id)->update([
             'status' => 1, //不锁定
             'shop_close' => 1 //关闭店铺
         ]);
+        //将复制状态改为已完成
         RC_DB::table('merchants_config')->where('store_id', $store_id)->where('code', 'duplicate_store_status')->update(['value' => 'finished']);
     }
 
@@ -1888,7 +1894,6 @@ class admin extends ecjia_admin
         }
 
         return $this->showmessage(sprintf(__('%s复制成功', 'store'), $handle->getName()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, ['pjaxurl' => $pjaxurl]);
-
 
     }
 
