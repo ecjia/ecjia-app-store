@@ -1794,6 +1794,7 @@ class admin extends ecjia_admin
         }
 
         $handles = (new \Ecjia\App\Store\StoreDuplicate\StoreDuplicateManager($store_id, $source_store_id))->getFactories();
+        //dd($handles);
         $finished_items = (new \Ecjia\App\Store\StoreDuplicate\ProgressDataStorage($this->store_id))->getDuplicateProgressData()->getDuplicateFinishedItems();
 
         $this->assign('duplicate_finished_items', $finished_items);
@@ -1865,7 +1866,7 @@ class admin extends ecjia_admin
             foreach ($dependents as $v) {
                 $names[] = $handlers->handler($v)->getName();
             }
-            return $this->showmessage(sprintf(__('%s您需要先复制：%s', 'store'), $handle->getName(), implode('和', $names)), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR, ['pjaxurl' => $pjaxurl]);
+            return $this->showmessage(sprintf(__('复制%s前，您还需要先复制：%s', 'store'), $handle->getName(), implode('、', $names)), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR, ['pjaxurl' => $pjaxurl]);
         }
 
         if (is_ecjia_error($result)) {
