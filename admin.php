@@ -1763,12 +1763,20 @@ class admin extends ecjia_admin
      */
     public function duplicate_processing()
     {
-        //dd(unserialize($this->store_info['duplicate_progress_data']),strlen($this->store_info['duplicate_progress_data']));
         $this->admin_priv('store_duplicate');
 
         $store_id = $this->store_id;  //新店铺ID
         $store_info = $this->store_info; //新店铺信息
         $source_store_id = $store_info['duplicate_source_store_id']; //源店铺ID
+
+        if (empty($store_info['duplicate_store_status'])) {
+            return $this->showmessage(__('非法操作', 'store'), ecjia::MSGTYPE_HTML | ecjia::MSGSTAT_ERROR);
+        }
+
+        //dd($this->store_info,unserialize($this->store_info['duplicate_progress_data']),strlen($this->store_info['duplicate_progress_data']));
+        if ($store_info['duplicate_store_status'] != 'processing') {
+            return $this->showmessage(__('店铺已复制完成，无法继续复制', 'store'), ecjia::MSGTYPE_HTML | ecjia::MSGSTAT_ERROR);
+        }
 
         $current_screen = ecjia_screen::get_current_screen();
         $current_screen->remove_last_nav_here();
@@ -1789,9 +1797,6 @@ class admin extends ecjia_admin
             'href' => RC_Uri::url('store/admin/duplicate_finish', ['store_id' => $store_id]),
             'text' => __('复制完成', 'store')
         ]);
-        if ($store_info['duplicate_store_status'] != 'processing') {
-            return $this->showmessage(__('店铺已复制完成，无法继续复制', 'store'), ecjia::MSGTYPE_HTML | ecjia::MSGSTAT_ERROR);
-        }
 
         $handles = (new \Ecjia\App\Store\StoreDuplicate\StoreDuplicateManager($store_id, $source_store_id))->getFactories();
         //dd($handles);
