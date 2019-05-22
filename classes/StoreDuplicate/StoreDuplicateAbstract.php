@@ -75,6 +75,9 @@ abstract class StoreDuplicateAbstract
 
     public function getName()
     {
+        if (!empty($this->rank)){
+            return $this->name . $this->rank;
+        }
         return $this->name;
     }
 
