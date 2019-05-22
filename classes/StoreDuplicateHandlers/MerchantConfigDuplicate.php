@@ -131,7 +131,7 @@ HTML;
                 }
 
                 //setp2. 复制图片
-                //$this->copyImage($item);
+                $this->copyImage($item);
 
                 //setp3. 复制数据
                 return $repository->addOption($item['code'], $item['value'], [
