@@ -164,6 +164,10 @@ HTML;
      */
     protected function copyImage(& $item)
     {
+        /**
+         * 数据样式：
+         * merchant/60/data/shop_banner/1498438839098780345.png
+         */
         try {
             //setp2. 复制图片
             if (in_array($item['code'], [
@@ -176,6 +180,9 @@ HTML;
             }
         }
         catch (\League\Flysystem\FileNotFoundException $e) {
+
+            $item['value'] = '';
+
             ecjia_log_warning($e->getMessage());
         }
     }
