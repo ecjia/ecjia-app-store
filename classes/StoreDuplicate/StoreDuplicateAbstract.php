@@ -9,6 +9,9 @@
 namespace Ecjia\App\Store\StoreDuplicate;
 
 
+use ecjia_admin;
+use RC_Api;
+
 abstract class StoreDuplicateAbstract
 {
     /**
@@ -147,7 +150,26 @@ abstract class StoreDuplicateAbstract
      *
      * @return mixed
      */
-    abstract public function handleAdminLog();
+    //abstract public function handleAdminLog();
+    public function handleAdminLog()
+    {
+        \Ecjia\App\Store\Helper::assign_adminlog_content();
+
+        static $store_merchant_name, $source_store_merchant_name;
+
+        if (empty($store_merchant_name)) {
+            $store_info = RC_Api::api('store', 'store_info', ['store_id' => $this->store_id]);
+            $store_merchant_name = array_get(empty($store_info) ? [] : $store_info, 'merchants_name');
+        }
+
+        if (empty($source_store_merchant_name)) {
+            $source_store_info = RC_Api::api('store', 'store_info', ['store_id' => $this->source_store_id]);
+            $source_store_merchant_name = array_get(empty($source_store_info) ? [] : $source_store_info, 'merchants_name');
+        }
+
+        $content = sprintf(__('录入：将【%s】店铺所有%s复制到【%s】店铺中', 'goods'), $source_store_merchant_name, $this->name, $store_merchant_name);
+        ecjia_admin::admin_log($content, 'clear', 'store_goodsww');
+    }
 
     /**
      * 标记操作完成
@@ -172,6 +194,7 @@ abstract class StoreDuplicateAbstract
 
         $factory = new StoreDuplicateManager($this->store_id, $this->source_store_id);
 
+        dd($factory);
         $diff = collect($this->dependents)->diff($items)->filter(function ($item) use ($factory) {
             //判断依赖项是否有数据
             $handle = $factory->handler($item);
