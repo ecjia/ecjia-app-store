@@ -33,7 +33,7 @@ class StoreCopyImage
     /**
      * 复制商家基本信息中的图片
      * @param $path
-     * @return bool
+     * @return string
      */
     public function copyMerchantConfigImage($path)
     {
@@ -49,7 +49,9 @@ class StoreCopyImage
 
         $newpath = $newpath . '/' . $new_filename;
 
-        return $disk->copy($path, $newpath);
+        $disk->copy($path, $newpath);
+
+        return $newpath;
     }
 
 
