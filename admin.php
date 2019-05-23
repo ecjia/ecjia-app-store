@@ -44,6 +44,8 @@
 //
 //  ---------------------------------------------------------------------------------
 //
+use Royalcms\Component\Database\QueryException;
+
 defined('IN_ECJIA') or exit('No permission resources.');
 
 /**
@@ -1814,13 +1816,12 @@ class admin extends ecjia_admin
         $this->admin_priv('store_duplicate', ecjia::MSGTYPE_JSON);
 
         $store_id = $this->store_id;
-        $this->finish_duplication($store_id);
-
-        return $this->showmessage(__('操作成功', 'store'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array(
-                'pjaxurl' => RC_Uri::url('store/admin/init', ['store_id' => $store_id]),
-                //'pjaxurl' => RC_Uri::url('store/admin/duplicate_processing', ['store_id' => $store_id, 'source_store_id' => $this->store_info['duplicate_source_store_id'])
-            )
-        );
+        try {
+            $this->finish_duplication($store_id);
+            return $this->showmessage(__('操作成功', 'store'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, ['pjaxurl' => RC_Uri::url('store/admin/init', ['store_id' => $store_id])]);
+        } catch (QueryException $e) {
+            return $this->showmessage(__('操作失败', 'store'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR, ['pjaxurl' => RC_Uri::url('store/admin/init', ['store_id' => $store_id])]);
+        }
     }
 
     /**
@@ -1886,10 +1887,13 @@ class admin extends ecjia_admin
         $diff = collect($codes)->diff($finished_items);
 
         if (empty($diff->all())) {
-            $this->finish_duplication($store_id);
-            $pjaxurl = RC_Uri::url('store/admin/preview', ['store_id' => $store_id]);
+            try {
+                $this->finish_duplication($store_id);
+                $pjaxurl = RC_Uri::url('store/admin/preview', ['store_id' => $store_id]);
+            } catch (QueryException $e) {
+                ecjia_log_error($e->getMessage());
+            }
         }
-
         return $this->showmessage(sprintf(__('%s复制成功', 'store'), $handle->getName()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, ['pjaxurl' => $pjaxurl]);
     }
 
