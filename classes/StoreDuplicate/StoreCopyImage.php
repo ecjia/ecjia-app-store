@@ -8,6 +8,7 @@
 
 namespace Ecjia\App\Store\StoreDuplicate;
 
+use League\Flysystem\FileNotFoundException;
 use RC_Storage;
 use RC_File;
 use RC_Upload;
@@ -35,7 +36,7 @@ class StoreCopyImage
      * @param $path
      * @return string
      */
-    public function copyMerchantConfigImage($path)
+    public function copyMerchantImage($path)
     {
         $disk = RC_Storage::disk();
 
@@ -49,9 +50,14 @@ class StoreCopyImage
 
         $newpath = $newpath . '/' . $new_filename;
 
-        $disk->copy($path, $newpath);
-
-        return $newpath;
+        try {
+            $disk->copy($path, $newpath);
+            return $newpath;
+        }
+        catch (FileNotFoundException $e) {
+            ecjia_log_warning($e->getMessage());
+            return '';
+        }
     }
 
 
