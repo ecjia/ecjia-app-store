@@ -1881,12 +1881,13 @@ class admin extends ecjia_admin
                     return $this->showmessage(sprintf(__('复制%s前，您还需要先复制：%s', 'store'), $handle->getName(), implode('、', $names)), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR, ['pjaxurl' => $pjaxurl]);
                     break;
                 case 'duplicate_data_error' :
+                    //dd($result->get_error_message());
                     return $this->showmessage(sprintf(__('%s复制失败', 'store'), $handle->getName()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR, ['pjaxurl' => $pjaxurl]);
                     break;
             }
         }
 
-        $finished_items = $handle->getProgressData()->getDuplicateFinishedItems();
+        $finished_items = $handle->handleDuplicateProgressData()->getDuplicateFinishedItems();
         $codes = array_keys($handlers->getFactories());
         $diff = collect($codes)->diff($finished_items);
 
