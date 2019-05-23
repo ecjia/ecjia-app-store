@@ -128,18 +128,17 @@ HTML;
                     return false;
                 }
 
-                //setp2. 复制图片
-                $this->copyImage($item);
-
-                //setp3. 复制数据
+                //setp2. 复制数据
                 return $repository->addOption($item['code'], $item['value'], [
-                    'type'          => $item['type'],
-                    'group'         => $item['group'],
-                    'store_range'   => $item['store_range'],
-                    'store_dir'     => $item['store_dir'],
-                    'sort_order'    => $item['sort_order'],
+                    'type' => $item['type'],
+                    'group' => $item['group'],
+                    'store_range' => $item['store_range'],
+                    'store_dir' => $item['store_dir'],
+                    'sort_order' => $item['sort_order'],
                 ]);
 
+                //setp3. 复制图片
+                $this->copyImage($item);
             });
 
             return true;
@@ -176,6 +175,7 @@ HTML;
             $item['value'] = (new StoreCopyImage($this->store_id, $this->source_store_id))->copyMerchantImage($item['value']);
         }
     }
+
     /**
      * 返回操作日志编写
      *
