@@ -164,22 +164,14 @@ HTML;
          * 数据样式：
          * merchant/60/data/shop_banner/1498438839098780345.png
          */
-        try {
-            //setp2. 复制图片
-            if (in_array($item['code'], [
-                'shop_thumb_logo',
-                'shop_nav_background',
-                'shop_logo',
-                'shop_banner_pic',
-            ])) {
-                $item['value'] = (new StoreCopyImage($this->store_id, $this->source_store_id))->copyMerchantConfigImage($item['value']);
-            }
-        }
-        catch (\League\Flysystem\FileNotFoundException $e) {
-
-            $item['value'] = '';
-
-            ecjia_log_warning($e->getMessage());
+        //setp2. 复制图片
+        if (in_array($item['code'], [
+            'shop_thumb_logo',
+            'shop_nav_background',
+            'shop_logo',
+            'shop_banner_pic',
+        ])) {
+            $item['value'] = (new StoreCopyImage($this->store_id, $this->source_store_id))->copyMerchantImage($item['value']);
         }
     }
 
