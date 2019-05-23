@@ -62,24 +62,11 @@ abstract class StoreDuplicateAbstract
     protected $count = 0;
 
     /**
-     * 复制过程数据存储对象
-     * @var
-     */
-    protected $progress_data_storage;
-
-    /**
      * StoreDuplicateAbstract constructor.
      * @param $store_id
      * @param $source_store_id
      * @param int $sort
      */
-
-    /**
-     * 检测程序是否发生异常
-     * @var bool
-     */
-    protected $exception = false;
-
     public function __construct($store_id, $source_store_id, $sort = 0)
     {
         $this->store_id = $store_id;
@@ -89,30 +76,6 @@ abstract class StoreDuplicateAbstract
         }
     }
 
-    protected function enableException()
-    {
-        $this->exception = true;
-    }
-
-    protected function disableException()
-    {
-        $this->exception = false;
-    }
-
-    public function setProgressDataStorage()
-    {
-        if (empty($this->progress_data_storage)) {
-            $this->progress_data_storage = new ProgressDataStorage($this->store_id);
-        }
-        return $this;
-    }
-
-    public function getProgressData()
-    {
-        $this->setProgressDataStorage();
-        return $this->progress_data_storage->getDuplicateProgressData();
-    }
-
     public function getCode()
     {
         return $this->code;
@@ -120,9 +83,6 @@ abstract class StoreDuplicateAbstract
 
     public function getName()
     {
-        if (!empty($this->rank)) {
-            return $this->name . $this->rank;
-        }
         return $this->name;
     }
 
@@ -188,15 +148,41 @@ abstract class StoreDuplicateAbstract
     }
 
     /**
+     * @return ProgressDataStorage
+     */
+    protected function handleProgressDataStorage()
+    {
+        static $progress_data_storage;
+
+        if (is_null($progress_data_storage)) {
+            $progress_data_storage = new ProgressDataStorage($this->store_id);
+        }
+
+        return $progress_data_storage;
+    }
+
+    /**
+     * @return StoreDuplicateProgressData
+     */
+    protected function handleDuplicateProgressData()
+    {
+        static $duplicate_progress_data;
+
+        if (is_null($duplicate_progress_data)) {
+            $duplicate_progress_data = $this->handleProgressDataStorage()->getDuplicateProgressData();
+        }
+
+        return $duplicate_progress_data;
+    }
+
+    /**
      * 标记操作完成
      */
     public function markDuplicateFinished()
     {
-        //$this->setProgressDataStorage();
+        $this->handleDuplicateProgressData()->addDuplicateFinishedItem($this->getCode());
 
-        $this->getProgressData()->addDuplicateFinishedItem($this->getCode());
-
-        $this->progress_data_storage->save();
+        $this->handleProgressDataStorage()->save();
     }
 
     /**
@@ -205,8 +191,7 @@ abstract class StoreDuplicateAbstract
      */
     public function dependentCheck()
     {
-        //$this->setProgressDataStorage();
-        $items = $this->getProgressData()->getDuplicateFinishedItems();
+        $items = $this->handleDuplicateProgressData()->getDuplicateFinishedItems();
 
         $factory = new StoreDuplicateManager($this->store_id, $this->source_store_id);
 
@@ -226,8 +211,7 @@ abstract class StoreDuplicateAbstract
      */
     public function isCheckFinished()
     {
-        //$this->setProgressDataStorage();
-        if (in_array($this->getCode(), $this->getProgressData()->getDuplicateFinishedItems())) {
+        if (in_array($this->getCode(), $this->handleDuplicateProgressData()->getDuplicateFinishedItems())) {
             return true;
         }
         return false;
@@ -239,8 +223,7 @@ abstract class StoreDuplicateAbstract
      */
     public function getReplacementData($code)
     {
-        //$this->setProgressDataStorage();
-        return $this->getProgressData()->getReplacementData($code);
+        return $this->handleDuplicateProgressData()->getReplacementDataByCode($code);
     }
 
     /**
@@ -250,15 +233,11 @@ abstract class StoreDuplicateAbstract
      */
     public function setReplacementData($code, $replacement_data)
     {
-        //$this->setProgressDataStorage();
-        $this->getProgressData()->setReplacementDataByCode($code, $replacement_data);
+        $this->handleDuplicateProgressData()->setReplacementDataByCode($code, $replacement_data);
 
-        $this->progress_data_storage->save();
+        $this->handleProgressDataStorage()->save();
 
         return true;
     }
 
-    public function getException(){
-        return $this->exception;
-    }
 }
