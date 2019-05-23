@@ -8,7 +8,6 @@
 
 namespace Ecjia\App\Store\StoreDuplicate;
 
-
 use ecjia_admin;
 use RC_Api;
 
@@ -74,6 +73,13 @@ abstract class StoreDuplicateAbstract
      * @param $source_store_id
      * @param int $sort
      */
+
+    /**
+     * 检测程序是否发生异常
+     * @var bool
+     */
+    protected $exception = false;
+
     public function __construct($store_id, $source_store_id, $sort = 0)
     {
         $this->store_id = $store_id;
@@ -81,6 +87,16 @@ abstract class StoreDuplicateAbstract
         if ($sort > 0) {
             $this->sort = $sort;
         }
+    }
+
+    protected function enableException()
+    {
+        $this->exception = true;
+    }
+
+    protected function disableException()
+    {
+        $this->exception = false;
     }
 
     public function setProgressDataStorage()
@@ -194,7 +210,6 @@ abstract class StoreDuplicateAbstract
 
         $factory = new StoreDuplicateManager($this->store_id, $this->source_store_id);
 
-        dd($factory);
         $diff = collect($this->dependents)->diff($items)->filter(function ($item) use ($factory) {
             //判断依赖项是否有数据
             $handle = $factory->handler($item);
@@ -243,4 +258,7 @@ abstract class StoreDuplicateAbstract
         return true;
     }
 
+    public function getException(){
+        return $this->exception;
+    }
 }

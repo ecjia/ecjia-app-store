@@ -1566,7 +1566,7 @@ class admin extends ecjia_admin
         }
 
         if (empty($data['email'])) {
-            $data['email'] = $store['email'];
+            $data['email'] = null;
         }
 
         if ($data['manage_mode'] == 'self') { //自营店铺不区分入驻类型
@@ -1798,10 +1798,6 @@ class admin extends ecjia_admin
         ]);
 
         $handles = (new \Ecjia\App\Store\StoreDuplicate\StoreDuplicateManager($store_id, $source_store_id))->getFactories();
-        //dd($handles);
-        $finished_items = (new \Ecjia\App\Store\StoreDuplicate\ProgressDataStorage($this->store_id))->getDuplicateProgressData()->getDuplicateFinishedItems();
-
-        $this->assign('duplicate_finished_items', $finished_items);
 
         $this->assign('handles', $handles);
 
@@ -1870,20 +1866,22 @@ class admin extends ecjia_admin
         $result = $handle->handleDuplicate();
 
         if (is_ecjia_error($result)) {
-            $dependents = $result->get_error_data();
-
-            $names = [];
-            foreach ($dependents as $v) {
-                $names[] = $handlers->handler($v)->getName();
+            switch ($result->get_error_code()) {
+                case 'handle_duplicate_error':
+                    $names = [];
+                    $dependents = $result->get_error_data();
+                    foreach ($dependents as $v) {
+                        $names[] = $handlers->handler($v)->getName();
+                    }
+                    return $this->showmessage(sprintf(__('复制%s前，您还需要先复制：%s', 'store'), $handle->getName(), implode('、', $names)), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR, ['pjaxurl' => $pjaxurl]);
+                    break;
+                case 'duplicate_data_error' :
+                    return $this->showmessage(sprintf(__('%s复制失败', 'store'), $handle->getName()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR, ['pjaxurl' => $pjaxurl]);
+                    break;
             }
-            return $this->showmessage(sprintf(__('复制%s前，您还需要先复制：%s', 'store'), $handle->getName(), implode('、', $names)), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR, ['pjaxurl' => $pjaxurl]);
         }
 
-        if (is_ecjia_error($result)) {
-            return $this->showmessage(sprintf(__('%s复制失败', 'store'), $handle->getName()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR, ['pjaxurl' => $pjaxurl]);
-        }
-
-        $finished_items = (new \Ecjia\App\Store\StoreDuplicate\ProgressDataStorage($this->store_id))->getDuplicateProgressData()->getDuplicateFinishedItems();
+        $finished_items = $handle->getProgressData()->getDuplicateFinishedItems();
         $codes = array_keys($handlers->getFactories());
         $diff = collect($codes)->diff($finished_items);
 
@@ -1893,7 +1891,6 @@ class admin extends ecjia_admin
         }
 
         return $this->showmessage(sprintf(__('%s复制成功', 'store'), $handle->getName()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, ['pjaxurl' => $pjaxurl]);
-
     }
 
     /**

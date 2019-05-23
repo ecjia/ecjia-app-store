@@ -11,10 +11,6 @@ namespace Ecjia\App\Store\StoreDuplicateHandlers;
 use Ecjia\App\Store\Repositories\MerchantConfigRepository;
 use Ecjia\App\Store\StoreDuplicate\StoreCopyImage;
 use Ecjia\App\Store\StoreDuplicate\StoreDuplicateAbstract;
-use RC_Uri;
-use RC_DB;
-use RC_Api;
-use ecjia_admin;
 use ecjia_error;
 
 /**
@@ -186,6 +182,5 @@ HTML;
             ecjia_log_warning($e->getMessage());
         }
     }
-
 
 }
