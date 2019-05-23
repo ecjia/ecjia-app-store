@@ -11,7 +11,9 @@ namespace Ecjia\App\Store\StoreDuplicateHandlers;
 use Ecjia\App\Store\Repositories\MerchantConfigRepository;
 use Ecjia\App\Store\StoreDuplicate\StoreCopyImage;
 use Ecjia\App\Store\StoreDuplicate\StoreDuplicateAbstract;
+use ecjia_admin;
 use ecjia_error;
+use RC_Api;
 
 /**
  * 店铺基本信息复制
@@ -182,5 +184,28 @@ HTML;
             ecjia_log_warning($e->getMessage());
         }
     }
+    /**
+     * 返回操作日志编写
+     *
+     * @return mixed
+     */
+    public function handleAdminLog()
+    {
+        \Ecjia\App\Store\Helper::assign_adminlog_content();
 
+        static $store_merchant_name, $source_store_merchant_name;
+
+        if (empty($store_merchant_name)) {
+            $store_info = RC_Api::api('store', 'store_info', ['store_id' => $this->store_id]);
+            $store_merchant_name = array_get(empty($store_info) ? [] : $store_info, 'merchants_name');
+        }
+
+        if (empty($source_store_merchant_name)) {
+            $source_store_info = RC_Api::api('store', 'store_info', ['store_id' => $this->source_store_id]);
+            $source_store_merchant_name = array_get(empty($source_store_info) ? [] : $source_store_info, 'merchants_name');
+        }
+
+        $content = sprintf(__('录入：将【%s】店铺所有%s复制到【%s】店铺中', 'goods'), $source_store_merchant_name, $this->name, $store_merchant_name);
+        ecjia_admin::admin_log($content, 'clear', 'store_goodsww');
+    }
 }
