@@ -59,39 +59,13 @@ abstract class StoreDuplicateAbstract
      */
     protected $count = 0;
 
-    /**
-     * 复制过程数据存储对象
-     * @var
-     */
-    protected $progress_data_storage;
-
-    /**
-     * StoreDuplicateAbstract constructor.
-     * @param $store_id
-     * @param $source_store_id
-     * @param int $sort
-     */
     public function __construct($store_id, $source_store_id, $sort = 0)
     {
         $this->store_id = $store_id;
         $this->source_store_id = $source_store_id;
-        if ($sort > 0) {
+        if ($sort > 0){
             $this->sort = $sort;
         }
-    }
-
-    public function setProgressDataStorage()
-    {
-        if (empty($this->progress_data_storage)) {
-            $this->progress_data_storage = new ProgressDataStorage($this->store_id);
-        }
-        return $this;
-    }
-
-    public function getProgressData()
-    {
-        $this->setProgressDataStorage();
-        return $this->progress_data_storage->getDuplicateProgressData();
     }
 
     public function getCode()
@@ -101,7 +75,7 @@ abstract class StoreDuplicateAbstract
 
     public function getName()
     {
-        if (!empty($this->rank)) {
+        if (!empty($this->rank)){
             return $this->name . $this->rank;
         }
         return $this->name;
@@ -154,21 +128,22 @@ abstract class StoreDuplicateAbstract
      */
     public function markDuplicateFinished()
     {
-        //$this->setProgressDataStorage();
+        $storage = new ProgressDataStorage($this->store_id);
 
-        $this->getProgressData()->addDuplicateFinishedItem($this->getCode());
+        $duplicate_progress_data = $storage->getDuplicateProgressData();
 
-        $this->progress_data_storage->save();
+        $duplicate_progress_data->addDuplicateFinishedItem($this->getCode());
+
+        $storage->save();
     }
 
     /**
-     * 依赖检测，返回依赖未完成的项
-     * @return mixed
+     * 依赖检测
+     * 返回依赖未完成的项
      */
     public function dependentCheck()
     {
-        //$this->setProgressDataStorage();
-        $items = $this->getProgressData()->getDuplicateFinishedItems();
+        $items = (new ProgressDataStorage($this->store_id))->getDuplicateProgressData()->getDuplicateFinishedItems();
 
         $factory = new StoreDuplicateManager($this->store_id, $this->source_store_id);
 
@@ -184,38 +159,49 @@ abstract class StoreDuplicateAbstract
 
     /**
      * 检查当前复制项是否完成
-     * @return bool
      */
     public function isCheckFinished()
     {
-        //$this->setProgressDataStorage();
-        if (in_array($this->getCode(), $this->getProgressData()->getDuplicateFinishedItems())) {
+        $storage = new ProgressDataStorage($this->store_id);
+
+        $duplicate_progress_data = $storage->getDuplicateProgressData();
+
+        $items = $duplicate_progress_data->getDuplicateFinishedItems();
+
+        if (in_array($this->getCode(), $items)) {
             return true;
         }
+
         return false;
     }
 
     /**
-     * @param $code
      * @return array
      */
     public function getReplacementData($code)
     {
-        //$this->setProgressDataStorage();
-        return $this->getProgressData()->getReplacementData($code);
+        $storage = new ProgressDataStorage($this->store_id);
+
+        $duplicate_progress_data = $storage->getDuplicateProgressData();
+
+        $data = $duplicate_progress_data->getReplacementData($code);
+
+        return $data;
     }
 
     /**
-     * @param $code
-     * @param $replacement_data
+     * @param array $replacement_data
      * @return bool
      */
     public function setReplacementData($code, $replacement_data)
     {
-        //$this->setProgressDataStorage();
-        $this->getProgressData()->setReplacementDataByCode($code, $replacement_data);
+        $storage = new ProgressDataStorage($this->store_id);
 
-        $this->progress_data_storage->save();
+        $duplicate_progress_data = $storage->getDuplicateProgressData();
+
+        $duplicate_progress_data->setReplacementDataByCode($code, $replacement_data);
+
+        $storage->save();
 
         return true;
     }
