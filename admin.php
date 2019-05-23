@@ -1616,11 +1616,11 @@ class admin extends ecjia_admin
             return $this->showmessage(__('联系手机员工中已存在，请修改', 'store'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
 
-        if (RC_DB::table('store_franchisee')->where('email', $data['email'])->get()) {
+        if ($data['email'] && RC_DB::table('store_franchisee')->where('email', $data['email'])->get()) {
             return $this->showmessage(__('邮箱已存在，请修改', 'store'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
 
-        if (RC_DB::table('staff_user')->where('email', $data['email'])->get()) {
+        if ($data['email'] && RC_DB::table('staff_user')->where('email', $data['email'])->get()) {
             return $this->showmessage(__('邮箱员工中已存在，请修改', 'store'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
 
