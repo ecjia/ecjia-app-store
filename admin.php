@@ -1856,6 +1856,7 @@ class admin extends ecjia_admin
         $source_store_id = $this->store_info['duplicate_source_store_id'];
 
         $handlers = (new \Ecjia\App\Store\StoreDuplicate\StoreDuplicateManager($store_id, $source_store_id));
+
         $handle = $handlers->handler($code);
 
         if (empty($handle)) {

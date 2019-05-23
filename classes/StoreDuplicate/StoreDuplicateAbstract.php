@@ -56,7 +56,7 @@ abstract class StoreDuplicateAbstract
      * 复制对象关联的数据条目
      * @var int
      */
-    protected $count = 0;
+    protected $count;
 
     /**
      * StoreDuplicateAbstract constructor.
