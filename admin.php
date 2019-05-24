@@ -1560,7 +1560,7 @@ class admin extends ecjia_admin
         $data['latitude'] = $this->request->input('latitude');
         $data['responsible_person'] = $this->request->input('responsible_person');
 
-        if (empty($data['cat_id'])) { //
+        if (empty($data['cat_id'])) { //不填商家分类则取源店铺的商家分类
             $data['cat_id'] = $store['cat_id'];
         }
 
@@ -1568,7 +1568,7 @@ class admin extends ecjia_admin
             $data['email'] = null;
         }
 
-        if ($data['manage_mode'] == 'self') { //自营店铺不区分入驻类型
+        if ($data['manage_mode'] == 'self' OR intval($data['validate_type']) === 0) { //自营店铺不区分入驻类型
             $data['validate_type'] = 2;
         }
 
