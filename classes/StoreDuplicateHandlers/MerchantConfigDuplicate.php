@@ -30,10 +30,12 @@ class MerchantConfigDuplicate extends StoreDuplicateAbstract
      */
     protected $code = 'merchant_config_duplicate';
 
-    public function __construct($store_id, $source_store_id, $sort = 1)
+    protected $sort = 1;
+
+    public function __construct($store_id, $source_store_id)
     {
+        parent::__construct($store_id, $source_store_id);
         $this->name = __('店铺基本信息', 'store');
-        parent::__construct($store_id, $source_store_id, $sort);
     }
 
     /**
@@ -55,7 +57,6 @@ HTML;
     public function handleCount()
     {
         static $count;
-
         if (is_null($count)) {
             try {
                 $source_repository = new MerchantConfigRepository($this->source_store_id);
@@ -66,10 +67,8 @@ HTML;
                 return new ecjia_error('duplicate_data_error', $e->getMessage());
             }
         }
-
         return $count;
     }
-
 
     /**
      * 执行复制操作
@@ -165,7 +164,6 @@ HTML;
          * 数据样式：
          * merchant/60/data/shop_banner/1498438839098780345.png
          */
-        //setp2. 复制图片
         if (in_array($item['code'], [
             'shop_thumb_logo',
             'shop_nav_background',
@@ -183,8 +181,6 @@ HTML;
      */
     public function handleAdminLog()
     {
-        \Ecjia\App\Store\Helper::assign_adminlog_content();
-
         static $store_merchant_name, $source_store_merchant_name;
 
         if (empty($store_merchant_name)) {
@@ -197,7 +193,8 @@ HTML;
             $source_store_merchant_name = array_get(empty($source_store_info) ? [] : $source_store_info, 'merchants_name');
         }
 
-        $content = sprintf(__('录入：将【%s】店铺所有%s复制到【%s】店铺中', 'goods'), $source_store_merchant_name, $this->name, $store_merchant_name);
+        \Ecjia\App\Store\Helper::assign_adminlog_content();
+        $content = sprintf(__('录入：将【%s】店铺基本信息复制到【%s】店铺中', 'goods'), $source_store_merchant_name, $store_merchant_name);
         ecjia_admin::admin_log($content, 'clear', 'store_goodsww');
     }
 }

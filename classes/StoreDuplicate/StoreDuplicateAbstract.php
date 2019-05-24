@@ -53,24 +53,14 @@ abstract class StoreDuplicateAbstract
     protected $dependents = [];
 
     /**
-     * 复制对象关联的数据条目
-     * @var int
-     */
-    protected $count;
-
-    /**
      * StoreDuplicateAbstract constructor.
      * @param $store_id
      * @param $source_store_id
-     * @param int $sort
      */
-    public function __construct($store_id, $source_store_id, $sort = 0)
+    public function __construct($store_id, $source_store_id)
     {
         $this->store_id = $store_id;
         $this->source_store_id = $source_store_id;
-        if ($sort > 0) {
-            $this->sort = $sort;
-        }
     }
 
     public function getCode()
