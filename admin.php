@@ -1868,9 +1868,16 @@ class admin extends ecjia_admin
 
         $result = $handle->handleDuplicate();
 
+        //检测复制过程中是否发生错误
         if (is_ecjia_error($result)) {
             $code = $result->get_error_code();
 
+            //当前复制正在进行中
+            if ($code == 'duplicate_started_error') {
+                return $this->showmessage($result->get_error_message(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR, ['pjaxurl' => $pjaxurl]);
+            }
+
+            //当前复制操作存在未完成的依赖项
             if ($code == 'handle_duplicate_error') {
                 $names = [];
                 $dependents = $result->get_error_data();
@@ -1880,6 +1887,7 @@ class admin extends ecjia_admin
                 return $this->showmessage(sprintf(__('复制%s前，您还需要先复制：%s', 'store'), $handle->getName(), implode('、', $names)), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR, ['pjaxurl' => $pjaxurl]);
             }
 
+            //当前复制处理数据时发生数据库异常
             if ($code == 'duplicate_data_error') {
                 return $this->showmessage(sprintf(__('%s复制失败', 'store'), $handle->getName()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR, ['pjaxurl' => $pjaxurl]);
             }
