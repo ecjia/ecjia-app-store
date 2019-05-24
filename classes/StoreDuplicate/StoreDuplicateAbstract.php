@@ -144,10 +144,21 @@ abstract class StoreDuplicateAbstract
     }
 
     /**
+     * 标记开始复制
+     */
+    public function markStartingDuplicate()
+    {
+        $this->handleDuplicateProgressData()->addDuplicatingItem($this->getCode());
+
+        $this->handleProgressDataStorage()->save();
+    }
+
+    /**
      * 标记操作完成
      */
     public function markDuplicateFinished()
     {
+        $this->handleDuplicateProgressData()->removeDuplicatingItem($this->getCode());
         $this->handleDuplicateProgressData()->addDuplicateFinishedItem($this->getCode());
 
         $this->handleProgressDataStorage()->save();
@@ -171,6 +182,15 @@ abstract class StoreDuplicateAbstract
         });
 
         return $diff->all();
+    }
+
+    /**
+     * 检查当前复制项是否开始
+     * @return bool
+     */
+    public function isCheckStarting()
+    {
+        return $this->handleDuplicateProgressData()->hasDuplicatingItem($this->getCode());
     }
 
     /**
