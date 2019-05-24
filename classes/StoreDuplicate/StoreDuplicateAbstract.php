@@ -120,13 +120,7 @@ abstract class StoreDuplicateAbstract
      */
     protected function handleProgressDataStorage()
     {
-        static $progress_data_storage;
-
-        if (is_null($progress_data_storage)) {
-            $progress_data_storage = new ProgressDataStorage($this->store_id);
-        }
-
-        return $progress_data_storage;
+        return ProgressDataStorage::makeStaticInstance($this->store_id);
     }
 
     /**
@@ -134,13 +128,7 @@ abstract class StoreDuplicateAbstract
      */
     public function handleDuplicateProgressData()
     {
-        static $duplicate_progress_data;
-
-        if (is_null($duplicate_progress_data)) {
-            $duplicate_progress_data = $this->handleProgressDataStorage()->getDuplicateProgressData();
-        }
-
-        return $duplicate_progress_data;
+        return $duplicate_progress_data = $this->handleProgressDataStorage()->getDuplicateProgressData();
     }
 
     /**
