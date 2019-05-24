@@ -1537,7 +1537,6 @@ class admin extends ecjia_admin
 
         $store = $this->store_info;
         $data = [
-            'cat_id' => 0,
             'status' => 2,
             'shop_close' => 1,
             'confirm_time' => RC_Time::gmtime(),
@@ -1548,26 +1547,24 @@ class admin extends ecjia_admin
             'percent_id' => $store['percent_id']
         ];
         $data['apply_time'] = $data['confirm_time'];
+        $data['cat_id'] = $this->request->input('store_cat');
+        $data['merchants_name'] = $this->request->input('merchants_name');
+        $data['email'] = $this->request->input('email');
+        $data['contact_mobile'] = $this->request->input('contact_mobile');
+        $data['address'] = $this->request->input('address');
+        $data['province'] = $this->request->input('province');
+        $data['city'] = $this->request->input('city');
+        $data['district'] = $this->request->input('district');
+        $data['street'] = $this->request->input('street');
+        $data['longitude'] = $this->request->input('longitude');
+        $data['latitude'] = $this->request->input('latitude');
+        $data['responsible_person'] = $this->request->input('responsible_person');
 
-        $this->prepareData($data, [
-            'merchants_name',
-            'email',
-            'contact_mobile',
-            'address',
-            'province',
-            'city',
-            'district',
-            'street',
-            'longitude',
-            'latitude',
-            'responsible_person'
-        ]);
-
-        if (empty($data['cat_id'])) {
+        if (empty($data['cat_id'])) { //
             $data['cat_id'] = $store['cat_id'];
         }
 
-        if (empty($data['email'])) {
+        if (empty($data['email'])) { //不填邮箱则置为null
             $data['email'] = null;
         }
 
@@ -1872,19 +1869,19 @@ class admin extends ecjia_admin
         $result = $handle->handleDuplicate();
 
         if (is_ecjia_error($result)) {
-            switch ($result->get_error_code()) {
-                case 'handle_duplicate_error':
-                    $names = [];
-                    $dependents = $result->get_error_data();
-                    foreach ($dependents as $v) {
-                        $names[] = $handlers->handler($v)->getName();
-                    }
-                    return $this->showmessage(sprintf(__('复制%s前，您还需要先复制：%s', 'store'), $handle->getName(), implode('、', $names)), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR, ['pjaxurl' => $pjaxurl]);
-                    break;
-                case 'duplicate_data_error' :
-                    //dd($result->get_error_message());
-                    return $this->showmessage(sprintf(__('%s复制失败', 'store'), $handle->getName()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR, ['pjaxurl' => $pjaxurl]);
-                    break;
+            $code = $result->get_error_code();
+
+            if ($code == 'handle_duplicate_error') {
+                $names = [];
+                $dependents = $result->get_error_data();
+                foreach ($dependents as $v) {
+                    $names[] = $handlers->handler($v)->getName();
+                }
+                return $this->showmessage(sprintf(__('复制%s前，您还需要先复制：%s', 'store'), $handle->getName(), implode('、', $names)), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR, ['pjaxurl' => $pjaxurl]);
+            }
+
+            if ($code == 'duplicate_data_error') {
+                return $this->showmessage(sprintf(__('%s复制失败', 'store'), $handle->getName()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR, ['pjaxurl' => $pjaxurl]);
             }
         }
 
@@ -1900,28 +1897,6 @@ class admin extends ecjia_admin
         return $this->showmessage(sprintf(__('%s复制成功', 'store'), $handle->getName()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, ['pjaxurl' => $pjaxurl]);
     }
 
-    /**
-     * 通过request组装数据
-     *
-     * @param array $raw_data
-     * @param $keys
-     * @param string $default
-     */
-    private function prepareData(array &$raw_data, $keys, $default = '')
-    {
-        if (is_string($keys)) {
-            $keys = explode(',', $keys);
-        }
-
-        if (is_array($keys)) {
-            foreach ($keys as $key) {
-                if (!isset($raw_data[$key])) {
-                    $val = $this->request->input($key);
-                    $raw_data[$key] = is_null($val) ? $default : $val;
-                }
-            }
-        }
-    }
 
 }
 
