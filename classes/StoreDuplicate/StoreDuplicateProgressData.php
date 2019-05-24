@@ -58,7 +58,7 @@ class StoreDuplicateProgressData
      */
     public function addDuplicateFinishedItem($code)
     {
-        $this->duplicating_items[] = $code;
+        $this->duplicate_finished_items[] = $code;
     }
 
 
