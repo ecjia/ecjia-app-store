@@ -194,7 +194,7 @@ HTML;
         }
 
         \Ecjia\App\Store\Helper::assign_adminlog_content();
-        $content = sprintf(__('录入：将【%s】店铺基本信息复制到【%s】店铺中', 'goods'), $source_store_merchant_name, $store_merchant_name);
+        $content = sprintf(__('将【%s】店铺基本信息复制到【%s】店铺中', 'goods'), $source_store_merchant_name, $store_merchant_name);
         ecjia_admin::admin_log($content, 'clear', 'store_goodsww');
     }
 }
