@@ -1852,6 +1852,10 @@ class admin extends ecjia_admin
         $code = $this->request->input('handle');
         $source_store_id = $this->store_info['duplicate_source_store_id'];
 
+        if (empty($store_info['duplicate_store_status']) OR empty($store_info['duplicate_source_store_id'])) {
+            return $this->showmessage(__('您不能进行这样的操作！', 'store'), ecjia::MSGTYPE_HTML | ecjia::MSGSTAT_ERROR);
+        }
+
         $handlers = (new \Ecjia\App\Store\StoreDuplicate\StoreDuplicateManager($store_id, $source_store_id));
 
         $handle = $handlers->handler($code);
