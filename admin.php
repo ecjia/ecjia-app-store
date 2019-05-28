@@ -1835,7 +1835,7 @@ class admin extends ecjia_admin
             RC_DB::table('merchants_config')->where('store_id', $store_id)->where('code', 'duplicate_store_status')->update(['value' => 'finished']);
             return true;
         } catch (QueryException $e) {
-            ecjia_log_error($e->getMessage());
+            ecjia_log_warning($e->getMessage());
             return false;
         }
     }
@@ -1893,18 +1893,18 @@ class admin extends ecjia_admin
 
             //当前复制处理数据时发生数据库异常
             if ($code == 'duplicate_data_error') {
-                return $this->showmessage(sprintf(__('%s复制失败', 'store'), $handle->getName()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR, ['pjaxurl' => $pjaxurl]);
+                return $this->showmessage(sprintf(__('%s数据出现异常', 'store'), $handle->getName()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR, ['pjaxurl' => $pjaxurl]);
             }
+
+            return $this->showmessage(sprintf(__('%s复制失败', 'store'), $handle->getName()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR, ['pjaxurl' => $pjaxurl]);
         }
 
         $finished_items = $handle->handleDuplicateProgressData()->getDuplicateFinishedItems();
         $codes = array_keys($handlers->getFactories());
         $diff = collect($codes)->diff($finished_items);
 
-        if (empty($diff->all())) {
-            if ($this->finish_duplication($store_id)) {
-                $pjaxurl = RC_Uri::url('store/admin/preview', ['store_id' => $store_id]);
-            }
+        if (empty($diff->all()) && $this->finish_duplication($store_id)) {
+            $pjaxurl = RC_Uri::url('store/admin/preview', ['store_id' => $store_id]);
         }
         return $this->showmessage(sprintf(__('%s复制成功', 'store'), $handle->getName()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, ['pjaxurl' => $pjaxurl]);
     }
