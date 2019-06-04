@@ -146,7 +146,7 @@ class admin extends ecjia_admin
         $this->assign('search_action', RC_Uri::url('store/admin/init'));
         $this->assign('bill_progress', array('text' => __('结算流程', 'store'), 'href' => RC_Uri::url('store/admin/progress', array('type' => 'bill', 'from' => 'self'))));
 
-        $this->display('store_list.dwt');
+        return $this->display('store_list.dwt');
     }
 
     /**
@@ -174,7 +174,7 @@ class admin extends ecjia_admin
         $this->assign('bill_progress', array('text' => __('结算流程', 'store'), 'href' => RC_Uri::url('store/admin/progress', array('type' => 'bill'))));
         $this->assign('enter_progress', array('text' => __('入驻流程', 'store'), 'href' => RC_Uri::url('store/admin/progress', array('type' => 'enter'))));
 
-        $this->display('store_list.dwt');
+        return $this->display('store_list.dwt');
     }
 
     /**
@@ -198,7 +198,7 @@ class admin extends ecjia_admin
         $this->assign('form_action', RC_Uri::url('store/admin/insert'));
         $this->assign('cat_list', $cat_list);
 
-        $this->display('store_add.dwt');
+        return $this->display('store_add.dwt');
     }
 
     /**
@@ -410,7 +410,7 @@ class admin extends ecjia_admin
         $this->assign('step', $step);
         $this->assign('ur_here', $ur_here);
 
-        $this->display('store_edit.dwt');
+        return $this->display('store_edit.dwt');
     }
 
     /**
@@ -687,7 +687,7 @@ class admin extends ecjia_admin
         }
         $this->assign('is_expired', $is_expired);
 
-        $this->display('store_preview.dwt');
+        return $this->display('store_preview.dwt');
     }
 
     //自营商家自动登录
@@ -743,7 +743,7 @@ class admin extends ecjia_admin
         $this->assign('ur_here', $store['merchants_name'] . __(' - 资质认证', 'store'));
         $this->assign('form_action', RC_Uri::url('store/admin/auth_update'));
         $this->assign('store', $store);
-        $this->display('store_auth.dwt');
+        return $this->display('store_auth.dwt');
     }
 
     public function auth_update()
@@ -795,7 +795,7 @@ class admin extends ecjia_admin
         $this->assign('status', $status);
         $this->assign('form_action', RC_Uri::url('store/admin/status_update', array('store_id' => $store_id, 'status' => $status)));
 
-        $this->display('store_lock.dwt');
+        return $this->display('store_lock.dwt');
     }
 
     /**
@@ -1006,7 +1006,7 @@ class admin extends ecjia_admin
         $this->assign('logs', $logs);
         $this->assign('ip_list', $ip_list);
         $this->assign('user_list', $user_list);
-        $this->display('staff_log.dwt');
+        return $this->display('staff_log.dwt');
     }
 
     public function check_log()
@@ -1034,7 +1034,7 @@ class admin extends ecjia_admin
         $log = get_check_log($store_id, 2, 1, 15);
         $this->assign('log_list', $log);
 
-        $this->display('store_preaudit_check_log.dwt');
+        return $this->display('store_preaudit_check_log.dwt');
     }
 
     /**
@@ -1226,7 +1226,7 @@ class admin extends ecjia_admin
 
         $this->assign('type', $type);
         $this->assign('url', $url);
-        $this->display('store_progress.dwt');
+        return $this->display('store_progress.dwt');
     }
 
     //删除商家
@@ -1304,7 +1304,7 @@ class admin extends ecjia_admin
         }
         $this->assign('count', $count);
 
-        $this->display('store_delete.dwt');
+        return $this->display('store_delete.dwt');
     }
 
     /**
@@ -1524,7 +1524,7 @@ class admin extends ecjia_admin
         $this->assign('form_action', RC_Uri::url('store/admin/duplicate_insert', ['store_id' => $store_id]));
         $this->assign('cat_list', $cat_list);
         $this->assign('store', $store_info);
-        $this->display('store_duplicate.dwt');
+        return $this->display('store_duplicate.dwt');
     }
 
     /*
@@ -1800,7 +1800,7 @@ class admin extends ecjia_admin
 
         $this->assign('handles', $handles);
 
-        $this->display('store_duplicate_processing.dwt');
+        return $this->display('store_duplicate_processing.dwt');
     }
 
     /**
