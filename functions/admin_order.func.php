@@ -394,7 +394,7 @@ function order_fee($order, $goods, $consignee) {
         if (!empty($shipping_info)) {
 
             if ($order['extension_code'] == 'group_buy') {
-                $weight_price = cart_weight_price(CART_GROUP_BUY_GOODS);
+                $weight_price = cart_weight_price(\Ecjia\App\Cart\Enums\CartEnum::CART_GROUP_BUY_GOODS);
             } else {
                 $weight_price = cart_weight_price();
             }
