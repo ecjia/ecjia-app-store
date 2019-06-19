@@ -685,7 +685,11 @@ function order_refund($order, $refund_type, $refund_note = '', $refund_amount = 
 * @param   int	 $flow_type  购物流程类型
 * @return  bool
 */
-function exist_real_goods($order_id = 0, $flow_type = CART_GENERAL_GOODS) {
+function exist_real_goods($order_id = 0, $flow_type = null) {
+    if (is_null($flow_type)) {
+        $flow_type = \Ecjia\App\Cart\Enums\CartEnum::CART_GENERAL_GOODS;
+    }
+
 	$db_cart	= RC_Loader::load_app_model('cart_model', 'cart');
 	$db_order	= RC_Loader::load_app_model('order_goods_model','orders');
 	if ($order_id <= 0) {
