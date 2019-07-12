@@ -405,7 +405,7 @@ class admin_preaudit extends ecjia_admin
                 }
 
                 RC_Logger::getlogger('new_store')->info($data);
-                $data['store_id'] = $store_id = RC_DB::table('store_franchisee')->insertGetId($data);
+                $store_id = RC_DB::table('store_franchisee')->insertGetId($data);
                 RC_DB::table('store_preaudit')->where('id', $id)->delete();
 
                 //审核通过产生店铺中的code
@@ -471,11 +471,6 @@ class admin_preaudit extends ecjia_admin
                 );
                 RC_Api::api('store', 'add_check_log', $log);
                 ecjia_admin::admin_log(sprintf(__('%s通过', 'store'), $data['merchants_name']), 'check', 'merchants_preaudit');
-
-                //入驻成功
-                $data['store_preaudit_id'] = $id;
-                RC_Hook::do_action('merchant_signup_success', $data);
-
 
                 //短信发送通知
                 $options  = array(
